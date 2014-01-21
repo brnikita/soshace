@@ -1,0 +1,9 @@
+extend ../layoutView
+block content
+    .container
+        - each post in posts
+            .row.content__post
+                h1
+                    a(href="/ru/posts/#{post.UTCYear}/#{post.UTCMonth}/#{post.UTCDate}/#{post.titleUrl}") #{post.title}
+                p !{post.description}
+                a.btn.btn-primary(type="button", href="/ru/posts/#{post.UTCYear}/#{post.UTCMonth}/#{post.UTCDate}/#{post.titleUrl}") Далее...

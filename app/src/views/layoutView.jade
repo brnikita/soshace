@@ -1,0 +1,35 @@
+doctype html
+//if lt IE 7
+    html.no-js.lt-ie9.lt-ie8.lt-ie7(lang="en", xmlns:ng="http://angularjs.org")
+//if IE 7
+    html.no-js.lt-ie9.lt-ie8(lang="en", xmlns:ng="http://angularjs.org")
+//if IE 8
+    html.no-js.lt-ie9(lang="en", xmlns:ng="http://angularjs.org")
+// [if gt IE 8] <!
+html.no-js(lang="en")
+    // <![endif]
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        title= title
+        meta(name='description', content='')
+        meta(name='viewport', content='width=device-width')
+        link(href="/static/favicon.ico", rel="shortcut icon", type="image/x-icon")
+        //Откомпилированные compass файлы, версия берется из package.json
+        link(href="/static/styles.css?v=#{version}", rel="stylesheet")
+    body.bg-color-green
+        .header
+            .container
+                .row
+                    a.header__logo(href="/")
+                        img.img-responsive(src="/static/images/logo.png", alt="Soshace")
+        .content
+            #back-view.content__back-view
+                block content
+        - if (environment === 'development')
+            script(src="#{scriptsPath}/scripts/libs/require.js")
+            script(src="#{scriptsPath}/require.conf.js")
+            script(src="#{scriptsPath}/scripts/app.js")
+        - if (environment === 'production')
+            //Минифицированные скрипты, версия берется из package.json
+            script(src='#{scriptsPath}/scripts.min.js?v=#{version}')
