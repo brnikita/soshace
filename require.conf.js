@@ -1,10 +1,10 @@
 require.config(
     {
-        baseUrl: '/static/',
+        baseUrl: '/static/scripts/',
         paths: {
-            'jquery': 'scripts/libs/jquery',
-            'bootstrap': 'scripts/libs/bootstrap',
-            'prettify': 'scripts/libs/prettify'
+            'jquery': 'libs/jquery',
+            'bootstrap': 'libs/bootstrap',
+            'prettify': 'libs/prettify'
         },
         shim: {
             'bootstrap': {

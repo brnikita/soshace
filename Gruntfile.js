@@ -97,13 +97,15 @@ module.exports = function (grunt) {
             }
         },
 
+        //Собираем скрипты
         requirejs: {
             compile: {
                 options: {
-                    baseUrl: '<%= blog.app %>/static/',
-                    name: 'scripts/app',
+                    baseUrl: '<%= blog.app %>/static/scripts/',
+                    name: 'app',
                     mainConfigFile: 'require.conf.js',
-                    out: '<%= blog.dist %>/scripts.min.js'
+                    out: '<%= blog.dist %>/scripts.min.js',
+                    include: ['libs/require.js']
                 }
             }
         }

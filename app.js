@@ -2,7 +2,7 @@
 
 var cluster = require('cluster'),
     os = require('os'),
-    cpuCount = os.cpus().length;
+    cpuCount = os.cpus().length / 2;
 
 cluster.setupMaster({
     exec: './app/src/worker.js'
