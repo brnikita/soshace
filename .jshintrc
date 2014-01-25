@@ -22,6 +22,8 @@
         "angular": false,
         "soshace": false,
         "$": false,
-        "ga": false
+        "ga": false,
+        "define": false,
+        "prettyPrintOne": false
     }
 }
