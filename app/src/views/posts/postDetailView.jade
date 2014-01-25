@@ -1,6 +1,6 @@
 extend ../layoutView
 block content
     .container
-        .row.content__post
+        .row.content__post.js-module(data-module="postDetailModule")
             h1 #{post.title}
             p  !{post.body}

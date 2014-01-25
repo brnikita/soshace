@@ -2,7 +2,7 @@ extend ../layoutView
 block content
     .container
         - each post in posts
-            .row.content__post
+            .row.content__post.js-module(data-module="postPreviewModule")
                 h1
                     a(href="/ru/posts/#{post.UTCYear}/#{post.UTCMonth}/#{post.UTCDate}/#{post.titleUrl}") #{post.title}
                 p !{post.description}
