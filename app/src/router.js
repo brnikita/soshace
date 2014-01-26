@@ -1,9 +1,9 @@
 'use strict';
 
-var PostsController = require('./../controllers/postsController').PostsController,
-    _ = require('underscore');
+var PostsController = require('./controllers/posts/postsController'),
+    AddPostsController = require('./controllers/posts/addPostController');
 
-var Router = {
+module.exports = {
     /**
      * @public
      * @function
@@ -21,16 +21,16 @@ var Router = {
         //Получаем пост
         App.get('/api/post', PostsController.getPost);
         //Добавляем пост
-        App.post('/api/post', PostsController.addPost);
+        App.post('/api/post', AddPostsController.addPost);
 
         //TODO: временная страница
         //добавляем пост
-        App.get('/_admin_s/_add_post', PostsController.renderAddPost);
+        App.get('/add_post', AddPostsController.renderAddPost);
 
         //Главная страница
         App.get('/:locale', PostsController.renderPosts);
 
-        App.get('/:locale/posts', function(request, response){
+        App.get('/:locale/posts', function (request, response) {
             response.redirect('/ru');
         });
 
@@ -38,5 +38,3 @@ var Router = {
         App.get('/:locale/posts/:year/:month/:day/:titleUrl', PostsController.renderPost);
     }
 };
-
-exports.Router = Router;

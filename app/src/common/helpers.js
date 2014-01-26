@@ -1,15 +1,15 @@
 'use strict';
 
-var Helper = {
+module.exports = {
     /**
      * Форматируем числа к виду '01'
      *
      * @function
-     * @name Helper.zeroLeading
+     * @name Helpers.zeroLeading
      * @param {Number|String} numberToFormat
      * @returns {String}
      */
-    zeroLeading: function(numberToFormat){
+    zeroLeading: function (numberToFormat) {
         numberToFormat = String(numberToFormat);
         if (numberToFormat && numberToFormat.length) {
             if (numberToFormat.length === 1) {
@@ -20,5 +20,3 @@ var Helper = {
         return '00';
     }
 };
-
-exports.Helper = Helper;

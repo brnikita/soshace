@@ -1,6 +1,6 @@
 extend ../layoutView
 block content
-    .container
+    .container.js-module(data-module="posts/addPostModule")
         form(action="/api/post", method="post", role="form")
             .form-group
                 label(for="postTitle") Заголовок

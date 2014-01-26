@@ -6,8 +6,8 @@ require('./app/src/config');
 var Express = require('express'),
     Package = require('./package'),
     App = new Express(),
-    DbConnection = require('./app/src/common/dbConnection').DbConnection,
-    Router = require('./app/src/common/router').Router;
+    DbConnection = require('./app/src/common/dbConnection'),
+    Router = require('./app/src/router');
 
 var Blog = {
     /**

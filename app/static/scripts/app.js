@@ -3,8 +3,9 @@
 require([
     'jquery',
     'underscore',
-    'modules/postPreviewModule',
-    'modules/postDetailModule'
+    'modules/posts/postPreviewModule',
+    'modules/posts/postDetailModule',
+    'modules/posts/addPostModule'
 ], function ($) {
     var Blog = {
 

@@ -27,7 +27,7 @@ var PostsModel = {
     _init: function () {
         if (this._model === null) {
             var PostsSchema = mongoose.Schema({
-                titleUrl: String, //путь после в урле после даты
+                titleUrl: String, //путь в урле после даты
                 public: Boolean, //отображать ли пост в общем доступе
                 date: Date, //для сортировки
                 UTCYear: String, //для улобной выборки по году YYYY (по гринвичу UTC)
@@ -39,6 +39,7 @@ var PostsModel = {
                 description: String, //Описание для выдачи
                 body: String //Тело поста
             });
+
             this._model = mongoose.model('Posts', PostsSchema);
         }
     },
@@ -53,8 +54,15 @@ var PostsModel = {
      * @return {Cursor}
      */
     getPosts: function (params) {
-        return this._model.find(null, {title: 1, description: 1, titleUrl: 1, date: 1, UTCYear: 1, UTCMonth: 1, UTCDate: 1}).
-            sort({date: -1}).
+        return this._model.find({public: true}, {
+            title: 1,
+            description: 1,
+            titleUrl: 1,
+            date: 1,
+            UTCYear: 1,
+            UTCMonth: 1,
+            UTCDate: 1
+        }).sort({date: -1}).
             skip(soshace.POSTS_PER_PAGE * params.page).
             limit(soshace.POSTS_PER_PAGE);
     },
@@ -68,8 +76,13 @@ var PostsModel = {
      * @param {Object} params
      * @return {Cursor}
      */
-    getPost: function(params){
-        return this._model.findOne({titleUrl: params.titleUrl}, {title: 1, body: 1, titleUrl: 1, date: 1});
+    getPost: function (params) {
+        return this._model.findOne({titleUrl: params.titleUrl}, {
+            title: 1,
+            body: 1,
+            titleUrl: 1,
+            date: 1
+        });
     },
 
     /**
@@ -82,13 +95,14 @@ var PostsModel = {
      * @param {Function} callback
      * @return {undefined}
      */
-    addPost: function(postData, callback){
+    addPost: function (postData, callback) {
         if (postData && typeof callback === 'function') {
-            this._model.create(postData, function(error){
+            this._model.create(postData, function (error) {
                 callback(error);
             });
         }
     }
 };
 PostsModel._init();
-exports.PostsModel = PostsModel;
+
+module.exports = PostsModel;
