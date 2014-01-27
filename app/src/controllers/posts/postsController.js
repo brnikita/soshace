@@ -4,8 +4,10 @@ var PostsModel = require('../../models/postsModel');
 
 /**
  * Контроллер содержащий методы работы с постами
+ *
+ * @module PostsController
  */
-module.exports = {
+var PostsController = {
 
     /**
      * Получаем пост целиком
@@ -94,3 +96,5 @@ module.exports = {
         });
     }
 };
+
+module.exports = PostsController;

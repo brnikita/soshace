@@ -6,7 +6,8 @@ require.config(
             'jquery': 'libs/jquery',
             'underscore': 'libs/underscore',
             'bootstrap': 'libs/bootstrap',
-            'prettify': 'libs/prettify'
+            'prettify': 'libs/prettify',
+            'ga': 'libs/google-analytics'
         },
         shim: {
             'bootstrap': {

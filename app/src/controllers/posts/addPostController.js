@@ -5,7 +5,11 @@ var PostsModel = require('../../models/postsModel'),
     _ = require('underscore'),
     _s = require('underscore.string');
 
-module.exports = {
+/**
+ * @module AddPostController
+ *
+ */
+var AddPostController = {
 
     /**
      * TODO: написать тест
@@ -22,7 +26,7 @@ module.exports = {
         var url;
 
         //переводим в латиницу
-        url = new Unidecode(title.toLowerCase());
+        url = Unidecode(title.toLowerCase());
 
         //заменяем все нелатинские символы на "-"
         return url.replace(/\W+/g, '-');
@@ -67,7 +71,7 @@ module.exports = {
 
         dateObject.date = date;
         dateObject.UTCYear = date.getUTCFullYear();
-        dateObject.UTCMonth = Helper.zeroLeading(date.getUTCMonth());
+        dateObject.UTCMonth = Helper.zeroLeading(date.getUTCMonth() + 1);
         dateObject.UTCDate = Helper.zeroLeading(date.getUTCDate());
 
         return dateObject;
@@ -164,7 +168,7 @@ module.exports = {
 
         dataToSave.public = false;
 
-        _.extend(dataToSave, _.bind(this._getDate, this));
+        _.extend(dataToSave, this._getDate());
 
         dataToSave.description = this._getPostDescription(postData.body);
 
@@ -200,3 +204,6 @@ module.exports = {
         });
     }
 };
+
+_.bindAll(AddPostController, 'addPost');
+module.exports = AddPostController;

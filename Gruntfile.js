@@ -76,7 +76,8 @@ module.exports = function (grunt) {
             },
             all: [
                 'Gruntfile.js',
-                '<%= blog.app %>/static/scripts/{,*/}*.js'
+                '<%= blog.app %>/static/scripts/{,*/}*.js',
+                '<%= blog.app %>/src/scripts/{,*/}*.js'
             ]
         },
 

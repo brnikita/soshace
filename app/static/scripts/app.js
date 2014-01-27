@@ -5,7 +5,8 @@ require([
     'underscore',
     'modules/posts/postPreviewModule',
     'modules/posts/postDetailModule',
-    'modules/posts/addPostModule'
+    'modules/posts/addPostModule',
+    'ga'
 ], function ($) {
     var Blog = {
 
