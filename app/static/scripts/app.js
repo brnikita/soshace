@@ -6,7 +6,8 @@ require([
     'modules/posts/postPreviewModule',
     'modules/posts/postDetailModule',
     'modules/posts/addPostModule',
-    'ga'
+    'google-analytics',
+    'yandex-metrika'
 ], function ($) {
     var Blog = {
 

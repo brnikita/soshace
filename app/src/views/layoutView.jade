@@ -30,5 +30,10 @@ html.no-js(lang="en")
             script(src="#{scriptsPath}/require.conf.js")
             script(src="#{scriptsPath}/scripts/app.js")
         - if (environment === 'production')
+            // Yandex.Metrika counter
+            noscript
+                div
+                    img(src="//mc.yandex.ru/watch/23765065", style="position:absolute; left:-9999px;", alt="")
+            // /Yandex.Metrika counter
             //Минифицированные скрипты, версия берется из package.json
             script(src='#{scriptsPath}/scripts.min.js?v=#{version}')

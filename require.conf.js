@@ -7,7 +7,8 @@ require.config(
             'underscore': 'libs/underscore',
             'bootstrap': 'libs/bootstrap',
             'prettify': 'libs/prettify',
-            'ga': 'libs/google-analytics'
+            'google-analytics': 'libs/google-analytics',
+            'yandex-metrika': 'libs/yandex-metrika'
         },
         shim: {
             'bootstrap': {
