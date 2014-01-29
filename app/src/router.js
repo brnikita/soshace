@@ -16,16 +16,11 @@ module.exports = {
             response.redirect('/ru');
         });
 
-        //Получаем список постов
-        App.get('/api/posts', PostsController.getPosts);
-        //Получаем пост
-        App.get('/api/post', PostsController.getPost);
         //Добавляем пост
         App.post('/api/post', AddPostsController.addPost);
 
-        //TODO: временная страница
         //добавляем пост
-        App.get('/add_post', AddPostsController.renderAddPost);
+        App.get('/:locale/add_post', AddPostsController.renderAddPost);
 
         //Главная страница
         App.get('/:locale', PostsController.renderPosts);
@@ -35,6 +30,6 @@ module.exports = {
         });
 
         //Страница отдельного поста
-        App.get('/:locale/posts/:year/:month/:day/:titleUrl', PostsController.renderPost);
+        App.get('/:locale/posts/:year/:month/:date/:titleUrl', PostsController.renderPost);
     }
 };

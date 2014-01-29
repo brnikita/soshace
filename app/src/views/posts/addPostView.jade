@@ -4,8 +4,8 @@ block content
         form(action="/api/post", method="post", role="form")
             .form-group
                 label(for="postTitle") Заголовок
-                input#post-title.form-control(type="text", name="title", placeholder="Заголовок")
+                input#title.form-control(type="text", name="title", placeholder="Заголовок")
             .form-group
                 label(for="postBody") Тело поста
-                textarea#post-body.form-control(name="body", placeholder="Тело поста")
+                textarea#body.form-control(name="body", placeholder="Тело поста")
             button.btn.btn-primary(type="submit") Отправить

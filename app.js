@@ -43,6 +43,25 @@ var Blog = {
             App.use(Express.bodyParser());
             App.set('views', 'app/src/views');
             App.set('view engine', 'jade');
+            App.use(App.router);
+            App.use(function(request, response){
+                response.status(404);
+
+                // respond with html page
+                if (request.accepts('html')) {
+                    response.render('404', { url: request.url });
+                    return;
+                }
+
+                // respond with json
+                if (request.accepts('json')) {
+                    response.send({ error: 'Not found' });
+                    return;
+                }
+
+                // default to plain-text. send()
+                response.type('txt').send('Not found');
+            });
         });
     }
 };

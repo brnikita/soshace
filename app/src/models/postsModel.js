@@ -54,7 +54,7 @@ var PostsModel = {
      * @return {Cursor}
      */
     getPosts: function (params) {
-        return this._model.find({public: true}, {
+        return this._model.find(params, {
             title: 1,
             description: 1,
             titleUrl: 1,
@@ -77,7 +77,7 @@ var PostsModel = {
      * @return {Cursor}
      */
     getPost: function (params) {
-        return this._model.findOne({titleUrl: params.titleUrl}, {
+        return this._model.findOne(params, {
             title: 1,
             body: 1,
             titleUrl: 1,

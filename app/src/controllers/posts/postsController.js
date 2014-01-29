@@ -57,16 +57,25 @@ var PostsController = {
      */
     renderPost: function (request, response) {
         var params = {
+            public: true,
+            locale: request.params.locale,
+            UTCYear: request.params.year,
+            UTCMonth: request.params.month,
+            UTCDate: request.params.date,
             titleUrl: request.params.titleUrl
         };
 
         PostsModel.getPost(params).exec(function (error, post) {
-            response.render('posts/postDetailView', {
-                post: post,
-                environment: soshace.ENVIRONMENT,
-                scriptsPath: '/static',
-                version: soshace.VERSION
-            });
+            if (post) {
+                response.render('posts/postDetailView', {
+                    post: post,
+                    environment: soshace.ENVIRONMENT,
+                    scriptsPath: '/static',
+                    version: soshace.VERSION
+                });
+                return;
+            }
+            response.render('404');
         });
     },
 
@@ -82,6 +91,8 @@ var PostsController = {
      */
     renderPosts: function (request, response) {
         var params = {
+            public: true,
+            locale: request.params.locale,
             page: request.params.page
         };
 
