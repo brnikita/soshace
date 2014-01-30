@@ -8,10 +8,16 @@ require.config(
             'bootstrap': 'libs/bootstrap',
             'prettify': 'libs/prettify',
             'google-analytics': 'libs/google-analytics',
-            'yandex-metrika': 'libs/yandex-metrika'
+            'yandex-metrika': 'libs/yandex-metrika',
+            'jquery.validation': 'libs/jquery/jquery.validation'
         },
         shim: {
             'bootstrap': {
+                deps: [
+                    'jquery'
+                ]
+            },
+            'jquery.validation': {
                 deps: [
                     'jquery'
                 ]

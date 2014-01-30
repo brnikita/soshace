@@ -21,6 +21,24 @@ module.exports = function (grunt) {
             dist: 'static'
         },
 
+        //следит за изменениями
+        watch: {
+            scripts: {
+                files: '<%= blog.app %>/static/scripts/**/*.js',
+                tasks: [
+                    'jshint',
+                    'copy:requireJs',
+                    'copy:dev'
+                ]
+            },
+            css: {
+                files: '<%= blog.app %>/static/styles/**/*.less',
+                tasks: [
+                    'less:dev'
+                ]
+            }
+        },
+
         // Очищаем папку статики
         clean: ['<%= blog.dist %>/*'],
 
@@ -118,7 +136,8 @@ module.exports = function (grunt) {
         'clean',
         'copy:requireJs',
         'copy:dev',
-        'less:dev'
+        'less:dev',
+        'watch'
     ]);
 
     //Верия для продакшена

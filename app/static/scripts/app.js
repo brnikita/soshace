@@ -1,8 +1,11 @@
 'use strict';
 
 require([
+    //Здесь подключаются зависимости, которе должны
+    //будут попасть в сборку
     'jquery',
     'underscore',
+    'jquery.validation',
     'modules/posts/postPreviewModule',
     'modules/posts/postDetailModule',
     'modules/posts/addPostModule',
