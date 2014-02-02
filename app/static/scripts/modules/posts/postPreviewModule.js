@@ -15,21 +15,20 @@ define([
 
         /**
          * Контекст модуля
+         * Родительский элемент DOM
          *
          * @field
-         * @name PostPreviewModule.context
+         * @name PostPreviewModule.$el
          * @type {jQuery|null}
          */
-        context: null,
+        $el: null,
 
         /**
          * @name PostPreviewModule.initialize
-         * @param {object} options
          * @returns {undefined}
          */
-        initialize: function (options) {
-            this.context = options.context;
-            prettifyUtil.byContext(this.context, 'js');
+        initialize: function () {
+            prettifyUtil.byContext(this.$el, 'js');
         }
     };
 });

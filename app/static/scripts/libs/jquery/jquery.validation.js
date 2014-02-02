@@ -474,7 +474,7 @@
 
                 // select all valid inputs inside the form (no submit or reset buttons)
                 return $(this.currentForm)
-                    .find("input, select, textarea")
+                    .find("input, select, textarea, [contenteditable='true']")
                     .not(":submit, :reset, :image, [disabled]")
                     .not( this.settings.ignore )
                     .filter(function() {
@@ -521,8 +521,16 @@
             },
 
             elementValue: function( element ) {
-                var type = $(element).attr("type"),
+                debugger;
+                var contenteditable = $(element).attr("contenteditable"),
+                    type = $(element).attr("type"),
+                    val;
+
+                if(contenteditable){
+                    val = $(element).html();
+                } else {
                     val = $(element).val();
+                }
 
                 if ( type === "radio" || type === "checkbox" ) {
                     return $("input[name='" + $(element).attr("name") + "']:checked").val();

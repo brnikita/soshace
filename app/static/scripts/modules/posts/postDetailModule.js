@@ -15,20 +15,19 @@ define([
 
         /**
          * Контекст модуля
+         * Родительский элемент DOM
          *
          * @field
-         * @name PostDetailModule.context
+         * @name PostDetailModule.$el
          * @type {jQuery|null}
          */
-        context: null,
+        $el: null,
 
         /**
          * @name PostDetailModule.initialize
-         * @param {object} options
          * @returns {undefined}
          */
-        initialize: function (options) {
-            this.context = options.context;
+        initialize: function () {
             prettifyUtil.byContext(this.context, 'js');
         }
     };

@@ -9,7 +9,9 @@ require.config(
             'prettify': 'libs/prettify',
             'google-analytics': 'libs/google-analytics',
             'yandex-metrika': 'libs/yandex-metrika',
-            'jquery.validation': 'libs/jquery/jquery.validation'
+            'jquery.validation': 'libs/jquery/jquery.validation',
+            'jquery.hotkeys': 'libs/jquery/jquery.hotkeys',
+            'bootstrap.wysiwyg': 'libs/bootstrap/bootstrap.wysiwyg'
         },
         shim: {
             'bootstrap': {
@@ -20,6 +22,18 @@ require.config(
             'jquery.validation': {
                 deps: [
                     'jquery'
+                ]
+            },
+            'jquery.hotkeys': {
+                deps: [
+                    'jquery'
+                ]
+            },
+            'bootstrap.wysiwyg':{
+                deps: [
+                    'bootstrap',
+                    'prettify',
+                    'jquery.hotkeys'
                 ]
             }
         }

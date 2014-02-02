@@ -16,7 +16,7 @@ html.no-js(lang="en")
         meta(name='viewport', content='width=device-width')
         link(href="/static/favicon.ico", rel="shortcut icon", type="image/x-icon")
         //Откомпилированные compass файлы, версия берется из package.json
-        link(href="/static/styles.css?v=#{version}", rel="stylesheet")
+        link(href="/static/styles/styles.css?v=#{version}", rel="stylesheet")
     body.bg-color-green
         .header
             .container
@@ -36,4 +36,4 @@ html.no-js(lang="en")
                     img(src="//mc.yandex.ru/watch/23765065", style="position:absolute; left:-9999px;", alt="")
             // /Yandex.Metrika counter
             //Минифицированные скрипты, версия берется из package.json
-            script(src='#{scriptsPath}/scripts.min.js?v=#{version}')
+            script(src='#{scriptsPath}/scripts/scripts.min.js?v=#{version}')

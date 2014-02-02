@@ -27,7 +27,6 @@ module.exports = function (grunt) {
                 files: '<%= blog.app %>/static/scripts/**/*.js',
                 tasks: [
                     'jshint',
-                    'copy:requireJs',
                     'copy:dev'
                 ]
             },
@@ -35,6 +34,30 @@ module.exports = function (grunt) {
                 files: '<%= blog.app %>/static/styles/**/*.less',
                 tasks: [
                     'less:dev'
+                ]
+            },
+            images: {
+                files: '<%= blog.app %>/static/images/{,*/}*.{png,jpg,jpeg,gif,svg}',
+                tasks: [
+                    'copy:dev'
+                ]
+            },
+            icons: {
+                files: '<%= blog.app %>/static/*.ico',
+                tasks: [
+                    'copy:dev'
+                ]
+            },
+            requireConfig: {
+                files: 'require.conf.js',
+                tasks: [
+                    'copy:requireConfig'
+                ]
+            },
+            fonts: {
+                files: '<%= blog.app %>/static/fonts/*',
+                tasks: [
+                    'copy:dev'
                 ]
             }
         },
@@ -44,7 +67,7 @@ module.exports = function (grunt) {
 
         // Копируем файлы из папки статики
         copy: {
-            requireJs: {
+            requireConfig: {
                 files: [
                     {
                         dest: '<%= blog.dist %>/require.conf.js',
@@ -103,7 +126,7 @@ module.exports = function (grunt) {
         less: {
             dev: {
                 files: {
-                    '<%= blog.dist %>/styles.css': '<%= blog.app %>/static/styles/styles.less'
+                    '<%= blog.dist %>/styles/styles.css': '<%= blog.app %>/static/styles/styles.less'
                 }
             },
             prod: {
@@ -111,7 +134,7 @@ module.exports = function (grunt) {
                     compress: true
                 },
                 files: {
-                    '<%= blog.dist %>/styles.css': '<%= blog.app %>/static/styles/styles.less'
+                    '<%= blog.dist %>/styles/styles.css': '<%= blog.app %>/static/styles/styles.less'
                 }
             }
         },
@@ -123,7 +146,7 @@ module.exports = function (grunt) {
                     baseUrl: '<%= blog.app %>/static/scripts/',
                     name: 'app',
                     mainConfigFile: 'require.conf.js',
-                    out: '<%= blog.dist %>/scripts.min.js',
+                    out: '<%= blog.dist %>/scripts/scripts.min.js',
                     include: ['libs/require.js']
                 }
             }
@@ -134,7 +157,7 @@ module.exports = function (grunt) {
     grunt.registerTask('dev', [
         'newer:jshint:all',
         'clean',
-        'copy:requireJs',
+        'copy:requireConfig',
         'copy:dev',
         'less:dev',
         'watch'

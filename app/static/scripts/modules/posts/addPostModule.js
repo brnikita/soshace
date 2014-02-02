@@ -11,7 +11,8 @@ define([
     'underscore',
     'utils/helpers',
     'jquery.validation',
-    'bootstrap'
+    'bootstrap',
+    'bootstrap.wysiwyg'
 ], function ($, _, Helpers) {
     return {
 
@@ -19,20 +20,48 @@ define([
          * Контекст модуля
          *
          * @field
-         * @name AddPostModule.context
+         * @name AddPostModule.$el
          * @type {jQuery|null}
          */
-        context: null,
+        $el: null,
 
         /**
          * @name AddPostModule.initialize
-         * @param {object} options
          * @returns {undefined}
          */
-        initialize: function (options) {
-            var formElement = $('.add_post_from', this.context);
-            this.context = options.context;
+        initialize: function () {
+            var formElement = $('.add_post_form', this.$el),
+                postBody = $('.add_post_form__body', formElement);
+
+            postBody.wysiwyg();
             this._validateConfig(formElement);
+        },
+
+        /**
+         * TODO: переписать под список слушателей
+         *
+         * Прикрепляет слушатели
+         *
+         * @method
+         * @name AddPostModule.events
+         * @returns {undefined}
+         */
+        events: function () {
+            var toolbar = $('.js-toolbar', this.$el);
+
+            this.$el.
+                on('focus', '.js-post-body',function () {
+                    toolbar.removeClass('hide');
+                }).
+                on('blur', '.js-post-body', function (event) {
+                    var $target = $(event.target);
+                    debugger;
+                    if ($target.hasClass('js-body-editor')) {
+                        return;
+                    }
+
+                    toolbar.addClass('hide');
+                });
         },
 
         /**
@@ -103,6 +132,7 @@ define([
         _submitHandler: function (formElement) {
             var _this = this,
                 formData = Helpers.serializeFormObject($(formElement));
+
             $.post('/api/post', formData, _this._sendPostSuccess, 'json');
         },
 
