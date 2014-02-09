@@ -41,8 +41,8 @@ require([
         loadModule: function ($el) {
             var elementData = $el.data(),
                 moduleName = elementData.module,
-            //Убирем все из названия модуля кроме цифр и букв
-                formattedModuleName = moduleName.replace(/[^A-Za-z0-9]/g, ''),
+                //Заменяем слеши на точки
+                formattedModuleName = moduleName.replace(/\//g, '.'),
                 modulePath;
 
             if (elementData.module) {

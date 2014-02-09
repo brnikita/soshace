@@ -10,7 +10,6 @@ define([
     'jquery',
     'underscore',
     'utils/helpers',
-    'jquery.validation',
     'bootstrap',
     'bootstrap.wysiwyg'
 ], function ($, _, Helpers) {
@@ -26,6 +25,15 @@ define([
         $el: null,
 
         /**
+         * Список элементов формы
+         *
+         * @field
+         * @name AddPostModule.formElements
+         * @type {null|Object}
+         */
+        formElements: null,
+
+        /**
          * @name AddPostModule.initialize
          * @returns {undefined}
          */
@@ -34,130 +42,87 @@ define([
                 postBody = $('.add_post_form__body', formElement);
 
             postBody.wysiwyg();
-            this._validateConfig(formElement);
+
+            this.formElements = {};
+            this.formElements.title = $('.js-title', this.$el);
+            this.formElements.body = $('.js-body-editor', this.$el);
         },
 
         /**
-         * TODO: переписать под список слушателей
+         * Список обработчиков ошибок
          *
-         * Прикрепляет слушатели
-         *
-         * @method
+         * @field
          * @name AddPostModule.events
-         * @returns {undefined}
+         * @type {Object}
          */
-        events: function () {
-            var toolbar = $('.js-toolbar', this.$el);
-
-            this.$el.
-                on('focus', '.js-post-body',function () {
-                    toolbar.removeClass('hide');
-                }).
-                on('blur', '.js-post-body', function (event) {
-                    var $target = $(event.target);
-                    debugger;
-                    if ($target.hasClass('js-body-editor')) {
-                        return;
-                    }
-
-                    toolbar.addClass('hide');
-                });
+        events: {
+            'blur .js-body-editor': '_postBodyLoseFocus',
+            'submit': '_submitForm'
         },
 
         /**
-         * Конфигурируем валидацию для формы отправки
-         * поста
+         * @private
+         * @method
+         * @name AddPostModule._postBodyLoseFocus
+         * @returns {undefined}
+         */
+        _postBodyLoseFocus: function (event) {
+//            console.log(event);
+        },
+
+        /**
+         * @field
+         * @name AddPostModule.errorMessages
+         * @type {Object}
+         */
+        errorMessages: {
+            title: 'Вы забыли указать загловок',
+            body: 'Вы забыли указать тело поста'
+        },
+
+        /**
+         * @method
+         * @private
+         * @param {jQuery} formElements
+         * @returns {Object}
+         */
+        _checkForm: function (formElements) {
+            var valid = true,
+                message = null;
+
+            _.each(formElements, _.bind(function (element) {
+                var value,
+                    name = element.attr('name');
+
+                if (element.attr('contenteditable')) {
+                    value = element.html();
+                } else {
+                    value = element.val();
+                }
+
+                if (!value) {
+                    valid = false;
+                    message = this.errorMessages[name];
+                }
+            }, this));
+
+            return {
+                valid: valid,
+                message: message
+            };
+        },
+
+        /**
+         * Обработчик отправки формы
          *
          * @private
          * @method
-         * @name AddPostModule._validateConfig
-         * @param {jQuery} formElement ссылка на Jquery объект формы,
-         *                             которую хотим проверить
-         * @returns {undefined}
-         */
-        _validateConfig: function (formElement) {
-            var _this = this;
-
-            formElement.validate({
-                rules: {
-                    title: {
-                        required: true
-                    },
-                    body: {
-                        required: true
-                    }
-                },
-                messages: {
-                    title: {
-                        required: 'Укажите заголовок статьи'
-                    },
-                    body: {
-                        required: 'Вы забыли написать статью'
-                    }
-                },
-                invalidHandler: _this._invalidHandler,
-                submitHandler: _this._submitHandler,
-                errorPlacement: _this._errorPlacement
-            });
-        },
-
-        /**
-         * Клиентский обработчик ошибок формы
-         *
-         * @private
-         * @method
-         * @name AddPostModule._invalidHandler
-         * @param {jQuery.Event} event
-         * @param {jQuery.validate} validator
-         * @returns {undefined}
-         */
-        _invalidHandler: function (event, validator) {
-            _.each(validator.errorList, function (error) {
-                $(error.element).tooltip({
-                    title: error.message,
-                    trigger: 'click'
-                }).tooltip('show');
-            });
-        },
-
-        /**
-         * Обработчик успешной отправки формы
-         *
-         * @private
-         * @method
-         * @name AddPostModule._submitHandler
-         * @param {jQuery} formElement ссылка на элемент формы
-         * @returns {undefined}
-         */
-        _submitHandler: function (formElement) {
-            var _this = this,
-                formData = Helpers.serializeFormObject($(formElement));
-
-            $.post('/api/post', formData, _this._sendPostSuccess, 'json');
-        },
-
-        /**
-         * @private
-         * @method
-         * @name AddPostModule._sendPostSuccess
-         * @param {Object} data
-         * @returns {undefined}
-         */
-        _sendPostSuccess: function (data) {
-            console.log(data);
-            debugger;
-        },
-
-        /**
-         * Метод отображающий кастомную ошибку
-         *
-         * @private
-         * @method
-         * @name AddPostModule._errorPlacement
+         * @name AddPostModule._submitForm
          * @returns {boolean}
          */
-        _errorPlacement: function () {
-            return true;
+        _submitForm: function (event) {
+            console.log(this._checkForm(this.formElements));
+            return false;
         }
     };
 });

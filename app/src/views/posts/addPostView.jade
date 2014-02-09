@@ -4,7 +4,7 @@ block content
         form.add_post_form(action="", method="post", role="form")
             .row.content__post
                 h1
-                    input#title.add_post_form__title(type="text", name="title", value="Здесь должен быть загловок статьи")
+                    input#title.add_post_form__title.js-title(type="text", name="title", value="Здесь должен быть загловок статьи")
                 .js-post-body
                     .add_post_form__toolbar.js-toolbar.btn-toolbar(data-role='editor-toolbar', data-target='#editor')
                         .btn-group
