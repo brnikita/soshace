@@ -4,7 +4,7 @@
  * Модуль содержащий удобные методы для
  * работы с DOM, стороками и числами
  *
- * @module AddPostModule
+ * @module Helpers
  */
 
 define([

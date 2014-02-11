@@ -17,13 +17,14 @@ html.no-js(lang="en")
         link(href="/static/favicon.ico", rel="shortcut icon", type="image/x-icon")
         //Откомпилированные compass файлы, версия берется из package.json
         link(href="/static/styles/styles.css?v=#{version}", rel="stylesheet")
-    body.bg-color-green
+    body.bg-color-green(class="#{pageClass}")
         .header
             .container
                 .row
                     a.header__logo(href="/")
                         img.img-responsive(src="/static/images/logo.png", alt="Soshace")
         .content
+            .error-messages.js-error-messages
             block content
         - if (environment === 'development')
             script(src="#{scriptsPath}/scripts/libs/require.js")

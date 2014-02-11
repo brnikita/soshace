@@ -200,7 +200,8 @@ var AddPostController = {
         response.render('posts/addPostView', {
             environment: soshace.ENVIRONMENT,
             scriptsPath: '/static',
-            version: soshace.VERSION
+            version: soshace.VERSION,
+            pageClass: 'add_post'
         });
     }
 };

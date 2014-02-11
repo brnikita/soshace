@@ -9,10 +9,10 @@
 define([
     'jquery',
     'underscore',
-    'utils/helpers',
+    'utils/widgets',
     'bootstrap',
     'bootstrap.wysiwyg'
-], function ($, _, Helpers) {
+], function ($, _, Widgets) {
     return {
 
         /**
@@ -25,13 +25,13 @@ define([
         $el: null,
 
         /**
-         * Список элементов формы
+         * Список элементов DOM
          *
          * @field
-         * @name AddPostModule.formElements
-         * @type {null|Object}
+         * @name AddPostModule.elements
+         * @type {Object}
          */
-        formElements: null,
+        elements: {},
 
         /**
          * @name AddPostModule.initialize
@@ -39,13 +39,16 @@ define([
          */
         initialize: function () {
             var formElement = $('.add_post_form', this.$el),
+                formFields,
                 postBody = $('.add_post_form__body', formElement);
 
             postBody.wysiwyg();
 
-            this.formElements = {};
-            this.formElements.title = $('.js-title', this.$el);
-            this.formElements.body = $('.js-body-editor', this.$el);
+            this.elements.errorsContainer = $('.js-error-messages');
+            this.elements.formFields = {};
+            formFields = this.elements.formFields;
+            formFields.title = $('.js-title', this.$el);
+            formFields.body = $('.js-body-editor', this.$el);
         },
 
         /**
@@ -83,14 +86,15 @@ define([
         /**
          * @method
          * @private
-         * @param {jQuery} formElements
+         * @name AddPostModule._checkForm
+         * @param {jQuery} formFields
          * @returns {Object}
          */
-        _checkForm: function (formElements) {
+        _checkForm: function (formFields) {
             var valid = true,
-                message = null;
+                errors = [];
 
-            _.each(formElements, _.bind(function (element) {
+            _.each(formFields, _.bind(function (element) {
                 var value,
                     name = element.attr('name');
 
@@ -101,14 +105,20 @@ define([
                 }
 
                 if (!value) {
-                    valid = false;
-                    message = this.errorMessages[name];
+                    errors.push({
+                        message: this.errorMessages[name],
+                        element: element
+                    });
                 }
             }, this));
 
+            if (errors.length > 0) {
+                valid = false;
+            }
+
             return {
                 valid: valid,
-                message: message
+                errors: errors
             };
         },
 
@@ -120,8 +130,18 @@ define([
          * @name AddPostModule._submitForm
          * @returns {boolean}
          */
-        _submitForm: function (event) {
-            console.log(this._checkForm(this.formElements));
+        _submitForm: function () {
+            var formFields = this.elements.formFields,
+                errorsContainer = this.elements.errorsContainer,
+                formValidation = this._checkForm(formFields);
+
+            if (!formValidation.valid) {
+                Widgets.showErrorMessages(
+                    formValidation.errors,
+                    errorsContainer
+                );
+            }
+
             return false;
         }
     };

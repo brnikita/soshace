@@ -22,6 +22,11 @@ require([
         initialize: function () {
             var _this = this;
 
+            //Инициализируем глобальную переменную
+            window.Soshace = {
+                errors: []
+            };
+
             $(function () {
                 $('.js-module').each(function () {
                     _this.loadModule($(this));
