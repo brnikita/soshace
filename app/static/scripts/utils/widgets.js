@@ -59,6 +59,37 @@ define([
             errorsContainer.html(alert);
             alert.fadeOut(0).fadeIn();
 
+        },
+
+        /**
+         * Скрывает сообщения об ошибках
+         * Параметры аналогичные для показа сообщений
+         *
+         * @method
+         * @name Widgets.hideErrorMessages
+         * @param {Array} errors массив содержащий объекты вида
+         *                {
+         *                  message: 'error',
+         *                  element: element
+         *                }
+         *                Где message - сообщение ошибки
+         *                    element - поле, в котором произошла ошибка, и которое надо
+         *                    подсветить
+         * @param {jQuery} errorsContainer Элемент, на который крепятся сообщения
+         * @returns {undefined}
+         */
+        hideErrorMessages: function (errors, errorsContainer) {
+            if (!(errors instanceof Array && errors.length)) {
+                return;
+            }
+
+            errorsContainer.html('');
+
+            _.each(errors, function (error) {
+                if (error.element) {
+                    error.element.removeClass('error');
+                }
+            });
         }
     };
 });
