@@ -128,6 +128,8 @@ var AddPostController = {
     },
 
     /**
+     * TODO: разбить на методы, написать тесты
+     *
      * Обрабатываем запрос на добавление поста
      *
      * @public
@@ -144,14 +146,23 @@ var AddPostController = {
             bodyError;
 
         if (typeof postData === 'undefined') {
-            response.send({error: 'Bad request'});
+            response.send({
+                error: true,
+                message: 'Bad request'
+            });
             return;
         }
 
         //проверяем заголовок
         titleError = this._checkPostTitle(postData.title);
         if (titleError) {
-            response.send({error: titleError});
+            response.send({
+                error: true,
+                fields: [{
+                    message: titleError,
+                    fieldName: 'title'
+                }]
+            });
             return;
         }
 
@@ -160,7 +171,13 @@ var AddPostController = {
         //проверяем тело поста
         bodyError = this._checkPostBody(postData.body);
         if (bodyError) {
-            response.send({error: bodyError});
+            response.send({
+                error: true,
+                fields: [{
+                    fieldName: 'body',
+                    message: bodyError
+                }]
+            });
             return;
         }
 
@@ -179,10 +196,17 @@ var AddPostController = {
 
         PostsModel.addPost(dataToSave, function (error) {
             if (error) {
-                response.send({status: 'Something is wrong'});
+                response.send({
+                    error: true,
+                    message: 'Something is wrong'
+                });
                 return;
             }
-            response.send({status: 'Success'});
+
+            response.send({
+                error: false,
+                message: 'Success'
+            });
         });
     },
 

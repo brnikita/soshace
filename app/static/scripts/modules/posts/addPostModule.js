@@ -33,7 +33,6 @@ define([
          */
         elements: {},
 
-
         /**
          * Указывает была ли уже попытка отправить форму
          * Нужно для включения механизма постоянной валидации
@@ -56,24 +55,6 @@ define([
         _formValidation: null,
 
         /**
-         * @name AddPostModule.initialize
-         * @returns {undefined}
-         */
-        initialize: function () {
-            var formElement = $('.add_post_form', this.$el),
-                formFields,
-                postBody = $('.add_post_form__body', formElement);
-
-            postBody.wysiwyg();
-
-            this.elements.errorsContainer = $('.js-error-messages');
-            this.elements.formFields = {};
-            formFields = this.elements.formFields;
-            formFields.title = $('.js-title', this.$el);
-            formFields.body = $('.js-body-editor', this.$el);
-        },
-
-        /**
          * Список обработчиков ошибок
          *
          * @field
@@ -89,6 +70,36 @@ define([
         },
 
         /**
+         * @field
+         * @name AddPostModule.errorMessages
+         * @type {Object}
+         */
+        errorMessages: {
+            title: 'Вы забыли указать загловок',
+            body: 'Вы забыли указать тело поста'
+        },
+
+        /**
+         * @name AddPostModule.initialize
+         * @returns {undefined}
+         */
+        initialize: function () {
+            var formElement = $('.add_post_form', this.$el),
+                formFields,
+                postBody = $('.add_post_form__body', formElement);
+
+            _.bindAll(this, '_showServerMessages');
+
+            postBody.wysiwyg();
+
+            this.elements.messagesContainer = $('.js-body-messages');
+            this.elements.formFields = {};
+            formFields = this.elements.formFields;
+            formFields.title = $('.js-title', this.$el);
+            formFields.body = $('.js-body-editor', this.$el);
+        },
+
+        /**
          * Обработчик события получения фокуса полем формы
          *
          * @private
@@ -100,8 +111,7 @@ define([
         _focusField: function (event) {
             var field = $(event.target);
 
-            this.showFormErrors(field);
-
+            this.showClientErrors(field);
         },
 
         /**
@@ -113,25 +123,25 @@ define([
          * @returns {undefined}
          */
         _blurField: function () {
-            this.showFormErrors();
+            this.showClientErrors();
         },
 
         /**
+         * Ошибки на клиенте
          * Показываем ошибки у полей
          * Если есть поле, которое сейчас в фокусе, то
          * его исключаем из списка ошибок
          *
          * @method
-         * @name AddPostModule.showFormErrors
+         * @name AddPostModule.showClientErrors
          * @param {jQuery} [focusField]
          * @returns {undefined}
          */
-        showFormErrors: function (focusField) {
+        showClientErrors: function (focusField) {
             var errors,
                 showErrors = [],
-                errorsContainer = this.elements.errorsContainer,
-                formFields = this.elements.formFields,
-                newFormValidation;
+                messagesContainer = this.elements.messagesContainer,
+                formFields = this.elements.formFields;
 
             //Проверяем форму по фокусу, только если она уже была
             //хоть раз отправлена
@@ -139,13 +149,11 @@ define([
                 return;
             }
 
-            newFormValidation = this._checkForm(formFields);
-
             if (this._formValidation) {
                 errors = this._formValidation.errors;
 
                 if (errors instanceof Array && errors.length) {
-                    Widgets.hideErrorMessages(errors, errorsContainer);
+                    Widgets.hideErrorMessages(errors, messagesContainer);
                 }
             }
 
@@ -164,18 +172,39 @@ define([
                     showErrors = errors;
                 }
 
-                Widgets.showErrorMessages(showErrors, errorsContainer);
+                Widgets.showErrorMessages(showErrors, messagesContainer);
             }
         },
 
         /**
-         * @field
-         * @name AddPostModule.errorMessages
-         * @type {Object}
+         * Показываем серверные ошибки для полей
+         *
+         * @method
+         * @name AddPostModule.showServerErrors
+         * @param {Object|Array} fields поля или поле с ошибками
+         *                              Пример: {
+         *                                        fieldName: 'title',
+         *                                        message:   'Не указан загловок'
+         *                                      }
+         * @returns {undefined}
          */
-        errorMessages: {
-            title: 'Вы забыли указать загловок',
-            body: 'Вы забыли указать тело поста'
+        showServerErrors: function (fields) {
+            var showErrors = [],
+                formFields = this.elements.formFields,
+                messagesContainer = this.elements.messagesContainer,
+                isArray = fields instanceof Array,
+                isObject = typeof fields === 'object' && fields !== null;
+
+            if (isArray || isObject) {
+                _.each(fields, function (field) {
+                    showErrors.push({
+                        message: field.message,
+                        element: formFields[field.fieldName]
+                    });
+                });
+            }
+
+            Widgets.showErrorMessages(showErrors, messagesContainer);
         },
 
         /**
@@ -226,6 +255,63 @@ define([
             };
         },
 
+
+        /**
+         * Возвращает данные формы
+         *
+         * @private
+         * @method
+         * @name AddPostModule._getFormData
+         * @param {object} formFields
+         * @returns {object}
+         */
+        _getFormData: function (formFields) {
+            var formsData = {};
+
+            _.each(formFields, function (field) {
+                var value,
+                    name = field.attr('name');
+
+                if (field.attr('contenteditable')) {
+                    value = field.html();
+                } else {
+                    value = field.val();
+                }
+
+                formsData[name] = value;
+
+            });
+
+            return formsData;
+        },
+
+        /**
+         * Показ сообщений от сервера
+         *
+         * @private
+         * @method
+         * @name AddPostModule._showSuccessMessage
+         * @param {Object} response Ответ сервера
+         * @returns {undefined}
+         */
+        _showServerMessages: function (response) {
+            var messagesContainer = this.elements.messagesContainer;
+
+            if (response.error) {
+                if (response.fields) {
+                    this.showServerErrors(response.fields);
+                } else if (response.message) {
+                    Widgets.showMessages(response.message, messagesContainer, 'alert-danger');
+                }
+
+                return;
+            }
+
+            if (response.message){
+                Widgets.showMessages(response.message, messagesContainer, 'alert-success');
+            }
+        },
+
         /**
          * Обработчик отправки формы
          *
@@ -241,9 +327,12 @@ define([
             this.formWasSubmitted = true;
 
             if (formValidation.valid) {
-                $.post('');
+                $.post('/api/post',
+                    this._getFormData(formFields),
+                    this._showServerMessages
+                );
             } else {
-                this.showFormErrors();
+                this.showClientErrors();
             }
 
             return false;

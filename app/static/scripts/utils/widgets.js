@@ -26,8 +26,7 @@ define([
          * @returns {undefined}
          */
         showErrorMessages: function (errors, errorsContainer) {
-            var alertList,
-                alert;
+            var messages = [];
 
             if (!(errors instanceof Array)) {
                 return;
@@ -37,17 +36,9 @@ define([
                 return;
             }
 
-            alert = $('<div>', {
-                class: 'alert alert-danger'
-            });
-
-            alertList = $('<ul>');
-
             _.each(errors, function (error) {
                 if (error.message) {
-                    alertList.append($('<li>', {
-                        text: error.message
-                    }));
+                    messages.push(error.message);
                 }
 
                 if (error.element) {
@@ -55,10 +46,59 @@ define([
                 }
             });
 
-            alert.append(alertList);
+            this.showMessages(messages, errorsContainer, 'alert-danger');
+        },
+
+        /**
+         * Показывает сообщения
+         *
+         * @method
+         * @name Widgets.showMessages
+         * @param {Array|string} messages сообщение или список сообщений
+         * @param {jQuery} errorsContainer котейнер для прикрепеления сообщений
+         * @param {string} [alertClass] класс уведомления
+         * @returns {undefined}
+         */
+        showMessages: function (messages, errorsContainer, alertClass) {
+            alertClass = alertClass || 'alert-warning';
+
+            var alert = $('<div>', {
+                    class: 'alert ' + alertClass
+                }),
+                message,
+                isOneMessage = messages instanceof Array && messages.length === 1 ||
+                    typeof messages === 'string',
+                areSomeMessages = messages instanceof Array && messages.length > 1,
+                alertContent;
+
+            if (isOneMessage) {
+                if (messages instanceof Array) {
+                    message = messages[0];
+                } else {
+                    message = messages;
+                }
+
+                alertContent = $('<p>', {
+                    text: message
+                });
+            } else if (areSomeMessages) {
+                alertContent = $('<ul>');
+
+                _.each(messages, function (message) {
+                    var item = $('<li>', {
+                        text: message
+                    });
+
+                    alertContent.append(item);
+                });
+
+            } else {
+                return;
+            }
+
+            alert.append(alertContent);
             errorsContainer.html(alert);
             alert.fadeOut(0).fadeIn();
-
         },
 
         /**
