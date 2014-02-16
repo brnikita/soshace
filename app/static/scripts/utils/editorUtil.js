@@ -46,11 +46,7 @@ define([
             commandRole: 'edit',
             activeToolbarClass: 'btn-info',
             selectionMarker: 'edit-focus-marker',
-            selectionColor: 'darkgrey',
-            dragAndDropImages: true,
-            fileUploadError: function (reason, detail) {
-                console.log('File upload error', reason, detail);
-            }
+            selectionColor: 'darkgrey'
         },
 
         /**
