@@ -10,8 +10,7 @@ require.config(
             'google-analytics': 'libs/google-analytics',
             'yandex-metrika': 'libs/yandex-metrika',
             'jquery.validation': 'libs/jquery/jquery.validation',
-            'jquery.hotkeys': 'libs/jquery/jquery.hotkeys',
-            'bootstrap.wysiwyg': 'libs/bootstrap/bootstrap.wysiwyg'
+            'jquery.hotkeys': 'libs/jquery/jquery.hotkeys'
         },
         shim: {
             'bootstrap': {
@@ -27,13 +26,6 @@ require.config(
             'jquery.hotkeys': {
                 deps: [
                     'jquery'
-                ]
-            },
-            'bootstrap.wysiwyg':{
-                deps: [
-                    'bootstrap',
-                    'prettify',
-                    'jquery.hotkeys'
                 ]
             }
         }

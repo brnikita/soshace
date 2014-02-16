@@ -10,9 +10,8 @@ define([
     'jquery',
     'underscore',
     'utils/widgets',
-    'bootstrap',
-    'bootstrap.wysiwyg'
-], function ($, _, Widgets) {
+    'utils/editorUtil'
+], function ($, _, Widgets, EditorUtil) {
     return {
 
         /**
@@ -84,19 +83,17 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
-            var formElement = $('.add_post_form', this.$el),
-                formFields,
-                postBody = $('.add_post_form__body', formElement);
+            var toolbarElement = $('.js-editor-toolbar', this.$el),
+                formFields;
 
             _.bindAll(this, '_showServerMessages');
-
-            postBody.wysiwyg();
 
             this.elements.messagesContainer = $('.js-body-messages');
             this.elements.formFields = {};
             formFields = this.elements.formFields;
             formFields.title = $('.js-title', this.$el);
             formFields.body = $('.js-body-editor', this.$el);
+            EditorUtil.create(formFields.body, toolbarElement);
         },
 
         /**
