@@ -1,6 +1,7 @@
 'use strict';
 
 var PostsController = require('./controllers/posts/postsController'),
+    UploadImageController = require('./controllers/uploadImageController'),
     AddPostsController = require('./controllers/posts/addPostController');
 
 module.exports = {
@@ -15,6 +16,9 @@ module.exports = {
         App.get('/', function (request, response) {
             response.redirect('/ru');
         });
+
+        //Загружаем изображение
+        App.post('/upload_img', UploadImageController.upload);
 
         //Добавляем пост
         App.post('/api/post', AddPostsController.addPost);

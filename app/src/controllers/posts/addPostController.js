@@ -6,6 +6,8 @@ var PostsModel = require('../../models/postsModel'),
     _s = require('underscore.string');
 
 /**
+ * Контроллер, отвечающий за добавление статьи
+ *
  * @module AddPostController
  *
  */
