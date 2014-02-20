@@ -9,9 +9,10 @@
 define([
     'jquery',
     'underscore',
+    'underscore.string',
     'utils/widgets',
     'utils/editorUtil'
-], function ($, _, Widgets, EditorUtil) {
+], function ($, _, _s, Widgets, EditorUtil) {
     return {
 
         /**
@@ -84,7 +85,8 @@ define([
          */
         initialize: function () {
             var toolbarElement = $('.js-editor-toolbar', this.$el),
-                formFields;
+                formFields,
+                editorBody = $('.js-body-editor', this.$el);
 
             _.bindAll(this, '_showServerMessages');
 
@@ -92,8 +94,7 @@ define([
             this.elements.formFields = {};
             formFields = this.elements.formFields;
             formFields.title = $('.js-title', this.$el);
-            formFields.body = $('.js-body-editor', this.$el);
-            EditorUtil.create(formFields.body, toolbarElement);
+            formFields.body = new EditorUtil(editorBody, toolbarElement);
         },
 
         /**
@@ -161,7 +162,10 @@ define([
                 if (focusField) {
                     //Исключаем поле, которое сейчас редактируем
                     _.each(errors, function (error) {
-                        if (error.element[0] !== focusField[0]) {
+                        var field = error.element.isEditor ?
+                            error.element.editorElement[0] : error.element[0];
+
+                        if (field !== focusField[0]) {
                             showErrors.push(error);
                         }
                     });
@@ -226,12 +230,14 @@ define([
 
             _.each(formFields, _.bind(function (element) {
                 var value,
-                    name = element.attr('name');
+                    name;
 
-                if (element.attr('contenteditable')) {
-                    value = element.html();
-                } else {
+                if (element instanceof $) {
+                    name = element.attr('name');
                     value = element.val();
+                } else if (element.isEditor) {
+                    value = element.cleanHtml();
+                    name = element.editorElement.attr('name');
                 }
 
                 if (!value) {
@@ -267,16 +273,17 @@ define([
 
             _.each(formFields, function (field) {
                 var value,
-                    name = field.attr('name');
+                    name;
 
-                if (field.attr('contenteditable')) {
-                    value = field.html();
-                } else {
-                    value = field.val();
+                if (field instanceof $) {
+                    value = _s.trim(field.val());
+                    name = field.attr('name');
+                } else if (field.isEditor) {
+                    name = field.editorElement.attr('name');
+                    value = field.cleanHtml();
                 }
 
                 formsData[name] = value;
-
             });
 
             return formsData;
@@ -304,7 +311,7 @@ define([
                 return;
             }
 
-            if (response.message){
+            if (response.message) {
                 Widgets.showMessages(response.message, messagesContainer, 'alert-success');
             }
         },

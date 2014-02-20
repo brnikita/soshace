@@ -42,7 +42,11 @@ define([
                 }
 
                 if (error.element) {
-                    error.element.addClass('error');
+                    if(error.element instanceof $){
+                        error.element.addClass('error');
+                    } else if(error.element.isEditor) {
+                        error.element.editorElement.addClass('error');
+                    }
                 }
             });
 
@@ -127,7 +131,11 @@ define([
 
             _.each(errors, function (error) {
                 if (error.element) {
-                    error.element.removeClass('error');
+                    if(error.element instanceof $){
+                        error.element.removeClass('error');
+                    } else if(error.element.isEditor) {
+                        error.element.editorElement.removeClass('error');
+                    }
                 }
             });
         }

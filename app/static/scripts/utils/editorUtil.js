@@ -14,18 +14,29 @@
 define([
     'jquery',
     'underscore',
+    'simpleClass',
     'bootstrap',
     'prettify',
     'jquery.hotkeys'
-], function ($, _) {
-    return {
+], function ($, _, Class) {
+    return Class.extend({
+
+        /**
+         * Свойство, указывающие, что созданный объект - это редактор
+         *
+         * @public
+         * @field
+         * @name  EditorUtil#isEditor
+         * @type {boolean}
+         */
+        isEditor: true,
 
         /**
          * Дефолтные настройки редактора
          *
          * @private
          * @field
-         * @name EditorUtil._defaults
+         * @name EditorUtil#_defaults
          * @type {Object}
          */
         _defaults: {
@@ -53,7 +64,7 @@ define([
          * Селектор кнопок редактора
          *
          * @method
-         * @name EditorUtil._toolbarBtnSelector
+         * @name EditorUtil#_toolbarBtnSelector
          * @type {String|null}
          */
         _toolbarBtnSelector: null,
@@ -61,19 +72,18 @@ define([
         /**
          * Ссылка на элемент редактора
          *
-         * @private
          * @field
-         * @name EditorUtil._editorElement
+         * @name EditorUtil#editorElement
          * @type {jQuery|null}
          */
-        _editorElement: null,
+        editorElement: null,
 
         /**
          * Ссылка на элемент панели управления редактором
          *
          * @private
          * @field
-         * @name EditorUtil._toolbarElement
+         * @name EditorUtil#_toolbarElement
          * @type {jQuery|null}
          */
         _toolbarElement: null,
@@ -84,7 +94,7 @@ define([
          *
          * @private
          * @field
-         * @name EditorUtil._options
+         * @name EditorUtil#_options
          * @type {Object|null}
          */
         _options: null,
@@ -93,23 +103,21 @@ define([
          *
          * @private
          * @field
-         * @name EditorUtil.options
+         * @name EditorUtil#options
          * @type {}
          */
         _selectedRange: null,
 
         /**
-         * Метод инициализирует редактор
-         *
-         * @method
-         * @name EditorUtil.create
+         * @constructor
+         * @name EditorUtil#initialize
          * @param {jQuery} editor ссылка на элемент редактора
          * @param {jQuery} toolbar сслыка на элемент панели управления
          * @param {Object} options параметры редактора
          * @returns {undefined}
          */
-        create: function (editor, toolbar, options) {
-            this._editorElement = editor;
+        initialize: function (editor, toolbar, options) {
+            this.editorElement = editor;
             this._toolbarElement = toolbar;
             this._options = _.extend(this._defaults, options);
             this._toolbarBtnSelector = 'a[data-' +
@@ -145,12 +153,12 @@ define([
          * Метод возвращает очищенное тело редактора
          *
          * @method
-         * @name EditorUtil.cleanHtml
+         * @name EditorUtil#cleanHtml
          * @returns {string}
          */
         cleanHtml: function () {
-            var html = this._editorElement.html();
-            return html && html.replace(/(<br>|\s|<div><br><\/div>|&nbsp;)*$/, '');
+            var html = this.editorElement.html();
+            return html && html.replace(/(<br>|\s|<div>(<br>|\s|&nbsp;)*<\/div>|&nbsp;)*$/, '');
         },
 
         /**
@@ -159,17 +167,17 @@ define([
          * Метод делает активной или неактивной панель
          *
          * @method
-         * @name EditorUtil.updateToolbar
+         * @name EditorUtil#updateToolbar
          * @returns {undefined}
          */
         updateToolbar: function () {
             if (this._options.activeToolbarClass) {
                 this._toolbarElement.find(this._toolbarBtnSelector).each(_.bind(function () {
-                    var command = this._editorElement.data(this._options.commandRole);
+                    var command = this.editorElement.data(this._options.commandRole);
                     if (document.queryCommandState(command)) {
-                        this._editorElement.addClass(this._options.activeToolbarClass);
+                        this.editorElement.addClass(this._options.activeToolbarClass);
                     } else {
-                        this._editorElement.removeClass(this._options.activeToolbarClass);
+                        this.editorElement.removeClass(this._options.activeToolbarClass);
                     }
                 }, this));
             }
@@ -181,7 +189,7 @@ define([
          * Метод для работы с выделенным текстом
          *
          * @method
-         * @name EditorUtil.execCommand
+         * @name EditorUtil#execCommand
          * @param {string} commandWithArgs
          * @param {string} valueArg
          * @returns {undefined}
@@ -201,20 +209,20 @@ define([
          * Слушает нажатие горячих клавиш
          *
          * @method
-         * @name EditorUtil.execCommand
+         * @name EditorUtil#execCommand
          * @param {Object} hotKeys список горячих клавиш
          * @returns {undefined}
          */
         bindHotKeys: function (hotKeys) {
             $.each(hotKeys, _.bind(function (hotKey, command) {
-                this._editorElement.keydown(hotKey, _.bind(function (event) {
-                    if (this._editorElement.attr('contenteditable') && this._editorElement.is(':visible')) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        this.execCommand(command);
-                    }
-                }, this)).keyup(hotKey, _.bind(function (event) {
-                        if (this._editorElement.attr('contenteditable') && this._editorElement.is(':visible')) {
+                this.editorElement.keydown(hotKey, _.bind(function (event) {
+                        if (this.editorElement.attr('contenteditable') && this.editorElement.is(':visible')) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            this.execCommand(command);
+                        }
+                    }, this)).keyup(hotKey, _.bind(function (event) {
+                        if (this.editorElement.attr('contenteditable') && this.editorElement.is(':visible')) {
                             event.preventDefault();
                             event.stopPropagation();
                         }
@@ -227,7 +235,7 @@ define([
          * TODO: доработать описание
          *
          * @method
-         * @name EditorUtil.execCommand
+         * @name EditorUtil#execCommand
          * @returns {Range|null}
          */
         getCurrentRange: function () {
@@ -246,7 +254,7 @@ define([
          * Сохраняет информацию о выделленой области
          *
          * @method
-         * @name EditorUtil.saveSelection
+         * @name EditorUtil#saveSelection
          * @returns {undefined}
          */
         saveSelection: function () {
@@ -257,7 +265,7 @@ define([
          * TODO: доработать описание
          *
          * @method
-         * @name EditorUtil.restoreSelection
+         * @name EditorUtil#restoreSelection
          * @returns {undefined}
          */
         restoreSelection: function () {
@@ -278,7 +286,7 @@ define([
          * TODO: доработать описание
          *
          * @method
-         * @name EditorUtil.markSelection
+         * @name EditorUtil#markSelection
          * @param {jQuery} input
          * @param {string} color
          * @returns {undefined}
@@ -297,7 +305,7 @@ define([
          * TODO: доработать описание
          *
          * @method
-         * @name EditorUtil.bindToolbar
+         * @name EditorUtil#bindToolbar
          * @returns {undefined}
          */
         bindToolbar: function () {
@@ -307,13 +315,13 @@ define([
                 var button = $(this);
 
                 _this.restoreSelection();
-                _this._editorElement.focus();
+                _this.editorElement.focus();
                 _this.execCommand(button.data(_this._options.commandRole));
                 _this.saveSelection();
             });
 
             this._toolbarElement.find('input[type=text][data-' + this._options.commandRole + ']').
-                on('focus', function () {
+                on('focus',function () {
                     var input = $(this);
 
                     if (!input.data(_this._options.selectionMarker)) {
@@ -329,5 +337,5 @@ define([
                     }
                 });
         }
-    };
+    });
 });

@@ -143,7 +143,8 @@ var AddPostController = {
         var dataToSave = {},
             postData = request.body,
             titleError,
-            bodyError;
+            bodyError,
+            errorFields = [];
 
         if (typeof postData === 'undefined') {
             response.send({
@@ -155,34 +156,35 @@ var AddPostController = {
 
         //проверяем заголовок
         titleError = this._checkPostTitle(postData.title);
+
+        //проверяем тело поста
+        bodyError = this._checkPostBody(postData.body);
+
+
         if (titleError) {
+            errorFields.push({
+                message: titleError,
+                fieldName: 'title'
+            });
+        }
+
+        if (bodyError) {
+            errorFields.push({
+                fieldName: 'body',
+                message: bodyError
+            });
+        }
+
+        if (errorFields.length) {
             response.send({
                 error: true,
-                fields: [{
-                    message: titleError,
-                    fieldName: 'title'
-                }]
+                fields: errorFields
             });
             return;
         }
 
         dataToSave.title = _s.trim(postData.title);
-
-        //проверяем тело поста
-        bodyError = this._checkPostBody(postData.body);
-        if (bodyError) {
-            response.send({
-                error: true,
-                fields: [{
-                    fieldName: 'body',
-                    message: bodyError
-                }]
-            });
-            return;
-        }
-
         dataToSave.body = _s.trim(postData.body);
-
         dataToSave.public = false;
 
         _.extend(dataToSave, this._getDate());

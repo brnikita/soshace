@@ -5,6 +5,7 @@ require([
     //будут попасть в сборку (которые нигде не подключены больше)
     'jquery',
     'underscore',
+    'simpleClass',
     'jquery.validation',
     'modules/posts/postPreviewModule',
     'modules/posts/postDetailModule',
