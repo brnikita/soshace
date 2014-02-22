@@ -34,7 +34,8 @@
         "underscore": "*",
         "unidecode": "*",
         "grunt-contrib-requirejs": "*",
-        "underscore.string": "~2.2.1"
+        "underscore.string": "~2.2.1",
+        "i18n-2": "*"
     },
     "engines": {
         "node": ">=0.8.0"

@@ -5,6 +5,7 @@ require([
     //будут попасть в сборку (которые нигде не подключены больше)
     'jquery',
     'underscore',
+    'utils/helpers',
     'simpleClass',
     'jquery.validation',
     'modules/posts/postPreviewModule',
@@ -12,7 +13,7 @@ require([
     'modules/posts/addPostModule',
     'google-analytics',
     'yandex-metrika'
-], function ($, _) {
+], function ($, _, Helpers) {
     var Blog = {
 
         /**
@@ -27,6 +28,15 @@ require([
             window.Soshace = {
                 errors: []
             };
+
+            //Добавляем в конфинг локаль
+            require.config({
+                config: {
+                    i18n: {
+                        locale: Helpers.getLocale()
+                    }
+                }
+            });
 
             $(function () {
                 $('.js-module').each(function () {

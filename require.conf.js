@@ -12,6 +12,7 @@ require.config(
             'yandex-metrika': 'libs/yandex-metrika',
             'jquery.validation': 'libs/jquery/jquery.validation',
             'jquery.hotkeys': 'libs/jquery/jquery.hotkeys',
+            'jquery.cookie': 'libs/jquery/jquery.cookie',
             'simpleClass': 'libs/simpleClass'
         },
         shim: {
@@ -26,6 +27,11 @@ require.config(
                 ]
             },
             'jquery.hotkeys': {
+                deps: [
+                    'jquery'
+                ]
+            },
+            'jquery.cookie': {
                 deps: [
                     'jquery'
                 ]

@@ -7,6 +7,7 @@ var Express = require('express'),
     Package = require('./package'),
     App = new Express(),
     DbConnection = require('./app/src/common/dbConnection'),
+    I18n = require('i18n-2'),
     Router = require('./app/src/router');
 
 var Blog = {
@@ -44,6 +45,15 @@ var Blog = {
             App.set('views', 'app/src/views');
             App.set('view engine', 'jade');
             App.use(App.router);
+
+            //Конфигурируем локали
+            I18n.expressBind(App, {
+                locales: soshace.LOCALES,
+                directory: './locales',
+                extension: '.json',
+                defaultLocale: soshace.DEFAULT_LOCALE
+            });
+
             App.use(function(request, response){
                 response.status(404);
 

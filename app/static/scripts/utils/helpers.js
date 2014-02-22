@@ -9,7 +9,8 @@
 
 define([
     'jquery',
-    'underscore'
+    'underscore',
+    'jquery.cookie'
 ], function ($, _) {
     return {
 
@@ -31,6 +32,18 @@ define([
             });
 
             return formObject;
+        },
+
+        /**
+         * Получаем локаль
+         *
+         * @public
+         * @function
+         * @name Helpers.getLocale
+         * @return {String}
+         */
+        getLocale: function () {
+            return $.cookie('locale') || 'en';
         }
     };
 });

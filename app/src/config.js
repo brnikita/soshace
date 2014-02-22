@@ -48,5 +48,15 @@ global.soshace = {
      * @name soshace.HOST
      * @type {string}
      */
-    HOST: '127.0.0.1'
+    HOST: '127.0.0.1',
+
+    /**
+     * Локаль по дефолту
+     *
+     * @public
+     * @constant
+     * @name soshace.DEFAULT_LOCALE
+     * @type {String}
+     */
+    DEFAULT_LOCALE: 'ru'
 };
