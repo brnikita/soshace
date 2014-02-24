@@ -62,7 +62,7 @@ define([
          * @type {Object}
          */
         events: {
-            'submit': '_submitForm',
+            'click .js-submit-post': '_submitForm',
             'focus .js-title': '_focusField',
             'blur .js-title': '_blurField',
             'focus .js-body-editor': '_focusField',

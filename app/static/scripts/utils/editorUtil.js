@@ -92,12 +92,11 @@ define([
         /**
          * Настройки редактора
          *
-         * @private
          * @field
-         * @name EditorUtil#_options
+         * @name EditorUtil#options
          * @type {Object|null}
          */
-        _options: null,
+        options: null,
 
         /**
          *
@@ -119,15 +118,15 @@ define([
         initialize: function (editor, toolbar, options) {
             this.editorElement = editor;
             this._toolbarElement = toolbar;
-            this._options = _.extend(this._defaults, options);
+            this.options = _.extend(this._defaults, options);
             this._toolbarBtnSelector = 'a[data-' +
-                this._options.commandRole +
+                this.options.commandRole +
                 '],button[data-' +
-                this._options.commandRole +
+                this.options.commandRole +
                 '],input[type=button][data-' +
-                this._options.commandRole + ']';
+                this.options.commandRole + ']';
 
-            this.bindHotKeys(this._options.hotKeys);
+            this.bindHotKeys(this.options.hotKeys);
             this.bindToolbar();
 
             editor.attr('contenteditable', true)
@@ -171,13 +170,13 @@ define([
          * @returns {undefined}
          */
         updateToolbar: function () {
-            if (this._options.activeToolbarClass) {
+            if (this.options.activeToolbarClass) {
                 this._toolbarElement.find(this._toolbarBtnSelector).each(_.bind(function () {
-                    var command = this.editorElement.data(this._options.commandRole);
+                    var command = this.editorElement.data(this.options.commandRole);
                     if (document.queryCommandState(command)) {
-                        this.editorElement.addClass(this._options.activeToolbarClass);
+                        this.editorElement.addClass(this.options.activeToolbarClass);
                     } else {
-                        this.editorElement.removeClass(this._options.activeToolbarClass);
+                        this.editorElement.removeClass(this.options.activeToolbarClass);
                     }
                 }, this));
             }
@@ -298,7 +297,7 @@ define([
             }
 
             this.saveSelection();
-            input.data(this._options.selectionMarker, color);
+            input.data(this.options.selectionMarker, color);
         },
 
         /**
@@ -316,26 +315,38 @@ define([
 
                 _this.restoreSelection();
                 _this.editorElement.focus();
-                _this.execCommand(button.data(_this._options.commandRole));
+                _this.execCommand(button.data(_this.options.commandRole));
                 _this.saveSelection();
             });
 
-            this._toolbarElement.find('input[type=text][data-' + this._options.commandRole + ']').
+            this._toolbarElement.find('input[type=text][data-' + this.options.commandRole + ']').
                 on('focus',function () {
                     var input = $(this);
 
-                    if (!input.data(_this._options.selectionMarker)) {
-                        _this.markSelection(input, _this._options.selectionColor);
+                    if (!input.data(_this.options.selectionMarker)) {
+                        _this.markSelection(input, _this.options.selectionColor);
                         input.focus();
                     }
                 }).
                 on('blur', function () {
                     var input = $(this);
 
-                    if (input.data(_this._options.selectionMarker)) {
+                    if (input.data(_this.options.selectionMarker)) {
                         _this.markSelection(input, false);
                     }
                 });
+
+            this._toolbarElement.find('input[type=file][data-' + _this.options.commandRole + ']').change(function () {
+                var $this = $(this);
+                _this.restoreSelection();
+
+                if (this.type === 'file' && this.files && this.files.length > 0) {
+                    $this.parents('form').submit();
+                }
+
+                _this.saveSelection();
+                this.value = '';
+            });
         }
     });
 });

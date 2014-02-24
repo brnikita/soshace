@@ -18,15 +18,13 @@ block content
                     a.btn.btn-default(data-edit='insertorderedlist', title='Number list')
                         i.fa.fa-list-ol
                 .btn-group
-                    a.btn.btn-default(data-edit='insertImage', title='Add image')
-                        i.fa.fa-icon-picture
-                    input(type='file', data-role='magic-overlay', data-target='#pictureBtn', data-edit='insertImage', style='opacity: 0; position: absolute; top: 0px; left: 0px; width: 34px; height: 30px;')
+                    a.btn.btn-default.add_post_form__toolbar__add_image(title='Add image')
+                        i.fa.fa-picture-o
+                        form(action='/upload_img', method='POST', enctype='multipart/form-data')
+                            input(type='file', name='image', data-edit='insertImage')
                 .btn-group
-                    a.btn.btn-default.dropdown-toggle(data-toggle='dropdown', title='Hyperlink')
+                    a.btn.btn-default(data-edit='addLink', title='Hyperlink')
                         i.fa.fa-link
-                    .dropdown-menu.input-append
-                        input.span2(placeholder='URL', type='text', data-edit='createLink')
-                        button.btn.btn-default(type='button') Add
                     a.btn.btn-default(data-edit='unlink', title='Remove Hyperlink')
                         i.fa.fa-cut
                 .btn-group
@@ -34,9 +32,9 @@ block content
                         i.fa.fa-undo
                     a.btn.btn-default(data-edit='redo', title='Redo (Ctrl/Cmd+Y)')
                         i.fa.fa-repeat
-        form.add_post_form(action="", method="post", role="form")
-            .row.content__post
+        .add_post_form
+            .row.content__post.add_post_form
                 h1.add_post_form__title
                     input#title.js-title(type="text", name="title", value="Здесь должен быть загловок статьи")
                 div#body.js-body-editor.add_post_form__body(name="body") Здесь должен быть текст вашей статьи
-            button.btn.btn-primary(type="submit") Отправить
+            button.btn.btn-primary.js-submit-post Отправить
