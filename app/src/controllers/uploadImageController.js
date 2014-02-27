@@ -26,7 +26,7 @@ module.exports = {
             if (!imageName) {
 
                 console.log('There was an error');
-                response.redirect('/');
+                response.send({path: null});
                 response.end();
 
             } else {
@@ -36,7 +36,7 @@ module.exports = {
                 fs.writeFile(newPath, data, function (error) {
 
                     /// let's see it
-                    response.redirect('/uploads/fullsize/' + imageName);
+                    response.send({path: '/uploads/fullsize/' + imageName});
 
                 });
             }

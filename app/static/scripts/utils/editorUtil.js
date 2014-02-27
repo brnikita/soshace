@@ -17,7 +17,8 @@ define([
     'simpleClass',
     'bootstrap',
     'prettify',
-    'jquery.hotkeys'
+    'jquery.hotkeys',
+    'jquery.fileupload'
 ], function ($, _, Class) {
     return Class.extend({
 
@@ -336,16 +337,11 @@ define([
                     }
                 });
 
-            this._toolbarElement.find('input[type=file][data-' + _this.options.commandRole + ']').change(function () {
-                var $this = $(this);
-                _this.restoreSelection();
-
-                if (this.type === 'file' && this.files && this.files.length > 0) {
-                    $this.parents('form').submit();
+            this._toolbarElement.find('input[type=file][data-' + _this.options.commandRole + ']').fileupload({
+                dataType: 'json',
+                done: function (e, data) {
+                    console.log(data.result);
                 }
-
-                _this.saveSelection();
-                this.value = '';
             });
         }
     });
