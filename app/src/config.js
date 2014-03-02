@@ -56,7 +56,27 @@ global.soshace = {
      * @public
      * @constant
      * @name soshace.DEFAULT_LOCALE
-     * @type {String}
+     * @type {string}
      */
-    DEFAULT_LOCALE: 'ru'
+    DEFAULT_LOCALE: 'ru',
+
+    /**
+     * Домен
+     *
+     * @public
+     * @constant
+     * @name soshace.PRODUCTION_DOMAIN
+     * @type {string}
+     */
+    PRODUCTION_DOMAIN: '//soshace.com/',
+
+    /**
+     * Директория для медиа файлов
+     *
+     * @public
+     * @constant
+     * @name soshace.MEDIA_DIRECTORY
+     * @type {string}
+     */
+    MEDIA_DIRECTORY: '/home/user/media/'
 };

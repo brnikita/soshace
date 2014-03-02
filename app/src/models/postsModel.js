@@ -1,6 +1,6 @@
 'use strict';
 
-var mongoose = require('mongoose');
+var Mongoose = require('mongoose');
 
 /**
  *  Объект для работы с моделью постов
@@ -12,7 +12,7 @@ var PostsModel = {
      * @private
      * @field
      * @name PostsModel.model
-     * @type {mongoose.model}
+     * @type {Mongoose.model}
      */
     _model: null,
 
@@ -26,7 +26,7 @@ var PostsModel = {
      */
     _init: function () {
         if (this._model === null) {
-            var PostsSchema = mongoose.Schema({
+            var PostsSchema = Mongoose.Schema({
                 titleUrl: String, //путь в урле после даты
                 public: Boolean, //отображать ли пост в общем доступе
                 date: Date, //для сортировки
@@ -40,7 +40,7 @@ var PostsModel = {
                 body: String //Тело поста
             });
 
-            this._model = mongoose.model('Posts', PostsSchema);
+            this._model = Mongoose.model('Posts', PostsSchema);
         }
     },
 
