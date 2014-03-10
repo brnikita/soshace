@@ -15,6 +15,15 @@ global.soshace = {
     VERSION: '0',
 
     /**
+     * Урл админки
+     *
+     * @constant
+     * @name soshace.ADMIN_URL
+     * @type {string}
+     */
+    ADMIN_URL: 'xxx191188',
+
+    /**
      * Окружение
      *
      * @field
@@ -59,6 +68,33 @@ global.soshace = {
      * @type {string}
      */
     DEFAULT_LOCALE: 'ru',
+
+    /**
+     * Доступные локали
+     *
+     * @public
+     * @constant
+     * @name soshace.LOCALES
+     * @type {String[]}
+     */
+    LOCALES: [
+        'en',
+        'ru'
+    ],
+
+    /**
+     * Полное название локалей
+     * Названия должны идти в том же порядке, что и локали
+     *
+     * @public
+     * @constant
+     * @name soshace.LANGUAGES
+     * @type {String[]}
+     */
+    LANGUAGES: [
+        'English',
+        'Russian'
+    ],
 
     /**
      * Домен

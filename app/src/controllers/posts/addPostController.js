@@ -231,7 +231,8 @@ var AddPostController = {
             environment: soshace.ENVIRONMENT,
             scriptsPath: '/static',
             version: soshace.VERSION,
-            pageClass: 'add_post'
+            pageClass: 'add_post',
+            title: 'Add post'
         });
     }
 };

@@ -71,7 +71,8 @@ var PostsController = {
                     post: post,
                     environment: soshace.ENVIRONMENT,
                     scriptsPath: '/static',
-                    version: soshace.VERSION
+                    version: soshace.VERSION,
+                    title: 'Welcome to Soshace blog!'
                 });
                 return;
             }
@@ -102,7 +103,8 @@ var PostsController = {
                 activeTab: 'posts',
                 environment: soshace.ENVIRONMENT,
                 scriptsPath: '/static',
-                version: soshace.VERSION
+                version: soshace.VERSION,
+                title: 'Welcome to Soshace blog!'
             });
         });
     }

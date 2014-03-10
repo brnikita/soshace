@@ -47,13 +47,22 @@ var Blog = {
             App.use(App.router);
 
             //Конфигурируем локали
-//            I18n.expressBind(App, {
-//                locales: soshace.LOCALES,
-//                directory: './locales',
-//                extension: '.json',
-//                defaultLocale: soshace.DEFAULT_LOCALE
+            I18n.expressBind(App, {
+                locales: soshace.LOCALES,
+                directory: 'app/src/locales',
+                extension: '.json',
+                defaultLocale: soshace.DEFAULT_LOCALE
+            });
+
+//            App.use(function(request, response, next) {
+//                // express helper for natively supported engines
+//                response.locals.__ = response.__ = function() {
+//                    return I18n.__.apply(request, arguments);
+//                };
+//                next();
 //            });
 
+            //Устанавливаем ответ для 404
             App.use(function(request, response){
                 response.status(404);
 

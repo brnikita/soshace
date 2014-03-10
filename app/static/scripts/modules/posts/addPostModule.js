@@ -90,7 +90,6 @@ define([
 
             _.bindAll(this, '_showServerMessages');
 
-            this.elements.messagesContainer = $('.js-body-messages');
             this.elements.formFields = {};
             formFields = this.elements.formFields;
             formFields.title = $('.js-title', this.$el);
@@ -138,7 +137,6 @@ define([
         showClientErrors: function (focusField) {
             var errors,
                 showErrors = [],
-                messagesContainer = this.elements.messagesContainer,
                 formFields = this.elements.formFields;
 
             //Проверяем форму по фокусу, только если она уже была
@@ -151,7 +149,7 @@ define([
                 errors = this._formValidation.errors;
 
                 if (errors instanceof Array && errors.length) {
-                    Widgets.hideErrorMessages(errors, messagesContainer);
+                    Widgets.hideErrorMessages(errors);
                 }
             }
 
@@ -173,7 +171,7 @@ define([
                     showErrors = errors;
                 }
 
-                Widgets.showErrorMessages(showErrors, messagesContainer);
+                Widgets.showErrorMessages(showErrors);
             }
         },
 
@@ -192,7 +190,6 @@ define([
         showServerErrors: function (fields) {
             var showErrors = [],
                 formFields = this.elements.formFields,
-                messagesContainer = this.elements.messagesContainer,
                 isArray = fields instanceof Array,
                 isObject = typeof fields === 'object' && fields !== null;
 
@@ -205,7 +202,7 @@ define([
                 });
             }
 
-            Widgets.showErrorMessages(showErrors, messagesContainer);
+            Widgets.showErrorMessages(showErrors);
         },
 
         /**
@@ -299,20 +296,18 @@ define([
          * @returns {undefined}
          */
         _showServerMessages: function (response) {
-            var messagesContainer = this.elements.messagesContainer;
-
             if (response.error) {
                 if (response.fields) {
                     this.showServerErrors(response.fields);
                 } else if (response.message) {
-                    Widgets.showMessages(response.message, messagesContainer, 'alert-danger');
+                    Widgets.showMessages(response.message, null, 'alert-danger');
                 }
 
                 return;
             }
 
             if (response.message) {
-                Widgets.showMessages(response.message, messagesContainer, 'alert-success');
+                Widgets.showMessages(response.message, null, 'alert-success');
             }
         },
 

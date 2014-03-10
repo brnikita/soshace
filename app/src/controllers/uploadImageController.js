@@ -2,7 +2,10 @@
 
 var Fs = require('fs'),
     Crypto = require('crypto'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    Gm = require('gm').subClass({
+        imageMagick: true
+    });
 
 /**
  * Контроллер, отвечающий за загрузку изображений
@@ -13,53 +16,64 @@ var Fs = require('fs'),
 var UploadImageController = {
 
     /**
-     * Метод возвращает уникальное название картинки
+     * Формат изображений, в котором мы записываем их на диск
+     *
+     * @field
+     * @name UploadImageController.outputFormat
+     * @type {string}
+     */
+    outputFormat: 'png',
+
+    /**
+     * Максимальная ширина изображения
+     *
+     * @field
+     * @name UploadImageController.imageMaxWidth
+     * @type {string}
+     */
+    imageMaxWidth: '1140',
+
+    /**
+     * Максимальная высота изображения
+     *
+     * @field
+     * @name UploadImageController.imageMaxHeight
+     * @type {string}
+     */
+    imageMaxHeight: '800',
+
+    /**
+     * Метод возвращает будущий адрес картинки на диске
      *
      * @method
      * @name UploadImageController.getUniqueImageName
      * @param {string | Buffer} imageData тело картинки
-     * @returns {string}
+     * @returns {Object} возвращает объект, содержащий
+     *                   внешний и локальный путь до картинки
      */
-    getUniqueImageName: function (imageData) {
+    getImagePath: function (imageData) {
         var md5sum = Crypto.createHash('md5'),
-            newImageName;
+            newImageName,
+            webImgUrl,
+            localImagePath;
 
         md5sum.update(imageData);
-        newImageName = md5sum.digest('hex');
-        return newImageName;
-    },
+        newImageName = md5sum.digest('hex') + '.' + this.outputFormat;
 
-    /**
-     * @method
-     * @name UploadImageController.writeImageOnDisk
-     * @param {string | Buffer} imageData тело картинки
-     * @param {Function} callback(error, imgUrl) метод возвращает ошибку и url до картинки
-     * @returns {undefined}
-     */
-    writeImageOnDisk: function (imageData, callback) {
-        var imageName,
-            localPath,
-            imgUrl;
-
-        if (imageData) {
-            imageName = this.getUniqueImageName(imageData);
-            localPath = soshace.MEDIA_DIRECTORY + imageName;
-
-            //Записываем картинку на диск
-            Fs.writeFile(localPath, imageData, function () {
-                if (soshace.ENVIRONMENT === 'development') {
-                    imgUrl = '/media/' + imageName;
-                }
-
-                if (soshace.ENVIRONMENT === 'production') {
-                    imgUrl = soshace.PRODUCTION_DOMAIN + 'media/' + imageName;
-                }
-
-                callback(null, imgUrl);
-            });
-        } else {
-            callback( 'Invalid file', null);
+        if (soshace.ENVIRONMENT === 'development') {
+            webImgUrl = '/media/' + newImageName;
         }
+
+        if (soshace.ENVIRONMENT === 'production') {
+            webImgUrl = soshace.PRODUCTION_DOMAIN + 'media/' + newImageName;
+        }
+
+        localImagePath = soshace.MEDIA_DIRECTORY + newImageName;
+
+        return {
+            webImgUrl: webImgUrl,
+            localImagePath: localImagePath
+        };
     },
 
     /**
@@ -71,14 +85,42 @@ var UploadImageController = {
      */
     upload: function (request, response) {
 
-        Fs.readFile(request.files.image.path, _.bind(function (error, data) {
+        var imageParams = request.files.image,
+            imagePath = imageParams.path,
+            imageName = imageParams.originalFilename;
 
-            this.writeImageOnDisk(data, function (error, path) {
+        Fs.readFile(imagePath, _.bind(function (error, data) {
+            if (error) {
                 response.send({
                     error: error,
-                    path: path
+                    path: null
                 });
-            });
+
+                return;
+            }
+
+            var imagePathData = this.getImagePath(data),
+                imgUrl = imagePathData.webImgUrl,
+                localPath = imagePathData.localImagePath;
+
+            void new Gm(data, imageName).
+                setFormat(this.outputFormat).
+                resize(this.imageMaxWidth, this.imageMaxHeight, '>').
+                write(localPath, function (error) {
+                    if (error) {
+                        response.send({
+                            error: error,
+                            path: null
+                        });
+
+                        return;
+                    }
+
+                    response.send({
+                        error: null,
+                        path: imgUrl
+                    });
+                });
 
         }, this));
     }

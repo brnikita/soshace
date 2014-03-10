@@ -10,6 +10,8 @@ define([
     'jquery',
     'underscore'
 ], function ($, _) {
+    var errorsContainerDefault = $('.js-body-messages');
+
     return {
         /**
          * @method
@@ -22,11 +24,12 @@ define([
          *                Где message - сообщение ошибки
          *                    element - поле, в котором произошла ошибка, и которое надо
          *                    подсветить
-         * @param {jQuery} errorsContainer Элемент, на который крепятся сообщения
+         * @param {jQuery} [errorsContainer] Элемент, на который крепятся сообщения
          * @returns {undefined}
          */
         showErrorMessages: function (errors, errorsContainer) {
             var messages = [];
+            errorsContainer = errorsContainer || errorsContainerDefault;
 
             if (!(errors instanceof Array)) {
                 return;
@@ -59,12 +62,16 @@ define([
          * @method
          * @name Widgets.showMessages
          * @param {Array|string} messages сообщение или список сообщений
-         * @param {jQuery} errorsContainer котейнер для прикрепеления сообщений
-         * @param {string} [alertClass] класс уведомления
+         * @param {jQuery} [errorsContainer] котейнер для прикрепеления сообщений
+         * @param {string} [alertClass] класс уведомления alert-success,
+         *                                                alert-info,
+         *                                                alert-warning, по умолчанию
+         *                                                alert-danger
          * @returns {undefined}
          */
         showMessages: function (messages, errorsContainer, alertClass) {
             alertClass = alertClass || 'alert-warning';
+            errorsContainer = errorsContainer || errorsContainerDefault;
 
             var alert = $('<div>', {
                     class: 'alert ' + alertClass
@@ -119,10 +126,12 @@ define([
          *                Где message - сообщение ошибки
          *                    element - поле, в котором произошла ошибка, и которое надо
          *                    подсветить
-         * @param {jQuery} errorsContainer Элемент, на который крепятся сообщения
+         * @param {jQuery} [errorsContainer] Элемент, на который крепятся сообщения
          * @returns {undefined}
          */
         hideErrorMessages: function (errors, errorsContainer) {
+            errorsContainer = errorsContainer || errorsContainerDefault;
+
             if (!(errors instanceof Array && errors.length)) {
                 return;
             }

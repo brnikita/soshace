@@ -15,11 +15,12 @@ define([
     'jquery',
     'underscore',
     'simpleClass',
+    'utils/widgets',
     'bootstrap',
     'prettify',
     'jquery.hotkeys',
     'jquery.fileupload'
-], function ($, _, Class) {
+], function ($, _, Class, Widgets) {
     return Class.extend({
 
         /**
@@ -198,6 +199,7 @@ define([
             var commandArr = commandWithArgs.split(' '),
                 command = commandArr.shift(),
                 args = commandArr.join(' ') + (valueArg || '');
+
             document.execCommand(command, 0, args);
             this.updateToolbar();
         },
@@ -304,12 +306,18 @@ define([
         /**
          * TODO: доработать описание
          *
+         * Навишивает слушатели на панель управления
+         *
          * @method
          * @name EditorUtil#bindToolbar
          * @returns {undefined}
          */
         bindToolbar: function () {
-            var _this = this;
+            var _this = this,
+                preloader = $('<img>', {
+                    src: '/static/images/preloader.gif',
+                    class: 'img-responsive center'
+                });
 
             this._toolbarElement.find(this._toolbarBtnSelector).click(function () {
                 var button = $(this);
@@ -337,12 +345,30 @@ define([
                     }
                 });
 
-            this._toolbarElement.find('input[type=file][data-' + _this.options.commandRole + ']').fileupload({
-                dataType: 'json',
-                done: function (e, data) {
-                    console.log(data.result);
-                }
-            });
+            //TODO: блокировать панель до загрузки первого изображения
+            //Загруженные картинки не удалять!!!
+            this._toolbarElement.find('input[type=file][data-' + _this.options.commandRole + ']').
+                fileupload({
+                    dataType: 'json',
+                    done: function (event, data) {
+                        var result = data.result;
+
+                        preloader.remove();
+
+                        if (result.error) {
+                            Widgets.showMessages(result.error, 'alert-danger');
+                            return;
+                        }
+
+                        _this.editorElement.append($('<img>', {
+                            src: result.path,
+                            class: 'img-responsive'
+                        }));
+                    }
+                }).
+                on('change', function () {
+                    _this.editorElement.append(preloader);
+                });
         }
     });
 });
