@@ -1,7 +1,7 @@
 'use strict';
 
 //Импортируем глобальный объект soshace
-require('./app/src/config');
+require('./app/config');
 
 var Express = require('express'),
     Package = require('./package'),
