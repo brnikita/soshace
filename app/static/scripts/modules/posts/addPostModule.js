@@ -34,25 +34,14 @@ define([
         elements: {},
 
         /**
-         * Указывает была ли уже попытка отправить форму
-         * Нужно для включения механизма постоянной валидации
-         * в методе _focusField
+         * Список ошибок: поля и тексты ошибок
+         * Результат исполнения метода checkForm
          *
          * @field
-         * @name AddPostModule.formWasSubmitted
-         * @type {boolean}
+         * @name AddPostModule.formErrors
+         * @type {Array|null}
          */
-        formWasSubmitted: false,
-
-        /**
-         * Объект содержаший результат валидирования формы
-         * Результат исполнения метода _checkForm
-         *
-         * @field
-         * @name AddPostModule._formValidation
-         * @type {Object|null}
-         */
-        _formValidation: null,
+        formErrors: null,
 
         /**
          * Список обработчиков ошибок
@@ -62,10 +51,10 @@ define([
          * @type {Object}
          */
         events: {
-            'click .js-submit-post': '_submitForm',
-            'focus .js-title': '_focusField',
+            'click .js-submit-post': 'submitForm',
+            'focus .js-title': 'focusField',
             'blur .js-title': '_blurField',
-            'focus .js-body-editor': '_focusField',
+            'focus .js-body-editor': 'focusField',
             'blur .js-body-editor': '_blurField'
         },
 
@@ -88,7 +77,7 @@ define([
                 formFields,
                 editorBody = $('.js-body-editor', this.$el);
 
-            _.bindAll(this, '_showServerMessages');
+            _.bindAll(this, 'showServerMessages');
 
             this.elements.formFields = {};
             formFields = this.elements.formFields;
@@ -99,78 +88,42 @@ define([
         /**
          * Обработчик события получения фокуса полем формы
          *
-         * @private
          * @method
-         * @name AddPostModule._focusField
+         * @name AddPostModule.focusField
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
-        _focusField: function (event) {
+        focusField: function (event) {
             var field = $(event.target);
 
-            this.showClientErrors(field);
+            this.hideClientError(field);
         },
 
         /**
-         * Обработчик события потери фокуса полем формы
-         *
-         * @private
-         * @method
-         * @name AddPostModule._blurField
-         * @returns {undefined}
-         */
-        _blurField: function () {
-            this.showClientErrors();
-        },
-
-        /**
-         * Ошибки на клиенте
-         * Показываем ошибки у полей
-         * Если есть поле, которое сейчас в фокусе, то
-         * его исключаем из списка ошибок
+         * Метод убирает ошибку у заданного поля
          *
          * @method
-         * @name AddPostModule.showClientErrors
-         * @param {jQuery} [focusField]
+         * @name AddPostModule.hideClientError
+         * @param {jQuery} hideField поле, у которого нужно убрать ошибку
          * @returns {undefined}
          */
-        showClientErrors: function (focusField) {
-            var errors,
-                showErrors = [],
-                formFields = this.elements.formFields;
+        hideClientError: function (hideField) {
+            var showErrors = [];
 
-            //Проверяем форму по фокусу, только если она уже была
-            //хоть раз отправлена
-            if (!this.formWasSubmitted) {
-                return;
-            }
+            if (this.formErrors !== null && this.formErrors.length) {
+                Widgets.hideErrorMessages(this.formErrors);
 
-            if (this._formValidation) {
-                errors = this._formValidation.errors;
+                //Исключаем поле, которое сейчас редактируем
+                _.each(this.formErrors, function (error) {
+                    var field = error.element.isEditor ?
+                        error.element.editorElement[0] : error.element[0];
 
-                if (errors instanceof Array && errors.length) {
-                    Widgets.hideErrorMessages(errors);
-                }
-            }
+                    if (field !== hideField[0]) {
+                        showErrors.push(error);
+                    }
+                });
 
-            this._formValidation = this._checkForm(formFields);
-            errors = this._formValidation.errors;
-
-            if (errors.length) {
-                if (focusField) {
-                    //Исключаем поле, которое сейчас редактируем
-                    _.each(errors, function (error) {
-                        var field = error.element.isEditor ?
-                            error.element.editorElement[0] : error.element[0];
-
-                        if (field !== focusField[0]) {
-                            showErrors.push(error);
-                        }
-                    });
-                } else {
-                    showErrors = errors;
-                }
-
+                this.formErrors = showErrors;
                 Widgets.showErrorMessages(showErrors);
             }
         },
@@ -211,19 +164,15 @@ define([
          *
          * @method
          * @private
-         * @name AddPostModule._checkForm
-         * @param {[jQuery]} formFields список полей
-         * @returns {Object} возвращает объект вида {
-         *                                              valid: valid, - валиданая ли вся форма
-         *                                              errors: [{
+         * @name AddPostModule.checkForm
+         * @param {jQuery} formFields список проверяемых полей
+         * @returns {Array} возвращает список ошибок [{
          *                                                  message: message, - сообщение об ошибке
          *                                                  element: element - ссылка на DOM поля с ошибкой
          *                                              }]
-         *                                          }
          */
-        _checkForm: function (formFields) {
-            var valid = true,
-                errors = [];
+        checkForm: function (formFields) {
+            var errors = [];
 
             _.each(formFields, _.bind(function (element) {
                 var value,
@@ -245,27 +194,19 @@ define([
                 }
             }, this));
 
-            if (errors.length > 0) {
-                valid = false;
-            }
-
-            return {
-                valid: valid,
-                errors: errors
-            };
+            return errors;
         },
 
 
         /**
          * Возвращает данные формы
          *
-         * @private
          * @method
-         * @name AddPostModule._getFormData
+         * @name AddPostModule.getFormData
          * @param {object} formFields
          * @returns {object}
          */
-        _getFormData: function (formFields) {
+        getFormData: function (formFields) {
             var formsData = {};
 
             _.each(formFields, function (field) {
@@ -289,13 +230,12 @@ define([
         /**
          * Показ сообщений от сервера
          *
-         * @private
          * @method
          * @name AddPostModule._showSuccessMessage
          * @param {Object} response Ответ сервера
          * @returns {undefined}
          */
-        _showServerMessages: function (response) {
+        showServerMessages: function (response) {
             if (response.error) {
                 if (response.fields) {
                     this.showServerErrors(response.fields);
@@ -314,24 +254,22 @@ define([
         /**
          * Обработчик отправки формы
          *
-         * @private
          * @method
-         * @name AddPostModule._submitForm
+         * @name AddPostModule.submitForm
          * @returns {boolean}
          */
-        _submitForm: function () {
-            var formFields = this.elements.formFields,
-                formValidation = this._checkForm(formFields);
+        submitForm: function () {
+            var formFields = this.elements.formFields;
 
-            this.formWasSubmitted = true;
+            this.formErrors = this.checkForm(formFields);
 
-            if (formValidation.valid) {
+            if (!this.formErrors.length) {
                 $.post('/api/post',
-                    this._getFormData(formFields),
-                    this._showServerMessages
+                    this.getFormData(formFields),
+                    this.showServerMessages
                 );
             } else {
-                this.showClientErrors();
+                Widgets.showErrorMessages(this.formErrors);
             }
 
             return false;
