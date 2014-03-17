@@ -200,7 +200,11 @@ define([
                 command = commandArr.shift(),
                 args = commandArr.join(' ') + (valueArg || '');
 
-            document.execCommand(command, 0, args);
+            if(commandWithArgs === 'addLink'){
+                $('.js-add-link').modal({show: true});
+            } else {
+                document.execCommand(command, 0, args);
+            }
             this.updateToolbar();
         },
 
