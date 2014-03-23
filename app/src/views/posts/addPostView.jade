@@ -1,17 +1,20 @@
 extend ../layoutView
 block content
-    .modal.fade.js-add-link
-        .modal-dialog
-            .modal-content
-                .modal-header
-                    button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
-                    h4#myModalLabel.modal-title Modal title
-                .modal-body
-                .modal-footer
-                    button.btn.btn-default(type="button", data-dismiss="modal") Close
-                    button.btn.btn-primary(type="button") Save changes
-    .container.js-module(data-module="posts/addPostModule")
-        .add_post_form__toolbar.row.js-editor-toolbar
+    .container.add_post.js-module(data-module="posts/addPostModule")
+        .add_post__toolbar.row.js-editor-toolbar
+            .modal.fade.js-add-link
+                .modal-dialog
+                    .modal-content
+                        .modal-header
+                            button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+                            h4#myModalLabel.modal-title Добавть ссылку
+                        .modal-body
+                            input(type="text", class="form-control", placeholder="Адрес ссылки")
+                            br
+                            input(type="text", class="form-control", placeholder="Название ссылки")
+                        .modal-footer
+                            button.btn.btn-default(type="button", data-dismiss="modal") Close
+                            button.btn.btn-primary.js-add-link-save(type="button") Save changes
             .col-md-10
                 .btn-toolbar(data-role='editor-toolbar', data-target='#editor')
                     .btn-group
@@ -29,7 +32,7 @@ block content
                         a.btn.btn-default(data-edit='insertorderedlist', title='Number list')
                             i.fa.fa-list-ol
                     .btn-group
-                        a.btn.btn-default.add_post_form__toolbar__add_image(title='Add image')
+                        a.btn.btn-default.add_post__toolbar__add_image(title='Add image')
                             i.fa.fa-picture-o
                             form(action='/upload_img', method='POST', enctype='multipart/form-data')
                                 input(type='file', name='image', data-edit='insertImage')
@@ -44,8 +47,8 @@ block content
                         a.btn.btn-default(data-edit='redo', title='Redo (Ctrl/Cmd+Y)')
                             i.fa.fa-repeat
             .col-md-2
-                button.btn.btn-primary.add_post_form__toolbar__send.js-submit-post Отправить
-        .content__post.row.add_post_form
-            h1.add_post_form__title
+                button.btn.btn-primary.add_post__toolbar__send.js-submit-post Отправить
+        .add_post__content.row
+            h1.add_post__title
                 input#title.js-title(type="text", name="title", value="Здесь должен быть загловок статьи")
-            div#body.js-body-editor.add_post_form__body(name="body") Здесь должен быть текст вашей статьи
+            div#body.js-body-editor.add_post__body(name="body") Здесь должен быть текст вашей статьи
