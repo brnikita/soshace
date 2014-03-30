@@ -72,26 +72,6 @@ define([
         _toolbarBtnSelector: null,
 
         /**
-         * Ссылка на элемент редактора
-         *
-         * @field
-         * @name EditorUtil#editorElement
-         * @type {jQuery|null}
-         */
-        editorElement: null,
-
-        /**
-         * Ссылка на элемент панели управления редактором
-         *
-         * @private
-         * @field
-         * @name EditorUtil#_toolbarElement
-         * @type {jQuery|null}
-         */
-        _toolbarElement: null,
-
-
-        /**
          * Настройки редактора
          *
          * @field
@@ -99,6 +79,22 @@ define([
          * @type {Object|null}
          */
         options: null,
+
+        /**
+         * Объект, содержащий элементы редактора для
+         * повторного обращения к ним
+         *
+         * @field
+         * @name EditorUtil#elements
+         * @type {Object}
+         */
+        elements: {
+            toolbarElement: null,
+            editorElement: null,
+            addLinkModal: null,
+            linkSaveButton: null,
+            linkNameInput: null
+        },
 
         /**
          *
@@ -118,8 +114,12 @@ define([
          * @returns {undefined}
          */
         initialize: function (editor, toolbar, options) {
-            this.editorElement = editor;
-            this._toolbarElement = toolbar;
+            this.elements.editorElement = editor;
+            this.elements.toolbarElement = toolbar;
+            this.elements.addLinkModal = $('.js-add-link-modal', toolbar);
+            this.elements.linkSaveButton = $('.js-add-link-save', toolbar);
+            this.elements.linkNameInput = $('.js-add-link-modal-link-name', toolbar);
+
             this.options = _.extend(this._defaults, options);
             this._toolbarBtnSelector = 'a[data-' +
                 this.options.commandRole +
@@ -158,7 +158,7 @@ define([
          * @returns {string}
          */
         cleanHtml: function () {
-            var html = this.editorElement.html();
+            var html = this.elements.editorElement.html();
             return html && html.replace(/(<br>|\s|<div>(<br>|\s|&nbsp;)*<\/div>|&nbsp;)*$/, '');
         },
 
@@ -173,12 +173,12 @@ define([
          */
         updateToolbar: function () {
             if (this.options.activeToolbarClass) {
-                this._toolbarElement.find(this._toolbarBtnSelector).each(_.bind(function () {
-                    var command = this.editorElement.data(this.options.commandRole);
+                this.elements.toolbarElement.find(this._toolbarBtnSelector).each(_.bind(function () {
+                    var command = this.elements.editorElement.data(this.options.commandRole);
                     if (document.queryCommandState(command)) {
-                        this.editorElement.addClass(this.options.activeToolbarClass);
+                        this.elements.editorElement.addClass(this.options.activeToolbarClass);
                     } else {
-                        this.editorElement.removeClass(this.options.activeToolbarClass);
+                        this.elements.editorElement.removeClass(this.options.activeToolbarClass);
                     }
                 }, this));
             }
@@ -200,11 +200,9 @@ define([
                 command = commandArr.shift(),
                 args = commandArr.join(' ') + (valueArg || '');
 
-            if(commandWithArgs === 'addLink'){
-                $('.js-add-link').modal({show: true});
-            } else {
-                document.execCommand(command, 0, args);
-            }
+            //TODO: заюзать это
+//            execCommand('inserthtml')
+            document.execCommand(command, 0, args);
             this.updateToolbar();
         },
 
@@ -221,14 +219,16 @@ define([
          */
         bindHotKeys: function (hotKeys) {
             $.each(hotKeys, _.bind(function (hotKey, command) {
-                this.editorElement.keydown(hotKey, _.bind(function (event) {
-                        if (this.editorElement.attr('contenteditable') && this.editorElement.is(':visible')) {
+                this.elements.editorElement.keydown(hotKey, _.bind(function (event) {
+                        if (this.elements.editorElement.attr('contenteditable') &&
+                            this.elements.editorElement.is(':visible')) {
                             event.preventDefault();
                             event.stopPropagation();
                             this.execCommand(command);
                         }
                     }, this)).keyup(hotKey, _.bind(function (event) {
-                        if (this.editorElement.attr('contenteditable') && this.editorElement.is(':visible')) {
+                        if (this.elements.editorElement.attr('contenteditable') &&
+                            this.elements.editorElement.is(':visible')) {
                             event.preventDefault();
                             event.stopPropagation();
                         }
@@ -238,7 +238,8 @@ define([
 
 
         /**
-         * TODO: доработать описание
+         * Возвращает объект с информацией о выделенном участке
+         * текста
          *
          * @method
          * @name EditorUtil#execCommand
@@ -255,9 +256,8 @@ define([
         },
 
         /**
-         * TODO: доработать описание
-         *
          * Сохраняет информацию о выделленой области
+         * в приватной переменной _selectedRange
          *
          * @method
          * @name EditorUtil#saveSelection
@@ -299,10 +299,6 @@ define([
          */
         markSelection: function (input, color) {
             this.restoreSelection();
-            if (document.queryCommandSupported('hiliteColor')) {
-                document.execCommand('hiliteColor', 0, color || 'transparent');
-            }
-
             this.saveSelection();
             input.data(this.options.selectionMarker, color);
         },
@@ -317,22 +313,26 @@ define([
          * @returns {undefined}
          */
         bindToolbar: function () {
-            var _this = this,
-                preloader = $('<img>', {
-                    src: '/static/images/preloader.gif',
-                    class: 'img-responsive center'
-                });
+            var _this = this;
 
-            this._toolbarElement.find(this._toolbarBtnSelector).click(function () {
-                var button = $(this);
+            this.elements.toolbarElement.find(this._toolbarBtnSelector).on('click', function () {
+                var button = $(this),
+                    command = button.data(_this.options.commandRole);
 
                 _this.restoreSelection();
-                _this.editorElement.focus();
-                _this.execCommand(button.data(_this.options.commandRole));
+                _this.elements.editorElement.focus();
                 _this.saveSelection();
+
+                if (command === 'addLink') {
+                    _this.showAddLinkModal();
+                } else {
+                    _this.execCommand(command);
+                }
             });
 
-            this._toolbarElement.find('input[type=text][data-' + this.options.commandRole + ']').
+            this.addSaveLinkBtnListener();
+
+            this.elements.toolbarElement.find('input[type=text][data-' + this.options.commandRole + ']').
                 on('focus',function () {
                     var input = $(this);
 
@@ -349,29 +349,102 @@ define([
                     }
                 });
 
+            this.addImageButtonListener();
+        },
+
+        /**
+         * @method
+         * @name EditorUtil#getSelectRangeText
+         * @param {Range} range объект,
+         *                содержащий инфу о выделенной области
+         * @returns {string}
+         */
+        getSelectRangeText: function (range) {
+            var selectedText = '';
+            debugger;
+            if (range.endOffset - range.startOffset > 0) {
+                selectedText = 'Какой - то текст';
+            }
+
+            return selectedText;
+        },
+
+        /**
+         * Метод показывает модальное окно
+         *
+         * @method
+         * @name EditorUtil#showAddLinkModal
+         * @returns {undefined}
+         */
+        showAddLinkModal: function () {
+            var selectedRange = this.getCurrentRange(),
+                selectedText = this.getSelectRangeText(selectedRange);
+
+            if (selectedText.length) {
+                this.elements.linkNameInput.removeClass('hide');
+            } else {
+                this.elements.linkNameInput.addClass('hide');
+            }
+
+            this.elements.linkNameInput.val(selectedText);
+            this.elements.addLinkModal.modal({show: true});
+        },
+
+        /**
+         * Метод навешивает слушатель на кнопку
+         * 'Сохранить' в модальном окне добавления ссылки
+         *
+         * @method
+         * @name EditorUtil#addSaveLinkBtnListener
+         * @returns {undefined}
+         */
+        addSaveLinkBtnListener: function () {
+            var _this = this;
+
+            this.elements.linkSaveButton.on('click', function () {
+                _this.execCommand('addLink');
+                _this.elements.addLinkModal.modal('hide');
+            });
+        },
+
+        /**
+         * Метод навешивает слушатель на кнопку загрузки
+         * изображения
+         *
+         * @method
+         * @name EditorUtil#addImageButtonListener
+         * @returns {undefined}
+         */
+        addImageButtonListener: function () {
+            var _this = this,
+                preLoader = $('<img>', {
+                    src: '/static/images/preloader.gif',
+                    class: 'img-responsive center'
+                });
+
             //TODO: блокировать панель до загрузки первого изображения
             //Загруженные картинки не удалять!!!
-            this._toolbarElement.find('input[type=file][data-' + _this.options.commandRole + ']').
+            this.elements.toolbarElement.find('input[type=file][data-' + _this.options.commandRole + ']').
                 fileupload({
                     dataType: 'json',
                     done: function (event, data) {
                         var result = data.result;
 
-                        preloader.remove();
+                        preLoader.remove();
 
                         if (result.error) {
                             Widgets.showMessages(result.error, 'alert-danger');
                             return;
                         }
 
-                        _this.editorElement.append($('<img>', {
+                        _this.elements.editorElement.append($('<img>', {
                             src: result.path,
                             class: 'img-responsive'
                         }));
                     }
                 }).
                 on('change', function () {
-                    _this.editorElement.append(preloader);
+                    _this.elements.editorElement.append(preLoader);
                 });
         }
     });

@@ -48,7 +48,7 @@ define([
             prettifyUtil.byContext(this.$el, 'js');
             this.elements.metaInformation = $('.js-meta-information', this.$el);
             this.postData = this.$el.data();
-            this.updateMetaInformation();
+//            this.updateMetaInformation();
         },
 
         /**

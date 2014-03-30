@@ -2,7 +2,7 @@ extend ../layoutView
 block content
     .container.add_post.js-module(data-module="posts/addPostModule")
         .add_post__toolbar.row.js-editor-toolbar
-            .modal.fade.js-add-link
+            .modal.fade.js-add-link-modal
                 .modal-dialog
                     .modal-content
                         .modal-header
@@ -11,10 +11,10 @@ block content
                         .modal-body
                             input(type="text", class="form-control", placeholder="Адрес ссылки")
                             br
-                            input(type="text", class="form-control", placeholder="Название ссылки")
+                            input.js-add-link-modal-link-name(type="text", class="form-control", placeholder="Название ссылки")
                         .modal-footer
-                            button.btn.btn-default(type="button", data-dismiss="modal") Close
-                            button.btn.btn-primary.js-add-link-save(type="button") Save changes
+                            button.btn.btn-default(type="button", data-dismiss="modal") Отмена
+                            button.btn.btn-primary.js-add-link-save(type="button") Сохранить
             .col-md-10
                 .btn-toolbar(data-role='editor-toolbar', data-target='#editor')
                     .btn-group
