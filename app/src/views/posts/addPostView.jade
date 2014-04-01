@@ -9,7 +9,7 @@ block content
                             button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
                             h4#myModalLabel.modal-title Добавть ссылку
                         .modal-body
-                            input(type="text", class="form-control", placeholder="Адрес ссылки")
+                            input.js-add-link-modal-link-url(type="text", class="form-control", placeholder="Адрес ссылки")
                             br
                             input.js-add-link-modal-link-name(type="text", class="form-control", placeholder="Название ссылки")
                         .modal-footer
@@ -37,7 +37,7 @@ block content
                             form(action='/upload_img', method='POST', enctype='multipart/form-data')
                                 input(type='file', name='image', data-edit='insertImage')
                     .btn-group
-                        a.btn.btn-default(data-edit='addLink', title='Hyperlink')
+                        a.btn.btn-default(data-edit='CreateLink', title='Hyperlink')
                             i.fa.fa-link
                         a.btn.btn-default(data-edit='unlink', title='Remove Hyperlink')
                             i.fa.fa-cut

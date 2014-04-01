@@ -119,6 +119,7 @@ define([
             this.elements.addLinkModal = $('.js-add-link-modal', toolbar);
             this.elements.linkSaveButton = $('.js-add-link-save', toolbar);
             this.elements.linkNameInput = $('.js-add-link-modal-link-name', toolbar);
+            this.elements.linkUrlInput = $('.js-add-link-modal-link-url', toolbar);
 
             this.options = _.extend(this._defaults, options);
             this._toolbarBtnSelector = 'a[data-' +
@@ -200,8 +201,6 @@ define([
                 command = commandArr.shift(),
                 args = commandArr.join(' ') + (valueArg || '');
 
-            //TODO: заюзать это
-//            execCommand('inserthtml')
             document.execCommand(command, 0, args);
             this.updateToolbar();
         },
@@ -323,7 +322,8 @@ define([
                 _this.elements.editorElement.focus();
                 _this.saveSelection();
 
-                if (command === 'addLink') {
+                if (command === 'CreateLink') {
+//                    http://stackoverflow.com/questions/5605401/insert-link-in-contenteditable-element
                     _this.showAddLinkModal();
                 } else {
                     _this.execCommand(command);
@@ -353,17 +353,29 @@ define([
         },
 
         /**
+         * Метод возвращает выделенную стороку, только для
+         * случая, когда строка внутри одного контейнера
+         * и не содержит внутренних элементов
+         *
          * @method
          * @name EditorUtil#getSelectRangeText
-         * @param {Range} range объект,
-         *                содержащий инфу о выделенной области
          * @returns {string}
          */
-        getSelectRangeText: function (range) {
-            var selectedText = '';
-            debugger;
-            if (range.endOffset - range.startOffset > 0) {
-                selectedText = 'Какой - то текст';
+        getSelectRangeText: function () {
+            var range = this.getCurrentRange(),
+                selectedText = '',
+                nodeValue,
+                startOffset,
+                endOffset;
+
+            if (range && range.commonAncestorContainer.childNodes.length === 0) {
+                startOffset = range.startOffset;
+                endOffset = range.endOffset;
+
+                if (endOffset - startOffset > 0) {
+                    nodeValue = range.commonAncestorContainer.nodeValue;
+                    selectedText = nodeValue.substring(startOffset, endOffset);
+                }
             }
 
             return selectedText;
@@ -377,14 +389,7 @@ define([
          * @returns {undefined}
          */
         showAddLinkModal: function () {
-            var selectedRange = this.getCurrentRange(),
-                selectedText = this.getSelectRangeText(selectedRange);
-
-            if (selectedText.length) {
-                this.elements.linkNameInput.removeClass('hide');
-            } else {
-                this.elements.linkNameInput.addClass('hide');
-            }
+            var selectedText = this.getSelectRangeText();
 
             this.elements.linkNameInput.val(selectedText);
             this.elements.addLinkModal.modal({show: true});
@@ -402,7 +407,25 @@ define([
             var _this = this;
 
             this.elements.linkSaveButton.on('click', function () {
-                _this.execCommand('addLink');
+                var range = _this.getCurrentRange(),
+                    url = _this.elements.linkUrlInput.val(),
+                    name = _this.elements.linkNameInput.val(),
+                    startOffset,
+                    endOffset,
+                    link;
+
+                if (range) {
+                    startOffset = range.startOffset;
+                    endOffset = range.endOffset;
+                }
+                debugger;
+                if (range && startOffset - endOffset > 0) {
+                    _this.execCommand('CreateLink', url);
+                } else {
+                    link = '<a href="' + url + '">' + name + '</a>';
+                    _this.execCommand('insertHTML', link);
+                }
+
                 _this.elements.addLinkModal.modal('hide');
             });
         },
