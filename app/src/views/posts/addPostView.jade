@@ -9,9 +9,9 @@ block content
                             button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
                             h4#myModalLabel.modal-title Добавть ссылку
                         .modal-body
-                            input.js-add-link-modal-link-url(type="text", class="form-control", placeholder="Адрес ссылки")
-                            br
-                            input.js-add-link-modal-link-name(type="text", class="form-control", placeholder="Название ссылки")
+                            .form-group
+                                label(for="linkUrl") Адрес ссылки
+                                input#linkUrl.js-add-link-modal-link-url(type="text", class="form-control", placeholder="Адрес ссылки")
                         .modal-footer
                             button.btn.btn-default(type="button", data-dismiss="modal") Отмена
                             button.btn.btn-primary.js-add-link-save(type="button") Сохранить

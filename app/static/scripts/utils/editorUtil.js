@@ -118,7 +118,6 @@ define([
             this.elements.toolbarElement = toolbar;
             this.elements.addLinkModal = $('.js-add-link-modal', toolbar);
             this.elements.linkSaveButton = $('.js-add-link-save', toolbar);
-            this.elements.linkNameInput = $('.js-add-link-modal-link-name', toolbar);
             this.elements.linkUrlInput = $('.js-add-link-modal-link-url', toolbar);
 
             this.options = _.extend(this._defaults, options);
@@ -201,7 +200,7 @@ define([
                 command = commandArr.shift(),
                 args = commandArr.join(' ') + (valueArg || '');
 
-            document.execCommand(command, 0, args);
+            document.execCommand(command, null, args);
             this.updateToolbar();
         },
 
@@ -267,7 +266,8 @@ define([
         },
 
         /**
-         * TODO: доработать описание
+         * Удаляет выделение текущей выделенной области
+         * и выдляет сохраненную область
          *
          * @method
          * @name EditorUtil#restoreSelection
@@ -288,12 +288,12 @@ define([
         },
 
         /**
-         * TODO: доработать описание
+         * Выделяет цветом ранее сохраненную область выделения
          *
          * @method
          * @name EditorUtil#markSelection
          * @param {jQuery} input
-         * @param {string} color
+         * @param {string} color цвет выделения
          * @returns {undefined}
          */
         markSelection: function (input, color) {
@@ -323,7 +323,6 @@ define([
                 _this.saveSelection();
 
                 if (command === 'CreateLink') {
-//                    http://stackoverflow.com/questions/5605401/insert-link-in-contenteditable-element
                     _this.showAddLinkModal();
                 } else {
                     _this.execCommand(command);
@@ -353,35 +352,6 @@ define([
         },
 
         /**
-         * Метод возвращает выделенную стороку, только для
-         * случая, когда строка внутри одного контейнера
-         * и не содержит внутренних элементов
-         *
-         * @method
-         * @name EditorUtil#getSelectRangeText
-         * @returns {string}
-         */
-        getSelectRangeText: function () {
-            var range = this.getCurrentRange(),
-                selectedText = '',
-                nodeValue,
-                startOffset,
-                endOffset;
-
-            if (range && range.commonAncestorContainer.childNodes.length === 0) {
-                startOffset = range.startOffset;
-                endOffset = range.endOffset;
-
-                if (endOffset - startOffset > 0) {
-                    nodeValue = range.commonAncestorContainer.nodeValue;
-                    selectedText = nodeValue.substring(startOffset, endOffset);
-                }
-            }
-
-            return selectedText;
-        },
-
-        /**
          * Метод показывает модальное окно
          *
          * @method
@@ -389,9 +359,6 @@ define([
          * @returns {undefined}
          */
         showAddLinkModal: function () {
-            var selectedText = this.getSelectRangeText();
-
-            this.elements.linkNameInput.val(selectedText);
             this.elements.addLinkModal.modal({show: true});
         },
 
@@ -404,30 +371,12 @@ define([
          * @returns {undefined}
          */
         addSaveLinkBtnListener: function () {
-            var _this = this;
-
-            this.elements.linkSaveButton.on('click', function () {
-                var range = _this.getCurrentRange(),
-                    url = _this.elements.linkUrlInput.val(),
-                    name = _this.elements.linkNameInput.val(),
-                    startOffset,
-                    endOffset,
-                    link;
-
-                if (range) {
-                    startOffset = range.startOffset;
-                    endOffset = range.endOffset;
-                }
-                debugger;
-                if (range && startOffset - endOffset > 0) {
-                    _this.execCommand('CreateLink', url);
-                } else {
-                    link = '<a href="' + url + '">' + name + '</a>';
-                    _this.execCommand('insertHTML', link);
-                }
-
-                _this.elements.addLinkModal.modal('hide');
-            });
+            this.elements.linkSaveButton.on('click', _.bind(function () {
+                var url = this.elements.linkUrlInput.val();
+                this.restoreSelection();
+                this.execCommand('CreateLink', url);
+                this.elements.addLinkModal.modal('hide');
+            }, this));
         },
 
         /**
