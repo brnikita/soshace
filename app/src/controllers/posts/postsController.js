@@ -99,7 +99,7 @@ var PostsController = {
         };
 
         PostsModel.getPosts(params).exec(function (error, posts) {
-            response.render('posts/postsListView', {
+            response.render('test', {
                 posts: posts,
                 activeTab: 'posts',
                 environment: soshace.ENVIRONMENT,
