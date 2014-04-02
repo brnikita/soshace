@@ -57,7 +57,8 @@ var PostsController = {
      */
     renderPost: function (request, response) {
         var params = {
-            public: true,
+            //TODO восстановить параметр
+//            public: true,
             locale: request.params.locale,
             UTCYear: request.params.year,
             UTCMonth: request.params.month,

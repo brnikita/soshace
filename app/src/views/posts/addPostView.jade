@@ -5,14 +5,14 @@ block content
             .modal-content
                 .modal-header
                     button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
-                    h4#myModalLabel.modal-title Добавть ссылку
+                    h4#myModalLabel.modal-title= __('Add Link')
                 .modal-body
                     .form-group
-                        label(for="linkUrl") Адрес ссылки
-                        input#linkUrl.js-add-link-modal-link-url(type="text", class="form-control", placeholder="Адрес ссылки")
+                        label(for="linkUrl")= __('Link Address')
+                        input#linkUrl.js-add-link-modal-link-url(type="text", class="form-control", placeholder="#{__('Link Address')}")
                 .modal-footer
-                    button.btn.btn-default(type="button", data-dismiss="modal") Отмена
-                    button.btn.btn-primary.js-add-link-save(type="button") Сохранить
+                    button.btn.btn-default(type="button", data-dismiss="modal")= __('Cancel')
+                    button.btn.btn-primary.js-add-link-save(type="button")= __('Save')
     .container.add_post.js-module(data-module="posts/addPostModule")
         .add_post__toolbar.row.js-editor-toolbar
             .js-editor-toolbar-container
@@ -49,8 +49,8 @@ block content
                                 a.btn.btn-default(data-edit='redo', title='Redo (Ctrl/Cmd+Y)')
                                     i.fa.fa-repeat
                     .col-md-2
-                        button.btn.btn-primary.add_post__toolbar__send.js-submit-post Отправить
+                        button.btn.btn-primary.add_post__toolbar__send.js-submit-post= __('Send')
         .add_post__content.row
             h1.add_post__title
-                input#title.js-title(type="text", name="title", value="Здесь должен быть загловок статьи")
-            div#body.js-body-editor.add_post__body(name="body") Здесь должен быть текст вашей статьи
+                input#title.js-title(type="text", name="title", value="#{__('Here should be the post title')}")
+            div#body.js-body-editor.add_post__body(name="body")= __('Here should be the post')

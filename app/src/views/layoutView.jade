@@ -26,11 +26,11 @@ html.no-js(lang="en")
                         img.img-responsive(src="/static/images/logo.png", alt="Soshace")
         .content
             block content
-        - if (environment === 'development')
+        if (environment === 'development')
             script(src="#{scriptsPath}/scripts/libs/require.js")
             script(src="#{scriptsPath}/require.conf.js")
             script(src="#{scriptsPath}/scripts/app.js")
-        - if (environment === 'production')
+        if (environment === 'production')
             // Yandex.Metrika counter
             noscript
                 div

@@ -40,47 +40,46 @@ var Blog = {
      * @return {undefined}
      */
     _configure: function () {
-        App.configure(function () {
-            App.use(Express.bodyParser());
-            App.set('views', 'app/src/views');
-            App.set('view engine', 'jade');
-            App.use(App.router);
+        App.use(Express.bodyParser());
+        App.set('views', 'app/src/views');
+        App.set('view engine', 'jade');
 
-            //Конфигурируем локали
-            I18n.expressBind(App, {
-                locales: soshace.LOCALES,
-                directory: 'app/src/locales',
-                extension: '.json',
-                defaultLocale: soshace.DEFAULT_LOCALE
-            });
+        //Конфигурируем локали
+        I18n.expressBind(App, {
+            locales: soshace.LOCALES,
+            directory: 'app/src/locales',
+            extension: '.json',
+            defaultLocale: soshace.DEFAULT_LOCALE
+        });
 
-//            App.use(function(request, response, next) {
-//                // express helper for natively supported engines
-//                response.locals.__ = response.__ = function() {
-//                    return I18n.__.apply(request, arguments);
-//                };
-//                next();
-//            });
+        //Хелперы
+        App.use(function (request, response, next) {
+            response.locals.__ = function (value) {
+                return request.i18n.__(value);
+            };
+            next();
+        });
 
-            //Устанавливаем ответ для 404
-            App.use(function(request, response){
-                response.status(404);
+        App.use(App.router);
 
-                // respond with html page
-                if (request.accepts('html')) {
-                    response.render('404', { url: request.url });
-                    return;
-                }
+        //Устанавливаем ответ для 404
+        App.use(function (request, response) {
+            response.status(404);
 
-                // respond with json
-                if (request.accepts('json')) {
-                    response.send({ error: 'Not found' });
-                    return;
-                }
+            // respond with html page
+            if (request.accepts('html')) {
+                response.render('404', { url: request.url });
+                return;
+            }
 
-                // default to plain-text. send()
-                response.type('txt').send('Not found');
-            });
+            // respond with json
+            if (request.accepts('json')) {
+                response.send({ error: 'Not found' });
+                return;
+            }
+
+            // default to plain-text. send()
+            response.type('txt').send('Not found');
         });
     }
 };

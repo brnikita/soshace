@@ -45,5 +45,11 @@
     "Error!": "Error!",
     "Registration failed, please try again.": "Registration failed, please try again.",
     "Thank you, your email is confirmed, you can now enter.": "Thank you, your email is confirmed, you can now enter.",
-    "No posts": "No posts"
+    "No posts": "No posts",
+    "Here should be the post title": "Here should be the post title",
+    "Here should be the post": "Here should be the post",
+    "Add Link": "Add Link",
+    "Link Address": "Link Address",
+    "Cancel": "Cancel",
+    "Save": "Save"
 }
