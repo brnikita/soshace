@@ -18,13 +18,13 @@ html.no-js(lang="en")
         //Откомпилированные compass файлы, версия берется из package.json
         link(href="/static/styles/styles.css?v=#{version}", rel="stylesheet")
     body.bg-color-green(class="#{pageClass}")
+        .body-messages.js-body-messages
         .header
             .container
                 .row
                     a.header__logo(href="/")
                         img.img-responsive(src="/static/images/logo.png", alt="Soshace")
         .content
-            .body-messages.js-body-messages
             block content
         - if (environment === 'development')
             script(src="#{scriptsPath}/scripts/libs/require.js")

@@ -48,7 +48,7 @@ define([
                     if(error.element instanceof $){
                         error.element.addClass('error');
                     } else if(error.element.isEditor) {
-                        error.element.editorElement.addClass('error');
+                        error.element.elements.editorElement.addClass('error');
                     }
                 }
             });
@@ -143,7 +143,7 @@ define([
                     if(error.element instanceof $){
                         error.element.removeClass('error');
                     } else if(error.element.isEditor) {
-                        error.element.editorElement.removeClass('error');
+                        error.element.elements.editorElement.removeClass('error');
                     }
                 }
             });

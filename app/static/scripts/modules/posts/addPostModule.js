@@ -116,7 +116,7 @@ define([
                 //Исключаем поле, которое сейчас редактируем
                 _.each(this.formErrors, function (error) {
                     var field = error.element.isEditor ?
-                        error.element.editorElement[0] : error.element[0];
+                        error.element.elements.editorElement[0] : error.element[0];
 
                     if (field !== hideField[0]) {
                         showErrors.push(error);
@@ -183,7 +183,7 @@ define([
                     value = element.val();
                 } else if (element.isEditor) {
                     value = element.cleanHtml();
-                    name = element.editorElement.attr('name');
+                    name = element.elements.editorElement.attr('name');
                 }
 
                 if (!value) {
@@ -217,7 +217,7 @@ define([
                     value = _s.trim(field.val());
                     name = field.attr('name');
                 } else if (field.isEditor) {
-                    name = field.editorElement.attr('name');
+                    name = field.elements.editorElement.attr('name');
                     value = field.cleanHtml();
                 }
 

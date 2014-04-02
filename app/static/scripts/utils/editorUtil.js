@@ -89,8 +89,10 @@ define([
          * @type {Object}
          */
         elements: {
-            toolbarElement: null,
             editorElement: null,
+            toolbarElement: null,
+            toolbarContainerElement: null,
+            toolbarRowElement: null,
             addLinkModal: null,
             linkSaveButton: null,
             linkNameInput: null
@@ -114,11 +116,19 @@ define([
          * @returns {undefined}
          */
         initialize: function (editor, toolbar, options) {
+            var toolbarPosition = toolbar.position(),
+                toolbarPositionTop = toolbarPosition.top,
+                $window = $(window),
+                addLinkModal = $('.js-add-link-modal');
+
             this.elements.editorElement = editor;
             this.elements.toolbarElement = toolbar;
-            this.elements.addLinkModal = $('.js-add-link-modal', toolbar);
-            this.elements.linkSaveButton = $('.js-add-link-save', toolbar);
-            this.elements.linkUrlInput = $('.js-add-link-modal-link-url', toolbar);
+            this.elements.toolbarContainerElement = $('.js-editor-toolbar-container', toolbar);
+            this.elements.toolbarRowElement = $('.js-editor-toolbar-row', toolbar);
+            this.elements.addLinkModal = addLinkModal;
+            this.elements.linkSaveButton = $('.js-add-link-save', addLinkModal);
+            this.elements.linkUrlInput = $('.js-add-link-modal-link-url', addLinkModal);
+
 
             this.options = _.extend(this._defaults, options);
             this._toolbarBtnSelector = 'a[data-' +
@@ -137,17 +147,30 @@ define([
                     this.updateToolbar();
                 }, this));
 
-            $(window).bind('touchend', _.bind(function (event) {
-                var isInside = (editor.is(event.target) || editor.has(event.target).length > 0),
-                    currentRange = this.getCurrentRange(),
-                    clear = currentRange && (currentRange.startContainer === currentRange.endContainer &&
-                        currentRange.startOffset === currentRange.endOffset);
+            $window.on('touchend', _.bind(function (event) {
+                    var isInside = (editor.is(event.target) || editor.has(event.target).length > 0),
+                        currentRange = this.getCurrentRange(),
+                        clear = currentRange && (currentRange.startContainer === currentRange.endContainer &&
+                            currentRange.startOffset === currentRange.endOffset);
 
-                if (!clear || isInside) {
-                    this.saveSelection();
-                    this.updateToolbar();
-                }
-            }, this));
+                    if (!clear || isInside) {
+                        this.saveSelection();
+                        this.updateToolbar();
+                    }
+                }, this)).on('scroll', _.bind(function () {
+                    var scrollTop = $window.scrollTop();
+
+                    //Фиксируем тулбар на верху окна
+                    if (scrollTop >= toolbarPositionTop) {
+                        toolbar.addClass('add_post__toolbar-fixed');
+                        this.elements.toolbarContainerElement.addClass('container');
+                        this.elements.toolbarRowElement.addClass('container');
+                    } else {
+                        toolbar.removeClass('add_post__toolbar-fixed');
+                        this.elements.toolbarContainerElement.removeClass('container');
+                        this.elements.toolbarRowElement.removeClass('container');
+                    }
+                }, this));
         },
 
         /**
