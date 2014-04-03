@@ -12,81 +12,85 @@ var Express = require('express'),
     Handlebars = require('express3-handlebars');
 
 var Blog = {
-        /**
-         * Инициализируем приложение
-         *
-         * @private
-         * @function
-         * @name Worker.init
-         * @return {undefined}
-         */
-        _init: function () {
-            soshace.VERSION = Package.version;
-            soshace.ENVIRONMENT = App.get('env');
-            this._configure();
-            //Подрубаемся к базе
-            DbConnection.databaseOpen(function () {
-                Router.init(App);
-                App.listen(soshace.PORT, soshace.HOST);
-            });
+    /**
+     * Инициализируем приложение
+     *
+     * @private
+     * @function
+     * @name Worker.init
+     * @return {undefined}
+     */
+    _init: function () {
+        soshace.VERSION = Package.version;
+        soshace.ENVIRONMENT = App.get('env');
+        this._configure();
+        //Подрубаемся к базе
+        DbConnection.databaseOpen(function () {
+            Router.init(App);
+            App.listen(soshace.PORT, soshace.HOST);
+        });
 
-        },
+    },
 
-        /**
-         * Конфигурируем наше приложение
-         *
-         * @private
-         * @function
-         * @name Worker.configure
-         * @return {undefined}
-         */
-        _configure: function () {
-            App.use(Express.bodyParser());
-            App.set('views', 'app/src/views/');
-            App.engine('handlebars', new Handlebars({
-                extname: '.hbs',
-                defaultLayout: 'layoutView'
-            }));
-            App.set('view engine', 'handlebars');
+    /**
+     * Конфигурируем наше приложение
+     *
+     * @private
+     * @function
+     * @name Worker.configure
+     * @return {undefined}
+     */
+    _configure: function () {
+        App.use(Express.bodyParser());
+        App.enable('view cache');
+        App.set('views', 'app/src/views/');
+        App.engine('hbs', new Handlebars({
+            layoutsDir: 'app/src/views/layouts',
+            partialsDir: 'app/src/views/partials',
+            defaultLayout: 'layoutView',
+            extname: '.hbs'
+        }));
 
-            //Конфигурируем локали
-            I18n.expressBind(App, {
-                locales: soshace.LOCALES,
-                directory: 'app/src/locales',
-                extension: '.json',
-                defaultLocale: soshace.DEFAULT_LOCALE
-            });
+        App.set('view engine', 'hbs');
 
-            //Хелперы
-            App.use(function (request, response, next) {
-                response.locals.__ = function (value) {
-                    return request.i18n.__(value);
-                };
-                next();
-            });
+        //Конфигурируем локали
+        I18n.expressBind(App, {
+            locales: soshace.LOCALES,
+            directory: 'app/src/locales',
+            extension: '.json',
+            defaultLocale: soshace.DEFAULT_LOCALE
+        });
 
-            App.use(App.router);
+        //Хелперы
+        App.use(function (request, response, next) {
+            response.locals.__ = function (value) {
+                return request.i18n.__(value);
+            };
+            next();
+        });
 
-            //Устанавливаем ответ для 404
-            App.use(function (request, response) {
-                response.status(404);
+        App.use(App.router);
 
-                // respond with html page
-                if (request.accepts('html')) {
-                    response.render('404', { url: request.url });
-                    return;
-                }
+        //Устанавливаем ответ для 404
+        App.use(function (request, response) {
+            response.status(404);
 
-                // respond with json
-                if (request.accepts('json')) {
-                    response.send({ error: 'Not found' });
-                    return;
-                }
+            // respond with html page
+            if (request.accepts('html')) {
+                response.render('404', { url: request.url });
+                return;
+            }
 
-                // default to plain-text. send()
-                response.type('txt').send('Not found');
-            });
-        }
-    };
+            // respond with json
+            if (request.accepts('json')) {
+                response.send({ error: 'Not found' });
+                return;
+            }
+
+            // default to plain-text. send()
+            response.type('txt').send('Not found');
+        });
+    }
+};
 
 Blog._init();

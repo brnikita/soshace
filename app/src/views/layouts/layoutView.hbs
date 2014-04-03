@@ -19,12 +19,23 @@
     </div>
 </div>
 <div class="content">
-    <div class="container">
-        {{{body}}}
-    </div>
+    {{{body}}}
 </div>
-<script src="/static/scripts/libs/require.js"></script>
-<script src="/static/require.conf.js"></script>
-<script src="/static/scripts/app.js"></script>
+{{#if isDevelopment}}
+    <script src="/static/scripts/libs/require.js"></script>
+    <script src="/static/require.conf.js"></script>
+    <script src="/static/scripts/app.js"></script>
+{{/if}}
+{{#if isProduction}}
+    <!-- Yandex.Metrika counter-->
+    <noscript>
+        <div>
+            <img src="//mc.yandex.ru/watch/23765065" style="position:absolute; left:-9999px;" alt="">
+        </div>
+    </noscript>
+    <!-- /Yandex.Metrika counter-->
+    <!--Минифицированные скрипты, версия берется из package.json-->
+    <script src="/static/scripts.min.js?v={{version}}"></script>
+{{/if}}
 </body>
 </html>

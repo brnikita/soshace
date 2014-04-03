@@ -1,0 +1,21 @@
+{{#if posts}}
+    <div class="container">
+        {{#each posts}}
+            <div class="row content__post js-module" data-module="posts/postPreviewModule">
+                <div class="js-meta-information"></div>
+                <h1>
+                    <a href="/ru/posts/{{UTCYear}}/{{UTCMonth}}/{{UTCDate}}/{{titleUrl}}">{{title}}</a>
+                </h1>
+
+                <p>{{{description}}}</p>
+                <a class="btn btn-primary" href="/ru/posts/{{UTCYear}}/{{UTCMonth}}/{{UTCDate}}/{{titleUrl}}">
+                    Read more...
+                </a>
+            </div>
+        {{/each}}
+    </div>
+{{else}}
+    <div class="container page-not-found">
+        <h1>No posts</h1>
+    </div>
+{{/if}}

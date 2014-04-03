@@ -57,20 +57,23 @@ var PostsController = {
      */
     renderPost: function (request, response) {
         var params = {
-            //TODO восстановить параметр
+                //TODO восстановить параметр
 //            public: true,
-            locale: request.params.locale,
-            UTCYear: request.params.year,
-            UTCMonth: request.params.month,
-            UTCDate: request.params.date,
-            titleUrl: request.params.titleUrl
-        };
+                locale: request.params.locale,
+                UTCYear: request.params.year,
+                UTCMonth: request.params.month,
+                UTCDate: request.params.date,
+                titleUrl: request.params.titleUrl
+            },
+            isProduction = soshace.ENVIRONMENT === 'production',
+            isDevelopment = soshace.ENVIRONMENT === 'development';
 
         PostsModel.getPost(params).exec(function (error, post) {
             if (post) {
                 response.render('posts/postDetailView', {
                     post: post,
-                    environment: soshace.ENVIRONMENT,
+                    isProduction: isProduction,
+                    isDevelopment: isDevelopment,
                     scriptsPath: '/static',
                     version: soshace.VERSION,
                     title: 'Welcome to Soshace blog!'
@@ -93,16 +96,19 @@ var PostsController = {
      */
     renderPosts: function (request, response) {
         var params = {
-            public: true,
-            locale: request.params.locale,
-            page: request.params.page
-        };
+                public: true,
+                locale: request.params.locale,
+                page: request.params.page
+            },
+            isProduction = soshace.ENVIRONMENT === 'production',
+            isDevelopment = soshace.ENVIRONMENT === 'development';
 
         PostsModel.getPosts(params).exec(function (error, posts) {
-            response.render('test', {
+            response.render('posts/postsListView', {
                 posts: posts,
                 activeTab: 'posts',
-                environment: soshace.ENVIRONMENT,
+                isProduction: isProduction,
+                isDevelopment: isDevelopment,
                 scriptsPath: '/static',
                 version: soshace.VERSION,
                 title: 'Welcome to Soshace blog!'
