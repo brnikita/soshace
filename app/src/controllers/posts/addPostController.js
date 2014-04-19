@@ -227,8 +227,12 @@ var AddPostController = {
      * @return {undefined}
      */
     renderAddPost: function (request, response) {
+        var isProduction = soshace.ENVIRONMENT === 'production',
+            isDevelopment = soshace.ENVIRONMENT === 'development';
+
         response.render('posts/addPostView', {
-            environment: soshace.ENVIRONMENT,
+            isProduction: isProduction,
+            isDevelopment: isDevelopment,
             scriptsPath: '/static',
             version: soshace.VERSION,
             pageClass: 'add_post',

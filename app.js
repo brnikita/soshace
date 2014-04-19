@@ -63,7 +63,7 @@ var Blog = {
 
         //Хелперы
         App.use(function (request, response, next) {
-            response.locals.__ = function (value) {
+            response.locals.i18n = function (value) {
                 return request.i18n.__(value);
             };
             next();
