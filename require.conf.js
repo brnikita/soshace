@@ -16,7 +16,9 @@ require.config(
             'jquery.fileupload': 'libs/jquery/jquery.fileupload',
             'jquery.ui.widget': 'libs/jquery/jquery.ui.widget',
             'jquery.iframe-transport': 'libs/jquery/jquery.iframe-transport',
-            'simpleClass': 'libs/simpleClass'
+            'backbone': 'libs/backbone',
+            'backbone.layoutmanager': 'libs/backbone/backbone.layoutmanager'
+
         },
         shim: {
             'bootstrap': {
@@ -59,6 +61,17 @@ require.config(
             'underscore.string': {
                 deps: [
                     'underscore'
+                ]
+            },
+            'backbone': {
+                deps: [
+                    'jquery',
+                    'underscore'
+                ]
+            },
+            'backbone.layoutmanager': {
+                deps: [
+                    'backbone'
                 ]
             }
         }
