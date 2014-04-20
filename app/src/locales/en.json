@@ -51,5 +51,16 @@
     "Add Link": "Add Link",
     "Link Address": "Link Address",
     "Cancel": "Cancel",
-    "Save": "Save"
+    "Save": "Save",
+    "Bold": "Bold",
+    "Italic": "Italic",
+    "Strikethrough": "Strikethrough",
+    "Underline": "Underline",
+    "Bullet list": "Bullet list",
+    "Number list": "Number list",
+    "Add image": "Add image",
+    "Hyperlink": "Hyperlink",
+    "Remove": "Remove",
+    "Undo": "Undo",
+    "Redo": "Redo"
 }
