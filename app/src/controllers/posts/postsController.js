@@ -78,7 +78,7 @@ var PostsController = {
                     isDevelopment: isDevelopment,
                     scriptsPath: '/static',
                     version: soshace.VERSION,
-                    title: 'Welcome to Soshace blog!',
+                    title: post.title,
                     helpers: helpers
                 });
                 return;
@@ -116,7 +116,7 @@ var PostsController = {
                 isDevelopment: isDevelopment,
                 scriptsPath: '/static',
                 version: soshace.VERSION,
-                title: 'Welcome to Soshace blog!',
+                title: 'Soshace blog',
                 helpers: helpers
             });
         });
