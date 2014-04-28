@@ -1,5 +1,5 @@
 {
-	"Posts": "Посты",
+	"Posts": "Статьи",
 	"Popular blog": "Популярный блог",
 	"New": "Новые",
 	"Hello": "Здравствуйте",
@@ -52,15 +52,17 @@
 	"Link Address": "Адрес ссылки",
 	"Cancel": "Отмена",
 	"Save": "Сохранить",
-	"Bold": "Bold",
-	"Italic": "Italic",
-	"Strikethrough": "Strikethrough",
-	"Underline": "Underline",
+	"Bold": "Жирный",
+	"Italic": "Курсивный",
+	"Strikethrough": "Зачеркнутый",
+	"Underline": "Подчеркнутый",
 	"Bullet list": "Bullet list",
 	"Number list": "Number list",
-	"Add image": "Add image",
-	"Hyperlink": "Hyperlink",
+	"Add image": "Загрузить изображение",
+	"Hyperlink": "Ссылка",
 	"Remove": "Remove",
 	"Undo": "Undo",
-	"Redo": "Redo"
+	"Redo": "Redo",
+	"Soshace blog": "Блог Soshace",
+	"Add post": "Добавить статью"
 }
