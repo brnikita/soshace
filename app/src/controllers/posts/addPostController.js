@@ -3,7 +3,8 @@ var PostsModel = require('../../models/postsModel'),
     Unidecode = require('unidecode'),
     Helper = require('../../common/helpers'),
     _ = require('underscore'),
-    _s = require('underscore.string');
+    _s = require('underscore.string'),
+    HandlebarsHelpers = require('../../common/handlebarsHelpers');
 
 /**
  * Контроллер, отвечающий за добавление статьи
@@ -227,7 +228,8 @@ var AddPostController = {
      * @return {undefined}
      */
     renderAddPost: function (request, response) {
-        var isProduction = soshace.ENVIRONMENT === 'production',
+        var helpers = new HandlebarsHelpers(request, response),
+            isProduction = soshace.ENVIRONMENT === 'production',
             isDevelopment = soshace.ENVIRONMENT === 'development';
 
         response.render('posts/addPostView', {
@@ -236,7 +238,8 @@ var AddPostController = {
             scriptsPath: '/static',
             version: soshace.VERSION,
             pageClass: 'add_post',
-            title: 'Add post'
+            title: 'Add post',
+            helpers: helpers
         });
     }
 };

@@ -41,14 +41,6 @@ var Blog = {
      * @return {undefined}
      */
     _configure: function () {
-        var i18nConfig = {
-                locales: soshace.LOCALES,
-                directory: 'app/src/locales',
-                extension: '.json',
-                defaultLocale: soshace.DEFAULT_LOCALE
-            },
-            i18n = new I18n(i18nConfig);
-
         App.use(Express.bodyParser());
         App.enable('view cache');
         App.set('views', 'app/src/views/');
@@ -56,18 +48,16 @@ var Blog = {
             layoutsDir: 'app/src/views/layouts',
             partialsDir: 'app/src/views/partials',
             defaultLayout: 'layoutView',
-            extname: '.hbs',
-            helpers: {
-                i18n: function (value) {
-                    var locale = this.locale;
-                    i18n.setLocale('ru');
-                    return i18n.__(value);
-                }
-            }
+            extname: '.hbs'
         }));
 
         App.set('view engine', 'hbs');
-        I18n.expressBind(App, i18nConfig);
+        I18n.expressBind(App, {
+            locales: soshace.LOCALES,
+            directory: 'app/src/locales',
+            extension: '.json',
+            defaultLocale: soshace.DEFAULT_LOCALE
+        });
         App.use(App.router);
 
         //Устанавливаем ответ для 404
