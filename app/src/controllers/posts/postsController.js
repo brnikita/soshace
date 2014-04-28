@@ -1,6 +1,8 @@
 'use strict';
 
-var PostsModel = require('../../models/postsModel');
+var PostsModel = require('../../models/postsModel'),
+    HandlebarsHelpers = require('../../common/handlebarsHelpers');
+
 
 /**
  * Контроллер содержащий методы работы с постами
@@ -56,9 +58,9 @@ var PostsController = {
      * @return {undefined}
      */
     renderPost: function (request, response) {
-        var params = {
-                //TODO восстановить параметр
-//            public: true,
+        var helpers = new HandlebarsHelpers(request, response),
+            params = {
+                public: true,
                 locale: request.params.locale,
                 UTCYear: request.params.year,
                 UTCMonth: request.params.month,
@@ -76,7 +78,8 @@ var PostsController = {
                     isDevelopment: isDevelopment,
                     scriptsPath: '/static',
                     version: soshace.VERSION,
-                    title: 'Welcome to Soshace blog!'
+                    title: 'Welcome to Soshace blog!',
+                    helpers: helpers
                 });
                 return;
             }
@@ -95,10 +98,12 @@ var PostsController = {
      * @return {undefined}
      */
     renderPosts: function (request, response) {
-        var params = {
+        var helpers = new HandlebarsHelpers(request, response),
+            params = {
                 public: true,
                 locale: request.params.locale,
-                page: request.params.page
+                page: request.params.page,
+                helpers: helpers
             },
             isProduction = soshace.ENVIRONMENT === 'production',
             isDevelopment = soshace.ENVIRONMENT === 'development';
@@ -111,7 +116,8 @@ var PostsController = {
                 isDevelopment: isDevelopment,
                 scriptsPath: '/static',
                 version: soshace.VERSION,
-                title: 'Welcome to Soshace blog!'
+                title: 'Welcome to Soshace blog!',
+                helpers: helpers
             });
         });
     }
