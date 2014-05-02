@@ -3,7 +3,8 @@
 var PostsController = require('./controllers/posts/postsController'),
     UploadImageController = require('./controllers/uploadImageController'),
     AddPostsController = require('./controllers/posts/addPostController'),
-    AdminController = require('./controllers/adminController');
+    RegistrationController = require('./controllers/registrationController'),
+    LoginController = require('./controllers/loginController');
 
 module.exports = {
     /**
@@ -37,10 +38,10 @@ module.exports = {
         //Страница отдельного поста
         App.get('/:locale/posts/:year/:month/:date/:titleUrl', PostsController.renderPost);
 
-        //Админка
-        App.get('/:locale/' + soshace.ADMIN_URL, AdminController.renderPosts);
+        //страница регистрации
+        App.get('/:locale/registration', RegistrationController.renderRegistration);
 
-        //Админка страница отдельного поста
-        App.get('/:locale/' + soshace.ADMIN_URL + '/posts/:year/:month/:date/:titleUrl', AdminController.renderPost);
+        //страница входа
+        App.get('/:locale/login', LoginController.renderLogin);
     }
 };

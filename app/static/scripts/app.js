@@ -27,7 +27,6 @@ require([
             window.Soshace = {
                 errors: []
             };
-            debugger;
             this.router = new Router();
         }
     };

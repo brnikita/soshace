@@ -1,7 +1,8 @@
 'use strict';
 
-var PostsModel = require('../../models/postsModel'),
-    HandlebarsHelpers = require('../../common/handlebarsHelpers');
+var _ = require('underscore'),
+    PostsModel = require('../../models/postsModel'),
+    RenderParams = require('../../common/renderParams');
 
 
 /**
@@ -58,7 +59,7 @@ var PostsController = {
      * @return {undefined}
      */
     renderPost: function (request, response) {
-        var helpers = new HandlebarsHelpers(request, response),
+        var renderParams = new RenderParams(request),
             params = {
                 public: true,
                 locale: request.params.locale,
@@ -66,21 +67,14 @@ var PostsController = {
                 UTCMonth: request.params.month,
                 UTCDate: request.params.date,
                 titleUrl: request.params.titleUrl
-            },
-            isProduction = soshace.ENVIRONMENT === 'production',
-            isDevelopment = soshace.ENVIRONMENT === 'development';
+            };
 
         PostsModel.getPost(params).exec(function (error, post) {
             if (post) {
-                response.render('posts/postDetailView', {
+                response.render('posts/postDetailView', _.extend(renderParams, {
                     post: post,
-                    isProduction: isProduction,
-                    isDevelopment: isDevelopment,
-                    scriptsPath: '/static',
-                    version: soshace.VERSION,
-                    title: post.title,
-                    helpers: helpers
-                });
+                    title: post.title
+                }));
                 return;
             }
             response.render('404');
@@ -98,27 +92,19 @@ var PostsController = {
      * @return {undefined}
      */
     renderPosts: function (request, response) {
-        var helpers = new HandlebarsHelpers(request, response),
+        var renderParams = new RenderParams(request),
             params = {
                 public: true,
                 locale: request.params.locale,
-                page: request.params.page,
-                helpers: helpers
-            },
-            isProduction = soshace.ENVIRONMENT === 'production',
-            isDevelopment = soshace.ENVIRONMENT === 'development';
+                page: request.params.page
+            };
 
         PostsModel.getPosts(params).exec(function (error, posts) {
-            response.render('posts/postsListView', {
-                posts: posts,
-                activeTab: 'posts',
-                isProduction: isProduction,
-                isDevelopment: isDevelopment,
-                scriptsPath: '/static',
-                version: soshace.VERSION,
+            response.render('posts/postsListView', _.extend(renderParams, {
+                isPostsPage: true,
                 title: 'Soshace blog',
-                helpers: helpers
-            });
+                posts: posts
+            }));
         });
     }
 };

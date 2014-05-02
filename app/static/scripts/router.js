@@ -10,11 +10,9 @@ define([
     'underscore',
     'backbone'
 ], function ($, _, Backbone) {
-    debugger;
     return Backbone.Router.extend({
 
         initialize: function(){
-            debugger;
         },
 
         /**
@@ -32,7 +30,6 @@ define([
          * @returns {undefined}
          */
         posts: function () {
-            debugger;
         }
     });
 });

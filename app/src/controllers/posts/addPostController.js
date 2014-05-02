@@ -4,7 +4,7 @@ var PostsModel = require('../../models/postsModel'),
     Helper = require('../../common/helpers'),
     _ = require('underscore'),
     _s = require('underscore.string'),
-    HandlebarsHelpers = require('../../common/handlebarsHelpers');
+    RenderParams = require('../../common/renderParams');
 
 /**
  * Контроллер, отвечающий за добавление статьи
@@ -228,19 +228,12 @@ var AddPostController = {
      * @return {undefined}
      */
     renderAddPost: function (request, response) {
-        var helpers = new HandlebarsHelpers(request, response),
-            isProduction = soshace.ENVIRONMENT === 'production',
-            isDevelopment = soshace.ENVIRONMENT === 'development';
+        var renderParams = new RenderParams(request);
 
-        response.render('posts/addPostView', {
-            isProduction: isProduction,
-            isDevelopment: isDevelopment,
-            scriptsPath: '/static',
-            version: soshace.VERSION,
-            pageClass: 'add_post',
+        response.render('posts/addPostView', _.extend(renderParams, {
             title: 'Add post',
-            helpers: helpers
-        });
+            isAddPostPage: true
+        }));
     }
 };
 

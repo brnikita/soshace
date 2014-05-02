@@ -27,10 +27,10 @@ global.soshace = {
      * Окружение
      *
      * @field
-     * @name soshace.ENVIRONMENT
-     * @type {string}
+     * @name soshace.IS_PRODUCTION
+     * @type {boolean}
      */
-    ENVIRONMENT: 'development',
+    IS_PRODUCTION: true,
 
     /**
      * хост базы данных

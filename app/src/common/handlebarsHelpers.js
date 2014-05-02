@@ -1,13 +1,14 @@
 'use strict';
 
 /**
+ * Конструктор хелперов для Handlebars
+ *
  * @constructor
  * @name HandlebarsHelpers
  * @param {Object} request
- * @param {Object} response
  * @returns {Object}
  */
-module.exports = function (request/*, response*/) {
+module.exports = function (request) {
     return {
         /**
          * Метод возврвращает первод строки-параметра

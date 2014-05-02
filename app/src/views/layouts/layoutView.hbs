@@ -14,18 +14,57 @@
 <div class="body-messages js-body-messages"></div>
 <div class="header">
     <div class="container">
-        <div class="row"><a href="/" class="header__logo">
-            <img src="/static/images/logo.png" alt="Soshace" class="img-responsive"></a></div>
+        <div class="row header__menu">
+            <a href="/" class="header__menu__logo col-md-5">
+                <img src="/static/images/logo.png" alt="Soshace" class="img-responsive">
+            </a>
+            {{#if isPostsPage}}
+                <span class="header__menu__tab header__menu__tab-active col-md-2">
+                    {{i18n 'Posts'}}
+                </span>
+            {{else}}
+                <a href="/" class="header__menu__tab header__menu__tab-link col-md-2">
+                    {{i18n 'Posts'}}
+                </a>
+            {{/if}}
+            {{#if isAddPostPage}}
+                <span class="header__menu__tab header__menu__tab-active col-md-2">
+                    {{i18n 'Add Post'}}
+                </span>
+            {{else}}
+                <a href="/ru/add_post" class="header__menu__tab header__menu__tab-link col-md-2">
+                    {{i18n 'Add Post'}}
+                </a>
+            {{/if}}
+            {{#if isSignUpPage}}
+                <span class="header__menu__tab header__menu__tab-active col-md-2">
+                    {{i18n 'Sign Up'}}
+                </span>
+            {{else}}
+                <a href="/ru/registration" class="header__menu__tab header__menu__tab-link col-md-2">
+                    {{i18n 'Sign Up'}}
+                </a>
+            {{/if}}
+            {{#if isSignInPage}}
+                <span class="header__menu__tab header__menu__tab-active col-md-1">
+                    {{i18n 'Sign In'}}
+                </span>
+            {{else}}
+                <a href="/ru/login" class="header__menu__tab header__menu__tab-link col-md-1">
+                    {{i18n 'Sign In'}}
+                </a>
+            {{/if}}
+        </div>
     </div>
 </div>
 <div class="content">
     {{{body}}}
 </div>
-{{#if isDevelopment}}
+{{#unless isProduction}}
     <script src="/static/scripts/libs/require.js"></script>
     <script src="/static/require.conf.js"></script>
     <script src="/static/scripts/app.js"></script>
-{{/if}}
+{{/unless}}
 {{#if isProduction}}
     <!-- Yandex.Metrika counter-->
     <noscript>
