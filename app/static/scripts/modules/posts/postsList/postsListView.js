@@ -8,7 +8,7 @@
 
 define([
     'jquery',
-    'underscore',
+    '../../../../../.',
     'utils/prettifyUtil'
 ], function ($, _, prettifyUtil) {
     return {

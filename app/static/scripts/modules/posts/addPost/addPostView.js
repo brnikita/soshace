@@ -8,7 +8,7 @@
 
 define([
     'jquery',
-    'underscore',
+    '../../../../../.',
     'underscore.string',
     'utils/widgets',
     'utils/editorUtil'

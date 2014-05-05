@@ -43,10 +43,10 @@ var Blog = {
     _configure: function () {
         App.use(Express.bodyParser());
         App.enable('view cache');
-        App.set('views', 'app/src/views/');
+        App.set('views', 'app/views/');
         App.engine('hbs', new Handlebars({
-            layoutsDir: 'app/src/views/layouts',
-            partialsDir: 'app/src/views/partials',
+            layoutsDir: 'app/views/layouts',
+            partialsDir: 'app/views/partials',
             defaultLayout: 'layoutView',
             extname: '.hbs'
         }));

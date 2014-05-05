@@ -23,7 +23,8 @@ var RegistrationController = {
 
         response.render('registrationView', _.extend(renderParams, {
             isSignUpPage: true,
-            title: 'Registration page'
+            title: 'Registration page',
+            bodyClass: 'bg-books'
         }));
     }
 };

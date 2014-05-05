@@ -18,7 +18,7 @@ module.exports = function (grunt) {
             app: 'app',
             //Папка, в котрую grunt будет сливать получившуюся после
             //после сбоки и минификации статику
-            dist: 'static'
+            dist: 'dist'
         },
 
         //следит за изменениями
@@ -26,7 +26,6 @@ module.exports = function (grunt) {
             scripts: {
                 files: '<%= blog.app %>/static/scripts/**/*.js',
                 tasks: [
-                    'jshint',
                     'copy:dev'
                 ]
             },
@@ -59,6 +58,12 @@ module.exports = function (grunt) {
                 tasks: [
                     'copy:dev'
                 ]
+            },
+            views: {
+                files: '<%= blog.app %>/views/**/*.hbs',
+                tasks: [
+                    'copy:dev'
+                ]
             }
         },
 
@@ -83,12 +88,16 @@ module.exports = function (grunt) {
                         dest: '<%= blog.dist %>',
                         src: [
                             '*.{ico,png,txt}',
-                            'bower_components/**/*.js',
                             'scripts/**/*.js',
                             'images/{,*/}*.{png,jpg,jpeg,gif,svg}',
-                            'fonts/*',
-                            'views/**/*.html'
+                            'fonts/*'
                         ]
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= blog.app %>',
+                        src: 'views/**/*.hbs',
+                        dest: '<%= blog.dist %>'
                     }
                 ]
             },
@@ -103,6 +112,12 @@ module.exports = function (grunt) {
                             'images/{,*/}*.{png,jpg,jpeg,gif,svg}',
                             'fonts/*'
                         ]
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= blog.app %>',
+                        src: 'views/**/*.hbs',
+                        dest: '<%= blog.dist %>'
                     }
                 ]
             }
@@ -173,6 +188,9 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('default', [
-        'dev'
+        'copy:requireConfig',
+        'copy:dev',
+        'less:dev',
+        'watch'
     ]);
 };

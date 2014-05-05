@@ -15,6 +15,8 @@ module.exports = function (request) {
     return {
         isProduction: soshace.IS_PRODUCTION,
         version: soshace.VERSION,
-        helpers: helpers
+        helpers: helpers,
+        bodyClass: 'bg-color-green bg-symbols',
+        locale: request.i18n.getLocale()
     };
 };

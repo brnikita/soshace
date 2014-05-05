@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{title}}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link href="/static/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <!--Откомпилированные compass файлы, версия берется из package.json-->
+    <link href="/static/styles/styles.css?v=0.0.3" rel="stylesheet">
+</head>
+<body class="{{bodyClass}}">
+<div class="body-messages js-body-messages"></div>
+{{> headerView}}
+<div class="content">
+    {{{body}}}
+</div>
+</body>
+</html>
+{{#unless isProduction}}
+    <script src="/static/scripts/libs/require.js"></script>
+    <script src="/static/require.conf.js"></script>
+    <script src="/static/scripts/app.js"></script>
+{{/unless}}
+{{#if isProduction}}
+    <!-- Yandex.Metrika counter-->
+    <noscript>
+        <div>
+            <img src="//mc.yandex.ru/watch/23765065" style="position:absolute; left:-9999px;" alt="">
+        </div>
+    </noscript>
+    <!-- /Yandex.Metrika counter-->
+    <!--Минифицированные скрипты, версия берется из package.json-->
+    <script src="/static/scripts.min.js?v={{version}}"></script>
+{{/if}}
