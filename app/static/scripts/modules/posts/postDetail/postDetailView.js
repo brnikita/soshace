@@ -68,6 +68,7 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
+            debugger;
             var $body = params.app.elements.body;
 
             this.app = params.app;
@@ -85,13 +86,13 @@ define([
                 this.render();
             }, this));
 
-            this.model.fetch({data: {
+            this.model.fetch({data: $.param({
                 locale: params.locale,
                 year: params.year,
                 month: params.month,
                 date: params.date,
                 title: params.title
-            }});
+            })});
         },
 
         /**

@@ -39,7 +39,7 @@ global.Soshace = {
      * @name Soshace.DB_HOST
      * @type {string}
      */
-    DB_HOST: 'mongodb://localhost/Soshace',
+    DB_HOST: 'mongodb://localhost/soshace',
 
     /**
      * Порт который слушает наш node.js сервер
@@ -104,7 +104,7 @@ global.Soshace = {
      * @name Soshace.PRODUCTION_DOMAIN
      * @type {string}
      */
-    PRODUCTION_DOMAIN: '//Soshace.com/',
+    PRODUCTION_DOMAIN: '//soshace.com/',
 
     /**
      * Директория для медиа файлов

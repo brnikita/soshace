@@ -24,7 +24,6 @@ var PostsController = {
      */
     getPost: function (request, response) {
         PostsModel.getPost(request.query).exec(function (error, post) {
-            console.log('post', post);
             response.send(post);
         });
     },
@@ -95,13 +94,12 @@ var PostsController = {
     renderPosts: function (request, response) {
         var renderParams = new RenderParams(request),
             params = {
-                public: true,
-                locale: request.params.locale,
-                page: request.params.page
+                'public': true,
+                'locale': request.params.locale,
+                'page': request.params.page
             };
 
         PostsModel.getPosts(params).exec(function (error, posts) {
-            console.log('posts', posts);
             response.render('posts/postsListView', _.extend(renderParams, {
                 isPostsPage: true,
                 title: 'Soshace blog',
