@@ -45,9 +45,9 @@ define([
                 }
 
                 if (error.element) {
-                    if(error.element instanceof $){
+                    if (error.element instanceof $) {
                         error.element.addClass('error');
-                    } else if(error.element.isEditor) {
+                    } else if (error.element.isEditor) {
                         error.element.elements.editorElement.addClass('error');
                     }
                 }
@@ -140,12 +140,63 @@ define([
 
             _.each(errors, function (error) {
                 if (error.element) {
-                    if(error.element instanceof $){
+                    if (error.element instanceof $) {
                         error.element.removeClass('error');
-                    } else if(error.element.isEditor) {
+                    } else if (error.element.isEditor) {
                         error.element.elements.editorElement.removeClass('error');
                     }
                 }
+            });
+        },
+
+        /**
+         * Метод перекрывает переданный элемент в параметрах
+         * лоадером
+         *
+         * @method
+         * @name Widgets.showLoader
+         * @param {jQuery} $element элемент, к которому прибавляем лоадер
+         * @returns {undefined}
+         */
+        showLoader: function ($element) {
+            var $loader = $('.js-loader-mask').clone();
+
+            $element.css('position', 'relative');
+            $element.append($loader);
+            $loader.removeClass('hide');
+        },
+
+        /**
+         * Метод убирает с элемента лоадер
+         *
+         * @method
+         * @name Widgets.showLoader
+         * @param {jQuery} $element элемент, с которого удаляем лоадер
+         * @returns {undefined}
+         */
+        hideLoader: function ($element) {
+            $('.js-loader-mask', $element).remove();
+            $element.removeAttr('style');
+        },
+
+        /**
+         * Форматирует блоки с классом .prettyprint
+         * в переданном контексте
+         *
+         * @name Widgets.prettify
+         * @param {jQuery} context элемент DOM
+         * @param {string} codeLanguage
+         * @returns {undefined}
+         */
+        prettify: function (context, codeLanguage) {
+            var $prettyPrint = $('.prettyprint', context),
+                formattedHtml;
+
+            $prettyPrint.each(function(){
+                var codeBlock = $(this);
+
+                formattedHtml = prettyPrintOne(codeBlock.html(), codeLanguage, true);
+                codeBlock.html(formattedHtml);
             });
         }
     };

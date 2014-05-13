@@ -1,71 +1,96 @@
 'use strict';
 
 /**
- * Модуль страницы предпросмотра поста
+ * Вид страницы списка постов
  *
- * @module PostPreviewModule
+ * @module PostsListView
  */
 
 define([
     'jquery',
-    '../../../../../.',
-    'utils/prettifyUtil'
-], function ($, _, prettifyUtil) {
-    return {
-
+    'underscore',
+    'backbone',
+    'utils/widgets',
+    './postsListModel',
+    'backbone.layoutmanager'
+], function ($, _, Backbone, Widgets, PostsListModel) {
+    return Backbone.Layout.extend({
         /**
-         * Контекст модуля
-         * Родительский элемент DOM
+         * Ссылка на объект App
          *
          * @field
-         * @name PostPreviewModule.$el
-         * @type {jQuery|null}
+         * @name PostsListView.app
+         * @type {Object}
          */
-        $el: null,
+        app: null,
+
+        /**
+         * Класс родительского элемента, к которому
+         * будет прикреплен вид
+         *
+         * @field
+         * @name PostsListView.el
+         * @type {string}
+         */
+        el: '.js-content',
+
+        /**
+         * Модель списка статей
+         *
+         * @field
+         * @name PostsListView.model
+         * @type {Backbone.Model | null}
+         */
+        model: null,
 
         /**
          * @field
-         * @name PostPreviewModule.elements
+         * @name PostsListView.elements
          * @type {Object}
          */
         elements: {
-            metaInformation: null
         },
 
         /**
+         * Путь до шаблона
+         *
          * @field
-         * @name PostPreviewModule.postData
-         * @type {Object|null}
+         * @name PostsListView.elements
+         * @type {string}
          */
-        postData: null,
+        template: 'posts/postsListView',
 
         /**
-         * @method
-         * @name PostPreviewModule.initialize
+         * @constructor
+         * @name PostsListView.initialize
          * @returns {undefined}
          */
-        initialize: function () {
-            prettifyUtil.byContext(this.$el, 'js');
-            this.elements.metaInformation = $('.js-meta-information', this.$el);
-            this.postData = this.$el.data();
-//            this.updateMetaInformation();
+        initialize: function (params) {
+            var $body = params.app.elements.body;
+
+            this.app = params.app;
+
+            if (Soshace.firstLoad) {
+                Soshace.firstLoad = false;
+                this.afterRender();
+                return;
+            }
+
+            Widgets.showLoader($body);
+            this.model = new PostsListModel();
+            this.model.on('change', _.bind(function(){
+                Widgets.hideLoader($body);
+            }, this));
+            this.model.fetch();
         },
 
         /**
-         * Записывает теги поста
-         *
-         * Дата устанавливается на клиенте, т.к. на сервере она хранится
-         * по гринвичу
-         *
          * @method
-         * @name PostPreviewModule.updateMetaInformation
+         * @name PostsListView.afterRender
          * @returns {undefined}
          */
-        updateMetaInformation: function(){
-            this.elements.metaInformation.append($('<span>', {
-                text: new Date(),
-                class: 'label label-info'
-            }));
+        afterRender: function () {
+//            Widgets.prettify(this.$el, 'js');
         }
-    };
+    });
 });

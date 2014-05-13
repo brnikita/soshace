@@ -13,7 +13,7 @@ module.exports = {
      * @return {undefined}
      */
     databaseOpen: function (callback) {
-        Mongoose.connect(soshace.DB_HOST);
+        Mongoose.connect(Soshace.DB_HOST);
         var database = Mongoose.connection;
         database.on('error', console.error.bind(console, 'connection error:'));
         database.once('open', function () {

@@ -8,11 +8,11 @@
 
 define([
     'jquery',
-    '../../../../../.',
+    'underscore',
     'underscore.string',
-    'utils/widgets',
-    'utils/editorUtil'
-], function ($, _, _s, Widgets, EditorUtil) {
+    'utils/widgets'
+//    'utils/editor'
+], function ($, _, _s, Widgets, Editor) {
     return {
 
         /**
@@ -82,7 +82,7 @@ define([
             this.elements.formFields = {};
             formFields = this.elements.formFields;
             formFields.title = $('.js-title', this.$el);
-            formFields.body = new EditorUtil(editorBody, toolbarElement);
+            formFields.body = new Editor(editorBody, toolbarElement);
         },
 
         /**

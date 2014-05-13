@@ -3,13 +3,13 @@
 /**
  * Конфигурация проекта
  */
-global.soshace = {
+global.Soshace = {
     /**
      * Версия, берется из package.json
      * Ставится скриптом атоматом
      *
      * @field
-     * @name soshace.VERSION
+     * @name Soshace.VERSION
      * @type {string}
      */
     VERSION: '0',
@@ -18,7 +18,7 @@ global.soshace = {
      * Урл админки
      *
      * @constant
-     * @name soshace.ADMIN_URL
+     * @name Soshace.ADMIN_URL
      * @type {string}
      */
     ADMIN_URL: 'xxx191188',
@@ -27,7 +27,7 @@ global.soshace = {
      * Окружение
      *
      * @field
-     * @name soshace.IS_PRODUCTION
+     * @name Soshace.IS_PRODUCTION
      * @type {boolean}
      */
     IS_PRODUCTION: true,
@@ -36,16 +36,16 @@ global.soshace = {
      * хост базы данных
      *
      * @constant
-     * @name soshace.DB_HOST
+     * @name Soshace.DB_HOST
      * @type {string}
      */
-    DB_HOST: 'mongodb://localhost/soshace',
+    DB_HOST: 'mongodb://localhost/Soshace',
 
     /**
      * Порт который слушает наш node.js сервер
      *
      * @constant
-     * @name soshace.PORT
+     * @name Soshace.PORT
      * @type {string}
      */
     PORT: '8080',
@@ -54,7 +54,7 @@ global.soshace = {
      * Хост который слушает наш node.js сервер
      *
      * @constant
-     * @name soshace.HOST
+     * @name Soshace.HOST
      * @type {string}
      */
     HOST: '127.0.0.1',
@@ -64,7 +64,7 @@ global.soshace = {
      *
      * @public
      * @constant
-     * @name soshace.DEFAULT_LOCALE
+     * @name Soshace.DEFAULT_LOCALE
      * @type {string}
      */
     DEFAULT_LOCALE: 'ru',
@@ -74,7 +74,7 @@ global.soshace = {
      *
      * @public
      * @constant
-     * @name soshace.LOCALES
+     * @name Soshace.LOCALES
      * @type {String[]}
      */
     LOCALES: [
@@ -88,7 +88,7 @@ global.soshace = {
      *
      * @public
      * @constant
-     * @name soshace.LANGUAGES
+     * @name Soshace.LANGUAGES
      * @type {String[]}
      */
     LANGUAGES: [
@@ -101,18 +101,28 @@ global.soshace = {
      *
      * @public
      * @constant
-     * @name soshace.PRODUCTION_DOMAIN
+     * @name Soshace.PRODUCTION_DOMAIN
      * @type {string}
      */
-    PRODUCTION_DOMAIN: '//soshace.com/',
+    PRODUCTION_DOMAIN: '//Soshace.com/',
 
     /**
      * Директория для медиа файлов
      *
      * @public
      * @constant
-     * @name soshace.MEDIA_DIRECTORY
+     * @name Soshace.MEDIA_DIRECTORY
      * @type {string}
      */
-    MEDIA_DIRECTORY: '/home/user/media/'
+    MEDIA_DIRECTORY: '/home/user/media/',
+
+    /**
+     * Количество статей на страницу
+     *
+     * @public
+     * @constant
+     * @name Soshace.POSTS_PER_PAGE
+     * @type {number}
+     */
+    POSTS_PER_PAGE: 10
 };

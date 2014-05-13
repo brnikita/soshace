@@ -13,8 +13,8 @@ module.exports = function (request) {
         helpers = new HandlebarsHelpers(request);
 
     return {
-        isProduction: soshace.IS_PRODUCTION,
-        version: soshace.VERSION,
+        isProduction: Soshace.IS_PRODUCTION,
+        version: Soshace.VERSION,
         helpers: helpers,
         bodyClass: 'bg-color-green bg-symbols',
         locale: request.i18n.getLocale()

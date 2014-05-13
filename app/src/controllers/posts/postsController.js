@@ -24,6 +24,7 @@ var PostsController = {
      */
     getPost: function (request, response) {
         PostsModel.getPost(request.query).exec(function (error, post) {
+            console.log('post', post);
             response.send(post);
         });
     },
@@ -100,6 +101,7 @@ var PostsController = {
             };
 
         PostsModel.getPosts(params).exec(function (error, posts) {
+            console.log('posts', posts);
             response.render('posts/postsListView', _.extend(renderParams, {
                 isPostsPage: true,
                 title: 'Soshace blog',

@@ -13,7 +13,6 @@ define([
     'jquery.cookie'
 ], function ($, _) {
     return {
-
         /**
          * Метод возвращает данные формы в виде объекта
          *
@@ -38,7 +37,7 @@ define([
          * Получаем локаль
          *
          * @public
-         * @function
+         * @method
          * @name Helpers.getLocale
          * @return {String}
          */

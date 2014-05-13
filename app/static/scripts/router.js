@@ -8,16 +8,32 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
-], function ($, _, Backbone) {
+    'backbone',
+    'modules/headerView',
+    'modules/posts/postsList/postsListView',
+    'modules/posts/postDetail/postDetailView',
+    'modules/posts/addPost/addPostView',
+    'modules/registration/registrationView',
+    'modules/login/loginView'
+], function ($, _, Backbone, HeaderView, PostsListView, PostDetailView, AddPostView, RegistrationView, LoginView) {
     return Backbone.Router.extend({
+
+        /**
+         * Сссылка на app.js
+         *
+         * @field
+         * @name Router#app
+         * @type {Object}
+         */
+        app: null,
 
         /**
          * @constructor
          * @name Router#initialize
          * @returns {undefined}
          */
-        initialize: function () {
+        initialize: function (params) {
+            this.app = params.app;
             Backbone.history.start({
                 pushState: true
             });
@@ -41,10 +57,14 @@ define([
          *
          * @method
          * @name Router#postsPage
+         * @param {string} locale локаль
          * @returns {undefined}
          */
         postsPage: function (locale) {
-            debugger;
+            new PostsListView({
+                app: this.app,
+                locale: locale
+            });
         },
 
         /**
@@ -52,10 +72,22 @@ define([
          *
          * @method
          * @name Router#postPage
+         * @param {string} locale локаль
+         * @param {string} year год
+         * @param {string} month месяц
+         * @param {string} date день
+         * @param {string} title заголовок из урла
          * @returns {undefined}
          */
         postPage: function (locale, year, month, date, title) {
-            debugger;
+            new PostDetailView({
+                app: this.app,
+                locale: locale,
+                year: year,
+                month: month,
+                date: date,
+                title: title
+            });
         },
 
         /**
@@ -63,10 +95,15 @@ define([
          *
          * @method
          * @name Router#addPostPage
+         * @param {string} locale локаль
          * @returns {undefined}
          */
-        addPostPage: function () {
-            debugger;
+        addPostPage: function (locale) {
+            Soshace.firstLoad = false;
+            new AddPostView({
+                app: this.app,
+                locale: locale
+            });
         },
 
         /**
@@ -74,10 +111,15 @@ define([
          *
          * @method
          * @name Router#loginPage
+         * @param {string} locale локаль
          * @returns {undefined}
          */
-        loginPage: function () {
-            debugger;
+        loginPage: function (locale) {
+            Soshace.firstLoad = false;
+            new LoginView({
+                app: this.app,
+                locale: locale
+            });
         },
 
         /**
@@ -85,10 +127,15 @@ define([
          *
          * @method
          * @name Router#registrationPage
+         * @param {string} locale локаль
          * @returns {undefined}
          */
-        registrationPage: function () {
-            debugger;
+        registrationPage: function (locale) {
+            Soshace.firstLoad = false;
+            new RegistrationView({
+                app: this.app,
+                locale: locale
+            });
         }
     });
 });

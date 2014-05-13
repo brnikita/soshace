@@ -8,6 +8,7 @@ require.config(
             'underscore.string': 'libs/underscore/underscore.string',
             'bootstrap': 'libs/bootstrap',
             'prettify': 'libs/prettify',
+            'handlebars': 'libs/handlebars',
             'google-analytics': 'libs/google-analytics',
             'yandex-metrika': 'libs/yandex-metrika',
             'jquery.validation': 'libs/jquery/jquery.validation',
@@ -73,6 +74,9 @@ require.config(
                 deps: [
                     'backbone'
                 ]
+            },
+            'handlebars': {
+                exports: 'Handlebars'
             }
         }
     }

@@ -22,6 +22,11 @@ module.exports = {
         //Загружаем изображение
         App.post('/upload_img', UploadImageController.upload);
 
+        //Получаем список постов
+        App.get('/api/posts', PostsController.getPosts);
+        //Получаем пост
+        App.get('/api/post', PostsController.getPost);
+
         //Добавляем пост
         App.post('/api/post', AddPostsController.addPost);
 

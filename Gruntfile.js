@@ -98,6 +98,12 @@ module.exports = function (grunt) {
                         cwd: '<%= blog.app %>',
                         src: 'views/**/*.hbs',
                         dest: '<%= blog.dist %>'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= blog.app %>',
+                        src: 'locales/**/*.json',
+                        dest: '<%= blog.dist %>'
                     }
                 ]
             },
@@ -117,6 +123,12 @@ module.exports = function (grunt) {
                         expand: true,
                         cwd: '<%= blog.app %>',
                         src: 'views/**/*.hbs',
+                        dest: '<%= blog.dist %>'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= blog.app %>',
+                        src: 'locales/**/*.json',
                         dest: '<%= blog.dist %>'
                     }
                 ]

@@ -17,17 +17,17 @@ var Blog = {
      *
      * @private
      * @function
-     * @name Worker.init
+     * @name Blog.initialize
      * @return {undefined}
      */
-    _init: function () {
-        soshace.VERSION = Package.version;
-        soshace.ENVIRONMENT = App.get('env');
-        this._configure();
+    initialize: function () {
+        Soshace.VERSION = Package.version;
+        Soshace.ENVIRONMENT = App.get('env');
+        this.configure();
         //Подрубаемся к базе
         DbConnection.databaseOpen(function () {
             Router.init(App);
-            App.listen(soshace.PORT, soshace.HOST);
+            App.listen(Soshace.PORT, Soshace.HOST);
         });
 
     },
@@ -35,12 +35,11 @@ var Blog = {
     /**
      * Конфигурируем наше приложение
      *
-     * @private
-     * @function
-     * @name Worker.configure
+     * @method
+     * @name Blog.configure
      * @return {undefined}
      */
-    _configure: function () {
+    configure: function () {
         App.use(Express.bodyParser());
         App.enable('view cache');
         App.set('views', 'app/views/');
@@ -53,10 +52,10 @@ var Blog = {
 
         App.set('view engine', 'hbs');
         I18n.expressBind(App, {
-            locales: soshace.LOCALES,
-            directory: 'app/src/locales',
+            locales: Soshace.LOCALES,
+            directory: 'app/locales',
             extension: '.json',
-            defaultLocale: soshace.DEFAULT_LOCALE
+            defaultLocale: Soshace.DEFAULT_LOCALE
         });
         App.use(App.router);
 
@@ -82,4 +81,4 @@ var Blog = {
     }
 };
 
-Blog._init();
+Blog.initialize();

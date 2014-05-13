@@ -12,8 +12,13 @@
 </head>
 <body class="{{bodyClass}}">
 <div class="body-messages js-body-messages"></div>
-{{> headerView}}
-<div class="content">
+<div class="loader js-loader-mask hide">
+    <div class="loader__icon"></div>
+</div>
+<div class="js-header">
+    {{> headerView}}
+</div>
+<div class="content js-content">
     {{{body}}}
 </div>
 </body>
@@ -27,7 +32,7 @@
     <!-- Yandex.Metrika counter-->
     <noscript>
         <div>
-            <img src="//mc.yandex.ru/watch/23765065" style="position:absolute; left:-9999px;" alt="">
+            <img src="//mc.yandex.ru/watch/23765065" class="ya-metrika__img" alt="">
         </div>
     </noscript>
     <!-- /Yandex.Metrika counter-->

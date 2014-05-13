@@ -60,15 +60,15 @@ var UploadImageController = {
         md5sum.update(imageData);
         newImageName = md5sum.digest('hex') + '.' + this.outputFormat;
 
-        if (soshace.ENVIRONMENT === 'development') {
+        if (Soshace.ENVIRONMENT === 'development') {
             webImgUrl = '/media/' + newImageName;
         }
 
-        if (soshace.ENVIRONMENT === 'production') {
-            webImgUrl = soshace.PRODUCTION_DOMAIN + 'media/' + newImageName;
+        if (Soshace.ENVIRONMENT === 'production') {
+            webImgUrl = Soshace.PRODUCTION_DOMAIN + 'media/' + newImageName;
         }
 
-        localImagePath = soshace.MEDIA_DIRECTORY + newImageName;
+        localImagePath = Soshace.MEDIA_DIRECTORY + newImageName;
 
         return {
             webImgUrl: webImgUrl,

@@ -29,7 +29,7 @@
     "smarttabs": true,
     "globals": {
         "angular": false,
-        "soshace": false,
+        "Soshace": false,
         "$": false,
         "ga": false,
         "define": false,
