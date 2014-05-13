@@ -54,8 +54,8 @@ var PostsModel = {
         var page = params.page || 0;
 
         return this.model.find({
-            locale: params.locale,
-            public: params.public
+            'locale': params.locale,
+            'public': params.public
         }, {
             title: 1,
             description: 1,
@@ -64,7 +64,9 @@ var PostsModel = {
             UTCYear: 1,
             UTCMonth: 1,
             UTCDate: 1
-        }).sort({date: -1});
+        }).sort({date: -1}).
+            skip(Soshace.POSTS_PER_PAGE * page).
+            limit(Soshace.POSTS_PER_PAGE);
     },
 
     /**
@@ -101,6 +103,6 @@ var PostsModel = {
         }
     }
 };
-PostsModel.initialize();
 
+PostsModel.initialize();
 module.exports = PostsModel;
