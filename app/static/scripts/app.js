@@ -32,7 +32,8 @@ require([
          * @type {Object}
          */
         elements: {
-            body: null
+            body: null,
+            title: null
         },
 
         /**
@@ -66,6 +67,7 @@ require([
          */
         setElements: function(){
             this.elements.body = $('body');
+            this.elements.title = $('title');
         },
 
         /**

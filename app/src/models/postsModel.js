@@ -81,7 +81,6 @@ var PostsModel = {
         return this.model.findOne(params, {
             title: 1,
             body: 1,
-            titleUrl: 1,
             date: 1
         });
     },

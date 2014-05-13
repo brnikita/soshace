@@ -23,8 +23,21 @@ var PostsController = {
      * @return {undefined}
      */
     getPost: function (request, response) {
-        PostsModel.getPost(request.query).exec(function (error, post) {
-            response.send(post);
+        var query = request.query,
+            params = {
+                'public': true,
+                'locale': query.locale,
+                'UTCYear': query.year,
+                'UTCMonth': query.month,
+                'UTCDate': query.date,
+                'titleUrl': query.title
+            };
+
+        PostsModel.getPost(params).exec(function (error, post) {
+            if (post) {
+                return response.send(post);
+            }
+            response.send({noPost: true});
         });
     },
 
@@ -39,12 +52,19 @@ var PostsController = {
      * @return {undefined}
      */
     getPosts: function (request, response) {
-        var params = {
-            page: request.query.page
-        };
+        var page = request.query.page || 0,
+            params = {
+                'public': true,
+                'locale': request.query.locale,
+                'page': page
+            };
 
         PostsModel.getPosts(params).exec(function (error, posts) {
-            response.send(posts);
+            if (posts && posts.length) {
+                return response.send(posts);
+            }
+
+            response.send({noPosts: true});
         });
     },
 
@@ -61,12 +81,12 @@ var PostsController = {
     renderPost: function (request, response) {
         var renderParams = new RenderParams(request),
             params = {
-                public: true,
-                locale: request.params.locale,
-                UTCYear: request.params.year,
-                UTCMonth: request.params.month,
-                UTCDate: request.params.date,
-                titleUrl: request.params.titleUrl
+                'public': true,
+                'locale': request.params.locale,
+                'UTCYear': request.params.year,
+                'UTCMonth': request.params.month,
+                'UTCDate': request.params.date,
+                'titleUrl': request.params.titleUrl
             };
 
         PostsModel.getPost(params).exec(function (error, post) {

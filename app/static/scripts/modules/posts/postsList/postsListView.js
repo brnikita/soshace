@@ -12,8 +12,9 @@ define([
     'backbone',
     'utils/widgets',
     './postsListModel',
+    'utils/helpers',
     'backbone.layoutmanager'
-], function ($, _, Backbone, Widgets, PostsListModel) {
+], function ($, _, Backbone, Widgets, PostsListModel, Helpers) {
     return Backbone.Layout.extend({
         /**
          * Ссылка на объект App
@@ -72,16 +73,33 @@ define([
 
             if (Soshace.firstLoad) {
                 Soshace.firstLoad = false;
-                this.afterRender();
                 return;
             }
 
             Widgets.showLoader($body);
             this.model = new PostsListModel();
-            this.model.on('change', _.bind(function(){
+            this.model.on('change', _.bind(function () {
                 Widgets.hideLoader($body);
+                this.render();
             }, this));
-            this.model.fetch();
+            this.model.fetch({data: $.param({
+                locale: params.locale,
+                page: params.page
+            })});
+        },
+
+        /**
+         * @method
+         * @name PostsListView.serialize
+         * @returns {Object}
+         */
+        serialize: function () {
+            var locale = Helpers.getLocale(),
+                model = this.model.toJSON();
+            return {
+                locale: locale,
+                posts: model
+            };
         },
 
         /**

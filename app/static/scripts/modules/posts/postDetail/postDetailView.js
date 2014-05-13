@@ -68,20 +68,18 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
-            debugger;
             var $body = params.app.elements.body;
 
             this.app = params.app;
 
             if (Soshace.firstLoad) {
                 Soshace.firstLoad = false;
-                this.afterRender();
                 return;
             }
 
             Widgets.showLoader($body);
             this.model = new PostDetailModel();
-            this.model.on('change', _.bind(function(){
+            this.model.on('change', _.bind(function () {
                 Widgets.hideLoader($body);
                 this.render();
             }, this));
@@ -97,10 +95,23 @@ define([
 
         /**
          * @method
+         * @name PostDetailView.serialize
+         * @returns {Object}
+         */
+        serialize: function () {
+            var model = this.model.toJSON();
+            return {
+                post: model
+            };
+        },
+
+        /**
+         * @method
          * @name PostDetailView.afterRender
          * @returns {undefined}
          */
         afterRender: function () {
+            this.app.elements.title.html(this.model.get('title'));
 //            Widgets.prettify(this.$el, 'js');
         }
     });
