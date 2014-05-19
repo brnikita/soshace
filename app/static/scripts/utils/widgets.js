@@ -10,7 +10,8 @@ define([
     'jquery',
     'underscore'
 ], function ($, _) {
-    var errorsContainerDefault = $('.js-body-messages');
+    var errorsContainerDefault = $('.js-body-messages'),
+        $body = $('body');
 
     return {
         /**
@@ -54,6 +55,20 @@ define([
             });
 
             this.showMessages(messages, errorsContainer, 'alert-danger');
+        },
+
+        /**
+         * Метод меняет класс у тела страницы
+         *
+         * @method
+         * @name Widgets.showMessages
+         * @param {string} bodyClass новый класс body
+         * @returns {undefined}
+         */
+        setBodyClass: function (bodyClass) {
+            $body.removeAttr('class');
+            $body.addClass(bodyClass);
+            this.previousBodyClass = bodyClass;
         },
 
         /**
@@ -192,7 +207,7 @@ define([
             var $prettyPrint = $('.prettyprint', context),
                 formattedHtml;
 
-            $prettyPrint.each(function(){
+            $prettyPrint.each(function () {
                 var codeBlock = $(this);
 
                 formattedHtml = prettyPrintOne(codeBlock.html(), codeLanguage, true);

@@ -7,14 +7,14 @@ require([
     'backbone',
     'router',
     'utils/helpers',
-    'utils/widgets',
+    'modules/headerView',
     'utils/handlebarsHelpers',
     'backbone.layoutmanager',
     'config',
     'jquery.validation',
     'google-analytics',
     'yandex-metrika'
-], function ($, _, Handlebars, Backbone, Router, Helpers, Widgets) {
+], function ($, _, Handlebars, Backbone, Router, Helpers, HeaderView) {
     var App = {
 
         /**
@@ -23,6 +23,15 @@ require([
          * @type {Backbone.Router | null}
          */
         router: null,
+
+        /**
+         * Экземпляр вид шапки
+         *
+         * @field
+         * @name App.headerView
+         * @type {Backbone.Layout | null}
+          */
+        headerView: null,
 
         /**
          * Список ссылкок на элемнты DOM
@@ -45,11 +54,9 @@ require([
             _.bindAll(this, 'routerLinkHandler');
             this.setElements();
             var $body = this.elements.body;
-
-            Widgets.showLoader($body);
+            this.headerView = new HeaderView();
             this.backboneLayoutConfigure();
             this.getCurrentLocale().done(_.bind(function () {
-                Widgets.hideLoader($body);
                 $body.on('click', '.js-router-link', this.routerLinkHandler);
                 this.router = new Router({
                     app: App
@@ -135,9 +142,10 @@ require([
          */
         routerLinkHandler: function (event) {
             var $target = $(event.target),
-                link = $target.attr('href');
+                link = $target.closest('.js-router-link').attr('href');
 
             event.preventDefault();
+            this.headerView.changeTab(link);
             this.router.navigate(link, {trigger: true});
         },
 

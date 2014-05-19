@@ -3,15 +3,16 @@
 /**
  * Вид страницы списка постов
  *
- * @module PostsListView
+ * @module HeaderView
  */
 
 define([
     'jquery',
     'underscore',
     'backbone',
+    'utils/helpers',
     'backbone.layoutmanager'
-], function ($, _, Backbone) {
+], function ($, _, Backbone, Helpers) {
     return Backbone.Layout.extend({
 
         /**
@@ -19,39 +20,84 @@ define([
          * будет прикреплен вид
          *
          * @field
-         * @name PostsListView.el
+         * @name HeaderView.el
          * @type {string}
          */
-        el: '.js-content',
+        el: '.js-header',
 
         /**
          * @field
-         * @name PostsListView.elements
+         * @name HeaderView.elements
          * @type {Object}
          */
         elements: {
         },
 
         /**
+         * @field
+         * @name HeaderView.tabsConfig
+         * @type {Object}
+         */
+        tabsConfig: {
+            isPostsPage: false,
+            isAddPostPage: false,
+            isSignUpPage: false,
+            isSignInPage: false
+        },
+
+        /**
          * Путь до шаблона
          *
          * @field
-         * @name PostsListView.elements
+         * @name HeaderView.elements
          * @type {string}
          */
-        template: 'posts/postsListView',
+        template: 'partials/headerView',
 
         /**
          * @constructor
-         * @name PostsListView.initialize
+         * @name HeaderView.initialize
          * @returns {undefined}
          */
         initialize: function () {
         },
 
         /**
+         * Метод смены таба
+         *
          * @method
-         * @name PostsListView.afterRender
+         * @name HeaderView.changeTab
+         * @param {string} [tabName] имя таба
+         * @returns {undefined}
+         */
+        changeTab: function (tabName) {
+            var tabConfig = this.tabsConfig;
+
+            _.each(tabConfig, function (value, tab) {
+                tabConfig[tab] = false;
+            });
+
+            if (tabName && typeof tabConfig[tabName] !== 'undefined') {
+                tabConfig[tabName] = true;
+            }
+            this.render();
+        },
+
+        /**
+         * @method
+         * @name HeaderView.serialize
+         * @returns {Object}
+         */
+        serialize: function () {
+            var params = {};
+            params = _.extend(params, this.tabsConfig);
+            params.locale = Helpers.getLocale();
+            return params;
+        },
+
+        /**
+         * @method
+         * @name HeaderView.afterRender
          * @returns {undefined}
          */
         afterRender: function () {

@@ -61,6 +61,11 @@ define([
          * @returns {undefined}
          */
         postsPage: function (locale) {
+            if (Soshace.firstLoad) {
+                Soshace.firstLoad = false;
+                return;
+            }
+            this.app.headerView.changeTab('isPostsPage');
             new PostsListView({
                 app: this.app,
                 locale: locale
@@ -80,6 +85,11 @@ define([
          * @returns {undefined}
          */
         postPage: function (locale, year, month, date, title) {
+            if (Soshace.firstLoad) {
+                Soshace.firstLoad = false;
+                return;
+            }
+            this.app.headerView.changeTab();
             new PostDetailView({
                 app: this.app,
                 locale: locale,
@@ -99,6 +109,7 @@ define([
          * @returns {undefined}
          */
         addPostPage: function (locale) {
+            this.app.headerView.changeTab('isAddPostPage');
             Soshace.firstLoad = false;
             new AddPostView({
                 app: this.app,
@@ -115,6 +126,7 @@ define([
          * @returns {undefined}
          */
         loginPage: function (locale) {
+            this.app.headerView.changeTab('isSignInPage');
             Soshace.firstLoad = false;
             new LoginView({
                 app: this.app,
@@ -131,6 +143,7 @@ define([
          * @returns {undefined}
          */
         registrationPage: function (locale) {
+            this.app.headerView.changeTab('isSignUpPage');
             Soshace.firstLoad = false;
             new RegistrationView({
                 app: this.app,

@@ -68,19 +68,10 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
-            var $body = params.app.elements.body;
-
+            Widgets.setBodyClass('bg-color-green bg-symbols');
             this.app = params.app;
-
-            if (Soshace.firstLoad) {
-                Soshace.firstLoad = false;
-                return;
-            }
-
-            Widgets.showLoader($body);
             this.model = new PostDetailModel();
             this.model.on('change', _.bind(function () {
-                Widgets.hideLoader($body);
                 this.render();
             }, this));
 
