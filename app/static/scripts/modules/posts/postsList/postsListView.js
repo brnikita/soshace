@@ -70,13 +70,10 @@ define([
             Widgets.setBodyClass('bg-color-green bg-symbols');
             this.app = params.app;
             this.model = new PostsListModel();
-            this.model.on('change', _.bind(function () {
+            this.model.on('updatePosts', _.bind(function () {
                 this.render();
             }, this));
-            this.model.fetch({data: $.param({
-                locale: params.locale,
-                page: params.page
-            })});
+            this.model.getPosts(params.locale, params.page);
         },
 
         /**
@@ -86,10 +83,11 @@ define([
          */
         serialize: function () {
             var locale = Helpers.getLocale(),
-                model = this.model.toJSON();
+                posts = this.model.get('posts');
+
             return {
                 locale: locale,
-                posts: model
+                posts: posts
             };
         },
 
