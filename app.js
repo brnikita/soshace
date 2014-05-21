@@ -22,7 +22,7 @@ var Blog = {
      */
     initialize: function () {
         Soshace.VERSION = Package.version;
-        Soshace.ENVIRONMENT = App.get('env');
+        Soshace.IS_PRODUCTION = App.get('env') === 'production';
         this.configure();
         //Подрубаемся к базе
         DbConnection.databaseOpen(function () {

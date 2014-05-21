@@ -60,11 +60,7 @@ var PostsController = {
             };
 
         PostsModel.getPosts(params).exec(function (error, posts) {
-            if (posts && posts.length) {
-                return response.send(posts);
-            }
-
-            response.send({noPosts: true});
+            return response.send(posts);
         });
     },
 
