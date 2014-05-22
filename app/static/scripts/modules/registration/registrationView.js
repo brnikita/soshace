@@ -50,6 +50,17 @@ define([
          * @type {Object}
          */
         elements: {
+            //Поля, которые сохряняем в базу
+            validateInput: null
+        },
+
+        /**
+         * @method
+         * @name RegistrationView.events
+         * @type {Object}
+         */
+        events: {
+            'click .js-sign-up': 'submitForm'
         },
 
         /**
@@ -75,10 +86,50 @@ define([
 
         /**
          * @method
+         * @name RegistrationView.getFormData
+         * @returns {Object}
+         */
+        getFormData: function(){
+
+        },
+
+        /**
+         * @method
+         * @name RegistrationView.validateForm
+         * @returns
+         */
+        validateForm: function(){
+
+        },
+
+        /**
+         * @method
+         * @name RegistrationView.submitForm
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        submitForm: function(event){
+            this.validateForm();
+            event.preventDefault();
+        },
+
+        /**
+         * @method
          * @name RegistrationView.serialize
          * @returns {Object}
          */
         serialize: function () {
+        },
+
+        /**
+         * Метод сохряняет ссылки на DOM элементы
+         *
+         * @method
+         * @name RegistrationView.setElements
+         * @returns {undefined}
+         */
+        setElements: function(){
+            this.elements.validateInput = this.$('.js-validate-input');
         },
 
         /**
@@ -87,6 +138,7 @@ define([
          * @returns {undefined}
          */
         afterRender: function () {
+            this.setElements();
         }
     });
 });

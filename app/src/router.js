@@ -45,6 +45,7 @@ module.exports = {
 
         //страница регистрации
         App.get('/:locale/registration', RegistrationController.renderRegistration);
+        App.post('/api/saveUser', RegistrationController.saveUser);
 
         //страница входа
         App.get('/:locale/login', LoginController.renderLogin);

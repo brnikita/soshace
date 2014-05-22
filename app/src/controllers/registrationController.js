@@ -26,6 +26,40 @@ var RegistrationController = {
             title: 'Registration page',
             bodyClass: 'bg-books'
         }));
+    },
+
+    /**
+     * Метод валидирует входные данные по пользователю и возвращет
+     * ошибку, если данные не валидны
+     *
+     * @method
+     * @name RegistrationController.userDataValidate
+     * @param {Object} userData данные пользователя
+     * @returns {Object}
+     */
+    userDataValidate: function(userData){
+
+    },
+
+    /**
+     * Метод сохряняет пользователя в базу
+     *
+     * @method
+     * @name RegistrationController.saveUser
+     * @param {Object} request
+     * @param {Object} response
+     * @returns {undefined}
+     */
+    saveUser: function(request, response){
+        var userData = request.body;
+
+        if (typeof userData === 'undefined') {
+            response.send({
+                error: true,
+                message: 'Bad request'
+            });
+
+        }
     }
 };
 

@@ -44,7 +44,8 @@ define(function () {
             scripts: 'static/scripts/',
             api: {
                 postDetails: '/api/post',
-                posts: '/api/posts'
+                posts: '/api/posts',
+                saveUser: '/api/saveUser'
             }
         }
     };
