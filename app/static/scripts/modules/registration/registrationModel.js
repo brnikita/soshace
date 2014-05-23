@@ -9,8 +9,9 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
-], function ($, _, Backbone) {
+    'backbone',
+    'utils/helpers'
+], function ($, _, Backbone, Helpers) {
     return Backbone.Model.extend({
 
         /**
@@ -21,11 +22,25 @@ define([
         url: Soshace.urls.api.saveUser,
 
         /**
+         * @property
+         * @name RegistrationModel.defaults
+         * @type {Object}
+         */
+        defaults: {
+            email: null,
+            password: null,
+            repeatPassword: null,
+            locale: null
+        },
+
+        /**
          * @constructor
          * @name RegistrationModel.initialize
          * @returns {undefined}
          */
         initialize: function () {
+            var locale = Helpers.getLocale();
+            this.set({locale: locale}, {silent: true});
         }
     });
 });

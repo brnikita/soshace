@@ -146,7 +146,7 @@ require([
 
             event.preventDefault();
             this.headerView.changeTab(link);
-            this.router.navigate(link, {trigger: true});
+            Backbone.history.navigate(link, {trigger: true});
         },
 
         /**

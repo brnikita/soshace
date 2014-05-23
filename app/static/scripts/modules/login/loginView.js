@@ -70,6 +70,10 @@ define([
         initialize: function (params) {
             Widgets.setBodyClass('bg-books');
             this.app = params.app;
+            if (Soshace.firstLoad) {
+                Soshace.firstLoad = false;
+                return;
+            }
             this.render();
         },
 

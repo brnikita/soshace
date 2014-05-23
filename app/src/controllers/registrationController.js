@@ -1,5 +1,6 @@
 'use strict';
 var _ = require('underscore'),
+    UsersModel = require('../models/usersModel'),
     RenderParams = require('../common/renderParams');
 /**
  * Контроллер страницы регистрации
@@ -37,7 +38,7 @@ var RegistrationController = {
      * @param {Object} userData данные пользователя
      * @returns {Object}
      */
-    userDataValidate: function(userData){
+    userDataValidate: function (userData) {
 
     },
 
@@ -50,7 +51,7 @@ var RegistrationController = {
      * @param {Object} response
      * @returns {undefined}
      */
-    saveUser: function(request, response){
+    saveUser: function (request, response) {
         var userData = request.body;
 
         if (typeof userData === 'undefined') {
@@ -58,8 +59,14 @@ var RegistrationController = {
                 error: true,
                 message: 'Bad request'
             });
-
+            return;
         }
+
+        UsersModel.addUser(userData, function (error) {
+            response.send({
+                error: error
+            });
+        });
     }
 };
 

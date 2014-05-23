@@ -11,9 +11,10 @@ define([
     'underscore',
     'backbone',
     'utils/widgets',
+    'utils/helpers',
     './registrationModel',
     'backbone.layoutmanager'
-], function ($, _, Backbone, Widgets, RegistrationModel) {
+], function ($, _, Backbone, Widgets, Helpers, RegistrationModel) {
     return Backbone.Layout.extend({
 
         /**
@@ -60,7 +61,8 @@ define([
          * @type {Object}
          */
         events: {
-            'click .js-sign-up': 'submitForm'
+            'click .js-sign-up': 'submitForm',
+            'keyup .js-model-field': 'saveFieldToModel'
         },
 
         /**
@@ -79,38 +81,85 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
+            _.bindAll(this, 'saveFormData', 'saveSuccess', 'saveFailed');
             Widgets.setBodyClass('bg-books');
+            this.model = new RegistrationModel();
             this.app = params.app;
+            if (Soshace.firstLoad) {
+                Soshace.firstLoad = false;
+                return;
+            }
             this.render();
         },
 
         /**
+         * Метод сохраняет значения полей в модель
+         *
          * @method
-         * @name RegistrationView.getFormData
-         * @returns {Object}
-         */
-        getFormData: function(){
-
-        },
-
-        /**
-         * @method
-         * @name RegistrationView.validateForm
-         * @returns
-         */
-        validateForm: function(){
-
-        },
-
-        /**
-         * @method
-         * @name RegistrationView.submitForm
+         * @name RegistrationView.saveFieldToModel
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
-        submitForm: function(event){
-            this.validateForm();
+        saveFieldToModel: function (event) {
+            var params = {},
+                $field = $(event.target),
+                fieldValue = $field.val(),
+                fieldName = $field.attr('name');
+
+            params[fieldName] = fieldValue;
+            this.model.set(params, {silent: true});
+        },
+
+        /**
+         * Метод обработчик отправки формы
+         *
+         * @method
+         * @name RegistrationView.submitForm
+         * @returns {undefined}
+         */
+        submitForm: function () {
+            this.saveFormData(true);
+        },
+
+        /**
+         * Метод сохраняет данные формы в содель
+         *
+         * @method
+         * @name RegistrationView.saveFormData
+         * @returns {undefined}
+         */
+        saveFormData: function () {
+            var _this = this;
+
+            this.model.save(null, {
+                success: _this.saveSuccess,
+                error: _this.saveFailed
+            });
             event.preventDefault();
+        },
+
+        /**
+         * Метод обработчик успешной регистрации пользователя
+         *
+         * @method
+         * @name RegistrationView.saveSuccess
+         * @returns {undefined}
+         */
+        saveSuccess: function () {
+            var locale = Helpers.getLocale(),
+                link = '/' + locale + '/add_post';
+            Backbone.history.navigate(link, {trigger: true});
+        },
+
+        /**
+         * Метод обработчик неудачной реги
+         *
+         * @method
+         * @name RegistrationView.saveFailed
+         * @returns {undefined}
+         */
+        saveFailed: function () {
+
         },
 
         /**
@@ -128,7 +177,7 @@ define([
          * @name RegistrationView.setElements
          * @returns {undefined}
          */
-        setElements: function(){
+        setElements: function () {
             this.elements.validateInput = this.$('.js-validate-input');
         },
 

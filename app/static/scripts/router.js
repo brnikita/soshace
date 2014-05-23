@@ -127,7 +127,6 @@ define([
          */
         loginPage: function (locale) {
             this.app.headerView.changeTab('isSignInPage');
-            Soshace.firstLoad = false;
             new LoginView({
                 app: this.app,
                 locale: locale
@@ -144,7 +143,6 @@ define([
          */
         registrationPage: function (locale) {
             this.app.headerView.changeTab('isSignUpPage');
-            Soshace.firstLoad = false;
             new RegistrationView({
                 app: this.app,
                 locale: locale
