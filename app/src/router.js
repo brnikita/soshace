@@ -4,7 +4,8 @@ var PostsController = require('./controllers/posts/postsController'),
     UploadImageController = require('./controllers/uploadImageController'),
     AddPostsController = require('./controllers/posts/addPostController'),
     RegistrationController = require('./controllers/registrationController'),
-    LoginController = require('./controllers/loginController');
+    LoginController = require('./controllers/loginController'),
+    UserController = require('./controllers/userController');
 
 module.exports = {
     /**
@@ -30,6 +31,8 @@ module.exports = {
         //Добавляем пост
         App.post('/api/post', AddPostsController.addPost);
 
+        App.post('/api/create_user', RegistrationController.createUser);
+
         //добавляем пост
         App.get('/:locale/add_post', AddPostsController.renderAddPost);
 
@@ -45,9 +48,10 @@ module.exports = {
 
         //страница регистрации
         App.get('/:locale/registration', RegistrationController.renderRegistration);
-        App.post('/api/saveUser', RegistrationController.saveUser);
 
         //страница входа
         App.get('/:locale/login', LoginController.renderLogin);
+
+        App.get('/:locale/user/:id', UserController.renderUserPage);
     }
 };

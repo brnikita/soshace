@@ -24,7 +24,7 @@ var LoginController = {
         response.render('loginView', _.extend(renderParams, {
             isSignInPage: true,
             title: 'Registration page',
-            bodyClass: 'bg-books'
+            bodyClass: 'bg-color-yellow bg-symbols'
         }));
     }
 };

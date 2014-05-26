@@ -82,7 +82,7 @@ define([
          */
         initialize: function (params) {
             _.bindAll(this, 'saveFormData', 'saveSuccess', 'saveFailed');
-            Widgets.setBodyClass('bg-books');
+            Widgets.setBodyClass('bg-symbols bg-color-yellow');
             this.model = new RegistrationModel();
             this.app = params.app;
             if (Soshace.firstLoad) {

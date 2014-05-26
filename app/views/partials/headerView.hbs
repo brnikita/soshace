@@ -1,34 +1,25 @@
 <div class="header">
     <div class="container">
         <div class="row header__menu">
-            <a href="/{{locale}}" class="js-router-link header__menu__logo col-md-5">
+            <a href="/{{locale}}" class="js-router-link header__menu__logo col-md-9">
                 <img src="/static/images/logo.png" alt="Soshace" class="img-responsive">
             </a>
-            {{#if isPostsPage}}
-                <span class="header__menu__tab header__menu__tab-active col-md-2">
-                    {{i18n 'Posts'}}
+            {{#if isUserPage}}
+                <span class="header__menu__tab header__menu__tab-active col-md-1">
+                    <span class="glyphicon glyphicon-user"></span>
                 </span>
             {{else}}
-                <a href="/{{locale}}" class="js-router-link header__menu__tab header__menu__tab-link col-md-2">
-                    {{i18n 'Posts'}}
+                <a href="/{{locale}}/user/1" class="js-router-link header__menu__tab header__menu__tab-link col-md-1">
+                    <span class="glyphicon glyphicon-user"></span>
                 </a>
             {{/if}}
             {{#if isAddPostPage}}
-                <span class="header__menu__tab header__menu__tab-active col-md-2">
-                    {{i18n 'Add Post'}}
+                <span class="header__menu__tab header__menu__tab-active col-md-1">
+                    <span class="glyphicon glyphicon-pencil"></span>
                 </span>
             {{else}}
-                <a href="/{{locale}}/add_post" class="js-router-link header__menu__tab header__menu__tab-link col-md-2">
-                    {{i18n 'Add Post'}}
-                </a>
-            {{/if}}
-            {{#if isSignUpPage}}
-                <span class="header__menu__tab header__menu__tab-active col-md-2">
-                    {{i18n 'Sign Up'}}
-                </span>
-            {{else}}
-                <a href="/{{locale}}/registration" class="js-router-link header__menu__tab header__menu__tab-link col-md-2">
-                    {{i18n 'Sign Up'}}
+                <a href="/{{locale}}/add_post" class="js-router-link header__menu__tab header__menu__tab-link col-md-1">
+                    <span class="glyphicon glyphicon-pencil"></span>
                 </a>
             {{/if}}
             {{#if isSignInPage}}
@@ -37,7 +28,9 @@
                 </span>
             {{else}}
                 <a href="/{{locale}}/login" class="js-router-link header__menu__tab header__menu__tab-link col-md-1">
-                    {{i18n 'Sign In'}}
+                    <span class="header__menu__tab-link__text">
+                        {{i18n 'Sign In'}}
+                    </span>
                 </a>
             {{/if}}
         </div>

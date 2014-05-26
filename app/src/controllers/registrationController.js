@@ -25,7 +25,7 @@ var RegistrationController = {
         response.render('registrationView', _.extend(renderParams, {
             isSignUpPage: true,
             title: 'Registration page',
-            bodyClass: 'bg-books'
+            bodyClass: 'bg-symbols bg-color-yellow'
         }));
     },
 
@@ -43,15 +43,15 @@ var RegistrationController = {
     },
 
     /**
-     * Метод сохряняет пользователя в базу
+     * Метод создает пользователя в базе
      *
      * @method
-     * @name RegistrationController.saveUser
+     * @name RegistrationController.createUser
      * @param {Object} request
      * @param {Object} response
      * @returns {undefined}
      */
-    saveUser: function (request, response) {
+    createUser: function (request, response) {
         var userData = request.body;
 
         if (typeof userData === 'undefined') {

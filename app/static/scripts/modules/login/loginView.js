@@ -68,7 +68,7 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
-            Widgets.setBodyClass('bg-books');
+            Widgets.setBodyClass('bg-symbols bg-color-yellow');
             this.app = params.app;
             if (Soshace.firstLoad) {
                 Soshace.firstLoad = false;
