@@ -45,7 +45,7 @@ define(function () {
             api: {
                 postDetails: '/api/post',
                 posts: '/api/posts',
-                saveUser: '/api/saveUser'
+                createUser: '/api/create_user'
             }
         }
     };

@@ -14,8 +14,18 @@ define([
     'modules/posts/postDetail/postDetailView',
     'modules/posts/addPost/addPostView',
     'modules/registration/registrationView',
-    'modules/login/loginView'
-], function ($, _, Backbone, HeaderView, PostsListView, PostDetailView, AddPostView, RegistrationView, LoginView) {
+    'modules/login/loginView',
+    'modules/user/userView'
+], function ($,
+             _,
+             Backbone,
+             HeaderView,
+             PostsListView,
+             PostDetailView,
+             AddPostView,
+             RegistrationView,
+             LoginView,
+             UserView) {
     return Backbone.Router.extend({
 
         /**
@@ -47,9 +57,12 @@ define([
         routes: {
             ':locale': 'postsPage',
             ':locale/posts/:year/:month/:date/:title': 'postPage',
+            ':locale/posts/:year/:month/:date/:title/': 'postPage',
             ':locale/add_post': 'addPostPage',
             ':locale/registration': 'registrationPage',
-            ':locale/login': 'loginPage'
+            ':locale/login': 'loginPage',
+            ':locale/user/:id': 'userPage',
+            ':locale/user/:id/': 'userPage'
         },
 
         /**
@@ -126,7 +139,6 @@ define([
          * @returns {undefined}
          */
         loginPage: function (locale) {
-            this.app.headerView.changeTab('isSignInPage');
             new LoginView({
                 app: this.app,
                 locale: locale
@@ -142,10 +154,24 @@ define([
          * @returns {undefined}
          */
         registrationPage: function (locale) {
-            this.app.headerView.changeTab('isSignUpPage');
             new RegistrationView({
                 app: this.app,
                 locale: locale
+            });
+        },
+
+        /**
+         * @method
+         * @name Router#userPage
+         * @param {string} locale локаль
+         * @param {string} userId id пользователя
+         * @returns {undefined}
+         */
+        userPage: function (locale, userId) {
+            new UserView({
+                app: this.app,
+                locale: locale,
+                userId: userId
             });
         }
     });

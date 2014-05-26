@@ -1,44 +1,57 @@
 'use strict';
 
 /**
- * Модуль страницы добавления поста
+ * Вид страницы добавления поста
  *
- * @module AddPostModule
+ * @module AddPostView
  */
 
 define([
     'jquery',
     'underscore',
     'underscore.string',
-    'utils/widgets'
-//    'utils/editor'
-], function ($, _, _s, Widgets, Editor) {
-    return {
+    'backbone',
+    'utils/widgets',
+    './addPostModel',
+    'utils/editorView',
+    'backbone.layoutmanager'
+], function ($, _, _s, Backbone, Widgets, AddPostModel, EditorView) {
+    return Backbone.Layout.extend({
 
         /**
-         * Контекст модуля
+         * Ссылка на объект App
          *
          * @field
-         * @name AddPostModule.$el
-         * @type {jQuery|null}
-         */
-        $el: null,
-
-        /**
-         * Список элементов DOM
-         *
-         * @field
-         * @name AddPostModule.elements
+         * @name AddPostView.app
          * @type {Object}
          */
-        elements: {},
+        app: null,
+
+        /**
+         * Класс родительского элемента, к которому
+         * будет прикреплен вид
+         *
+         * @field
+         * @name AddPostView.el
+         * @type {string}
+         */
+        el: '.js-content',
+
+        /**
+         * Модель деталей статьи
+         *
+         * @field
+         * @name AddPostView.model
+         * @type {Backbone.Model | null}
+         */
+        model: null,
 
         /**
          * Список ошибок: поля и тексты ошибок
          * Результат исполнения метода checkForm
          *
          * @field
-         * @name AddPostModule.formErrors
+         * @name AddPostView.formErrors
          * @type {Array|null}
          */
         formErrors: null,
@@ -47,7 +60,7 @@ define([
          * Список обработчиков ошибок
          *
          * @field
-         * @name AddPostModule.events
+         * @name AddPostView.events
          * @type {Object}
          */
         events: {
@@ -60,7 +73,7 @@ define([
 
         /**
          * @field
-         * @name AddPostModule.errorMessages
+         * @name AddPostView.errorMessages
          * @type {Object}
          */
         errorMessages: {
@@ -69,27 +82,59 @@ define([
         },
 
         /**
-         * @name AddPostModule.initialize
+         * @field
+         * @name AddPostView.elements
+         * @type {Object}
+         */
+        elements: {
+        },
+
+        /**
+         * Путь до шаблона
+         *
+         * @field
+         * @name AddPostView.elements
+         * @type {string}
+         */
+        template: 'posts/addPostView',
+
+        /**
+         * @constructor
+         * @name AddPostView.initialize
+         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function () {
-            var toolbarElement = $('.js-editor-toolbar', this.$el),
+        initialize: function (params) {
+            var toolbarElement,
                 formFields,
-                editorBody = $('.js-body-editor', this.$el);
+                editorBody;
+            Widgets.setBodyClass('bg-symbols bg-color-blue');
+            this.app = params.app;
 
+            if (Soshace.firstLoad) {
+                Soshace.firstLoad = false;
+            } else {
+                this.app.headerView.changeTab('isAddPostPage');
+                this.render();
+            }
+
+            toolbarElement = $('.js-editor-toolbar', this.$el);
+            editorBody = $('.js-body-editor', this.$el);
             _.bindAll(this, 'showServerMessages');
-
             this.elements.formFields = {};
             formFields = this.elements.formFields;
             formFields.title = $('.js-title', this.$el);
-            formFields.body = new Editor(editorBody, toolbarElement);
+            formFields.body = new EditorView({
+                editor: editorBody,
+                toolbar: toolbarElement
+            });
         },
 
         /**
          * Обработчик события получения фокуса полем формы
          *
          * @method
-         * @name AddPostModule.focusField
+         * @name AddPostView.focusField
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
@@ -103,7 +148,7 @@ define([
          * Метод убирает ошибку у заданного поля
          *
          * @method
-         * @name AddPostModule.hideClientError
+         * @name AddPostView.hideClientError
          * @param {jQuery} hideField поле, у которого нужно убрать ошибку
          * @returns {undefined}
          */
@@ -132,7 +177,7 @@ define([
          * Показываем серверные ошибки для полей
          *
          * @method
-         * @name AddPostModule.showServerErrors
+         * @name AddPostView.showServerErrors
          * @param {Object|Array} fields поля или поле с ошибками
          *                              Пример: {
          *                                        fieldName: 'title',
@@ -164,7 +209,7 @@ define([
          *
          * @method
          * @private
-         * @name AddPostModule.checkForm
+         * @name AddPostView.checkForm
          * @param {jQuery} formFields список проверяемых полей
          * @returns {Array} возвращает список ошибок [{
          *                                                  message: message, - сообщение об ошибке
@@ -202,7 +247,7 @@ define([
          * Возвращает данные формы
          *
          * @method
-         * @name AddPostModule.getFormData
+         * @name AddPostView.getFormData
          * @param {object} formFields
          * @returns {object}
          */
@@ -231,7 +276,7 @@ define([
          * Показ сообщений от сервера
          *
          * @method
-         * @name AddPostModule._showSuccessMessage
+         * @name AddPostView._showSuccessMessage
          * @param {Object} response Ответ сервера
          * @returns {undefined}
          */
@@ -255,10 +300,11 @@ define([
          * Обработчик отправки формы
          *
          * @method
-         * @name AddPostModule.submitForm
-         * @returns {boolean}
+         * @name AddPostView.submitForm
+         * @param {jQuery.Event} event
+         * @returns {undefined}
          */
-        submitForm: function () {
+        submitForm: function (event) {
             var formFields = this.elements.formFields;
 
             this.formErrors = this.checkForm(formFields);
@@ -272,7 +318,23 @@ define([
                 Widgets.showErrorMessages(this.formErrors);
             }
 
-            return false;
+            event.preventDefault();
+        },
+
+        /**
+         * @method
+         * @name AddPostView.serialize
+         * @returns {Object}
+         */
+        serialize: function () {
+        },
+
+        /**
+         * @method
+         * @name AddPostView.afterRender
+         * @returns {undefined}
+         */
+        afterRender: function () {
         }
-    };
+    });
 });

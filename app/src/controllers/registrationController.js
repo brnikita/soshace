@@ -23,7 +23,7 @@ var RegistrationController = {
         var renderParams = new RenderParams(request);
 
         response.render('registrationView', _.extend(renderParams, {
-            isSignUpPage: true,
+            isSignInPage: true,
             title: 'Registration page',
             bodyClass: 'bg-symbols bg-color-yellow'
         }));

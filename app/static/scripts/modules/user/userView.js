@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Вид страницы авторизации
+ * Вид страницы пользователя
  *
- * @module LoginView
+ * @module UserView
  */
 
 define([
@@ -11,16 +11,16 @@ define([
     'underscore',
     'backbone',
     'utils/widgets',
-    './loginModel',
+    './userModel',
     'backbone.layoutmanager'
-], function ($, _, Backbone, Widgets, LoginModel) {
+], function ($, _, Backbone, Widgets, UserModel) {
     return Backbone.Layout.extend({
 
         /**
          * Ссылка на объект App
          *
          * @field
-         * @name LoginView.app
+         * @name UserView.app
          * @type {Object}
          */
         app: null,
@@ -30,7 +30,7 @@ define([
          * будет прикреплен вид
          *
          * @field
-         * @name LoginView.el
+         * @name UserView.el
          * @type {string}
          */
         el: '.js-content',
@@ -39,14 +39,14 @@ define([
          * Модель деталей статьи
          *
          * @field
-         * @name LoginView.model
+         * @name UserView.model
          * @type {Backbone.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name LoginView.elements
+         * @name UserView.elements
          * @type {Object}
          */
         elements: {
@@ -56,34 +56,31 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name LoginView.elements
+         * @name UserView.elements
          * @type {string}
          */
-        template: 'loginView',
+        template: 'userView',
 
         /**
          * @constructor
-         * @name LoginView.initialize
+         * @name UserView.initialize
          * @param {Object} params
          * @returns {undefined}
          */
         initialize: function (params) {
-            Widgets.setBodyClass('bg-symbols bg-color-yellow');
+            Widgets.setBodyClass('bg-symbols bg-color-blue');
             this.app = params.app;
-            this.model = new LoginModel({
-                locale: params.locale
-            });
             if (Soshace.firstLoad) {
                 Soshace.firstLoad = false;
             } else {
-                this.app.headerView.changeTab('isSignInPage');
+                this.app.headerView.changeTab('isUserPage');
                 this.render();
             }
         },
 
         /**
          * @method
-         * @name LoginView.serialize
+         * @name UserView.serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -91,7 +88,7 @@ define([
 
         /**
          * @method
-         * @name LoginView.afterRender
+         * @name UserView.afterRender
          * @returns {undefined}
          */
         afterRender: function () {

@@ -83,13 +83,16 @@ define([
         initialize: function (params) {
             _.bindAll(this, 'saveFormData', 'saveSuccess', 'saveFailed');
             Widgets.setBodyClass('bg-symbols bg-color-yellow');
-            this.model = new RegistrationModel();
+            this.model = new RegistrationModel({
+                locale: params.locale
+            });
             this.app = params.app;
             if (Soshace.firstLoad) {
                 Soshace.firstLoad = false;
-                return;
+            } else {
+                this.app.headerView.changeTab('isSignInPage');
+                this.render();
             }
-            this.render();
         },
 
         /**

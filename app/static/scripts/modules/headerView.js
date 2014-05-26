@@ -42,7 +42,8 @@ define([
             isPostsPage: false,
             isAddPostPage: false,
             isSignUpPage: false,
-            isSignInPage: false
+            isSignInPage: false,
+            isUserPage: false
         },
 
         /**

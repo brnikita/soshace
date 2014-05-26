@@ -14,14 +14,15 @@
 define([
     'jquery',
     'underscore',
-    'simpleClass',
+    'backbone',
     'utils/widgets',
     'bootstrap',
     'prettify',
     'jquery.hotkeys',
-    'jquery.fileupload'
-], function ($, _, Class, Widgets) {
-    return Class.extend({
+    'jquery.fileupload',
+    'backbone.layoutmanager'
+], function ($, _, Backbone, Widgets) {
+    return Backbone.Layout.extend({
 
         /**
          * Свойство, указывающие, что созданный объект - это редактор
@@ -110,13 +111,13 @@ define([
         /**
          * @constructor
          * @name EditorUtil#initialize
-         * @param {jQuery} editor ссылка на элемент редактора
-         * @param {jQuery} toolbar сслыка на элемент панели управления
-         * @param {Object} options параметры редактора
+         * @oaram {Object} params
          * @returns {undefined}
          */
-        initialize: function (editor, toolbar, options) {
-            var toolbarPosition = toolbar.position(),
+        initialize: function (params) {
+            var editor = params.editor,
+                toolbar = params.toolbar,
+                toolbarPosition = toolbar.position(),
                 toolbarPositionTop = toolbarPosition.top,
                 $window = $(window),
                 addLinkModal = $('.js-add-link-modal');
@@ -130,7 +131,6 @@ define([
             this.elements.linkUrlInput = $('.js-add-link-modal-link-url', addLinkModal);
 
 
-            this.options = _.extend(this._defaults, options);
             this._toolbarBtnSelector = 'a[data-' +
                 this.options.commandRole +
                 '],button[data-' +
