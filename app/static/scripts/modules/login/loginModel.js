@@ -28,7 +28,6 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
-            debugger;
             this.set({locale: params.locale}, {silent: true});
         }
     });
