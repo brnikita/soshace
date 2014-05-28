@@ -18,7 +18,8 @@ require.config(
             'jquery.ui.widget': 'libs/jquery/jquery.ui.widget',
             'jquery.iframe-transport': 'libs/jquery/jquery.iframe-transport',
             'backbone': 'libs/backbone',
-            'backbone.layoutmanager': 'libs/backbone/backbone.layoutmanager'
+            'backbone.layoutmanager': 'libs/backbone/backbone.layoutmanager',
+            'backbone.validation': 'libs/backbone/backbone.validation'
 
         },
         shim: {
@@ -73,6 +74,12 @@ require.config(
             'backbone.layoutmanager': {
                 deps: [
                     'backbone'
+                ]
+            },
+            'backbone.validation': {
+                deps: [
+                    'backbone',
+                    'underscore'
                 ]
             },
             'handlebars': {
