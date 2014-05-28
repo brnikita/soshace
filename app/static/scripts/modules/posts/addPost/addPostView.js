@@ -141,7 +141,10 @@ define([
          * @type {Object}
          */
         elements: {
-            editorBody: null,
+            formFields: {
+                editorBody: null,
+                title: null
+            },
             toolbar: null,
             toolbarContainerElement: null,
             toolbarRowElement: null,
@@ -175,29 +178,22 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
-            var toolbarElement,
-                formFields,
-                editorBody;
-            
+            _.bindAll(this,
+                'showServerMessages',
+                'windowScrollHandler',
+                'touchHandler'
+            );
+
             Widgets.setBodyClass('bg-symbols bg-color-blue');
             this.app = params.app;
 
             if (Soshace.firstLoad) {
-                this.withoutRender();
+                Soshace.firstLoad = false;
+                this.afterRender();
             } else {
-                this.withRender();
+                this.app.headerView.changeTab('isAddPostPage');
+                this.render();
             }
-
-
-            _.bindAll(this,
-                'showServerMessages',
-                'windowScrollHandler'
-            );
-
-            this.elements.formFields = {};
-
-            formFields = this.elements.formFields;
-            formFields.title = $('.js-title', this.$el);
 
             this.toolbarBtnSelector = 'a[data-' +
                 this.options.commandRole +
@@ -205,52 +201,43 @@ define([
                 this.options.commandRole +
                 '],input[type=button][data-' +
                 this.options.commandRole + ']';
-
-            editor.attr('contenteditable', true)
-                .on('mouseup keyup mouseout', _.bind(function () {
-                    this.saveSelection();
-                    this.updateToolbar();
-                }, this));
-
-            this.elements.window.on('touchend', _.bind(function (event) {
-                    var isInside = (editor.is(event.target) || editor.has(event.target).length > 0),
-                        currentRange = this.getCurrentRange(),
-                        clear = currentRange && (currentRange.startContainer === currentRange.endContainer &&
-                            currentRange.startOffset === currentRange.endOffset);
-
-                    if (!clear || isInside) {
-                        this.saveSelection();
-                        this.updateToolbar();
-                    }
-                }, this)).on('scroll', this.windowScrollHandler);
         },
 
         /**
-         * Метод который вызывается при первой загрузке шаблона
-         * без рендера
+         * Метод делает основное поле ввода редактируемым
          *
          * @method
          * @name AddPostView#focusField
          * @returns {undefined}
          */
-        withoutRender: function(){
-            Soshace.firstLoad = false;
-            this.setElements();
-            this.bindHotKeys(this.options.hotKeys);
-            this.bindToolbar();
+        makeEditorFieldContentEditable: function(){
+           var editorField = this.elements.formFields.editorBody;
+
+            editorField.attr('contenteditable', true)
+                .on('mouseup keyup mouseout', _.bind(function () {
+                    this.saveSelection();
+                    this.updateToolbar();
+                }, this));
         },
 
-
         /**
-         * Метод, который вызывается, когда нужен рендер
+         * Метод обработчик события touched
          *
          * @method
-         * @name AddPostView#withRender
+         * @name AddPostView#touchHandler
          * @returns {undefined}
          */
-        withRender: function(){
-            this.app.headerView.changeTab('isAddPostPage');
-            this.render();
+        touchHandler: function(event){
+            var editor = this.elements.formFields.editorBody,
+                isInside = (editor.is(event.target) || editor.has(event.target).length > 0),
+                currentRange = this.getCurrentRange(),
+                clear = currentRange && (currentRange.startContainer === currentRange.endContainer &&
+                    currentRange.startOffset === currentRange.endOffset);
+
+            if (!clear || isInside) {
+                this.saveSelection();
+                this.updateToolbar();
+            }
         },
 
         /**
@@ -260,8 +247,9 @@ define([
          * @name AddPostView#windowScrollHandler
          * @returns {undefined}
          */
-        windowScrollHandler: function(){
-            var toolbarPosition = toolbar.position(),
+        windowScrollHandler: function () {
+            var toolbar = this.elements.toolbar,
+                toolbarPosition = toolbar.position(),
                 toolbarPositionTop = toolbarPosition.top,
                 $window = this.elements.window,
                 scrollTop = $window.scrollTop();
@@ -309,7 +297,7 @@ define([
                 //Исключаем поле, которое сейчас редактируем
                 _.each(this.formErrors, function (error) {
                     var field = error.element.isEditor ?
-                        error.element.elements.editorElement[0] : error.element[0];
+                        error.element.elements.editorBody[0] : error.element[0];
 
                     if (field !== hideField[0]) {
                         showErrors.push(error);
@@ -376,7 +364,7 @@ define([
                     value = element.val();
                 } else if (element.isEditor) {
                     value = element.cleanHtml();
-                    name = element.elements.editorElement.attr('name');
+                    name = element.elements.editorBody.attr('name');
                 }
 
                 if (!value) {
@@ -410,7 +398,7 @@ define([
                     value = _s.trim(field.val());
                     name = field.attr('name');
                 } else if (field.isEditor) {
-                    name = field.elements.editorElement.attr('name');
+                    name = field.elements.editorBody.attr('name');
                     value = field.cleanHtml();
                 }
 
@@ -477,7 +465,7 @@ define([
          * @returns {string}
          */
         cleanHtml: function () {
-            var html = this.elements.editorElement.html();
+            var html = this.elements.formFields.editorBody.html();
             return html && html.replace(/(<br>|\s|<div>(<br>|\s|&nbsp;)*<\/div>|&nbsp;)*$/, '');
         },
 
@@ -492,12 +480,12 @@ define([
          */
         updateToolbar: function () {
             if (this.options.activeToolbarClass) {
-                this.elements.toolbarElement.find(this.toolbarBtnSelector).each(_.bind(function () {
-                    var command = this.elements.editorElement.data(this.options.commandRole);
+                this.elements.toolbar.find(this.toolbarBtnSelector).each(_.bind(function () {
+                    var command = this.elements.formFields.editorBody.data(this.options.commandRole);
                     if (document.queryCommandState(command)) {
-                        this.elements.editorElement.addClass(this.options.activeToolbarClass);
+                        this.elements.formFields.editorBody.addClass(this.options.activeToolbarClass);
                     } else {
-                        this.elements.editorElement.removeClass(this.options.activeToolbarClass);
+                        this.elements.formFields.editorBody.removeClass(this.options.activeToolbarClass);
                     }
                 }, this));
             }
@@ -536,16 +524,16 @@ define([
          */
         bindHotKeys: function (hotKeys) {
             $.each(hotKeys, _.bind(function (hotKey, command) {
-                this.elements.editorElement.keydown(hotKey, _.bind(function (event) {
-                        if (this.elements.editorElement.attr('contenteditable') &&
-                            this.elements.editorElement.is(':visible')) {
+                this.elements.formFields.editorBody.keydown(hotKey, _.bind(function (event) {
+                        if (this.elements.formFields.editorBody.attr('contenteditable') &&
+                            this.elements.formFields.editorBody.is(':visible')) {
                             event.preventDefault();
                             event.stopPropagation();
                             this.execCommand(command);
                         }
                     }, this)).keyup(hotKey, _.bind(function (event) {
-                        if (this.elements.editorElement.attr('contenteditable') &&
-                            this.elements.editorElement.is(':visible')) {
+                        if (this.elements.formFields.editorBody.attr('contenteditable') &&
+                            this.elements.formFields.editorBody.is(':visible')) {
                             event.preventDefault();
                             event.stopPropagation();
                         }
@@ -633,12 +621,12 @@ define([
         bindToolbar: function () {
             var _this = this;
 
-            this.elements.toolbarElement.find(this.toolbarBtnSelector).on('click', function () {
+            this.elements.toolbar.find(this.toolbarBtnSelector).on('click', function () {
                 var button = $(this),
                     command = button.data(_this.options.commandRole);
 
                 _this.restoreSelection();
-                _this.elements.editorElement.focus();
+                _this.elements.formFields.editorBody.focus();
                 _this.saveSelection();
 
                 if (command === 'CreateLink') {
@@ -650,7 +638,7 @@ define([
 
             this.addSaveLinkBtnListener();
 
-            this.elements.toolbarElement.find('input[type=text][data-' + this.options.commandRole + ']').
+            this.elements.toolbar.find('input[type=text][data-' + this.options.commandRole + ']').
                 on('focus',function () {
                     var input = $(this);
 
@@ -715,7 +703,7 @@ define([
 
             //TODO: блокировать панель до загрузки первого изображения
             //Загруженные картинки не удалять!!!
-            this.elements.toolbarElement.find('input[type=file][data-' + _this.options.commandRole + ']').
+            this.elements.toolbar.find('input[type=file][data-' + _this.options.commandRole + ']').
                 fileupload({
                     dataType: 'json',
                     done: function (event, data) {
@@ -728,14 +716,14 @@ define([
                             return;
                         }
 
-                        _this.elements.editorElement.append($('<img>', {
+                        _this.elements.formFields.editorBody.append($('<img>', {
                             src: result.path,
                             class: 'img-responsive'
                         }));
                     }
                 }).
                 on('change', function () {
-                    _this.elements.editorElement.append(preLoader);
+                    _this.elements.formFields.editorBody.append(preLoader);
                 });
         },
 
@@ -748,8 +736,10 @@ define([
          */
         setElements: function () {
             this.elements.window = $(window);
+            this.elements.formFields = {};
             this.elements.toolbar = this.$('.js-editor-toolbar');
-            this.elements.editorBody = this.$('.js-body-editor');
+            this.elements.formFields.editorBody = this.$('.js-body-editor');
+            this.elements.formFields.title = this.$('.js-title');
             this.elements.addLinkModal = this.$('.js-add-link-modal');
             this.elements.toolbarContainerElement = this.$('.js-editor-toolbar-container');
             this.elements.toolbarRowElement = this.$('.js-editor-toolbar-row');
@@ -762,10 +752,12 @@ define([
          * @name AddPostView#afterRender
          * @returns {undefined}
          */
-        afterRender: function(){
+        afterRender: function () {
             this.setElements();
-            this.bindHotKeys(this.options.hotKeys);
+            this.bindHotKeys(this.defaultConfig.hotKeys);
             this.bindToolbar();
+            this.makeEditorFieldContentEditable();
+            this.elements.window.on('touchend', this.touchHandler).on('scroll', this.windowScrollHandler);
         }
     });
 });
