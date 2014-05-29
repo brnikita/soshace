@@ -57,4 +57,4 @@ UsersShema.statics.addUser = function (userData, callback) {
     }
 };
 
-module.exports = mongoose.model('Posts', UsersShema);
+module.exports = Mongoose.model('Users', UsersShema);

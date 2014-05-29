@@ -83,4 +83,4 @@ PostsShema.statics.addPost = function (postData, callback) {
     }
 };
 
-module.exports = mongoose.model('Posts', PostsShema);
+module.exports = Mongoose.model('Posts', PostsShema);

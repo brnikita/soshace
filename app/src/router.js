@@ -3,8 +3,8 @@
 var PostsController = require('./controllers/posts/postsController'),
     UploadImageController = require('./controllers/uploadImageController'),
     AddPostsController = require('./controllers/posts/addPostController'),
-    RegistrationController = require('./controllers/registrationController'),
-    LoginController = require('./controllers/loginController'),
+    RegistrationController = require('./controllers/auth/registrationController'),
+    LoginController = require('./controllers/auth/loginController'),
     UserController = require('./controllers/userController');
 
 module.exports = {

@@ -53,6 +53,15 @@ define([
         },
 
         /**
+         * @field
+         * @name LoginView.events
+         * @type {Object}
+         */
+        events: {
+            'click .js-login-nav-tabs a': 'changeTab'
+        },
+
+        /**
          * Путь до шаблона
          *
          * @field
@@ -79,6 +88,20 @@ define([
                 this.app.headerView.changeTab('isSignInPage');
                 this.render();
             }
+        },
+
+        /**
+         * Метод обработчик события клика по табу
+         *
+         * @method
+         * @name LoginView.changeTab
+         * @returns {undefined}
+         */
+        changeTab: function (event) {
+            var $target = $(event.target);
+
+            event.preventDefault();
+            $target.tab('show');
         },
 
         /**
