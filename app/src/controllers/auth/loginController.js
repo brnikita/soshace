@@ -1,6 +1,6 @@
 'use strict';
 var _ = require('underscore'),
-    RenderParams = require('../common/renderParams');
+    RenderParams = require('../../common/renderParams');
 /**
  * Контроллер страницы регистрации
  *

@@ -1,7 +1,7 @@
 'use strict';
 var _ = require('underscore'),
-    UsersModel = require('../models/usersModel'),
-    RenderParams = require('../common/renderParams');
+    UsersModel = require('../../models/usersModel'),
+    RenderParams = require('../../common/renderParams');
 /**
  * Контроллер страницы регистрации
  *
