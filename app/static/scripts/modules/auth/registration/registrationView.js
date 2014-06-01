@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Вид страницы авторизации
+ * Вид страницы регистрации
  *
- * @module LoginView
+ * @module RegistrationView
  */
 
 define([
@@ -11,16 +11,16 @@ define([
     'underscore',
     'backbone',
     'utils/widgets',
-    './loginModel',
+    './registrationModel',
     'backbone.layoutmanager'
-], function ($, _, Backbone, Widgets, LoginModel) {
+], function ($, _, Backbone, Widgets, RegistrationModel) {
     return Backbone.Layout.extend({
 
         /**
          * Ссылка на объект App
          *
          * @field
-         * @name LoginView.app
+         * @name RegistrationView.app
          * @type {Object}
          */
         app: null,
@@ -30,7 +30,7 @@ define([
          * будет прикреплен вид
          *
          * @field
-         * @name LoginView.el
+         * @name RegistrationView.el
          * @type {string}
          */
         el: '.js-content',
@@ -39,82 +39,62 @@ define([
          * Модель деталей статьи
          *
          * @field
-         * @name LoginView.model
+         * @name RegistrationView.model
          * @type {Backbone.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name LoginView.elements
+         * @name RegistrationView.elements
          * @type {Object}
          */
         elements: {
         },
 
         /**
-         * @field
-         * @name LoginView.events
-         * @type {Object}
-         */
-        events: {
-            'click .js-login-nav-tabs a': 'changeTab'
-        },
-
-        /**
          * Путь до шаблона
          *
          * @field
-         * @name LoginView.elements
+         * @name RegistrationView.template
          * @type {string}
          */
-        template: 'loginView',
+        template: 'authView',
 
         /**
          * @constructor
-         * @name LoginView.initialize
+         * @name RegistrationView.initialize
          * @param {Object} params
          * @returns {undefined}
          */
         initialize: function (params) {
             Widgets.setBodyClass('bg-symbols bg-color-yellow');
             this.app = params.app;
-            this.model = new LoginModel({
+            this.model = new RegistrationModel({
                 locale: params.locale
             });
             if (Soshace.firstLoad) {
                 Soshace.firstLoad = false;
             } else {
-                this.app.headerView.changeTab('isSignInPage');
+                this.app.headerView.changeTab('isAuthPage');
                 this.render();
             }
         },
 
         /**
-         * Метод обработчик события клика по табу
-         *
          * @method
-         * @name LoginView.changeTab
-         * @returns {undefined}
-         */
-        changeTab: function (event) {
-            var $target = $(event.target);
-
-            event.preventDefault();
-            $target.tab('show');
-        },
-
-        /**
-         * @method
-         * @name LoginView.serialize
+         * @name RegistrationView.serialize
          * @returns {Object}
          */
         serialize: function () {
+            var data = this.model.toJSON();
+            data.isRegistrationTab = true;
+            return data;
         },
 
         /**
          * @method
-         * @name LoginView.afterRender
+         * @name RegistrationView.afterRender
          * @returns {undefined}
          */
         afterRender: function () {

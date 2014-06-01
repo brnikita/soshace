@@ -21,8 +21,9 @@ var LoginController = {
     renderLogin: function (request, response) {
         var renderParams = new RenderParams(request);
 
-        response.render('loginView', _.extend(renderParams, {
-            isSignInPage: true,
+        response.render('authView', _.extend(renderParams, {
+            isAuthPage: true,
+            isLoginTab: true,
             title: 'Registration page',
             bodyClass: 'bg-color-yellow bg-symbols'
         }));

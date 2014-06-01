@@ -13,8 +13,8 @@ define([
     'modules/posts/postsList/postsListView',
     'modules/posts/postDetail/postDetailView',
     'modules/posts/addPost/addPostView',
-    'modules/registration/registrationView',
-    'modules/login/loginView',
+    'modules/auth/registration/registrationView',
+    'modules/auth/login/loginView',
     'modules/user/userView'
 ], function ($,
              _,

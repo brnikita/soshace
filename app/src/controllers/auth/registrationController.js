@@ -22,8 +22,9 @@ var RegistrationController = {
     renderRegistration: function (request, response) {
         var renderParams = new RenderParams(request);
 
-        response.render('registrationView', _.extend(renderParams, {
-            isSignInPage: true,
+        response.render('authView', _.extend(renderParams, {
+            isAuthPage: true,
+            isRegistrationTab: true,
             title: 'Registration page',
             bodyClass: 'bg-symbols bg-color-yellow'
         }));

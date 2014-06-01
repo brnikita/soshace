@@ -102,18 +102,20 @@ label {
         width: 170px;
       }
     }
+    &__tabs {
+      float: right;
+    }
     &__tab {
       color: #fff;
       font-weight: bold;
       text-align: center;
-      padding-top: 17px;
       height: 58px;
       border-right: #3e3d3d 1px solid;
       border-left: #3e3d3d 1px solid;
+      float: left;
+      padding: 17px 27px 0 27px;
       &-link {
-        &__text {
-          border-bottom: 1px #fff solid;
-        }
+        line-height: 26px;
       }
       &-link:hover {
         color: #fff;
@@ -121,10 +123,13 @@ label {
         background: #282727;
       }
       &-active {
+        line-height: 26px;
         background: #282727;
       }
       .glyphicon {
         font-size: 25px;
+        vertical-align: top;
+        margin-right: 3px;
       }
     }
   }

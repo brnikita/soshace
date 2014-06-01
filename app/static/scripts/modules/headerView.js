@@ -41,8 +41,7 @@ define([
         tabsConfig: {
             isPostsPage: false,
             isAddPostPage: false,
-            isSignUpPage: false,
-            isSignInPage: false,
+            isAuthPage: false,
             isUserPage: false
         },
 

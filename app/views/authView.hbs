@@ -4,14 +4,14 @@
             <div class="login-form font-color-yellow">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs js-login-nav-tabs">
-                    <li class="active"><a href="#login" data-toggle="login">{{i18n 'Login'}}</a></li>
-                    <li><a href="#registration" data-toggle="registration">{{i18n 'Registration'}}</a></li>
+                    <li class="{{#if isLoginTab}}active{{/if}}"><a href="/{{locale}}/login" class="js-router-link">{{i18n 'Login'}}</a></li>
+                    <li class="{{#if isRegistrationTab}}active{{/if}}"><a class="js-router-link" href="/{{locale}}/registration">{{i18n 'Registration'}}</a></li>
                 </ul>
 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div class="tab-pane active" id="login">
-                        <form role="form">
+                    <div class="tab-pane {{#if isLoginTab}}active{{/if}}">
+                        <form role="form" class="js-login-form">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">{{i18n 'Email address'}}</label>
                                 <input type="email" class="form-control" id="exampleInputEmail1"
@@ -25,8 +25,14 @@
                             <button type="submit" class="btn btn-primary">{{i18n 'Sign in'}}</button>
                         </form>
                     </div>
-                    <div class="tab-pane" id="registration">
-                        <form role="form">
+                    <div class="tab-pane {{#if isRegistrationTab}}active{{/if}}" id="registration">
+                        <form role="form" class="js-registration-form">
+                            <div class="form-group">
+                                <label for="full-name">{{i18n 'Full Name'}}</label>
+                                <input type="text" class="form-control js-validate-input js-model-field" name="full-name"
+                                       id="email"
+                                       placeholder="{{i18n 'Full Name'}}">
+                            </div>
                             <div class="form-group">
                                 <label for="email">{{i18n 'Email address'}}</label>
                                 <input type="email" class="form-control js-validate-input js-model-field" name="email"
