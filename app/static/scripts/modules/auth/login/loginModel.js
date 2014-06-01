@@ -14,7 +14,7 @@ define([
     return Backbone.Model.extend({
         /**
          * @property
-         * @name LoginModel.defaults
+         * @name LoginModel#defaults
          * @type {Object}
          */
         defaults: {
@@ -23,7 +23,7 @@ define([
 
         /**
          * @constructor
-         * @name LoginModel.initialize
+         * @name LoginModel#initialize
          * @param {Object} params
          * @returns {undefined}
          */

@@ -14,16 +14,26 @@ define([
     return Backbone.Model.extend({
         /**
          * @property
-         * @name RegistrationModel.defaults
+         * @name RegistrationModel#defaults
          * @type {Object}
          */
         defaults: {
-            locale: null
+            locale: null,
+            fullName: null,
+            email: null,
+            password: null
         },
 
         /**
+         * @field
+         * @name RegistrationModel#url
+         * @type {string}
+         */
+        url: '/api/create_user',
+
+        /**
          * @constructor
-         * @name RegistrationModel.initialize
+         * @name RegistrationModel#initialize
          * @param {Object} params
          * @returns {undefined}
          */

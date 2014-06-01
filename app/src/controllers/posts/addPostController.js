@@ -232,7 +232,7 @@ var AddPostController = {
         var renderParams = new RenderParams(request);
 
         response.render('posts/addPostView', _.extend(renderParams, {
-            title: 'Add post',
+            title: 'Add Post',
             isAddPostPage: true,
             bodyClass: 'bg-color-blue bg-symbols'
         }));

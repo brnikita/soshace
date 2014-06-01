@@ -20,7 +20,7 @@ define([
          * Ссылка на объект App
          *
          * @field
-         * @name LoginView.app
+         * @name LoginView#app
          * @type {Object}
          */
         app: null,
@@ -30,23 +30,23 @@ define([
          * будет прикреплен вид
          *
          * @field
-         * @name LoginView.el
+         * @name LoginView#el
          * @type {string}
          */
-        el: '.js-content',
+        el: '.js-tab-content',
 
         /**
-         * Модель деталей статьи
+         * Модель формы логина
          *
          * @field
-         * @name LoginView.model
+         * @name LoginView#model
          * @type {Backbone.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name LoginView.elements
+         * @name LoginView#elements
          * @type {Object}
          */
         elements: {
@@ -54,7 +54,7 @@ define([
 
         /**
          * @field
-         * @name LoginView.events
+         * @name LoginView#events
          * @type {Object}
          */
         events: {
@@ -64,14 +64,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name LoginView.template
+         * @name LoginView#template
          * @type {string}
          */
-        template: 'authView',
+        template: 'auth/loginView',
 
         /**
          * @constructor
-         * @name LoginView.initialize
+         * @name LoginView#initialize
          * @param {Object} params
          * @returns {undefined}
          */
@@ -91,7 +91,7 @@ define([
 
         /**
          * @method
-         * @name LoginView.serialize
+         * @name LoginView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -102,7 +102,7 @@ define([
 
         /**
          * @method
-         * @name LoginView.afterRender
+         * @name LoginView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {

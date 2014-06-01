@@ -1,4 +1,4 @@
-.login {
+.auth {
   &__title {
     text-align: center;
     h1 {
@@ -17,6 +17,7 @@
     h2 {
       margin-top: 0;
     }
+    //TODO: избавиться от стилей tab-pane и nav-tabs
     .nav-tabs {
       border: none;
       li {
@@ -32,12 +33,13 @@
       li.active:first-child {
       }
       .active a {
+        background-color: #ffe293;
         color: #9a6202;
         border: none;
         border-radius: inherit;
-        background-color: #ffe293;
         text-decoration: none;
         text-shadow: none;
+        width: 100%;
       }
       .active a:hover {
         color: #9a6202;

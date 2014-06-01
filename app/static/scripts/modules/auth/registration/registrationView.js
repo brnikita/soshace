@@ -20,7 +20,7 @@ define([
          * Ссылка на объект App
          *
          * @field
-         * @name RegistrationView.app
+         * @name RegistrationView#app
          * @type {Object}
          */
         app: null,
@@ -30,40 +30,51 @@ define([
          * будет прикреплен вид
          *
          * @field
-         * @name RegistrationView.el
+         * @name RegistrationView#el
          * @type {string}
          */
-        el: '.js-content',
+        el: '.js-tab-content',
 
         /**
-         * Модель деталей статьи
+         * Модель формы регистрации
          *
          * @field
-         * @name RegistrationView.model
+         * @name RegistrationView#model
          * @type {Backbone.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name RegistrationView.elements
+         * @name RegistrationView#elements
          * @type {Object}
          */
         elements: {
         },
 
         /**
+         * Список обработчиков событий
+         *
+         * @field
+         * @name RegistrationView#events
+         * @type {Object}
+         */
+        events: {
+            'keyup .js-model-field': 'changeFormFieldHandler'
+        },
+
+        /**
          * Путь до шаблона
          *
          * @field
-         * @name RegistrationView.template
+         * @name RegistrationView#template
          * @type {string}
          */
-        template: 'authView',
+        template: 'auth/registrationView',
 
         /**
          * @constructor
-         * @name RegistrationView.initialize
+         * @name RegistrationView#initialize
          * @param {Object} params
          * @returns {undefined}
          */
@@ -82,8 +93,20 @@ define([
         },
 
         /**
+         * Метод обработчик события изменения поля формы
+         *
          * @method
-         * @name RegistrationView.serialize
+         * @name RegistrationView#changeFormFieldHandler
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        changeFormFieldHandler: function(event){
+
+        },
+
+        /**
+         * @method
+         * @name RegistrationView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -94,7 +117,7 @@ define([
 
         /**
          * @method
-         * @name RegistrationView.afterRender
+         * @name RegistrationView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {

@@ -22,7 +22,7 @@ var UserController = {
 
         response.render('userView', _.extend(renderParams, {
             isUserPage: true,
-            title: 'User page',
+            title: 'User Profile',
             bodyClass: 'bg-color-blue bg-symbols'
         }));
     }

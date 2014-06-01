@@ -763,6 +763,17 @@ define([
 
         /**
          * @method
+         * @name AddPostView#serialize
+         * @returns {Object}
+         */
+        serialize: function(){
+            var data = this.model.toJSON();
+            data.title = 'Add Post';
+            return data;
+        },
+
+        /**
+         * @method
          * @name AddPostView#afterRender
          * @returns {undefined}
          */
