@@ -21,7 +21,7 @@ var LoginController = {
     renderLogin: function (request, response) {
         var renderParams = new RenderParams(request);
 
-        response.render('authView', _.extend(renderParams, {
+        response.render('auth/authView', _.extend(renderParams, {
             isAuthPage: true,
             isLoginTab: true,
             title: 'Registration page',

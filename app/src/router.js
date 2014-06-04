@@ -47,16 +47,11 @@ module.exports = {
         //Страница отдельного поста
         App.get('/:locale/posts/:year/:month/:date/:titleUrl', PostsController.renderPost);
 
-        App.get('/:locale/auth', function (request, response) {
-            //TODO: убрать хардкод
-            response.redirect('/ru/auth/login');
-        });
-
         //страница регистрации
-        App.get('/:locale/auth/registration', RegistrationController.renderRegistration);
+        App.get('/:locale/registration', RegistrationController.renderRegistration);
 
         //страница входа
-        App.get('/:locale/auth/login', LoginController.renderLogin);
+        App.get('/:locale/login', LoginController.renderLogin);
 
         App.get('/:locale/user/:id', UserController.renderUserPage);
     }

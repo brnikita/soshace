@@ -99,6 +99,34 @@ require([
                 prefix: '/static/views/',
 
                 /**
+                 * Метод загружает партиал по пути
+                 *
+                 * @method
+                 * @param {string} partialName имя партиала
+                 * @returns {jQuery.Deferred}
+                 */
+                fetchPartial: function(partialName){
+                    var deferred = $.Deferred(),
+                        hbs = Soshace.hbs,
+                        path;
+
+                    path = this.prefix + 'partials/' + partialName + '.hbs';
+
+                    if (hbs[path]) {
+                        return deferred.resolve();
+                    }
+
+                    $.get(path, function (contents) {
+                        debugger;
+                        Handlebars.registerPartial(partialName, contents);
+                        hbs[path] = contents;
+                        deferred.resolve();
+                    }, 'text');
+
+                    return deferred;
+                },
+
+                /**
                  * @method
                  * @param {string} path путь до шаблона
                  * @returns {string | undefined}

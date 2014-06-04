@@ -67,7 +67,7 @@ define([
          * @name LoginView#template
          * @type {string}
          */
-        template: 'auth/loginView',
+        template: 'authView',
 
         /**
          * @constructor
@@ -76,17 +76,41 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
+            _.bindAll(this, 'render');
             Widgets.setBodyClass('bg-symbols bg-color-yellow');
             this.app = params.app;
             this.model = new LoginModel({
                 locale: params.locale
             });
             if (Soshace.firstLoad) {
-                Soshace.firstLoad = false;
+                this.firstLoadHandler();
             } else {
-                this.app.headerView.changeTab('isAuthPage');
-                this.render();
+                this.secondLoadHandler();
             }
+        },
+
+        /**
+         * Метод исполняется, если страница была отрендерена на серевере
+         *
+         * @method
+         * @name LoginView#firstLoadHandler
+         * @returns {undefined}
+         */
+        firstLoadHandler: function () {
+            Soshace.firstLoad = false;
+            this.afterRender();
+        },
+
+        /**
+         * Метод исполняется при клиентском рендере страницы
+         *
+         * @method
+         * @name LoginView#secondLoadHandler
+         * @returns {undefined}
+         */
+        secondLoadHandler: function () {
+            this.fetchPartial('loginView').done(this.render);
+            this.app.headerView.changeTab('isAuthPage');
         },
 
         /**

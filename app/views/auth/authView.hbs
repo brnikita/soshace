@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-7 col-md-offset-2">
+            <div class="auth-form font-color-yellow">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs js-login-nav-tabs">
+                    <li class="{{#if isLoginTab}}active{{/if}}">
+                        <a href="/{{locale}}/login"
+                           class="js-router-link">{{i18n 'Login'}}</a></li>
+                    <li class="{{#if isRegistrationTab}}active{{/if}}">
+                        <a class="js-router-link"
+                           href="/{{locale}}/registration">{{i18n 'Registration'}}</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content js-tab-content">
+                    {{#if isLoginTab}}
+                        {{> loginView}}
+                    {{/if}}
+                    {{#if isRegistrationTab}}
+                        {{> registrationView}}
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

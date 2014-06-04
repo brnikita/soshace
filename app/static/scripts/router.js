@@ -13,10 +13,19 @@ define([
     'modules/posts/postsList/postsListView',
     'modules/posts/postDetail/postDetailView',
     'modules/posts/addPost/addPostView',
-    'modules/auth/registration/registrationView',
-    'modules/auth/authView',
+    'modules/registration/registrationView',
+    'modules/login/loginView',
     'modules/user/userView'
-], function ($, _, Backbone, HeaderView, PostsListView, PostDetailView, AddPostView, AuthView, UserView) {
+], function ($,
+             _,
+             Backbone,
+             HeaderView,
+             PostsListView,
+             PostDetailView,
+             AddPostView,
+             RegistrationView,
+             LoginView,
+             UserView) {
     return Backbone.Router.extend({
 
         /**
@@ -49,9 +58,8 @@ define([
             ':locale': 'postsPage',
             ':locale/posts/:year/:month/:date/:title': 'postPage',
             ':locale/add_post': 'addPostPage',
-            ':locale/auth': 'redirectToLoginPage',
-            ':locale/auth/login': 'loginPage',
-            ':locale/auth/registration': 'registrationPage',
+            ':locale/login': 'loginPage',
+            ':locale/registration': 'registrationPage',
             ':locale/user/:id': 'userPage'
         },
 
@@ -148,18 +156,6 @@ define([
                 app: this.app,
                 locale: locale
             });
-        },
-
-        /**
-         * Метод делает редирект на страницу логина
-         *
-         * @method
-         * @name Router#redirectToLoginPage
-         * @param {string} locale локаль
-         * @returns {undefined}
-         */
-        redirectToLoginPage: function (locale) {
-            Backbone.history.navigate('/' + locale + '/auth/login/', {trigger: true});
         },
 
         /**

@@ -70,7 +70,7 @@ define([
          * @name RegistrationView#template
          * @type {string}
          */
-        template: 'auth/registrationView',
+        template: 'authView',
 
         /**
          * @constructor
@@ -79,17 +79,41 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
+            _.bindAll(this, 'render');
             Widgets.setBodyClass('bg-symbols bg-color-yellow');
             this.app = params.app;
             this.model = new RegistrationModel({
                 locale: params.locale
             });
             if (Soshace.firstLoad) {
-                Soshace.firstLoad = false;
+                this.firstLoadHandler();
             } else {
-                this.app.headerView.changeTab('isAuthPage');
-                this.render();
+                this.secondLoadHandler();
             }
+        },
+
+        /**
+         * Метод исполняется, если страница была отрендерена на серевере
+         *
+         * @method
+         * @name RegistrationView#firstLoadHandler
+         * @returns {undefined}
+         */
+        firstLoadHandler: function () {
+            Soshace.firstLoad = false;
+            this.afterRender();
+        },
+
+        /**
+         * Метод исполняется при клиентском рендере страницы
+         *
+         * @method
+         * @name RegistrationView#secondLoadHandler
+         * @returns {undefined}
+         */
+        secondLoadHandler: function () {
+            this.fetchPartial('registrationView').done(this.render);
+            this.app.headerView.changeTab('isAuthPage');
         },
 
         /**
@@ -100,7 +124,7 @@ define([
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
-        changeFormFieldHandler: function(event){
+        changeFormFieldHandler: function (event) {
 
         },
 
