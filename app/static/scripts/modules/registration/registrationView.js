@@ -33,7 +33,7 @@ define([
          * @name RegistrationView#el
          * @type {string}
          */
-        el: '.js-tab-content',
+        el: '.js-content',
 
         /**
          * Модель формы регистрации

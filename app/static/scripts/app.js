@@ -113,14 +113,15 @@ require([
                     path = this.prefix + 'partials/' + partialName + '.hbs';
 
                     if (hbs[path]) {
-                        return deferred.resolve();
+                        return deferred.resolve(hbs[path]);
                     }
 
                     $.get(path, function (contents) {
-                        debugger;
-                        Handlebars.registerPartial(partialName, contents);
-                        hbs[path] = contents;
-                        deferred.resolve();
+                        var template = Handlebars.compile(contents);
+
+                        Handlebars.registerPartial(partialName, template);
+                        hbs[path] = template;
+                        deferred.resolve(template);
                     }, 'text');
 
                     return deferred;

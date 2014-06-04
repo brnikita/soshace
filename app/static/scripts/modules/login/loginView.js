@@ -33,7 +33,7 @@ define([
          * @name LoginView#el
          * @type {string}
          */
-        el: '.js-tab-content',
+        el: '.js-content',
 
         /**
          * Модель формы логина
