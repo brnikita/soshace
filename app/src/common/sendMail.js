@@ -1,3 +1,5 @@
+'use strict';
+
 var Ejs = require('ejs'),
     Fs = require('fs');
 
@@ -7,10 +9,10 @@ var Ejs = require('ejs'),
  */
 var NodeMailer = require('nodemailer'),
     transport = NodeMailer.createTransport('SMTP', {
-        service: soshace.MAIL_SERVICE,
+        service: Soshace.MAIL_SERVICE,
         auth: {
-            user: soshace.MAIL_NO_REPLY,
-            pass: soshace.MAIL_NO_REPLY_PASSWORD
+            user: Soshace.MAIL_NO_REPLY,
+            pass: Soshace.MAIL_NO_REPLY_PASSWORD
         }
     });
 
@@ -27,10 +29,10 @@ var sendMail = {
      * @return {undefined}
      */
     sendConfirmMail: function (mail, user, i18n) {
-        var mailTemplatePath = soshace.DIR_NAME + '/app/views/mail/confirmMailView.ejs',
+        var mailTemplatePath = Soshace.DIR_NAME + '/app/views/mail/confirmMailView.ejs',
             mailTemplate = Fs.readFileSync(mailTemplatePath, 'utf8'),
             mailOptions = {
-                from: soshace.MAIL_NO_REPLY,
+                from: Soshace.MAIL_NO_REPLY,
                 to: mail,
                 subject: 'Confirm email',
                 html: Ejs.render(mailTemplate, {user: user, i18n: i18n})
