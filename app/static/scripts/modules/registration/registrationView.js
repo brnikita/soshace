@@ -11,9 +11,10 @@ define([
     'underscore',
     'backbone',
     'utils/widgets',
+    'utils/helpers',
     './registrationModel',
     'backbone.layoutmanager'
-], function ($, _, Backbone, Widgets, RegistrationModel) {
+], function ($, _, Backbone, Widgets, Helpers, RegistrationModel) {
     return Backbone.Layout.extend({
 
         /**
@@ -60,7 +61,8 @@ define([
          * @type {Object}
          */
         events: {
-            'keyup .js-model-field': 'changeFormFieldHandler'
+            'keyup .js-model-field': 'changeFormFieldHandler',
+            'click .js-sign-up': 'registrationUserHandler'
         },
 
         /**
@@ -70,7 +72,7 @@ define([
          * @name RegistrationView#template
          * @type {string}
          */
-        template: 'authView',
+        template: 'auth/authView',
 
         /**
          * @constructor
@@ -105,6 +107,19 @@ define([
         },
 
         /**
+         * Метод обработчик клика на кнопке 'Зарегистрироваться'
+         *
+         * @method
+         * @name RegistrationView#registrationUserHandler
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        registrationUserHandler: function (event) {
+            event.preventDefault();
+            this.model.save();
+        },
+
+        /**
          * Метод исполняется при клиентском рендере страницы
          *
          * @method
@@ -125,7 +140,10 @@ define([
          * @returns {undefined}
          */
         changeFormFieldHandler: function (event) {
+            var $target = $(event.target),
+                params = Helpers.getInputData($target);
 
+            this.model.set(params);
         },
 
         /**

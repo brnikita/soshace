@@ -67,7 +67,7 @@ define([
          * @name LoginView#template
          * @type {string}
          */
-        template: 'authView',
+        template: 'auth/authView',
 
         /**
          * @constructor

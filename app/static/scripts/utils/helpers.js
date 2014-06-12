@@ -34,6 +34,39 @@ define([
         },
 
         /**
+         * Метод приводит строки типа camel-case к виду camelCase
+         *
+         * @method
+         * @name Helpers.camelCase
+         * @param input
+         * @returns {string}
+         */
+        camelCase: function (input) {
+            return input.toLowerCase().replace(/-(.)/g, function (match, group1) {
+                return group1.toUpperCase();
+            });
+        },
+
+        /**
+         * Метод возвращает сериализованный инпут
+         *
+         * @method
+         * @name Helpers.camelCase
+         * @param {jQuery} $input
+         * @returns {Object}
+         */
+        getInputData: function ($input) {
+            var value = $input.val(),
+                name = $input.attr('name'),
+                params  = {};
+
+            name = this.camelCase(name);
+            params[name] = value;
+
+            return params;
+        },
+
+        /**
          * Получаем локаль
          *
          * @public
