@@ -1,7 +1,6 @@
 'use strict';
 
-var Ejs = require('ejs'),
-    Fs = require('fs');
+var Handlebars = require('express3-handlebars').create();
 
 /**
  * Модуль отправки сообщений
@@ -16,33 +15,43 @@ var NodeMailer = require('nodemailer'),
         }
     });
 
-var sendMail = {
+var SendMail = {
+    /**
+     * @method
+     * @name SendMail.getConfirmationLink
+     * @param {string} code
+     * @returns {string}
+     */
+    getConfirmationLink: function(code){
+        var host = Soshace.LOCAL_MACHINE ? Soshace.LOCAL_HOST : Soshace.PRODUCTION_HOST,
+        port =  Soshace.LOCAL_MACHINE ?  ':' + Soshace.LOCAL_PORT : '',
+        emailConfirmLink = 'http://' + host + port + '/registration/confirm-email?code=' + code;
+    },
+
     /**
      * Отправляем письмо подтверждения аккаунта
      *
      * @private
      * @function
-     * @name sendMail.sendConfirmMail
+     * @name SendMail.sendConfirmMail
      * @param {String} mail
      * @param {Object} user
      * @param {Object} i18n объект, содержащий методы для работы с переводами
      * @return {undefined}
      */
     sendConfirmMail: function (mail, user, i18n) {
-        var mailTemplatePath = Soshace.DIR_NAME + '/app/views/mail/confirmMailView.ejs',
-            mailTemplate = Fs.readFileSync(mailTemplatePath, 'utf8'),
-            mailOptions = {
+        var mailTemplatePath = '../views/mails/confirmMailView.hbs';
+
+        Handlebars.render(mailTemplatePath, {user: user, i18n: i18n}, function (template) {
+            transport.sendMail({
                 from: Soshace.MAIL_NO_REPLY,
                 to: mail,
-                subject: 'Confirm email',
-                html: Ejs.render(mailTemplate, {user: user, i18n: i18n})
-            };
-
-        transport.sendMail(mailOptions);
+                subject: 'Confirmation message',
+                html: template
+            });
+        });
     }
 };
 
-//Экспортируем методы и переменные
-exports.sendConfirmMail = function () {
-    sendMail.sendConfirmMail.apply(sendMail, arguments);
-};
+_.bindAll(SendMail, 'sendConfirmMail');
+module.exports = SendMail;

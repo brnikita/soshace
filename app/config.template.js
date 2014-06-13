@@ -124,5 +124,28 @@ global.Soshace = {
      * @name Soshace.POSTS_PER_PAGE
      * @type {number}
      */
-    POSTS_PER_PAGE: 10
+    POSTS_PER_PAGE: 10,
+    /**
+     * @public
+     * @constant
+     * @name Soshace.MAIL_SERVICE
+     * @type {String}
+     */
+    MAIL_SERVICE: 'yandex',
+
+    /**
+     * @public
+     * @constant
+     * @name Soshace.MAIL_USER
+     * @type {String}
+     */
+    MAIL_NO_REPLY: 'noreply@soshace.com',
+
+    /**
+     * @public
+     * @constant
+     * @name Soshace.MAIL_PASSWORD
+     * @type {String}
+     */
+    MAIL_NO_REPLY_PASSWORD: ''
 };

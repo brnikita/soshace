@@ -63,10 +63,42 @@ var RegistrationController = {
             return;
         }
 
-        UsersModel.addUser(userData, function (error) {
-            response.send({
-                error: error
-            });
+        userData.emailConfirmed = false;
+        UsersModel.addUser(userData, _.bind(function (error) {
+            if (error) {
+                this.userAddFail(response, error);
+                return;
+            }
+            this.userAddSuccess();
+        }, this));
+    },
+
+    /**
+     * Метод обработчик успешного добавления пользователя
+     *
+     * @method
+     * @name RegistrationController.userAddSuccess
+     * @returns {undefined}
+     */
+    userAddSuccess: function () {
+        response.send({
+            error: false,
+            message: 'Confirmation message has been sent to your email address'
+        });
+    },
+
+    /**
+     * Метод обработчик неудачного добавления пользователя в базу
+     *
+     * @method
+     * @name RegistrationController.userAddFail
+     * @param {Object} response
+     * @param {Object} error
+     * @returns {undefined}
+     */
+    userAddFail: function (response, error) {
+        response.send({
+            error: error
         });
     }
 };

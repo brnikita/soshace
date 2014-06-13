@@ -37,7 +37,8 @@
         "gm":"~1.14.2",
         "bcrypt": "~0.7.8",
         "passport": "~0.2.0",
-        "passport-local":"~1.0.0"
+        "passport-local":"~1.0.0",
+        "nodemailer": "~0.6.5"
     },
     "devDependencies": {
         "grunt": "~0.4.2",
@@ -76,7 +77,8 @@
         "gm":"~1.14.2",
         "bcrypt": "~0.7.8",
         "passport": "~0.2.0",
-        "passport-local":"~1.0.0"
+        "passport-local":"~1.0.0",
+        "nodemailer": "~0.6.5"
     },
     "engines": {
         "node": ">=0.8.0"
