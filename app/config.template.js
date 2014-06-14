@@ -5,6 +5,34 @@
  */
 global.Soshace = {
     /**
+     * Указывает среду разработки. Включаем, если производим
+     * отладку на локальной машине через IDE
+     *
+     * @public
+     * @constant
+     * name soshace.LOCAL_MACHINE
+     * @type {Boolean}
+     */
+    LOCAL_MACHINE: true,
+
+    /**
+     * Используемый хост на локальной машине
+     *
+     * @public
+     * @constant
+     * name soshace.LOCAL_HOST
+     * @type {String}
+     */
+    LOCAL_HOST: 'localhost',
+
+    /**
+     * @public
+     * @constant
+     * @name soshace.PRODUCTION_HOST
+     * @type {String}
+     */
+    PRODUCTION_HOST: 'soshace.com',
+    /**
      * Версия, берется из package.json
      * Ставится скриптом атоматом
      *
@@ -13,6 +41,15 @@ global.Soshace = {
      * @type {string}
      */
     VERSION: '0',
+
+    /**
+     * Путь до корневой директории проекта
+     *
+     * @field
+     * @name Soshace.DIR_NAME
+     * @type {string | null}
+     */
+    DIR_NAME: null,
 
     /**
      * Урл админки
@@ -95,16 +132,6 @@ global.Soshace = {
         'English',
         'Russian'
     ],
-
-    /**
-     * Домен
-     *
-     * @public
-     * @constant
-     * @name Soshace.PRODUCTION_DOMAIN
-     * @type {string}
-     */
-    PRODUCTION_DOMAIN: '//soshace.com/',
 
     /**
      * Директория для медиа файлов

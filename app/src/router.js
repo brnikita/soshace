@@ -54,5 +54,7 @@ module.exports = {
         App.get('/:locale/login', LoginController.renderLogin);
 
         App.get('/:locale/user/:id', UserController.renderUserPage);
+
+        App.get('/registration/confirm-email', RegistrationController.confirmAccount);
     }
 };

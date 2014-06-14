@@ -21,6 +21,7 @@ var Blog = {
      * @return {undefined}
      */
     initialize: function () {
+        Soshace.DIR_NAME = __dirname;
         Soshace.VERSION = Package.version;
         Soshace.IS_PRODUCTION = App.get('env') === 'production';
         this.configure();

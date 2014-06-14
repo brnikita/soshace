@@ -1,6 +1,8 @@
 'use strict';
 
-var Handlebars = require('express3-handlebars').create();
+var _ = require('underscore'),
+    Handlebars = require('express3-handlebars').create(),
+    RenderParams = require('./renderParams');
 
 /**
  * Модуль отправки сообщений
@@ -17,35 +19,40 @@ var NodeMailer = require('nodemailer'),
 
 var SendMail = {
     /**
+     * Метод возвращает ссылку для подтверждения email
+     *
      * @method
      * @name SendMail.getConfirmationLink
      * @param {string} code
      * @returns {string}
      */
     getConfirmationLink: function(code){
-        var host = Soshace.LOCAL_MACHINE ? Soshace.LOCAL_HOST : Soshace.PRODUCTION_HOST,
-        port =  Soshace.LOCAL_MACHINE ?  ':' + Soshace.LOCAL_PORT : '',
-        emailConfirmLink = 'http://' + host + port + '/registration/confirm-email?code=' + code;
+        var host = Soshace.LOCAL_MACHINE ? Soshace.LOCAL_HOST : Soshace.PRODUCTION_HOST;
+        return 'http://' + host + '/registration/confirm-email?code=' + code;
     },
 
     /**
      * Отправляем письмо подтверждения аккаунта
      *
-     * @private
      * @function
      * @name SendMail.sendConfirmMail
-     * @param {String} mail
-     * @param {Object} user
-     * @param {Object} i18n объект, содержащий методы для работы с переводами
+     * @param {String} request
+     * @param {String} user модель пользователя
      * @return {undefined}
      */
-    sendConfirmMail: function (mail, user, i18n) {
-        var mailTemplatePath = '../views/mails/confirmMailView.hbs';
+    sendConfirmMail: function (request, user) {
+        var renderParams = new RenderParams(request),
+            mailTemplatePath = Soshace.DIR_NAME + '/app/views/mails/confirmationMailView.hbs',
+            confirmationLink = this.getConfirmationLink(user.confirmCode);
 
-        Handlebars.render(mailTemplatePath, {user: user, i18n: i18n}, function (template) {
+        Handlebars.render(mailTemplatePath, _.extend(renderParams,{
+            host: Soshace.PRODUCTION_DOMAIN,
+            fullName: user.fullName,
+            emailConfirmLink: confirmationLink
+        }), function (error, template) {
             transport.sendMail({
                 from: Soshace.MAIL_NO_REPLY,
-                to: mail,
+                to: user.email,
                 subject: 'Confirmation message',
                 html: template
             });

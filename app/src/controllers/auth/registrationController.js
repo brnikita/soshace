@@ -1,7 +1,9 @@
 'use strict';
 var _ = require('underscore'),
     UsersModel = require('../../models/usersModel'),
-    RenderParams = require('../../common/renderParams');
+    RenderParams = require('../../common/renderParams'),
+    SendMail = require('../../common/sendMail'),
+    Crypto = require('crypto');
 /**
  * Контроллер страницы регистрации
  *
@@ -44,6 +46,35 @@ var RegistrationController = {
     },
 
     /**
+     * Подтверждаем аккаунт с email
+     *
+     * @function
+     * @name RegistrationController.confirmAccount
+     * @param {Object} request
+     * @param {Object} response
+     * @return {undefined}
+     */
+    confirmAccount: function(request, response){
+        var confirmCode = request.query.code,
+            locale = request.i18n.getLocale();
+
+        UsersModel.update({confirmCode: confirmCode}, {emailConfirmed: true}, function (error) {
+            var message;
+
+            if (error) {
+                message = 'Registration failed, please try again.';
+                response.cookie('error', message);
+                response.redirect('/' + locale + '/registration');
+                return;
+            }
+
+            message = 'Thank you for confirmation your email, you can enter.';
+            response.cookie('success', message);
+            response.redirect('/' + locale + '/login');
+        });
+    },
+
+    /**
      * Метод создает пользователя в базе
      *
      * @method
@@ -53,7 +84,9 @@ var RegistrationController = {
      * @returns {undefined}
      */
     createUser: function (request, response) {
-        var userData = request.body;
+        var userData = request.body,
+            fullName,
+            email;
 
         if (typeof userData === 'undefined') {
             response.send({
@@ -63,13 +96,17 @@ var RegistrationController = {
             return;
         }
 
+        fullName = userData.fullName;
+        email = userData.email;
+        userData.password = Crypto.createHash('md5').update(userData.password).digest('hex');
+        userData.confirmCode = Crypto.createHash('md5').update(fullName + email).digest('hex');
         userData.emailConfirmed = false;
-        UsersModel.addUser(userData, _.bind(function (error) {
+        UsersModel.addUser(userData, _.bind(function (error, user) {
             if (error) {
                 this.userAddFail(response, error);
                 return;
             }
-            this.userAddSuccess();
+            this.userAddSuccess(request, response, user);
         }, this));
     },
 
@@ -78,9 +115,13 @@ var RegistrationController = {
      *
      * @method
      * @name RegistrationController.userAddSuccess
+     * @param {Object} request
+     * @param {Object} response
+     * @param {Object} user данные пользователя
      * @returns {undefined}
      */
-    userAddSuccess: function () {
+    userAddSuccess: function (request, response, user) {
+        SendMail.sendConfirmMail(request, user);
         response.send({
             error: false,
             message: 'Confirmation message has been sent to your email address'
@@ -103,4 +144,5 @@ var RegistrationController = {
     }
 };
 
+_.bindAll(RegistrationController, 'createUser');
 module.exports = RegistrationController;

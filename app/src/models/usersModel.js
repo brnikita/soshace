@@ -15,9 +15,31 @@ var UsersShema = Mongoose.Schema({
     email: String,
     isMale: Boolean,
     password: String,
+    confirmCode: String,
     emailConfirmed: Boolean
 });
 
+
+/**
+ * Метод сравнения паролей
+ *
+ * @method
+ * @name UsersShema#comparePassword
+ * @param {String} candidatePassword проверяемый пароль
+ * @param {Function} callback
+ * @returns {undefined}
+ */
+UsersShema.methods.comparePassword = function (candidatePassword, callback) {
+    var currentPassword;
+    Bcrypt.compare(candidatePassword, currentPassword, function (error, isMatch) {
+        if (error) {
+            callback(error);
+            return;
+        }
+
+        callback(null, isMatch);
+    });
+};
 
 /**
  * Метод сравнения паролей
@@ -51,8 +73,8 @@ UsersShema.methods.comparePassword = function (candidatePassword, callback) {
  */
 UsersShema.statics.addUser = function (userData, callback) {
     if (userData && typeof callback === 'function') {
-        this.create(userData, function (error) {
-            callback(error);
+        this.create(userData, function (error, user) {
+            callback(error, user);
         });
     }
 };
