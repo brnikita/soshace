@@ -19,6 +19,8 @@ var TemporaryUsersShema = Mongoose.Schema({
     email: String,
     isMale: Boolean,
     password: String,
+    //Уникальный для каждого добавленного пользователя
+    //??? Даже с тем же именем, логином и паролем
     confirmCode: String
 });
 
