@@ -5,17 +5,21 @@ var Mongoose = require('mongoose'),
 
 /**
  * Класс для работы с моделью пользователей
- * Пользователи, которые имеют подтвержденные email
+ * Пользователи, которые не имеют подтвержденные email
+ *
+ * После подтверждения email, пользователи удаляется из базы временных
+ * и копируется в постоянную базу
  *
  * @class
- * @name UsersShema
+ * @name TemporaryUsersShema
  * @type {Schema}
  */
-var UsersShema = Mongoose.Schema({
+var TemporaryUsersShema = Mongoose.Schema({
     fullName: String,
     email: String,
     isMale: Boolean,
-    password: String
+    password: String,
+    confirmCode: String
 });
 
 
@@ -23,12 +27,12 @@ var UsersShema = Mongoose.Schema({
  * Метод сравнения паролей
  *
  * @method
- * @name UsersShema#comparePassword
+ * @name TemporaryUsersShema#comparePassword
  * @param {String} candidatePassword проверяемый пароль
  * @param {Function} callback
  * @returns {undefined}
  */
-UsersShema.methods.comparePassword = function (candidatePassword, callback) {
+TemporaryUsersShema.methods.comparePassword = function (candidatePassword, callback) {
     var currentPassword;
     Bcrypt.compare(candidatePassword, currentPassword, function (error, isMatch) {
         if (error) {
@@ -44,12 +48,12 @@ UsersShema.methods.comparePassword = function (candidatePassword, callback) {
  * Метод сравнения паролей
  *
  * @method
- * @name UsersShema#comparePassword
+ * @name TemporaryUsersShema#comparePassword
  * @param {String} candidatePassword проверяемый пароль
  * @param {Function} callback
  * @returns {undefined}
  */
-UsersShema.methods.comparePassword = function (candidatePassword, callback) {
+TemporaryUsersShema.methods.comparePassword = function (candidatePassword, callback) {
     var currentPassword;
     Bcrypt.compare(candidatePassword, currentPassword, function (error, isMatch) {
         if (error) {
@@ -65,12 +69,12 @@ UsersShema.methods.comparePassword = function (candidatePassword, callback) {
  * Метод добавления пользователя
  *
  * @method
- * @name UsersShema.addUser
+ * @name TemporaryUsersShema.addUser
  * @param {Object} userData данные пользователя для записи в базу
  * @param {Function} callback
  * @return {undefined}
  */
-UsersShema.statics.addUser = function (userData, callback) {
+TemporaryUsersShema.statics.addUser = function (userData, callback) {
     if (userData && typeof callback === 'function') {
         this.create(userData, function (error, user) {
             callback(error, user);
@@ -78,4 +82,4 @@ UsersShema.statics.addUser = function (userData, callback) {
     }
 };
 
-module.exports = Mongoose.model('Users', UsersShema);
+module.exports = Mongoose.model('TemporaryUsers', TemporaryUsersShema);

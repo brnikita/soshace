@@ -1,6 +1,7 @@
 'use strict';
 var _ = require('underscore'),
     UsersModel = require('../../models/usersModel'),
+    TemporaryUsersModel = require('../../models/temporaryUsersModel'),
     RenderParams = require('../../common/renderParams'),
     SendMail = require('../../common/sendMail'),
     Crypto = require('crypto');
@@ -122,6 +123,7 @@ var RegistrationController = {
      */
     userAddSuccess: function (request, response, user) {
         SendMail.sendConfirmMail(request, user);
+        //TODO: сделать редирект на страницу профиля
         response.send({
             error: false,
             message: 'Confirmation message has been sent to your email address'
