@@ -1,29 +1,58 @@
 'use strict';
 var _ = require('underscore'),
+    Class = require('../../libs/class'),
     UsersModel = require('../../models/usersModel'),
     TemporaryUsersModel = require('../../models/temporaryUsersModel'),
     RenderParams = require('../../common/renderParams'),
     SendMail = require('../../common/sendMail'),
     Crypto = require('crypto');
+
+
 /**
  * Контроллер страницы регистрации
  *
- * @module RegistrationController
+ * @class RegistrationController
  */
-var RegistrationController = {
+module.exports = Class.extend({
+
+    /**
+     * @field
+     * @name RegistrationController#request
+     * @type {Object | null}
+     */
+    request: null,
+
+    /**
+     * @field
+     * @name RegistrationController#response
+     * @type {Object | null}
+     */
+    response: null,
+
+    /**
+     * @constructor
+     * @name RegistrationController#initialize
+     * @param {Object} request
+     * @param {Object} response
+     * @returns {undefined}
+     */
+    initialize: function (request, response) {
+        this.request = request;
+        this.response = response;
+    },
 
     /**
      * Рендерим страницу регистрации
      *
      * @public
      * @function
-     * @name RegistrationController.renderRegistration
-     * @param {Object} request
-     * @param {Object} response
+     * @name RegistrationController#renderRegistration
      * @return {undefined}
      */
-    renderRegistration: function (request, response) {
-        var renderParams = new RenderParams(request);
+    renderRegistration: function () {
+        var request = this.request,
+            response = this.response,
+            renderParams = new RenderParams(request);
 
         response.render('auth/authView', _.extend(renderParams, {
             isAuthPage: true,
@@ -38,7 +67,7 @@ var RegistrationController = {
      * ошибку, если данные не валидны
      *
      * @method
-     * @name RegistrationController.userDataValidate
+     * @name RegistrationController#userDataValidate
      * @param {Object} userData данные пользователя
      * @returns {Object}
      */
@@ -50,13 +79,13 @@ var RegistrationController = {
      * Подтверждаем аккаунт с email
      *
      * @function
-     * @name RegistrationController.confirmAccount
-     * @param {Object} request
-     * @param {Object} response
+     * @name RegistrationController#confirmAccount
      * @return {undefined}
      */
-    confirmAccount: function(request, response){
-        var confirmCode = request.query.code,
+    confirmAccount: function () {
+        var request = this.request,
+            response = this.response,
+            confirmCode = request.query.code,
             locale = request.i18n.getLocale();
 
         UsersModel.update({confirmCode: confirmCode}, {emailConfirmed: true}, function (error) {
@@ -79,15 +108,13 @@ var RegistrationController = {
      * Метод создает пользователя в базе
      *
      * @method
-     * @name RegistrationController.createUser
-     * @param {Object} request
-     * @param {Object} response
+     * @name RegistrationController#createUser
      * @returns {undefined}
      */
-    createUser: function (request, response) {
-        var userData = request.body,
-            fullName,
-            email;
+    createUser: function () {
+        var request = this.request,
+            response = this.response,
+            userData = request.body;
 
         if (typeof userData === 'undefined') {
             response.send({
@@ -97,44 +124,57 @@ var RegistrationController = {
             return;
         }
 
-        if(UsersModel.isUserExists()){
+        if (UsersModel.isUserExists()) {
+            response.send({
+                error: true,
+                message: 'User with email is already exists'
+            });
             return;
         }
 
-        fullName = userData.fullName;
-        email = userData.email;
-        userData.password = Crypto.createHash('md5').update(userData.password).digest('hex');
-        userData.confirmCode = Crypto.createHash('md5').update(fullName + email).digest('hex');
-        userData.emailConfirmed = false;
-        UsersModel.addUser(userData, _.bind(function (error, user) {
-            if (error) {
-                this.userAddFail(response, error);
-                return;
-            }
-            this.userAddSuccess(request, response, user);
-        }, this));
+        this.saveUserAtModel(userData);
     },
 
     /**
+     * Метод сохраняет пользователя в модели временных пользователей
+     *
+     * После того как пользователь подтвердит свой email, его профиль будет перенесен
+     * в коллекцию постоянных пользователей
+     *
      * @method
-     * @name
+     * @name RegistrationController#saveUserAtModel
+     * @param {Object} userData
      * @returns {undefined}
      */
-    sendError: function(request){
+    saveUserAtModel: function (userData) {
+        var fullName = userData.fullName,
+            email = userData.email;
 
+        userData.password = Crypto.createHash('md5').update(userData.password).digest('hex');
+        userData.confirmCode = Crypto.createHash('md5').update(fullName + email).digest('hex');
+        userData.emailConfirmed = false;
+
+        TemporaryUsersModel.addUser(userData, _.bind(function (error, user) {
+            if (error) {
+                this.userAddFail(error);
+                return;
+            }
+            this.userAddSuccess(user);
+        }, this));
     },
 
     /**
      * Метод обработчик успешного добавления пользователя
      *
      * @method
-     * @name RegistrationController.userAddSuccess
-     * @param {Object} request
-     * @param {Object} response
+     * @name RegistrationController#userAddSuccess
      * @param {Object} user данные пользователя
      * @returns {undefined}
      */
-    userAddSuccess: function (request, response, user) {
+    userAddSuccess: function (user) {
+        var request = this.request,
+            response = this.response;
+
         SendMail.sendConfirmMail(request, user);
         //TODO: сделать редирект на страницу профиля
         response.send({
@@ -147,17 +187,16 @@ var RegistrationController = {
      * Метод обработчик неудачного добавления пользователя в базу
      *
      * @method
-     * @name RegistrationController.userAddFail
-     * @param {Object} response
+     * @name RegistrationController#userAddFail
      * @param {Object} error
      * @returns {undefined}
      */
-    userAddFail: function (response, error) {
+    userAddFail: function (error) {
+        var response = this.response;
+
         response.send({
-            error: error
+            error: true,
+            message: 'Server is too busy, try later'
         });
     }
-};
-
-_.bindAll(RegistrationController, 'createUser');
-module.exports = RegistrationController;
+});

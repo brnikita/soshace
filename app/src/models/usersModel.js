@@ -79,15 +79,16 @@ UsersShema.statics.addUser = function (userData, callback) {
 };
 
 /**
- * Метод проверяет существование те
+ * Метод проверяет существование пользователя с переданным email
+ * в базе постоянных пользователей
  *
  * @method
  * @name UsersShema.isUserExists
- * @param {Object} userData данные пользователя для записи в базу
+ * @param {Object} email данные пользователя для записи в базу
  * @param {Function} callback
  * @return {undefined}
  */
-UsersShema.statics.isUserExists = function (userData, callback) {
+UsersShema.statics.isUserExists = function (email, callback) {
     if (userData && typeof callback === 'function') {
         this.create(userData, function (error, user) {
             callback(error, user);

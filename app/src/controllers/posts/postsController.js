@@ -18,7 +18,7 @@ module.exports = Class.extend({
      *
      * @field
      * @name PostsController#response
-     * @type {Object}
+     * @type {Object | null}
      */
     response: null,
 
@@ -27,7 +27,7 @@ module.exports = Class.extend({
      *
      * @field
      * @name PostsController#request
-     * @type {Object}
+     * @type {Object | null}
      */
     request: null,
 
@@ -45,7 +45,7 @@ module.exports = Class.extend({
      * Получаем пост целиком
      *
      * @method
-     * @name PostsController.getPost
+     * @name PostsController#getPost
      * @return {undefined}
      */
     getPost: function () {
@@ -73,7 +73,7 @@ module.exports = Class.extend({
      * Получаем список постов
      *
      * @method
-     * @name PostsController.getPosts
+     * @name PostsController#getPosts
      * @return {undefined}
      */
     getPosts: function () {
@@ -95,7 +95,7 @@ module.exports = Class.extend({
      * Рендерим страницу поста
      *
      * @method
-     * @name PostsController.renderPost
+     * @name PostsController#renderPost
      * @return {undefined}
      */
     renderPost: function () {
@@ -127,7 +127,7 @@ module.exports = Class.extend({
      * Рендерим список постов
      *
      * @method
-     * @name PostsController.renderPosts
+     * @name PostsController#renderPosts
      * @return {undefined}
      */
     renderPosts: function () {

@@ -30,7 +30,10 @@ module.exports = function (App) {
     //Добавляем пост
     App.post('/api/post', AddPostsController.addPost);
 
-    App.post('/api/create_user', RegistrationController.createUser);
+    App.post('/api/create_user', function(request, resposne){
+        var registrationController = new RegistrationController(request, resposne);
+        registrationController.createUser()
+    });
 
     //добавляем пост
     App.get('/:locale/add_post', AddPostsController.renderAddPost);
@@ -52,12 +55,21 @@ module.exports = function (App) {
     });
 
     //страница регистрации
-    App.get('/:locale/registration', RegistrationController.renderRegistration);
+    App.get('/:locale/registration', function(request, response){
+        var registrationController = new RegistrationController(request, response);
+        registrationController.renderRegistration();
+    });
 
     //страница входа
-    App.get('/:locale/login', LoginController.renderLogin);
+    App.get('/:locale/login', function(request, response){
+        var loginController = new LoginController(request, response);
+        loginController.renderLogin();
+    });
 
     App.get('/:locale/user/:id', UserController.renderUserPage);
 
-    App.get('/registration/confirm-email', RegistrationController.confirmAccount);
+    App.get('/registration/confirm-email', function(request, response){
+        var registrationController = new RegistrationController(request, response);
+        registrationController.confirmAccount();
+    });
 };
