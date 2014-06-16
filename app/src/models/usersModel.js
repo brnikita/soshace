@@ -78,4 +78,21 @@ UsersShema.statics.addUser = function (userData, callback) {
     }
 };
 
+/**
+ * Метод проверяет существование те
+ *
+ * @method
+ * @name UsersShema.isUserExists
+ * @param {Object} userData данные пользователя для записи в базу
+ * @param {Function} callback
+ * @return {undefined}
+ */
+UsersShema.statics.isUserExists = function (userData, callback) {
+    if (userData && typeof callback === 'function') {
+        this.create(userData, function (error, user) {
+            callback(error, user);
+        });
+    }
+};
+
 module.exports = Mongoose.model('Users', UsersShema);

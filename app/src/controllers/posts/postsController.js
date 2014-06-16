@@ -1,6 +1,7 @@
 'use strict';
 
-var _ = require('underscore'),
+var Class = require('../../libs/class'),
+    _ = require('underscore'),
     PostsModel = require('../../models/postsModel'),
     RenderParams = require('../../common/renderParams');
 
@@ -8,22 +9,49 @@ var _ = require('underscore'),
 /**
  * Контроллер содержащий методы работы с постами
  *
- * @module PostsController
+ * @class PostsController
  */
-var PostsController = {
+module.exports = Class.extend({
+
+    /**
+     * Объект ответа
+     *
+     * @field
+     * @name PostsController#response
+     * @type {Object}
+     */
+    response: null,
+
+    /**
+     * Объект ответа
+     *
+     * @field
+     * @name PostsController#request
+     * @type {Object}
+     */
+    request: null,
+
+    /**
+     * @constructor
+     * @name PostsController#initialize
+     * @returns {undefined}
+     */
+    initialize: function(request, response){
+        this.request = request;
+        this.response = response;
+    },
 
     /**
      * Получаем пост целиком
      *
-     * @public
-     * @function
+     * @method
      * @name PostsController.getPost
-     * @param {Object} request
-     * @param {Object} response
      * @return {undefined}
      */
-    getPost: function (request, response) {
-        var query = request.query,
+    getPost: function () {
+        var request = this.request,
+            response = this.response,
+            query = request.query,
             params = {
                 'public': true,
                 'locale': query.locale,
@@ -37,22 +65,21 @@ var PostsController = {
             if (post) {
                 return response.send(post);
             }
-            response.send({noPost: true});
+            return response.send({noPost: true});
         });
     },
 
     /**
      * Получаем список постов
      *
-     * @public
-     * @function
+     * @method
      * @name PostsController.getPosts
-     * @param {Object} request
-     * @param {Object} response
      * @return {undefined}
      */
-    getPosts: function (request, response) {
-        var page = request.query.page || 0,
+    getPosts: function () {
+        var request = this.request,
+            response = this.response,
+            page = request.query.page || 0,
             params = {
                 'public': true,
                 'locale': request.query.locale,
@@ -67,15 +94,14 @@ var PostsController = {
     /**
      * Рендерим страницу поста
      *
-     * @public
-     * @function
+     * @method
      * @name PostsController.renderPost
-     * @param {Object} request
-     * @param {Object} response
      * @return {undefined}
      */
-    renderPost: function (request, response) {
-        var renderParams = new RenderParams(request),
+    renderPost: function () {
+        var request = this.request,
+            response = this.response,
+            renderParams = new RenderParams(request),
             params = {
                 'public': true,
                 'locale': request.params.locale,
@@ -100,15 +126,14 @@ var PostsController = {
     /**
      * Рендерим список постов
      *
-     * @public
-     * @function
+     * @method
      * @name PostsController.renderPosts
-     * @param {Object} request
-     * @param {Object} response
      * @return {undefined}
      */
-    renderPosts: function (request, response) {
-        var renderParams = new RenderParams(request),
+    renderPosts: function () {
+        var request = this.request,
+            response = this.response,
+            renderParams = new RenderParams(request),
             params = {
                 'public': true,
                 'locale': request.params.locale,
@@ -123,6 +148,4 @@ var PostsController = {
             }));
         });
     }
-};
-
-module.exports = PostsController;
+});

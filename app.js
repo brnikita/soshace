@@ -27,7 +27,7 @@ var Blog = {
         this.configure();
         //Подрубаемся к базе
         DbConnection.databaseOpen(function () {
-            Router.init(App);
+            Router(App);
             App.listen(Soshace.PORT, Soshace.HOST);
         });
 

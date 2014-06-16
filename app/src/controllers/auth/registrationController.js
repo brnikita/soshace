@@ -97,6 +97,10 @@ var RegistrationController = {
             return;
         }
 
+        if(UsersModel.isUserExists()){
+            return;
+        }
+
         fullName = userData.fullName;
         email = userData.email;
         userData.password = Crypto.createHash('md5').update(userData.password).digest('hex');
@@ -109,6 +113,15 @@ var RegistrationController = {
             }
             this.userAddSuccess(request, response, user);
         }, this));
+    },
+
+    /**
+     * @method
+     * @name
+     * @returns {undefined}
+     */
+    sendError: function(request){
+
     },
 
     /**

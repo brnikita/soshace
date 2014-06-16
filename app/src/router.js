@@ -7,54 +7,57 @@ var PostsController = require('./controllers/posts/postsController'),
     LoginController = require('./controllers/auth/loginController'),
     UserController = require('./controllers/userController');
 
-module.exports = {
-    /**
-     * @public
-     * @function
-     * @name Router.init
-     * @param {Object} App объект приложения
-     * @returns {undefined}
-     */
-    init: function (App) {
-        App.get('/', function (request, response) {
-            //TODO: убрать хардкод
-            response.redirect('/ru');
-        });
+module.exports = function (App) {
+    App.get('/', function (request, response) {
+        //TODO: убрать хардкод
+        response.redirect('/ru');
+    });
 
-        //Загружаем изображение
-        App.post('/upload_img', UploadImageController.upload);
+    //Загружаем изображение
+    App.post('/upload_img', UploadImageController.upload);
 
-        //Получаем список постов
-        App.get('/api/posts', PostsController.getPosts);
-        //Получаем пост
-        App.get('/api/post', PostsController.getPost);
+    //Получаем список постов
+    App.get('/api/posts', function (request, response) {
+        var postsController = new PostsController(request, response);
+        postsController.getPosts();
+    });
+    //Получаем пост
+    App.get('/api/post', function (request, response) {
+        var postsController = new PostsController(request, response);
+        postsController.getPost();
+    });
 
-        //Добавляем пост
-        App.post('/api/post', AddPostsController.addPost);
+    //Добавляем пост
+    App.post('/api/post', AddPostsController.addPost);
 
-        App.post('/api/create_user', RegistrationController.createUser);
+    App.post('/api/create_user', RegistrationController.createUser);
 
-        //добавляем пост
-        App.get('/:locale/add_post', AddPostsController.renderAddPost);
+    //добавляем пост
+    App.get('/:locale/add_post', AddPostsController.renderAddPost);
 
-        //Главная страница
-        App.get('/:locale', PostsController.renderPosts);
+    //Главная страница
+    App.get('/:locale', function (request, response) {
+        var postsController = new PostsController(request, response);
+        postsController.renderPosts();
+    });
 
-        App.get('/:locale/posts', function (request, response) {
-            response.redirect('/ru');
-        });
+    App.get('/:locale/posts', function (request, response) {
+        response.redirect('/ru');
+    });
 
-        //Страница отдельного поста
-        App.get('/:locale/posts/:year/:month/:date/:titleUrl', PostsController.renderPost);
+    //Страница отдельного поста
+    App.get('/:locale/posts/:year/:month/:date/:titleUrl', function (request, response) {
+        var postsController = new PostsController(request, response);
+        postsController.renderPost();
+    });
 
-        //страница регистрации
-        App.get('/:locale/registration', RegistrationController.renderRegistration);
+    //страница регистрации
+    App.get('/:locale/registration', RegistrationController.renderRegistration);
 
-        //страница входа
-        App.get('/:locale/login', LoginController.renderLogin);
+    //страница входа
+    App.get('/:locale/login', LoginController.renderLogin);
 
-        App.get('/:locale/user/:id', UserController.renderUserPage);
+    App.get('/:locale/user/:id', UserController.renderUserPage);
 
-        App.get('/registration/confirm-email', RegistrationController.confirmAccount);
-    }
+    App.get('/registration/confirm-email', RegistrationController.confirmAccount);
 };
