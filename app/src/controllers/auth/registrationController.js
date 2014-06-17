@@ -1,6 +1,6 @@
 'use strict';
 var _ = require('underscore'),
-    Class = require('../../libs/class'),
+    ControllerInit = require('../../common/controllerInit'),
     UsersModel = require('../../models/usersModel'),
     TemporaryUsersModel = require('../../models/temporaryUsersModel'),
     RenderParams = require('../../common/renderParams'),
@@ -13,32 +13,19 @@ var _ = require('underscore'),
  *
  * @class RegistrationController
  */
-module.exports = Class.extend({
-
-    /**
-     * @field
-     * @name RegistrationController#request
-     * @type {Object | null}
-     */
-    request: null,
-
-    /**
-     * @field
-     * @name RegistrationController#response
-     * @type {Object | null}
-     */
-    response: null,
+module.exports = ControllerInit.extend({
 
     /**
      * @constructor
      * @name RegistrationController#initialize
-     * @param {Object} request
-     * @param {Object} response
-     * @returns {undefined}
+     * @param {Object} request Объект запроса
+     * @param {Object} response Объект ответа
      */
     initialize: function (request, response) {
         this.request = request;
         this.response = response;
+
+        _.bindAll(this, 'userExistsHandler');
     },
 
     /**
@@ -113,25 +100,41 @@ module.exports = Class.extend({
      */
     createUser: function () {
         var request = this.request,
-            response = this.response,
-            userData = request.body;
+            userData = request.body,
+            email;
 
         if (typeof userData === 'undefined') {
-            response.send({
-                error: true,
-                message: 'Bad request'
-            });
+            this.sendError('Bad request');
             return;
         }
 
-        if (UsersModel.isUserExists()) {
-            response.send({
-                error: true,
-                message: 'User with email is already exists'
-            });
+        email = userData.email;
+        UsersModel.isUserExists(email, this.userExistsHandler);
+    },
+
+    /**
+     * Метод обработчик проверки на существование юзера в базе
+     *
+     * @method
+     * @name RegistrationController#userExistsHandler
+     * @param error
+     * @param user
+     */
+    userExistsHandler: function (error, user) {
+        var request = this.request,
+            userData;
+
+        if (error) {
+            this.sendError('Server is too busy, try later');
             return;
         }
 
+        if (user) {
+            this.sendError('User with email is already exists');
+            return;
+        }
+
+        userData = request.body;
         this.saveUserAtModel(userData);
     },
 

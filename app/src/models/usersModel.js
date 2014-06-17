@@ -89,11 +89,7 @@ UsersShema.statics.addUser = function (userData, callback) {
  * @return {undefined}
  */
 UsersShema.statics.isUserExists = function (email, callback) {
-    if (userData && typeof callback === 'function') {
-        this.create(userData, function (error, user) {
-            callback(error, user);
-        });
-    }
+    this.findOne({email: email}, callback);
 };
 
 module.exports = Mongoose.model('Users', UsersShema);
