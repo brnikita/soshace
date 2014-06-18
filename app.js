@@ -3,21 +3,25 @@
 //Импортируем глобальный объект soshace
 require('./app/config');
 
-var Express = require('express'),
+var _ = require('underscore'),
+    Express = require('express'),
     Package = require('./package'),
     App = new Express(),
     DbConnection = require('./app/src/common/dbConnection'),
     I18n = require('i18n-2'),
     Router = require('./app/src/router'),
+    Passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy,
+    strategies = require('src/controllers/auth/strategiesController'),
     Handlebars = require('express3-handlebars');
 
-var Blog = {
+var App = {
     /**
      * Инициализируем приложение
      *
      * @private
      * @function
-     * @name Blog.initialize
+     * @name App.initialize
      * @return {undefined}
      */
     initialize: function () {
@@ -26,10 +30,11 @@ var Blog = {
         Soshace.IS_PRODUCTION = App.get('env') === 'production';
         this.configure();
         //Подрубаемся к базе
-        DbConnection.databaseOpen(function () {
-            Router(App);
+        DbConnection.databaseOpen(_.bind(function () {
+            this.passportStrategies();
+            new Router(App);
             App.listen(Soshace.PORT, Soshace.HOST);
-        });
+        }, this));
 
     },
 
@@ -37,7 +42,7 @@ var Blog = {
      * Конфигурируем наше приложение
      *
      * @method
-     * @name Blog.configure
+     * @name App.configure
      * @return {undefined}
      */
     configure: function () {
@@ -58,6 +63,9 @@ var Blog = {
             extension: '.json',
             defaultLocale: Soshace.DEFAULT_LOCALE
         });
+
+        App.use(Passport.initialize());
+        App.use(Passport.session());
         App.use(App.router);
 
         //Устанавливаем ответ для 404
@@ -79,7 +87,25 @@ var Blog = {
             // default to plain-text. send()
             response.type('txt').send('Not found');
         });
+    },
+
+    /**
+     * Конфигурирем утентификацию через соц. сети
+     * и нашу форму логина
+     *
+     * @method
+     * @name App.passportStrategies
+     * @return {undefined}
+     */
+    passportStrategies: function () {
+        Passport.serializeUser(strategies.serializeUser);
+        Passport.deserializeUser(strategies.deserializeUser);
+
+        //Конфигурируем утентификацию через форму логина
+        Passport.use(new LocalStrategy({
+            usernameField: 'email'
+        }, strategies.local));
     }
 };
 
-Blog.initialize();
+App.initialize();

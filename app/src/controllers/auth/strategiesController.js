@@ -1,3 +1,5 @@
+'use strict';
+
 var Mongoose = require('mongoose'),
     ObjectId = Mongoose.Types.ObjectId,
     UsersModel = require('../../models/usersModel').UsersModel,
@@ -49,7 +51,7 @@ var StrategiesController = {
      * @return {undefined}
      */
     local: function (userEmail, userPassword, done) {
-        userPassword = Crypto.createHash('md5').update(userPassword).digest("hex");
+        userPassword = Crypto.createHash('md5').update(userPassword).digest('hex');
 
         UsersModel.findOne({email: userEmail}, function (error, user) {
             if (error) {
