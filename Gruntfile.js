@@ -139,13 +139,14 @@ module.exports = function (grunt) {
         jshint: {
             options: {
                 jshintrc: '.jshintrc',
-                reporter: require('jshint-stylish'),
-                ignores: '<%= blog.app %>/static/scripts/libs/{,*/}*.js'
+                reporter: require('jshint-stylish')
             },
             all: [
                 'Gruntfile.js',
                 '<%= blog.app %>/static/{,*/}*.js',
-                '<%= blog.app %>/src/{,*/}*.js'
+                '<%= blog.app %>/src/{,*/}*.js',
+                '!<%= blog.app %>/static/scripts/libs/{,*/}*.js',
+                '!<%= blog.app %>/src/libs/{,*/}*.js'
             ]
         },
 

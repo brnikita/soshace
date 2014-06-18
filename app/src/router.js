@@ -32,7 +32,7 @@ module.exports = function (App) {
 
     App.post('/api/create_user', function(request, resposne){
         var registrationController = new RegistrationController(request, resposne);
-        registrationController.createUser()
+        registrationController.createUser();
     });
 
     //добавляем пост
