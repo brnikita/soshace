@@ -46,7 +46,7 @@ var SendMail = {
             confirmationLink = this.getConfirmationLink(user.confirmCode);
 
         Handlebars.render(mailTemplatePath, _.extend(renderParams,{
-            host: Soshace.PRODUCTION_DOMAIN,
+            host: Soshace.PRODUCTION_HOST,
             fullName: user.fullName,
             emailConfirmLink: confirmationLink
         }), function (error, template) {

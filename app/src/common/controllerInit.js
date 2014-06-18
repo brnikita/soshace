@@ -74,6 +74,6 @@ module.exports = Class.extend({
     i18n: function (value) {
         var request = this.request;
 
-        return request.i18n(value);
+        return request.i18n.__(value);
     }
 });

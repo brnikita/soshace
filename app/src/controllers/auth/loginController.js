@@ -1,25 +1,26 @@
 'use strict';
 var _ = require('underscore'),
+    ControllerInit = require('../../common/controllerInit'),
     RenderParams = require('../../common/renderParams');
 /**
  * Контроллер страницы регистрации
  *
- * @module LoginController
+ * @class LoginController
  */
-var LoginController = {
+module.exports = ControllerInit.extend({
 
     /**
      * Рендерим страницу регистрации
      *
      * @public
      * @function
-     * @name LoginController.renderLogin
-     * @param {Object} request
-     * @param {Object} response
+     * @name LoginController#renderLogin
      * @return {undefined}
      */
-    renderLogin: function (request, response) {
-        var renderParams = new RenderParams(request);
+    renderLogin: function () {
+        var request = this.request,
+            response = this.response,
+            renderParams = new RenderParams(request);
 
         response.render('auth/authView', _.extend(renderParams, {
             isAuthPage: true,
@@ -28,6 +29,4 @@ var LoginController = {
             bodyClass: 'bg-color-yellow bg-symbols'
         }));
     }
-};
-
-module.exports = LoginController;
+});
