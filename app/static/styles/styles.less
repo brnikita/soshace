@@ -5,31 +5,7 @@
 @import 'modules/posts/posts';
 @import 'modules/posts/addPost';
 @import 'modules/auth';
-
-/*Основные цвета*/
-.bg-color-yellow {
-  background-color: #FDD66B;
-}
-
-.font-color-yellow {
-  color: #9a6202;
-}
-
-.bg-color-green {
-  background-color: #aaeb9f;
-}
-
-.font-color-green {
-  color: #3D5E37;
-}
-
-.bg-color-blue {
-  background-color: #91cfee;
-}
-
-.font-color-blue {
-  color: #406374;
-}
+@import 'colors';
 
 .form-group.has-error .tooltip-inner {
   background-color: #b94a48;
@@ -63,10 +39,6 @@ label {
 
 .bg-symbols {
   background-image: url(/static/images/bg-symbols.png);
-}
-
-.bg-books {
-  background-image: url(/static/images/login-bg.jpg);
 }
 
 .body-messages {
@@ -115,10 +87,11 @@ label {
       float: left;
       padding: 17px 27px 0 27px;
       &-link {
+        color: #fff !important;
         line-height: 26px;
       }
       &-link:hover {
-        color: #fff;
+        color: #fff !important;
         text-decoration: none;
         background: #282727;
       }
