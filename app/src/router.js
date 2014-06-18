@@ -9,8 +9,8 @@ var PostsController = require('./controllers/posts/postsController'),
 
 module.exports = function (App) {
     App.get('/', function (request, response) {
-        //TODO: убрать хардкод
-        response.redirect('/ru');
+        var locale = request.i18n.getLocale();
+        response.redirect('/' + locale);
     });
 
     //Загружаем изображение

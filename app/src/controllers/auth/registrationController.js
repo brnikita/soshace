@@ -159,7 +159,7 @@ module.exports = ControllerInit.extend({
 
         TemporaryUsersModel.addUser(userData, _.bind(function (error, user) {
             if (error) {
-                this.userAddFail(error);
+                this.userAddFail();
                 return;
             }
             this.userAddSuccess(user);
@@ -176,13 +176,14 @@ module.exports = ControllerInit.extend({
      */
     userAddSuccess: function (user) {
         var request = this.request,
-            response = this.response;
+            response = this.response,
+            locale = request.i18n.getLocale(),
+            redirectUrl = '/' + locale + '/user/new';
 
         SendMail.sendConfirmMail(request, user);
-        //TODO: сделать редирект на страницу профиля
         response.send({
             error: false,
-            message: 'Confirmation message has been sent to your email address'
+            redirect: redirectUrl
         });
     },
 
@@ -191,10 +192,9 @@ module.exports = ControllerInit.extend({
      *
      * @method
      * @name RegistrationController#userAddFail
-     * @param {Object} error
      * @returns {undefined}
      */
-    userAddFail: function (error) {
+    userAddFail: function () {
         var response = this.response;
 
         response.send({

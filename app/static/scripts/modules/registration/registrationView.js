@@ -62,7 +62,7 @@ define([
          */
         events: {
             'keyup .js-model-field': 'changeFormFieldHandler',
-            'click .js-sign-up': 'registrationUserHandler'
+            'click .js-sign-up': 'userRegistrationHandler'
         },
 
         /**
@@ -110,13 +110,44 @@ define([
          * Метод обработчик клика на кнопке 'Зарегистрироваться'
          *
          * @method
-         * @name RegistrationView#registrationUserHandler
+         * @name RegistrationView#userRegistrationHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
-        registrationUserHandler: function (event) {
+        userRegistrationHandler: function (event) {
+            var _this = this;
+
             event.preventDefault();
-            this.model.save();
+            this.model.save(null, {
+                success: _this.userRegistrationSuccess,
+                error: _this.userRegistrationFail
+            });
+        },
+
+        /**
+         * Метод обработчик успешной регистрации пользователя
+         *
+         * @method
+         * @name RegistrationView#userRegistrationSuccess
+         * @param {Backbone.Model} model
+         * @param {Object} response
+         * @returns {undefined}
+         */
+        userRegistrationSuccess: function(model, response){
+            var redirectUrl = response.redirect;
+            Backbone.history.navigate(redirectUrl, {trigger: true});
+        },
+
+        /**
+         * Метод обработчик неуспешной регистрации пользователя
+         *
+         * @method
+         * @name RegistrationView#userRegistrationFail
+         * @param {Object} response
+         * @returns {undefined}
+         */
+        userRegistrationFail: function(response){
+
         },
 
         /**
