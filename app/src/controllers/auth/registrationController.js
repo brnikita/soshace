@@ -2,7 +2,6 @@
 var _ = require('underscore'),
     ControllerInit = require('../../common/controllerInit'),
     UsersModel = require('../../models/usersModel'),
-    TemporaryUsersModel = require('../../models/temporaryUsersModel'),
     RenderParams = require('../../common/renderParams'),
     SendMail = require('../../common/sendMail'),
     Crypto = require('crypto');
@@ -157,7 +156,7 @@ module.exports = ControllerInit.extend({
         userData.confirmCode = Crypto.createHash('md5').update(fullName + email).digest('hex');
         userData.emailConfirmed = false;
 
-        TemporaryUsersModel.addUser(userData, _.bind(function (error, user) {
+        UsersModel.addUser(userData, _.bind(function (error, user) {
             if (error) {
                 this.userAddFail();
                 return;

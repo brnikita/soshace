@@ -12,16 +12,16 @@ var _ = require('underscore'),
     Router = require('./app/src/router'),
     Passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
-    strategies = require('src/controllers/auth/strategiesController'),
+    strategies = require('./app/src/controllers/auth/strategiesController'),
     Handlebars = require('express3-handlebars');
 
-var App = {
+var Blog = {
     /**
      * Инициализируем приложение
      *
      * @private
      * @function
-     * @name App.initialize
+     * @name Blog.initialize
      * @return {undefined}
      */
     initialize: function () {
@@ -42,7 +42,7 @@ var App = {
      * Конфигурируем наше приложение
      *
      * @method
-     * @name App.configure
+     * @name Blog.configure
      * @return {undefined}
      */
     configure: function () {
@@ -94,7 +94,7 @@ var App = {
      * и нашу форму логина
      *
      * @method
-     * @name App.passportStrategies
+     * @name Blog.passportStrategies
      * @return {undefined}
      */
     passportStrategies: function () {
@@ -108,4 +108,4 @@ var App = {
     }
 };
 
-App.initialize();
+Blog.initialize();
