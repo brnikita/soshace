@@ -72,9 +72,7 @@ UsersShema.methods.comparePassword = function (candidatePassword, callback) {
  */
 UsersShema.statics.addUser = function (userData, callback) {
     if (userData && typeof callback === 'function') {
-        this.create(userData, function (error, user) {
-            callback(error, user);
-        });
+        this.create(userData, callback);
     }
 };
 

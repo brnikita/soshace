@@ -2,9 +2,10 @@
 var _ = require('underscore'),
     ControllerInit = require('../../common/controllerInit'),
     UsersModel = require('../../models/usersModel'),
+    UnconfirmedEmails = require('../../models/unconfirmedEmails'),
     RenderParams = require('../../common/renderParams'),
     SendMail = require('../../common/sendMail'),
-    Crypto = require('crypto');
+    Helpers = require('../../common/helpers');
 
 
 /**
@@ -24,7 +25,11 @@ module.exports = ControllerInit.extend({
         this.request = request;
         this.response = response;
 
-        _.bindAll(this, 'userExistsHandler');
+        _.bindAll(this,
+            'saveUserAtModel',
+            'userExistsHandler',
+            'saveNewEmailHandler'
+        );
     },
 
     /**
@@ -49,19 +54,6 @@ module.exports = ControllerInit.extend({
     },
 
     /**
-     * Метод валидирует входные данные по пользователю и возвращет
-     * ошибку, если данные не валидны
-     *
-     * @method
-     * @name RegistrationController#userDataValidate
-     * @param {Object} userData данные пользователя
-     * @returns {Object}
-     */
-    userDataValidate: function (userData) {
-
-    },
-
-    /**
      * Подтверждаем аккаунт с email
      *
      * @function
@@ -70,24 +62,9 @@ module.exports = ControllerInit.extend({
      */
     confirmAccount: function () {
         var request = this.request,
-            response = this.response,
-            confirmCode = request.query.code,
-            locale = request.i18n.getLocale();
+            confirmCode = request.query.code;
 
-        UsersModel.update({confirmCode: confirmCode}, {emailConfirmed: true}, function (error) {
-            var message;
-
-            if (error) {
-                message = 'Registration failed, please try again.';
-                response.cookie('error', message);
-                response.redirect('/' + locale + '/registration');
-                return;
-            }
-
-            message = 'Thank you for confirmation your email, you can enter.';
-            response.cookie('success', message);
-            response.redirect('/' + locale + '/login');
-        });
+        UnconfirmedEmails.find({code: confirmCode}, this.saveUserAtModel);
     },
 
     /**
@@ -116,12 +93,13 @@ module.exports = ControllerInit.extend({
      *
      * @method
      * @name RegistrationController#userExistsHandler
-     * @param error
-     * @param user
+     * @param {Object | null} error
+     * @param {Object | null} user модель существующего пользователя
+     * @returns {undefined}
      */
     userExistsHandler: function (error, user) {
         var request = this.request,
-            userData;
+            data;
 
         if (error) {
             this.sendError('Server is too busy, try later');
@@ -133,8 +111,49 @@ module.exports = ControllerInit.extend({
             return;
         }
 
-        userData = request.body;
-        this.saveUserAtModel(userData);
+        data = request.body;
+        this.saveNewEmail(data);
+    },
+
+    /**
+     * Метод сохраняет email в коллекции для неподтвержденных email
+     *
+     * @method
+     * @name RegistrationController#saveNewEmail
+     * @param {Object} data объект содержит пользовательский email
+     * @returns {undefined}
+     */
+    saveNewEmail: function (data) {
+        var email = data.email,
+            time = String((new Date()).getTime()),
+            code;
+
+        code = Helpers.encodeMd5(email + time);
+        UnconfirmedEmails.addEmail({
+            code: code,
+            email: email
+        }, this.saveNewEmailHandler);
+    },
+
+    /**
+     * Метод обработчик сохраннения email  в коллекции неподтвержденнных
+     * email
+     *
+     * @method
+     * @name RegistrationController#saveNewEmail
+     * @param {Object} error
+     * @param {Object} emailData
+     * @returns {undefined}
+     */
+    saveNewEmailHandler: function (error, emailData) {
+        var request = this.request;
+
+        if (error) {
+            this.sendError('Server is too busy, try later');
+            return;
+        }
+
+        SendMail.sendConfirmMail(request, emailData);
     },
 
     /**
@@ -145,20 +164,19 @@ module.exports = ControllerInit.extend({
      *
      * @method
      * @name RegistrationController#saveUserAtModel
+     * @param {Object} error
      * @param {Object} userData
      * @returns {undefined}
      */
-    saveUserAtModel: function (userData) {
-        var fullName = userData.fullName,
+    saveUserAtModel: function (error, userData) {
+        var savedData = {},
             email = userData.email;
 
-        userData.password = Crypto.createHash('md5').update(userData.password).digest('hex');
-        userData.confirmCode = Crypto.createHash('md5').update(fullName + email).digest('hex');
-        userData.emailConfirmed = false;
-
-        UsersModel.addUser(userData, _.bind(function (error, user) {
+        savedData.password = Helpers.encodeMd5(this.getNewPassword());
+        savedData.email = email;
+        UsersModel.addUser(savedData, _.bind(function (error, user) {
             if (error) {
-                this.userAddFail();
+                this.sendError('Server is too busy, try later');
                 return;
             }
             this.userAddSuccess(user);
@@ -166,39 +184,36 @@ module.exports = ControllerInit.extend({
     },
 
     /**
+     * TODO: доработать метод
+     *
+     * Метод возвращает новый рандомный пароль
+     * для юзера
+     *
+     * @method
+     * @name RegistrationController#getNewPassword
+     * @returns {String}
+     */
+    getNewPassword: function () {
+        return '1';
+    },
+
+
+    /**
      * Метод обработчик успешного добавления пользователя
      *
      * @method
      * @name RegistrationController#userAddSuccess
-     * @param {Object} user данные пользователя
      * @returns {undefined}
      */
-    userAddSuccess: function (user) {
+    userAddSuccess: function () {
         var request = this.request,
             response = this.response,
             locale = request.i18n.getLocale(),
             redirectUrl = '/' + locale + '/user/new';
 
-        SendMail.sendConfirmMail(request, user);
         response.send({
             error: false,
             redirect: redirectUrl
-        });
-    },
-
-    /**
-     * Метод обработчик неудачного добавления пользователя в базу
-     *
-     * @method
-     * @name RegistrationController#userAddFail
-     * @returns {undefined}
-     */
-    userAddFail: function () {
-        var response = this.response;
-
-        response.send({
-            error: true,
-            message: 'Server is too busy, try later'
         });
     }
 });

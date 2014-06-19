@@ -1,5 +1,7 @@
 'use strict';
 
+var Crypto = require('crypto');
+
 /**
  * Модуль содержит набор удобных методов
  *
@@ -23,5 +25,17 @@ module.exports = {
             return numberToFormat;
         }
         return '00';
+    },
+
+    /**
+     * МЕтод закодирует передаваемую строку в MD5
+     *
+     * @method
+     * @name Helpers.encodeMd5
+     * @param {String} value кодируемая строка
+     * @returns {String}
+     */
+    encodeMd5: function(value){
+        return Crypto.createHash('md5').update(value).digest('hex');
     }
 };
