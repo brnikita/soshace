@@ -10,8 +10,12 @@ var Mongoose = require('mongoose');
  * @type {Schema}
  */
 var UnconfirmedEmailsShema = Mongoose.Schema({
-    code: String,
-    email: String
+    code: {
+        type: String
+    },
+    email: {
+        type: String
+    }
 });
 
 
@@ -30,4 +34,4 @@ UnconfirmedEmailsShema.statics.addEmail = function (data, callback) {
     }
 };
 
-module.exports = Mongoose.model('Users', UnconfirmedEmailsShema);
+module.exports = Mongoose.model('unconfirmed_emails', UnconfirmedEmailsShema);

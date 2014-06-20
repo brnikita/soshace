@@ -68,8 +68,9 @@ module.exports = function (App) {
 
     App.get('/:locale/user/:id', UserController.renderUserPage);
 
-    App.get('/registration/confirm-email', function(request, response){
+    App.get('/:locale/registration/confirm_email', function(request, response){
         var registrationController = new RegistrationController(request, response);
+        console.log('router');
         registrationController.confirmAccount();
     });
 };

@@ -10,17 +10,49 @@ var Mongoose = require('mongoose');
  * @type {Schema}
  */
 var PostsShema = Mongoose.Schema({
-    titleUrl: String, //путь в урле после даты
-    public: Boolean, //отображать ли пост в общем доступе
-    date: Date, //для сортировки
-    UTCYear: String, //для улобной выборки по году YYYY (по гринвичу UTC)
-    UTCMonth: String, //для удобной выборки помесяцу MM (по гринвичу UTC)
-    UTCDate: String, //для удобной выборки по дню DD (по гринвичу UTC)
-    locale: String,
-    title: String, //Загловок поста
-    category: String, //Категория, используется в урлах
-    description: String, //Описание для выдачи
-    body: String //Тело поста
+    //путь в урле после даты
+    titleUrl: {
+        type: String
+    },
+    //отображать ли пост в общем доступе
+    public: {
+        type: Boolean
+    },
+    //для сортировки
+    date: {
+        type: Date
+    },
+    //для улобной выборки по году YYYY (по гринвичу UTC)
+    UTCYear: {
+        type: String
+    },
+    //для удобной выборки помесяцу MM (по гринвичу UTC)
+    UTCMonth: {
+        type: String
+    },
+    //для удобной выборки по дню DD (по гринвичу UTC)
+    UTCDate: {
+        type: String
+    },
+    locale: {
+        type: String
+    },
+    //Загловок поста
+    title: {
+        type: String
+    },
+    //Категория, используется в урлах
+    category: {
+        type: String
+    },
+    //Описание для выдачи
+    description: {
+        type: String
+    },
+    //Тело поста
+    body: {
+        type: String
+    }
 });
 
 /**
@@ -77,10 +109,8 @@ PostsShema.statics.getPost = function (params) {
  */
 PostsShema.statics.addPost = function (postData, callback) {
     if (postData && typeof callback === 'function') {
-        this.model.create(postData, function (error) {
-            callback(error);
-        });
+        this.create(postData, callback);
     }
 };
 
-module.exports = Mongoose.model('Posts', PostsShema);
+module.exports = Mongoose.model('posts', PostsShema);

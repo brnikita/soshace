@@ -19,6 +19,9 @@
     {{> headerView}}
 </div>
 <div class="content js-content">
+    {{#if error}}
+        <p></p>
+    {{/if}}
     {{{body}}}
 </div>
 </body>

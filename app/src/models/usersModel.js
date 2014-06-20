@@ -12,10 +12,24 @@ var Mongoose = require('mongoose'),
  * @type {Schema}
  */
 var UsersShema = Mongoose.Schema({
-    fullName: String,
-    email: String,
-    isMale: Boolean,
-    password: String
+    fullName: {
+        type: String
+    },
+    email: {
+        type: String
+    },
+    isMale: {
+        type: Boolean,
+        default: true
+    },
+    password: {
+        type: String
+    },
+    //Флаг означающий заполненность обязательной профильной информации
+    registrationCompleted: {
+        type: Boolean,
+        default: false
+    }
 });
 
 
@@ -90,4 +104,4 @@ UsersShema.statics.isUserExists = function (email, callback) {
     this.findOne({email: email}, callback);
 };
 
-module.exports = Mongoose.model('Users', UsersShema);
+module.exports = Mongoose.model('users', UsersShema);

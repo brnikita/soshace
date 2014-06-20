@@ -1,6 +1,7 @@
 'use strict';
 
-var Mongoose = require('mongoose'),
+var _ = require('underscore'),
+    Mongoose = require('mongoose'),
     ObjectId = Mongoose.Types.ObjectId,
     UsersModel = require('../../models/usersModel').UsersModel,
     Crypto = require('crypto');
@@ -28,12 +29,12 @@ var StrategiesController = {
      *
      * @private
      * @function
-     * @name StrategiesController.deserializeUser
+     * @name StrategiesController.deSerializeUser
      * @param userId
      * @param done
      * @return {undefined}
      */
-    deserializeUser: function (userId, done) {
+    deSerializeUser: function (userId, done) {
         UsersModel.find({_id: new ObjectId(userId)}, function (error, user) {
             done(error, user);
         });
@@ -75,15 +76,5 @@ var StrategiesController = {
     }
 };
 
-//Экспортируем методы
-exports.serializeUser = function () {
-    return StrategiesController.serializeUser.apply(StrategiesController, arguments);
-};
-
-exports.deserializeUser = function () {
-    return StrategiesController.deserializeUser.apply(StrategiesController, arguments);
-};
-
-exports.local = function () {
-    return StrategiesController.local.apply(StrategiesController, arguments);
-};
+_.bindAll(StrategiesController, 'serializeUser', 'deSerializeUser', 'local');
+module.exports = StrategiesController;

@@ -46,19 +46,32 @@ module.exports = Class.extend({
      * @method
      * @name ControllerInit#sendError
      * @param {String} message
-     * @param {Boolean} [notTranslate] флаг означающий, что не нужно переводить переданное
-     *                               сообщение
      * @returns {undefined}
      */
-    sendError: function (message, notTranslate) {
+    sendError: function (message) {
         var response = this.response;
-
-        if(!notTranslate){
-            message = this.i18n(message);
-        }
 
         response.send({
             error: true,
+            message: message
+        });
+    },
+
+    /**
+     * Метод отправляет успешное сообщение
+     * Текст сообщения передается в параметре
+     *
+     * @method
+     * @name ControllerInit#sendSuccess
+     * @param {String} message
+     *                               сообщение
+     * @returns {undefined}
+     */
+    sendSuccess: function (message) {
+        var response = this.response;
+
+        response.send({
+            error: false,
             message: message
         });
     },

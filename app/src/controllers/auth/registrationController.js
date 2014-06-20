@@ -63,8 +63,8 @@ module.exports = ControllerInit.extend({
     confirmAccount: function () {
         var request = this.request,
             confirmCode = request.query.code;
-
-        UnconfirmedEmails.find({code: confirmCode}, this.saveUserAtModel);
+        console.log('confirmAccount');
+        UnconfirmedEmails.findOne({code: confirmCode}, this.saveUserAtModel);
     },
 
     /**
@@ -153,6 +153,7 @@ module.exports = ControllerInit.extend({
             return;
         }
 
+        this.sendSuccess('Confirmation email has been sent to your email');
         SendMail.sendConfirmMail(request, emailData);
     },
 
@@ -171,12 +172,12 @@ module.exports = ControllerInit.extend({
     saveUserAtModel: function (error, userData) {
         var savedData = {},
             email = userData.email;
-
+        console.log('saveUserAtModel');
         savedData.password = Helpers.encodeMd5(this.getNewPassword());
         savedData.email = email;
         UsersModel.addUser(savedData, _.bind(function (error, user) {
             if (error) {
-                this.sendError('Server is too busy, try later');
+                this.renderPageWithError('Server is too busy, try later');
                 return;
             }
             this.userAddSuccess(user);
@@ -197,23 +198,52 @@ module.exports = ControllerInit.extend({
         return '1';
     },
 
+    /**
+     * Метод рендерит страницу регистрации с ошибкой
+     *
+     * @method
+     * @name RegistrationController#renderPageWithError
+     * @param {String} message текст ошибки
+     * @returns {undefined}
+     */
+    renderPageWithError: function(message){
+        var request = this.request,
+            response = this.response,
+            renderParams = new RenderParams(request);
+
+        response.render('auth/authView', _.extend(renderParams, {
+            error: true,
+            message: message,
+            isAuthPage: true,
+            isRegistrationTab: true,
+            title: 'Registration page',
+            bodyClass: 'bg-symbols bg-color-yellow'
+        }));
+    },
+
 
     /**
      * Метод обработчик успешного добавления пользователя
      *
      * @method
      * @name RegistrationController#userAddSuccess
+     * @param {Mongoose.model} user
      * @returns {undefined}
      */
-    userAddSuccess: function () {
+    userAddSuccess: function (user) {
         var request = this.request,
             response = this.response,
             locale = request.i18n.getLocale(),
-            redirectUrl = '/' + locale + '/user/new';
+            redirectUrl = '/' + locale + '/user/' + user.id;
 
-        response.send({
-            error: false,
-            redirect: redirectUrl
-        });
+        console.log('1',request.isAuthenticated());
+        request.logIn(user, _.bind(function (error) {
+            if (error) {
+                this.renderPageWithError('Server is too busy, try later');
+                return;
+            }
+            console.log('2',request.isAuthenticated());
+            response.redirect(redirectUrl);
+        }, this));
     }
 });

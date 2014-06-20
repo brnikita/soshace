@@ -99,7 +99,7 @@ var Blog = {
      */
     passportStrategies: function () {
         Passport.serializeUser(strategies.serializeUser);
-        Passport.deserializeUser(strategies.deserializeUser);
+        Passport.deserializeUser(strategies.deSerializeUser);
 
         //Конфигурируем утентификацию через форму логина
         Passport.use(new LocalStrategy({
