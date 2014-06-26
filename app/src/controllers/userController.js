@@ -1,5 +1,5 @@
 'use strict';
-var Class = require('../libs/class'),
+var ControllerInit = require('../common/controllerInit'),
     _ = require('underscore'),
     RenderParams = require('../common/renderParams');
 /**
@@ -7,7 +7,7 @@ var Class = require('../libs/class'),
  *
  * @class UserController
  */
-module.exports = Class.extend({
+module.exports = ControllerInit.extend({
 
     /**
      * Метод рендерит страницу пользователя
