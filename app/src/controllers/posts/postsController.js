@@ -12,35 +12,6 @@ var Class = require('../../libs/class'),
  * @class PostsController
  */
 module.exports = Class.extend({
-
-    /**
-     * Объект ответа
-     *
-     * @field
-     * @name PostsController#response
-     * @type {Object | null}
-     */
-    response: null,
-
-    /**
-     * Объект ответа
-     *
-     * @field
-     * @name PostsController#request
-     * @type {Object | null}
-     */
-    request: null,
-
-    /**
-     * @constructor
-     * @name PostsController#initialize
-     * @returns {undefined}
-     */
-    initialize: function(request, response){
-        this.request = request;
-        this.response = response;
-    },
-
     /**
      * Получаем пост целиком
      *

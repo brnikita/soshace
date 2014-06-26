@@ -1,24 +1,25 @@
 'use strict';
-var _ = require('underscore'),
+var Class = require('../libs/class'),
+    _ = require('underscore'),
     RenderParams = require('../common/renderParams');
 /**
  * Контроллер страницы профиля пользователя
  *
- * @module UserController
+ * @class UserController
  */
-var UserController = {
+module.exports = Class.extend({
 
     /**
      * Метод рендерит страницу пользователя
      *
      * @method
-     * @name UserController.renderLogin
-     * @param {Object} request
-     * @param {Object} response
+     * @name UserController#renderLogin
      * @return {undefined}
      */
-    renderUserPage: function (request, response) {
-        var renderParams = new RenderParams(request);
+    renderUserPage: function () {
+        var request = this.request,
+            response = this.response,
+            renderParams = new RenderParams(request);
 
         response.render('userView', _.extend(renderParams, {
             isUserPage: true,
@@ -26,6 +27,4 @@ var UserController = {
             bodyClass: 'bg-color-blue bg-symbols'
         }));
     }
-};
-
-module.exports = UserController;
+});

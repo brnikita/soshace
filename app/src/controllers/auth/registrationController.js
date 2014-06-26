@@ -63,7 +63,7 @@ module.exports = ControllerInit.extend({
     confirmAccount: function () {
         var request = this.request,
             confirmCode = request.query.code;
-        console.log('confirmAccount');
+
         UnconfirmedEmails.findOne({code: confirmCode}, this.saveUserAtModel);
     },
 
@@ -172,7 +172,7 @@ module.exports = ControllerInit.extend({
     saveUserAtModel: function (error, userData) {
         var savedData = {},
             email = userData.email;
-        console.log('saveUserAtModel');
+
         savedData.password = Helpers.encodeMd5(this.getNewPassword());
         savedData.email = email;
         UsersModel.addUser(savedData, _.bind(function (error, user) {
@@ -236,13 +236,12 @@ module.exports = ControllerInit.extend({
             locale = request.i18n.getLocale(),
             redirectUrl = '/' + locale + '/user/' + user.id;
 
-        console.log('1',request.isAuthenticated());
         request.logIn(user, _.bind(function (error) {
             if (error) {
                 this.renderPageWithError('Server is too busy, try later');
                 return;
             }
-            console.log('2',request.isAuthenticated());
+
             response.redirect(redirectUrl);
         }, this));
     }

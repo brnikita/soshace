@@ -1,6 +1,7 @@
 'use strict';
 
-var Fs = require('fs'),
+var Class = require('../libs/class'),
+    Fs = require('fs'),
     Crypto = require('crypto'),
     _ = require('underscore'),
     Gm = require('gm').subClass({
@@ -10,17 +11,17 @@ var Fs = require('fs'),
 /**
  * Контроллер, отвечающий за загрузку изображений
  *
- * @module UploadImageController
+ * @class UploadImageController
  *
  */
-var UploadImageController = {
+module.exports = Class.extend({
 
     /**
      * Формат изображений, в котором мы записываем их на диск
      *
      * @field
-     * @name UploadImageController.outputFormat
-     * @type {string}
+     * @name UploadImageController#outputFormat
+     * @type {String}
      */
     outputFormat: 'png',
 
@@ -28,8 +29,8 @@ var UploadImageController = {
      * Максимальная ширина изображения
      *
      * @field
-     * @name UploadImageController.imageMaxWidth
-     * @type {string}
+     * @name UploadImageController#imageMaxWidth
+     * @type {String}
      */
     imageMaxWidth: '1140',
 
@@ -37,8 +38,8 @@ var UploadImageController = {
      * Максимальная высота изображения
      *
      * @field
-     * @name UploadImageController.imageMaxHeight
-     * @type {string}
+     * @name UploadImageController#imageMaxHeight
+     * @type {String}
      */
     imageMaxHeight: '800',
 
@@ -46,7 +47,7 @@ var UploadImageController = {
      * Метод возвращает будущий адрес картинки на диске
      *
      * @method
-     * @name UploadImageController.getUniqueImageName
+     * @name UploadImageController#getUniqueImageName
      * @param {string | Buffer} imageData тело картинки
      * @returns {Object} возвращает объект, содержащий
      *                   внешний и локальный путь до картинки
@@ -78,14 +79,13 @@ var UploadImageController = {
 
     /**
      * @method
-     * @name UploadImageController.upload
-     * @param {Object} request
-     * @param {Object} response
+     * @name UploadImageController#upload
      * @returns {undefined}
      */
-    upload: function (request, response) {
-
-        var imageParams = request.files.image,
+    upload: function () {
+        var request = this.request,
+            response = this.response,
+            imageParams = request.files.image,
             imagePath = imageParams.path,
             imageName = imageParams.originalFilename;
 
@@ -124,7 +124,4 @@ var UploadImageController = {
 
         }, this));
     }
-};
-
-_.bindAll(UploadImageController, 'upload');
-module.exports = UploadImageController;
+});

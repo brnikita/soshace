@@ -14,7 +14,10 @@ module.exports = function (App) {
     });
 
     //Загружаем изображение
-    App.post('/upload_img', UploadImageController.upload);
+    App.post('/upload_img', function(request, response){
+        var uploadImageController = new UploadImageController(request, response);
+        uploadImageController.upload();
+    });
 
     //Получаем список постов
     App.get('/api/posts', function (request, response) {
@@ -28,7 +31,10 @@ module.exports = function (App) {
     });
 
     //Добавляем пост
-    App.post('/api/post', AddPostsController.addPost);
+    App.post('/api/post', function(request, response){
+        var addPostsController = new AddPostsController(request, response);
+        addPostsController.addPost();
+    });
 
     App.post('/api/create_user', function(request, resposne){
         var registrationController = new RegistrationController(request, resposne);
@@ -36,7 +42,10 @@ module.exports = function (App) {
     });
 
     //добавляем пост
-    App.get('/:locale/add_post', AddPostsController.renderAddPost);
+    App.get('/:locale/add_post', function(request, response){
+        var addPostsController = new AddPostsController(request, response);
+        addPostsController.renderAddPost();
+    });
 
     //Главная страница
     App.get('/:locale', function (request, response) {
@@ -66,11 +75,13 @@ module.exports = function (App) {
         loginController.renderLogin();
     });
 
-    App.get('/:locale/user/:id', UserController.renderUserPage);
+    App.get('/:locale/user/:id', function(request, response){
+        var userController = new UserController(request, response);
+        userController.renderUserPage();
+    });
 
     App.get('/:locale/registration/confirm_email', function(request, response){
         var registrationController = new RegistrationController(request, response);
-        console.log('router');
         registrationController.confirmAccount();
     });
 };

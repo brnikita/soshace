@@ -1,5 +1,6 @@
 'use strict';
-var PostsModel = require('../../models/postsModel'),
+var Class = require('../../libs/class'),
+    PostsModel = require('../../models/postsModel'),
     Unidecode = require('unidecode'),
     Helper = require('../../common/helpers'),
     _ = require('underscore'),
@@ -9,10 +10,10 @@ var PostsModel = require('../../models/postsModel'),
 /**
  * Контроллер, отвечающий за добавление статьи
  *
- * @module AddPostController
+ * @class AddPostController
  *
  */
-var AddPostController = {
+module.exports = Class.extend({
 
     /**
      * TODO: написать тест
@@ -22,7 +23,7 @@ var AddPostController = {
      *
      * @private
      * @method
-     * @name AddPostController._formatPostUrl
+     * @name AddPostController#_formatPostUrl
      * @param {string} title заголовок поста
      * @returns {string}
      */
@@ -30,7 +31,7 @@ var AddPostController = {
         var url;
 
         //переводим в латиницу
-        url = Unidecode(title.toLowerCase());
+        url = new Unidecode(title.toLowerCase());
 
         //заменяем все нелатинские символы на "-"
         return url.replace(/\W+/g, '-');
@@ -43,7 +44,7 @@ var AddPostController = {
      *
      * @private
      * @method
-     * @name AddPostController._getPostDescription
+     * @name AddPostController#_getPostDescription
      * @param {string} postBody тело поста
      * @returns {*}
      */
@@ -67,7 +68,7 @@ var AddPostController = {
      *
      * @private
      * @method
-     * @name AddPostController._getDate
+     * @name AddPostController#_getDate
      * @returns {Object}
      */
     _getDate: function () {
@@ -91,7 +92,7 @@ var AddPostController = {
      *
      * @private
      * @method
-     * @name AddPostController._checkPostTitle
+     * @name AddPostController#_checkPostTitle
      * @param {string} title загловок поста
      * @returns {string|boolean}
      */
@@ -116,7 +117,7 @@ var AddPostController = {
      *
      * @private
      * @method
-     * @name AddPostController._checkPostBody
+     * @name AddPostController#_checkPostBody
      * @param {string} body загловок поста
      * @returns {string|boolean}
      */
@@ -140,13 +141,13 @@ var AddPostController = {
      *
      * @public
      * @method
-     * @name AddPostController.addPost
-     * @param {Object} request тело запроса
-     * @param {Object} response тело ответа
+     * @name AddPostController#addPost
      * @return {undefined}
      */
-    addPost: function (request, response) {
-        var dataToSave = {},
+    addPost: function () {
+        var request = this.request,
+            response = this.response,
+            dataToSave = {},
             postData = request.body,
             titleError,
             bodyError,
@@ -224,12 +225,12 @@ var AddPostController = {
      * @public
      * @function
      * @name AddPostsController.renderAddPost
-     * @param {Object} request
-     * @param {Object} response
      * @return {undefined}
      */
-    renderAddPost: function (request, response) {
-        var renderParams = new RenderParams(request);
+    renderAddPost: function () {
+        var request = this.request,
+            response = this.response,
+            renderParams = new RenderParams(request);
 
         response.render('posts/addPostView', _.extend(renderParams, {
             title: 'Add Post',
@@ -237,7 +238,4 @@ var AddPostController = {
             bodyClass: 'bg-color-blue bg-symbols'
         }));
     }
-};
-
-_.bindAll(AddPostController, 'addPost');
-module.exports = AddPostController;
+});

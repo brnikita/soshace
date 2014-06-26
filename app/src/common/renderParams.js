@@ -17,6 +17,7 @@ module.exports = function (request) {
         version: Soshace.VERSION,
         helpers: helpers,
         bodyClass: 'bg-color-green bg-symbols',
-        locale: request.i18n.getLocale()
+        locale: request.i18n.getLocale(),
+        isAuthenticated: request.isAuthenticated()
     };
 };
