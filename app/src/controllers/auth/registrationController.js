@@ -62,9 +62,19 @@ module.exports = ControllerInit.extend({
      */
     confirmAccount: function () {
         var request = this.request,
-            confirmCode = request.query.code;
+            response = this.response,
+            renderParams = new RenderParams(request);
+//            confirmCode = request.query.code;
 
-        UnconfirmedEmails.findOne({code: confirmCode}, this.saveUserAtModel);
+//        UnconfirmedEmails.findOne({code: confirmCode}, this.saveUserAtModel);
+
+        response.render('auth/registrationFinish', _.extend(renderParams, {
+            error: true,
+            isAuthPage: true,
+            isRegistrationTab: true,
+            title: 'Complete registration',
+            bodyClass: 'bg-symbols bg-color-yellow'
+        }));
     },
 
     /**
