@@ -2,7 +2,6 @@
 var _ = require('underscore'),
     ControllerInit = require('../../common/controllerInit'),
     UsersModel = require('../../models/usersModel'),
-    UnconfirmedEmails = require('../../models/unconfirmedEmails'),
     RenderParams = require('../../common/renderParams'),
     SendMail = require('../../common/sendMail'),
     Helpers = require('../../common/helpers');
@@ -27,8 +26,7 @@ module.exports = ControllerInit.extend({
 
         _.bindAll(this,
             'saveUserAtModel',
-            'userExistsHandler',
-            'saveNewEmailHandler'
+            'userExistsHandler'
         );
     },
 
@@ -54,24 +52,20 @@ module.exports = ControllerInit.extend({
     },
 
     /**
-     * Подтверждаем аккаунт с email
+     * Страница подтверждения аккаунта с email
      *
      * @function
-     * @name RegistrationController#confirmAccount
+     * @name RegistrationController#renderConfirmAccountPage
      * @return {undefined}
      */
-    confirmAccount: function () {
+    renderConfirmAccountPage: function () {
         var request = this.request,
             response = this.response,
-            renderParams = new RenderParams(request);
-//            confirmCode = request.query.code;
-
-//        UnconfirmedEmails.findOne({code: confirmCode}, this.saveUserAtModel);
+            renderParams = new RenderParams(request),
+            confirmCode = request.query.code;
 
         response.render('auth/registrationFinish', _.extend(renderParams, {
             error: true,
-            isAuthPage: true,
-            isRegistrationTab: true,
             title: 'Complete registration',
             bodyClass: 'bg-symbols bg-color-yellow'
         }));
@@ -109,128 +103,46 @@ module.exports = ControllerInit.extend({
      */
     userExistsHandler: function (error, user) {
         var request = this.request,
+            email,
             data;
 
         if (error) {
-            this.sendError('Server is too busy, try later');
+            this.sendError(this.i18n('Server is too busy, try later'));
             return;
         }
 
         if (user) {
-            this.sendError('User with email is already exists');
+            email = user.email;
+            this.sendError(this.i18n('User with email ') + email + this.i18n(' is already exists'));
             return;
         }
 
         data = request.body;
-        this.saveNewEmail(data);
+        this.saveUserAtModel(data);
     },
 
     /**
-     * Метод сохраняет email в коллекции для неподтвержденных email
-     *
-     * @method
-     * @name RegistrationController#saveNewEmail
-     * @param {Object} data объект содержит пользовательский email
-     * @returns {undefined}
-     */
-    saveNewEmail: function (data) {
-        var email = data.email,
-            time = String((new Date()).getTime()),
-            code;
-
-        code = Helpers.encodeMd5(email + time);
-        UnconfirmedEmails.addEmail({
-            code: code,
-            email: email
-        }, this.saveNewEmailHandler);
-    },
-
-    /**
-     * Метод обработчик сохраннения email  в коллекции неподтвержденнных
-     * email
-     *
-     * @method
-     * @name RegistrationController#saveNewEmail
-     * @param {Object} error
-     * @param {Object} emailData
-     * @returns {undefined}
-     */
-    saveNewEmailHandler: function (error, emailData) {
-        var request = this.request;
-
-        if (error) {
-            this.sendError('Server is too busy, try later');
-            return;
-        }
-
-        this.sendSuccess('Confirmation email has been sent to your email');
-        SendMail.sendConfirmMail(request, emailData);
-    },
-
-    /**
-     * Метод сохраняет пользователя в модели временных пользователей
-     *
-     * После того как пользователь подтвердит свой email, его профиль будет перенесен
-     * в коллекцию постоянных пользователей
+     * Метод сохраняет пользователя в модели пользователей
      *
      * @method
      * @name RegistrationController#saveUserAtModel
-     * @param {Object} error
      * @param {Object} userData
      * @returns {undefined}
      */
-    saveUserAtModel: function (error, userData) {
-        var savedData = {},
-            email = userData.email;
+    saveUserAtModel: function (userData) {
+        var email = userData.email,
+            time = String((new Date()).getTime()),
+            code = Helpers.encodeMd5(email + time);
 
-        savedData.password = Helpers.encodeMd5(this.getNewPassword());
-        savedData.email = email;
-        UsersModel.addUser(savedData, _.bind(function (error, user) {
+        userData.code = code;
+        UsersModel.addUser(userData, _.bind(function (error, user) {
             if (error) {
-                this.renderPageWithError('Server is too busy, try later');
+                this.sendError(this.i18n('Server is too busy, try later'));
                 return;
             }
             this.userAddSuccess(user);
         }, this));
     },
-
-    /**
-     * TODO: доработать метод
-     *
-     * Метод возвращает новый рандомный пароль
-     * для юзера
-     *
-     * @method
-     * @name RegistrationController#getNewPassword
-     * @returns {String}
-     */
-    getNewPassword: function () {
-        return '1';
-    },
-
-    /**
-     * Метод рендерит страницу регистрации с ошибкой
-     *
-     * @method
-     * @name RegistrationController#renderPageWithError
-     * @param {String} message текст ошибки
-     * @returns {undefined}
-     */
-    renderPageWithError: function(message){
-        var request = this.request,
-            response = this.response,
-            renderParams = new RenderParams(request);
-
-        response.render('auth/authView', _.extend(renderParams, {
-            error: true,
-            message: message,
-            isAuthPage: true,
-            isRegistrationTab: true,
-            title: 'Registration page',
-            bodyClass: 'bg-symbols bg-color-yellow'
-        }));
-    },
-
 
     /**
      * Метод обработчик успешного добавления пользователя
@@ -246,13 +158,16 @@ module.exports = ControllerInit.extend({
             locale = request.i18n.getLocale(),
             redirectUrl = '/' + locale + '/user/' + user.id;
 
-        request.logIn(user, _.bind(function (error) {
+        request.login(user, _.bind(function (error) {
             if (error) {
-                this.renderPageWithError('Server is too busy, try later');
+                this.sendError(this.i18n('Server is too busy, try later'));
                 return;
             }
 
-            response.redirect(redirectUrl);
+            SendMail.sendConfirmMail(request, user);
+            response.send({
+                redirect: redirectUrl
+            });
         }, this));
     }
 });

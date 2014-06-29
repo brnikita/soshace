@@ -10,10 +10,11 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'utils/helpers',
     'utils/widgets',
     './loginModel',
     'backbone.layoutmanager'
-], function ($, _, Backbone, Widgets, LoginModel) {
+], function ($, _, Backbone, Helpers, Widgets, LoginModel) {
     return Backbone.Layout.extend({
 
         /**
@@ -58,6 +59,8 @@ define([
          * @type {Object}
          */
         events: {
+            'keyup .js-model-field': 'changeFormFieldHandler',
+            'submit': 'userLoginHandler'
         },
 
         /**
@@ -87,6 +90,65 @@ define([
             } else {
                 this.secondLoadHandler();
             }
+        },
+
+        /**
+         * Метод обработчик клика на кнопке 'Войти'
+         *
+         * @method
+         * @name LoginView#userLoginHandler
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        userLoginHandler: function (event) {
+            var _this = this;
+
+            event.preventDefault();
+            this.model.save(null, {
+                success: _this.userLoginSuccess,
+                error: _this.userLoginFail
+            });
+        },
+
+        /**
+         * Метод обработчик успешной входа пользователя
+         *
+         * @method
+         * @name RegistrationView#userLoginSuccess
+         * @param {Backbone.Model} model
+         * @param {Object} response
+         * @returns {undefined}
+         */
+        userLoginSuccess: function(model, response){
+            var redirectUrl = response.redirect;
+            Backbone.history.navigate(redirectUrl, {trigger: true});
+        },
+
+        /**
+         * Метод обработчик неуспешной входа пользователя
+         *
+         * @method
+         * @name RegistrationView#userLoginFail
+         * @param {Object} response
+         * @returns {undefined}
+         */
+        userLoginFail: function(response){
+
+        },
+
+        /**
+         * Метод обработчик события изменения поля формы
+         *
+         * @method
+         * @name LoginView#changeFormFieldHandler
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        changeFormFieldHandler: function (event) {
+            var $target = $(event.target),
+                params = Helpers.getInputData($target);
+
+            this.model.set(params);
         },
 
         /**

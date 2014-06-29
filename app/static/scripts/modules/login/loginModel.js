@@ -18,8 +18,17 @@ define([
          * @type {Object}
          */
         defaults: {
-            locale: null
+            locale: null,
+            email: null,
+            password: null
         },
+
+        /**
+         * @field
+         * @name LoginModel#url
+         * @type {String}
+         */
+        url: '/api/login',
 
         /**
          * @constructor

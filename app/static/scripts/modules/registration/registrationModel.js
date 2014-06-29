@@ -19,7 +19,9 @@ define([
          */
         defaults: {
             locale: null,
-            email: null
+            email: null,
+            fullName: null,
+            password: null
         },
 
         /**

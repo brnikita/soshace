@@ -52,26 +52,23 @@ var StrategiesController = {
      * @return {undefined}
      */
     local: function (userEmail, userPassword, done) {
-        userPassword = Crypto.createHash('md5').update(userPassword).digest('hex');
-
-        UsersModel.findOne({email: userEmail}, function (error, user) {
+        User.findOne({ email: userEmail }, function (error, user) {
             if (error) {
                 return done(error);
             }
-
-            if (user === null) {
-                return done(null, null, {message: {email: userEmail, text: 'does not registered yet.'}});
+            if (!user) {
+                return done(null, false, { message: 'User with email ' + userEmail + ' is not registered yet.'});
             }
-
-            if (user.password !== userPassword) {
-                return done(null, null, {message: {text: 'Password is wrong!'}});
-            }
-
-            if (user.emailConfirmed) {
-                return done(error, user._id);
-            }
-
-            return done(null, null, {message: {email: userEmail, text: 'does not confirmed.'}});
+            user.comparePassword(userPassword, function (error, isMatch) {
+                if (error) {
+                    return done(err);
+                }
+                if (isMatch) {
+                    return done(null, user);
+                } else {
+                    return done(null, false, { message: 'Invalid password' });
+                }
+            });
         });
     }
 };

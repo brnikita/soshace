@@ -10,6 +10,13 @@ var Class = require('../libs/class');
 module.exports = Class.extend({
 
     /**
+     * @field
+     * @name ControllerInit#next
+     * @type {Function | null}
+     */
+    next: null,
+
+    /**
      * Объект ответа
      *
      * @field
@@ -36,6 +43,7 @@ module.exports = Class.extend({
     initialize: function (request, response) {
         this.request = request;
         this.response = response;
+        this.next = this.next;
     },
 
 

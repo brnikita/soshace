@@ -14,18 +14,10 @@ define([
     'modules/posts/postDetail/postDetailView',
     'modules/posts/addPost/addPostView',
     'modules/registration/registrationView',
+    'modules/finishRegistration/finishRegistrationView',
     'modules/login/loginView',
     'modules/user/userView'
-], function ($,
-             _,
-             Backbone,
-             HeaderView,
-             PostsListView,
-             PostDetailView,
-             AddPostView,
-             RegistrationView,
-             LoginView,
-             UserView) {
+], function ($, _, Backbone, HeaderView, PostsListView, PostDetailView, AddPostView, RegistrationView, FinishRegistrationView, LoginView, UserView) {
     return Backbone.Router.extend({
 
         /**
@@ -50,6 +42,23 @@ define([
         },
 
         /**
+         * Список видов
+         *
+         * @field
+         * @name Router#views
+         * @type {Object}
+         */
+        views: {
+            postDetailView: null,
+            loginView: null,
+            registrationView: null,
+            postsListView: null,
+            addPostView: null,
+            finishRegistrationView: null,
+            userView: null
+        },
+
+        /**
          * @property
          * @name Router#routes
          * @type {Object}
@@ -60,7 +69,24 @@ define([
             ':locale/add_post': 'addPostPage',
             ':locale/login': 'loginPage',
             ':locale/registration': 'registrationPage',
-            ':locale/user/:id': 'userPage'
+            ':locale/user/:id': 'userPage',
+            ':locale/registration/confirm_email': 'finishRegistrationView'
+        },
+
+        /**
+         * Метод удаляет предудущие виды, чтобы
+         * чтобы не отрабатывали слушатели
+         *
+         * @method
+         * @name Router#clearPreviousView
+         * @returns {undefined}
+         */
+        clearPreviousView: function () {
+            _.each(this.views, function (view) {
+                if (view !== null) {
+                    view.remove();
+                }
+            });
         },
 
         /**
@@ -68,7 +94,7 @@ define([
          *
          * @method
          * @name Router#postsPage
-         * @param {string} locale локаль
+         * @param {String} locale локаль
          * @returns {undefined}
          */
         postsPage: function (locale) {
@@ -76,8 +102,9 @@ define([
                 Soshace.firstLoad = false;
                 return;
             }
+            this.clearPreviousView();
             this.app.headerView.changeTab('isPostsPage');
-            new PostsListView({
+            this.views.postsListView = PostsListView({
                 app: this.app,
                 locale: locale
             });
@@ -88,11 +115,11 @@ define([
          *
          * @method
          * @name Router#postPage
-         * @param {string} locale локаль
-         * @param {string} year год
-         * @param {string} month месяц
-         * @param {string} date день
-         * @param {string} title заголовок из урла
+         * @param {String} locale локаль
+         * @param {String} year год
+         * @param {String} month месяц
+         * @param {String} date день
+         * @param {String} title заголовок из урла
          * @returns {undefined}
          */
         postPage: function (locale, year, month, date, title) {
@@ -100,8 +127,9 @@ define([
                 Soshace.firstLoad = false;
                 return;
             }
+            this.clearPreviousView();
             this.app.headerView.changeTab();
-            new PostDetailView({
+            this.views.postDetailView = new PostDetailView({
                 app: this.app,
                 locale: locale,
                 year: year,
@@ -116,13 +144,14 @@ define([
          *
          * @method
          * @name Router#addPostPage
-         * @param {string} locale локаль
+         * @param {String} locale локаль
          * @returns {undefined}
          */
         addPostPage: function (locale) {
-            this.app.headerView.changeTab('isAddPostPage');
             Soshace.firstLoad = false;
-            new AddPostView({
+            this.clearPreviousView();
+            this.app.headerView.changeTab('isAddPostPage');
+            this.views.addPostView = new AddPostView({
                 app: this.app,
                 locale: locale
             });
@@ -133,11 +162,12 @@ define([
          *
          * @method
          * @name Router#loginPage
-         * @param {string} locale локаль
+         * @param {String} locale локаль
          * @returns {undefined}
          */
         loginPage: function (locale) {
-            new LoginView({
+            this.clearPreviousView();
+            this.views.loginView = new LoginView({
                 app: this.app,
                 locale: locale
             });
@@ -148,11 +178,28 @@ define([
          *
          * @method
          * @name Router#registrationPage
-         * @param {string} locale локаль
+         * @param {String} locale локаль
          * @returns {undefined}
          */
         registrationPage: function (locale) {
-            new RegistrationView({
+            this.clearPreviousView();
+            this.views.registrationView = new RegistrationView({
+                app: this.app,
+                locale: locale
+            });
+        },
+
+        /**
+         * Метод обработчик роута страницы завершения регитсрации
+         *
+         * @method
+         * @name Router#finishRegistrationView
+         * @param {String} locale
+         * @returns {undefined}
+         */
+        finishRegistrationView: function (locale) {
+            this.clearPreviousView();
+            this.views.finishRegistrationView = new FinishRegistrationView({
                 app: this.app,
                 locale: locale
             });
@@ -161,12 +208,13 @@ define([
         /**
          * @method
          * @name Router#userPage
-         * @param {string} locale локаль
-         * @param {string} userId id пользователя
+         * @param {String} locale локаль
+         * @param {String} userId id пользователя
          * @returns {undefined}
          */
         userPage: function (locale, userId) {
-            new UserView({
+            this.clearPreviousView();
+            this.views.userView = new UserView({
                 app: this.app,
                 locale: locale,
                 userId: userId

@@ -1,7 +1,8 @@
 'use strict';
 
 var Mongoose = require('mongoose'),
-    Bcrypt = require('bcrypt');
+    Bcrypt = require('bcrypt'),
+    SALT_WORK_FACTOR = 10;
 
 /**
  * Класс для работы с моделью пользователей
@@ -12,6 +13,10 @@ var Mongoose = require('mongoose'),
  * @type {Schema}
  */
 var UsersShema = Mongoose.Schema({
+    //код подтверждения email
+    code: {
+        type: String
+    },
     fullName: {
         type: String
     },
@@ -20,13 +25,17 @@ var UsersShema = Mongoose.Schema({
     },
     isMale: {
         type: Boolean,
-        default: true
+        default: null
     },
     password: {
         type: String
     },
-    //Флаг означающий заполненность обязательной профильной информации
-    registrationCompleted: {
+    emailConfirmed: {
+        type: Boolean,
+        default: false
+    },
+    //Является ли пользователь админом
+    admin: {
         type: Boolean,
         default: false
     }
@@ -42,35 +51,11 @@ var UsersShema = Mongoose.Schema({
  * @param {Function} callback
  * @returns {undefined}
  */
-UsersShema.methods.comparePassword = function (candidatePassword, callback) {
-    var currentPassword;
-    Bcrypt.compare(candidatePassword, currentPassword, function (error, isMatch) {
-        if (error) {
-            callback(error);
-            return;
+UsersShema.methods.comparePassword = function(candidatePassword, callback) {
+    Bcrypt.compare(candidatePassword, this.password, function(error, isMatch) {
+        if(error) {
+            return callback(error);
         }
-
-        callback(null, isMatch);
-    });
-};
-
-/**
- * Метод сравнения паролей
- *
- * @method
- * @name UsersShema#comparePassword
- * @param {String} candidatePassword проверяемый пароль
- * @param {Function} callback
- * @returns {undefined}
- */
-UsersShema.methods.comparePassword = function (candidatePassword, callback) {
-    var currentPassword;
-    Bcrypt.compare(candidatePassword, currentPassword, function (error, isMatch) {
-        if (error) {
-            callback(error);
-            return;
-        }
-
         callback(null, isMatch);
     });
 };
@@ -89,6 +74,31 @@ UsersShema.statics.addUser = function (userData, callback) {
         this.create(userData, callback);
     }
 };
+
+/**
+ * Шифруем пароль перед сохранением
+ */
+UsersShema.pre('save', function (next) {
+    var user = this;
+
+    if (!user.isModified('password')) {
+        return next();
+    }
+
+    Bcrypt.genSalt(SALT_WORK_FACTOR, function (error, salt) {
+        if (error) {
+            return next(error);
+        }
+
+        Bcrypt.hash(user.password, salt, function (error, hash) {
+            if (error) {
+                return next(error);
+            }
+            user.password = hash;
+            next();
+        });
+    });
+});
 
 /**
  * Метод проверяет существование пользователя с переданным email

@@ -36,9 +36,19 @@ module.exports = function (App) {
         addPostsController.addPost();
     });
 
-    App.post('/api/create_user', function(request, resposne){
-        var registrationController = new RegistrationController(request, resposne);
+    App.post('/api/create_user', function(request, response){
+        var registrationController = new RegistrationController(request, response);
         registrationController.createUser();
+    });
+
+    App.post('/api/create_user_complete', function(request, resposne){
+        var registrationController = new RegistrationController(request, resposne);
+        registrationController.createUserComplete();
+    });
+
+    App.post('/api/login', function(request, response, next){
+        var loginController = new LoginController(request, response, next);
+        loginController.loginPostHandler();
     });
 
     //добавляем пост
@@ -82,6 +92,6 @@ module.exports = function (App) {
 
     App.get('/:locale/registration/confirm_email', function(request, response){
         var registrationController = new RegistrationController(request, response);
-        registrationController.confirmAccount();
+        registrationController.renderConfirmAccountPage();
     });
 };

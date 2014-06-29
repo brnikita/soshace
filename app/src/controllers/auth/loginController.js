@@ -38,42 +38,29 @@ module.exports = ControllerInit.extend({
      * @private
      * @function
      * @name LoginController.loginPostHandler
-     * @param request
-     * @param response
-     * @param next
      * @return {undefined}
      */
-    loginPostHandler: function (request, response, next) {
-        var _this = this;
+    loginPostHandler: function () {
+        var request = this.request,
+            response = this.response,
+            next = this.next,
+            requestBody = request.body,
+            userEmail = requestBody.email,
+            _this = this;
 
-        Passport.authenticate('local', function (error, user, info) {
-            var message;
-
+        Passport.authenticate('local', function (error, user) {
             if (error) {
-                message = 'Something is wrong, please try again!';
-                response.send({error: true, message: _this.i18n(message)});
+                _this.sendError(_this.i18n('Server is too busy, try later'));
                 return;
             }
 
             if (!user) {
-                if (typeof info.message.email !== 'undefined') {
-                    message = this.i18n('Email') + ' ' + info.message.email + ' ' +
-                        this.i18n(info.message.text);
-                    response.send({error: true, message: message});
-                    return;
-                }
-
-                if (typeof info.message.text !== 'undefined') {
-                    message = info.message.text;
-                    response.send({error: true, message: _this.i18n(message)});
-                    return;
-                }
+                _this.sendError(_this.i18n('User with email ') + userEmail + _this.i18n(' is not registered yet.'));
             }
 
-            request.logIn(user, function (error) {
+            request.login(user, function (error) {
                 if (error) {
-                    message = 'Something is wrong, please try again!';
-                    response.send({error: true, message: _this.i18n(message)});
+                    _this.sendError(_this.i18n('Server is too busy, try later'));
                     return;
                 }
 

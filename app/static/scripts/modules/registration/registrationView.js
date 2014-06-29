@@ -62,7 +62,7 @@ define([
          */
         events: {
             'keyup .js-model-field': 'changeFormFieldHandler',
-            'click .js-sign-up': 'userRegistrationHandler'
+            'submit': 'userRegistrationHandler'
         },
 
         /**

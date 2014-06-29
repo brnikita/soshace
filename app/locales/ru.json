@@ -82,5 +82,11 @@
 	"Свой Блог с нуля на JavaScript. Часть 2": "Свой Блог с нуля на JavaScript. Часть 2",
 	"Свой Блог с нуля на JavaScript. Часть 1": "Свой Блог с нуля на JavaScript. Часть 1",
 	"User with email is already exists": "User with email is already exists",
-	"Confirmation email has been sent to your email": "Confirmation email has been sent to your email"
+	"Confirmation email has been sent to your email": "Confirmation email has been sent to your email",
+	"Complete registration": "Complete registration",
+	"Congretulations!": "Congretulations!",
+	"User with email ": "User with email ",
+	" is already exists": " is already exists",
+	" is not registered yet.": " is not registered yet.",
+	"Server is too busy, try later": "Server is too busy, try later"
 }
