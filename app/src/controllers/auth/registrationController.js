@@ -156,9 +156,9 @@ module.exports = ControllerInit.extend({
         var request = this.request,
             response = this.response,
             locale = request.i18n.getLocale(),
-            redirectUrl = '/' + locale + '/user/' + user.id;
+            redirectUrl = '/' + locale + '/user/' + user.userName;
 
-        request.login(user, _.bind(function (error) {
+        request.login(user.id, _.bind(function (error) {
             if (error) {
                 this.sendError(this.i18n('Server is too busy, try later'));
                 return;

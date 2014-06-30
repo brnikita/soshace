@@ -60,7 +60,7 @@ module.exports = ControllerInit.extend({
                 _this.sendError(_this.i18n('User with email ') + userEmail + _this.i18n(' is not registered yet.'));
             }
 
-            request.login(user, function (error) {
+            request.login(user._id, function (error) {
                 if (error) {
                     _this.sendError(_this.i18n('Server is too busy, try later'));
                     return;

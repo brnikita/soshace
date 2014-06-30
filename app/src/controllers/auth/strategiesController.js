@@ -60,7 +60,7 @@ var StrategiesController = {
                     return done(error);
                 }
                 if (isMatch) {
-                    return done(null, user._id);
+                    return done(null, user.id);
                 } else {
                     return done(null, false, { message: 'Invalid password' });
                 }

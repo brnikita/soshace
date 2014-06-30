@@ -15,20 +15,31 @@ var Mongoose = require('mongoose'),
 var UsersShema = Mongoose.Schema({
     //код подтверждения email
     code: {
-        type: String
+        type: String,
+        required: true,
+        unique: true
     },
     fullName: {
-        type: String
+        type: String,
+        required: true
+    },
+    userName: {
+        type: String,
+        required: true,
+        unique: true
     },
     email: {
-        type: String
+        type: String,
+        required: true,
+        unique: true
     },
     isMale: {
         type: Boolean,
         default: null
     },
     password: {
-        type: String
+        type: String,
+        required: true
     },
     emailConfirmed: {
         type: Boolean,
@@ -41,6 +52,7 @@ var UsersShema = Mongoose.Schema({
     },
     locale: {
         type: String,
+        required: true,
         default: 'ru'
     }
 });

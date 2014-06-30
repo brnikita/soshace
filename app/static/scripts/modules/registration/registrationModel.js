@@ -21,7 +21,8 @@ define([
             locale: null,
             email: null,
             fullName: null,
-            password: null
+            password: null,
+            userName: null
         },
 
         /**
