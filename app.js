@@ -64,6 +64,11 @@ var Blog = {
             defaultLocale: Soshace.DEFAULT_LOCALE
         });
 
+//        App.use(Express.logger());
+        App.use(Express.cookieParser());
+        App.use(Express.bodyParser());
+        App.use(Express.methodOverride());
+        App.use(Express.session({ secret: 'keyboard cat' }));
         App.use(Passport.initialize());
         App.use(Passport.session());
         App.use(App.router);

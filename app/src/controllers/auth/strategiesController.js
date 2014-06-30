@@ -12,7 +12,6 @@ var StrategiesController = {
     /**
      * Создаем идентификатор для новой сессии
      *
-     * @private
      * @function
      * @name StrategiesController.serializeUser
      * @param userId
@@ -26,7 +25,6 @@ var StrategiesController = {
     /**
      * Получаем данные сессии по идентификатору сессии из куки запроса
      *
-     * @private
      * @function
      * @name StrategiesController.deSerializeUser
      * @param userId
@@ -42,7 +40,6 @@ var StrategiesController = {
     /**
      * Callback для конфигурации локальной стратегии
      *
-     * @private
      * @function
      * @name StrategiesController.local
      * @param {String} userEmail
@@ -63,7 +60,7 @@ var StrategiesController = {
                     return done(error);
                 }
                 if (isMatch) {
-                    return done(null, user);
+                    return done(null, user._id);
                 } else {
                     return done(null, false, { message: 'Invalid password' });
                 }
