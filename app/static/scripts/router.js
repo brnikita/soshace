@@ -148,9 +148,7 @@ define([
          * @returns {undefined}
          */
         addPostPage: function (locale) {
-            Soshace.firstLoad = false;
             this.unbindPreviousView();
-            this.app.headerView.changeTab('isAddPostPage');
             this.views.addPostView = new AddPostView({
                 app: this.app,
                 locale: locale
