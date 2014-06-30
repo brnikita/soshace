@@ -60,8 +60,7 @@ module.exports = Class.extend({
         var response = this.response;
 
         response.send({
-            error: true,
-            message: message
+            error: message
         });
     },
 
@@ -79,7 +78,7 @@ module.exports = Class.extend({
         var response = this.response;
 
         response.send({
-            error: false,
+            error: null,
             message: message
         });
     },

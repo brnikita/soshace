@@ -62,6 +62,7 @@ define([
          */
         events: {
             'keyup .js-model-field': 'changeFormFieldHandler',
+            'blur .js-model-field': 'changeFormFieldHandler',
             'submit': 'userRegistrationHandler'
         },
 

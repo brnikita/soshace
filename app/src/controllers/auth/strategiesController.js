@@ -3,8 +3,7 @@
 var _ = require('underscore'),
     Mongoose = require('mongoose'),
     ObjectId = Mongoose.Types.ObjectId,
-    UsersModel = require('../../models/usersModel').UsersModel,
-    Crypto = require('crypto');
+    UsersModel = require('../../models/usersModel');
 
 /**
  * Методы конфигурации стратегий
@@ -52,7 +51,7 @@ var StrategiesController = {
      * @return {undefined}
      */
     local: function (userEmail, userPassword, done) {
-        User.findOne({ email: userEmail }, function (error, user) {
+        UsersModel.findOne({ email: userEmail }, function (error, user) {
             if (error) {
                 return done(error);
             }
@@ -61,7 +60,7 @@ var StrategiesController = {
             }
             user.comparePassword(userPassword, function (error, isMatch) {
                 if (error) {
-                    return done(err);
+                    return done(error);
                 }
                 if (isMatch) {
                     return done(null, user);

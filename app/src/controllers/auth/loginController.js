@@ -49,6 +49,8 @@ module.exports = ControllerInit.extend({
             _this = this;
 
         Passport.authenticate('local', function (error, user) {
+            var locale;
+
             if (error) {
                 _this.sendError(_this.i18n('Server is too busy, try later'));
                 return;
@@ -63,8 +65,8 @@ module.exports = ControllerInit.extend({
                     _this.sendError(_this.i18n('Server is too busy, try later'));
                     return;
                 }
-
-                response.send({redirect: '/'});
+                locale = user.locale;
+                response.send({redirect: '/' + locale});
             });
         })(request, response, next);
     }

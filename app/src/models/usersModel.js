@@ -38,6 +38,10 @@ var UsersShema = Mongoose.Schema({
     admin: {
         type: Boolean,
         default: false
+    },
+    locale: {
+        type: String,
+        default: 'ru'
     }
 });
 
@@ -51,9 +55,9 @@ var UsersShema = Mongoose.Schema({
  * @param {Function} callback
  * @returns {undefined}
  */
-UsersShema.methods.comparePassword = function(candidatePassword, callback) {
-    Bcrypt.compare(candidatePassword, this.password, function(error, isMatch) {
-        if(error) {
+UsersShema.methods.comparePassword = function (candidatePassword, callback) {
+    Bcrypt.compare(candidatePassword, this.password, function (error, isMatch) {
+        if (error) {
             return callback(error);
         }
         callback(null, isMatch);

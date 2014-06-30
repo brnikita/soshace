@@ -60,7 +60,8 @@ define([
          */
         events: {
             'keyup .js-model-field': 'changeFormFieldHandler',
-            'submit': 'userLoginHandler'
+            'blur .js-model-field': 'changeFormFieldHandler',
+            'submit .js-login-form': 'userLoginHandler'
         },
 
         /**
@@ -119,9 +120,16 @@ define([
          * @param {Object} response
          * @returns {undefined}
          */
-        userLoginSuccess: function(model, response){
-            var redirectUrl = response.redirect;
-            Backbone.history.navigate(redirectUrl, {trigger: true});
+        userLoginSuccess: function (model, response) {
+            var error = response.error,
+                redirectUrl;
+
+            if (error) {
+                Widgets.showMessages(error);
+            } else {
+                redirectUrl = response.redirect;
+                Backbone.history.navigate(redirectUrl, {trigger: true});
+            }
         },
 
         /**
@@ -132,7 +140,7 @@ define([
          * @param {Object} response
          * @returns {undefined}
          */
-        userLoginFail: function(response){
+        userLoginFail: function (response) {
 
         },
 

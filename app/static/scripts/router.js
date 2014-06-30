@@ -30,18 +30,6 @@ define([
         app: null,
 
         /**
-         * @constructor
-         * @name Router#initialize
-         * @returns {undefined}
-         */
-        initialize: function (params) {
-            this.app = params.app;
-            Backbone.history.start({
-                pushState: true
-            });
-        },
-
-        /**
          * Список видов
          *
          * @field
@@ -74,17 +62,29 @@ define([
         },
 
         /**
-         * Метод удаляет предудущие виды, чтобы
-         * чтобы не отрабатывали слушатели
-         *
-         * @method
-         * @name Router#clearPreviousView
+         * @constructor
+         * @name Router#initialize
          * @returns {undefined}
          */
-        clearPreviousView: function () {
+        initialize: function (params) {
+            this.app = params.app;
+            Backbone.history.start({
+                pushState: true
+            });
+        },
+
+        /**
+         * Метод удаляет слушатели предыдущих видов
+         *
+         * @method
+         * @name Router#unbindPreviousView
+         * @returns {undefined}
+         */
+        unbindPreviousView: function () {
             _.each(this.views, function (view) {
                 if (view !== null) {
-                    view.remove();
+                    view.undelegateEvents();
+                    view.$el.removeData().unbind();
                 }
             });
         },
@@ -102,9 +102,9 @@ define([
                 Soshace.firstLoad = false;
                 return;
             }
-            this.clearPreviousView();
+            this.unbindPreviousView();
             this.app.headerView.changeTab('isPostsPage');
-            this.views.postsListView = PostsListView({
+            this.views.postsListView = new PostsListView({
                 app: this.app,
                 locale: locale
             });
@@ -127,7 +127,7 @@ define([
                 Soshace.firstLoad = false;
                 return;
             }
-            this.clearPreviousView();
+            this.unbindPreviousView();
             this.app.headerView.changeTab();
             this.views.postDetailView = new PostDetailView({
                 app: this.app,
@@ -149,7 +149,7 @@ define([
          */
         addPostPage: function (locale) {
             Soshace.firstLoad = false;
-            this.clearPreviousView();
+            this.unbindPreviousView();
             this.app.headerView.changeTab('isAddPostPage');
             this.views.addPostView = new AddPostView({
                 app: this.app,
@@ -166,7 +166,7 @@ define([
          * @returns {undefined}
          */
         loginPage: function (locale) {
-            this.clearPreviousView();
+            this.unbindPreviousView();
             this.views.loginView = new LoginView({
                 app: this.app,
                 locale: locale
@@ -182,7 +182,7 @@ define([
          * @returns {undefined}
          */
         registrationPage: function (locale) {
-            this.clearPreviousView();
+            this.unbindPreviousView();
             this.views.registrationView = new RegistrationView({
                 app: this.app,
                 locale: locale
@@ -198,7 +198,7 @@ define([
          * @returns {undefined}
          */
         finishRegistrationView: function (locale) {
-            this.clearPreviousView();
+            this.unbindPreviousView();
             this.views.finishRegistrationView = new FinishRegistrationView({
                 app: this.app,
                 locale: locale
@@ -213,7 +213,7 @@ define([
          * @returns {undefined}
          */
         userPage: function (locale, userId) {
-            this.clearPreviousView();
+            this.unbindPreviousView();
             this.views.userView = new UserView({
                 app: this.app,
                 locale: locale,
