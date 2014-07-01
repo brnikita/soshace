@@ -52,15 +52,6 @@ global.Soshace = {
     DIR_NAME: null,
 
     /**
-     * Урл админки
-     *
-     * @constant
-     * @name Soshace.ADMIN_URL
-     * @type {string}
-     */
-    ADMIN_URL: 'xxx191188',
-
-    /**
      * Окружение
      *
      * @field
@@ -99,7 +90,6 @@ global.Soshace = {
     /**
      * Локаль по дефолту
      *
-     * @public
      * @constant
      * @name Soshace.DEFAULT_LOCALE
      * @type {string}
@@ -109,7 +99,6 @@ global.Soshace = {
     /**
      * Доступные локали
      *
-     * @public
      * @constant
      * @name Soshace.LOCALES
      * @type {String[]}
@@ -123,7 +112,6 @@ global.Soshace = {
      * Полное название локалей
      * Названия должны идти в том же порядке, что и локали
      *
-     * @public
      * @constant
      * @name Soshace.LANGUAGES
      * @type {String[]}
@@ -136,7 +124,6 @@ global.Soshace = {
     /**
      * Директория для медиа файлов
      *
-     * @public
      * @constant
      * @name Soshace.MEDIA_DIRECTORY
      * @type {string}
@@ -146,14 +133,12 @@ global.Soshace = {
     /**
      * Количество статей на страницу
      *
-     * @public
      * @constant
      * @name Soshace.POSTS_PER_PAGE
      * @type {number}
      */
     POSTS_PER_PAGE: 10,
     /**
-     * @public
      * @constant
      * @name Soshace.MAIL_SERVICE
      * @type {String}
@@ -161,7 +146,6 @@ global.Soshace = {
     MAIL_SERVICE: 'yandex',
 
     /**
-     * @public
      * @constant
      * @name Soshace.MAIL_USER
      * @type {String}
@@ -169,10 +153,18 @@ global.Soshace = {
     MAIL_NO_REPLY: 'noreply@soshace.com',
 
     /**
-     * @public
      * @constant
      * @name Soshace.MAIL_PASSWORD
      * @type {String}
      */
-    MAIL_NO_REPLY_PASSWORD: ''
+    MAIL_NO_REPLY_PASSWORD: '',
+
+    /**
+     * Ключ сессии
+     *
+     * @constant
+     * @name Soshace.SESSION_KEY
+     * @type {String}
+     */
+    SESSION_KEY: 'session/key'
 };

@@ -68,30 +68,41 @@ var Blog = {
         App.use(Express.cookieParser());
         App.use(Express.bodyParser());
         App.use(Express.methodOverride());
-        App.use(Express.session({ secret: 'keyboard cat' }));
+        App.use(Express.session({ secret: Soshace.SESSION_KEY }));
         App.use(Passport.initialize());
         App.use(Passport.session());
         App.use(App.router);
 
         //Устанавливаем ответ для 404
-        App.use(function (request, response) {
-            response.status(404);
+        App.use(this.notFoundHandler);
+    },
 
-            // respond with html page
-            if (request.accepts('html')) {
-                response.render('404', { url: request.url });
-                return;
-            }
+    /**
+     * Обработчик ошибки 404
+     *
+     * @method
+     * @name Blog.notFoundHandler
+     * @param {Object} request
+     * @param {Object} response
+     * @returns {undefined}
+     */
+    notFoundHandler: function (request, response) {
+        response.status(404);
 
-            // respond with json
-            if (request.accepts('json')) {
-                response.send({ error: 'Not found' });
-                return;
-            }
+        // respond with html page
+        if (request.accepts('html')) {
+            response.render('404', { url: request.url });
+            return;
+        }
 
-            // default to plain-text. send()
-            response.type('txt').send('Not found');
-        });
+        // respond with json
+        if (request.accepts('json')) {
+            response.send({ error: 'Not found' });
+            return;
+        }
+
+        // default to plain-text. send()
+        response.type('txt').send('Not found');
     },
 
     /**
@@ -100,7 +111,7 @@ var Blog = {
      *
      * @method
      * @name Blog.passportStrategies
-     * @return {undefined}
+     * @returns {undefined}
      */
     passportStrategies: function () {
         Passport.serializeUser(strategies.serializeUser);

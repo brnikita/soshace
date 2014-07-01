@@ -16,6 +16,15 @@ define(function () {
         hbs: {},
 
         /**
+         * Данные профиля пользователя
+         *
+         * @field
+         * @name Soshace.profile
+         * @type {Object | null}
+         */
+        profile: null,
+
+        /**
          * @field
          * @name Soshace.firstLoad
          * @type {boolean}
@@ -45,7 +54,9 @@ define(function () {
             api: {
                 postDetails: '/api/post',
                 posts: '/api/posts',
-                createUser: '/api/create_user'
+                createUser: '/api/create_user',
+                user: '/api/get_user',
+                profile: '/api/get_profile'
             }
         }
     };

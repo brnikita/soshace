@@ -88,5 +88,6 @@
 	"User with email ": "User with email ",
 	" is already exists": " is already exists",
 	" is not registered yet.": " is not registered yet.",
-	"Server is too busy, try later": "Server is too busy, try later"
+	"Server is too busy, try later": "Server is too busy, try later",
+	"Username": "Username"
 }

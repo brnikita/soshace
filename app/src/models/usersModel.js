@@ -117,6 +117,25 @@ UsersShema.pre('save', function (next) {
 });
 
 /**
+ * Метод возвращает данные профиля пользователя
+ *
+ * @method
+ * @name UsersShema.getUser
+ * @param {Object} params
+ * @return {Cursor}
+ */
+UsersShema.statics.getUser = function (params) {
+    return this.findOne(params, {
+        fullName: 1,
+        userName: 1,
+        isMale: 1,
+        emailConfirmed: 1,
+        admin: 1,
+        locale: 1
+    });
+};
+
+/**
  * Метод проверяет существование пользователя с переданным email
  * в базе постоянных пользователей
  *

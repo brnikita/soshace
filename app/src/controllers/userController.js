@@ -10,6 +10,38 @@ var ControllerInit = require('../common/controllerInit'),
 module.exports = ControllerInit.extend({
 
     /**
+     * Метод отдает в ответе json с данными профиля
+     * пользователя
+     *
+     * @method
+     * @name UserController#getUser
+     * @returns {undefined}
+     */
+    getUser: function () {
+
+    },
+
+    /**
+     * Метод отдает в ответе json с данными профиля
+     * текущего авторизованного пользователя
+     *
+     * @method
+     * @name UserController#getProfile
+     * @returns {undefined}
+     */
+    getProfile: function () {
+        var request = this.request,
+            response = this.response,
+            userProfile = request.user || null;
+
+        response.send({
+            profile: userProfile
+        });
+
+        console.log(request.user);
+    },
+
+    /**
      * Метод рендерит страницу пользователя
      *
      * @method

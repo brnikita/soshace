@@ -7,6 +7,7 @@ require([
     'backbone',
     'router',
     'utils/helpers',
+    'utils/widgets',
     'modules/headerView',
     'utils/handlebarsHelpers',
     'backbone.layoutmanager',
@@ -14,7 +15,7 @@ require([
     'jquery.validation',
     'google-analytics',
     'yandex-metrika'
-], function ($, _, Handlebars, Backbone, Router, Helpers, HeaderView) {
+], function ($, _, Handlebars, Backbone, Router, Helpers, Widgets, HeaderView) {
     var App = {
 
         /**
@@ -30,7 +31,7 @@ require([
          * @field
          * @name App.headerView
          * @type {Backbone.Layout | null}
-          */
+         */
         headerView: null,
 
         /**
@@ -51,17 +52,49 @@ require([
          * @returns {undefined}
          */
         initialize: function () {
-            _.bindAll(this, 'routerLinkHandler');
+            var $body;
+
+            _.bindAll(this, 'routerLinkHandler', 'initializeCompleted');
             this.setElements();
-            var $body = this.elements.body;
+            $body = this.elements.body;
             this.headerView = new HeaderView();
             this.backboneLayoutConfigure();
-            this.getCurrentLocale().done(_.bind(function () {
-                $body.on('click', '.js-router-link', this.routerLinkHandler);
-                this.router = new Router({
-                    app: App
-                });
-            }, this));
+            Widgets.showLoader($body);
+            this.getCommonData().done(this.initializeCompleted);
+        },
+
+        /**
+         * Метод обработчик заврешения инициализации приложения
+         * Когда загружается все необходимы польховательские данные
+         *
+         * @method
+         * @name App.initializeCompleted
+         * @returns {undefined}
+         */
+        initializeCompleted: function () {
+            var $body = this.elements.body;
+            Widgets.hideLoader($body);
+            $body.on('click', '.js-router-link', this.routerLinkHandler);
+            this.router = new Router({
+                app: App
+            });
+        },
+
+        /**
+         * Метод получает все необходимые данные для запуска
+         * приложения
+         *
+         * Такие как: локали, данные профиля пользователя
+         *
+         * @method
+         * @name App.getCommonData
+         * @returns {jQuery.Deferred}
+         */
+        getCommonData: function () {
+            return $.when(
+                this.getCurrentLocale(),
+                this.getProfileData()
+            );
         },
 
         /**
@@ -72,7 +105,7 @@ require([
          * @name App.setElements
          * @returns {undefined}
          */
-        setElements: function(){
+        setElements: function () {
             this.elements.body = $('body');
             this.elements.title = $('title');
         },
@@ -105,7 +138,7 @@ require([
                  * @param {string} partialName имя партиала
                  * @returns {jQuery.Deferred}
                  */
-                fetchPartial: function(partialName){
+                fetchPartial: function (partialName) {
                     var deferred = $.Deferred(),
                         hbs = Soshace.hbs,
                         path;
@@ -179,6 +212,31 @@ require([
         },
 
         /**
+         * Метод получает данные профиля пользователя
+         *
+         * Возвращает деферред объект
+         *
+         * @method
+         * @name App.getProfileData
+         * @returns {jQuery.Deferred}
+         */
+        getProfileData: function () {
+            var deferred = $.Deferred();
+
+            if (Soshace.profile !== null) {
+                return deferred.resolve(Soshace.profile);
+            }
+
+            $.get(Soshace.urls.api.profile, function (profileData) {
+                debugger;
+                Soshace.profile = profileData;
+                deferred.resolve(profileData);
+            }, 'json');
+
+            return deferred;
+        },
+
+        /**
          * Метод получает файлы перевода и записывает
          * в глобальную переменную Soshace.
          *
@@ -197,6 +255,7 @@ require([
             }
 
             $.get(localeUrl, function (data) {
+                debugger;
                 locales[locale] = data;
                 deferred.resolve(data);
             }, 'json');
