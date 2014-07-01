@@ -69,17 +69,20 @@ module.exports = ControllerInit.extend({
      */
     authenticateHandler: function (error, userId) {
         var request = this.request,
-            requestBody = request.body,
-            userEmail = requestBody.email;
+            message,
+            userEmail,
+            requestBody;
 
         if (error) {
-            this.sendError(this.i18n('Server is too busy, try later'));
-            return;
+            return this.sendError(this.i18n('Server is too busy, try later'));
+
         }
 
         if (!userId) {
-            this.sendError(this.i18n('User with email ') + userEmail + this.i18n(' is not registered yet.'));
-            return;
+            requestBody = request.body;
+            userEmail = requestBody.email;
+            message = this.i18n('User with email ') + userEmail + this.i18n(' is not registered yet.');
+            return this.sendError(message);
         }
 
         request.login(userId, this.userLogin);
@@ -94,8 +97,7 @@ module.exports = ControllerInit.extend({
         var response = this.response;
 
         if (error) {
-            this.sendError(this.i18n('Server is too busy, try later'));
-            return;
+            return this.sendError(this.i18n('Server is too busy, try later'));
         }
 
         response.send({isAuthenticated: true});
