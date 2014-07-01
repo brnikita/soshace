@@ -39,11 +39,13 @@ module.exports = Class.extend({
      * @name ControllerInit#initialize
      * @param {Object} request объект запроса
      * @param {Object} response Объект ответа
+     * @param {Function} next
+     * @returns {undefined}
      */
-    initialize: function (request, response) {
+    initialize: function (request, response, next) {
         this.request = request;
         this.response = response;
-        this.next = this.next;
+        this.next = next;
     },
 
 

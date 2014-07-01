@@ -227,8 +227,9 @@ require([
                 return deferred.resolve(Soshace.profile);
             }
 
-            $.get(Soshace.urls.api.profile, function (profileData) {
-                debugger;
+            $.get(Soshace.urls.api.profile, function (data) {
+                var profileData = data.profile;
+
                 Soshace.profile = profileData;
                 deferred.resolve(profileData);
             }, 'json');
@@ -255,7 +256,6 @@ require([
             }
 
             $.get(localeUrl, function (data) {
-                debugger;
                 locales[locale] = data;
                 deferred.resolve(data);
             }, 'json');

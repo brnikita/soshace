@@ -34,11 +34,20 @@ module.exports = ControllerInit.extend({
             response = this.response,
             userProfile = request.user || null;
 
+        if (userProfile !== null) {
+            userProfile = userProfile[0];
+            userProfile = _.pick(userProfile,
+                'fullName',
+                'userName',
+                'isMale',
+                'emailConfirmed',
+                'admin',
+                'locale');
+        }
+
         response.send({
             profile: userProfile
         });
-
-        console.log(request.user);
     },
 
     /**

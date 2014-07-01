@@ -12,10 +12,22 @@ var _ = require('underscore'),
 module.exports = ControllerInit.extend({
 
     /**
+     * @constructor
+     * @name ControllerInit#initialize
+     * @param {Object} request объект запроса
+     * @param {Object} response Объект ответа
+     * @returns {undefined}
+     */
+    initialize: function (request, response) {
+        this.request = request;
+        this.response = response;
+        _.bindAll(this, 'authenticateHandler', 'userLogin');
+    },
+
+    /**
      * Рендерим страницу регистрации
      *
-     * @public
-     * @function
+     * @method
      * @name LoginController#renderLogin
      * @return {undefined}
      */
@@ -36,38 +48,56 @@ module.exports = ControllerInit.extend({
      * Обработчик запроса аворизации со страницы логина
      *
      * @private
-     * @function
-     * @name LoginController.loginPostHandler
+     * @method
+     * @name LoginController#loginPostHandler
      * @return {undefined}
      */
     loginPostHandler: function () {
         var request = this.request,
             response = this.response,
-            next = this.next,
+            next = this.next;
+
+        Passport.authenticate('local', this.authenticateHandler)(request, response, next);
+    },
+
+    /**
+     * @method
+     * @name LoginController#authenticateHandler
+     * @param error
+     * @param userId
+     * @returns {undefined}
+     */
+    authenticateHandler: function (error, userId) {
+        var request = this.request,
             requestBody = request.body,
-            userEmail = requestBody.email,
-            _this = this;
+            userEmail = requestBody.email;
 
-        Passport.authenticate('local', function (error, user) {
-            var locale;
+        if (error) {
+            this.sendError(this.i18n('Server is too busy, try later'));
+            return;
+        }
 
-            if (error) {
-                _this.sendError(_this.i18n('Server is too busy, try later'));
-                return;
-            }
+        if (!userId) {
+            this.sendError(this.i18n('User with email ') + userEmail + this.i18n(' is not registered yet.'));
+            return;
+        }
 
-            if (!user) {
-                _this.sendError(_this.i18n('User with email ') + userEmail + _this.i18n(' is not registered yet.'));
-            }
+        request.login(userId, this.userLogin);
+    },
 
-            request.login(user._id, function (error) {
-                if (error) {
-                    _this.sendError(_this.i18n('Server is too busy, try later'));
-                    return;
-                }
-                locale = user.locale;
-                response.send({redirect: '/' + locale});
-            });
-        })(request, response, next);
+    /**
+     * @method
+     * @name LoginController.userLogin
+     * @returns {undefined}
+     */
+    userLogin: function (error) {
+        var response = this.response;
+
+        if (error) {
+            this.sendError(this.i18n('Server is too busy, try later'));
+            return;
+        }
+
+        response.send({isAuthenticated: true});
     }
 });

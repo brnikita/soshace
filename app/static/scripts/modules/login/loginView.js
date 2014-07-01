@@ -80,7 +80,11 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
-            _.bindAll(this, 'render');
+            _.bindAll(this,
+                'render',
+                'userLoginSuccess',
+                'authenticatedHandler'
+            );
             Widgets.setBodyClass('bg-symbols bg-color-yellow');
             this.app = params.app;
             this.model = new LoginModel({
@@ -115,28 +119,46 @@ define([
          * Метод обработчик успешной входа пользователя
          *
          * @method
-         * @name RegistrationView#userLoginSuccess
+         * @name LoginView#userLoginSuccess
          * @param {Backbone.Model} model
          * @param {Object} response
          * @returns {undefined}
          */
         userLoginSuccess: function (model, response) {
-            var error = response.error,
-                redirectUrl;
+            var error = response.error;
 
             if (error) {
                 Widgets.showMessages(error);
             } else {
-                redirectUrl = response.redirect;
-                Backbone.history.navigate(redirectUrl, {trigger: true});
+                this.app.getProfileData().
+                    done(this.authenticatedHandler);
             }
         },
 
         /**
+         * Метод обработчик события получения профиля
+         * авторизованного пользователя
+         *
+         * @method
+         * @name LoginView#authenticatedHandler
+         * @returns {undefined}
+         */
+        authenticatedHandler: function () {
+            var profile = Soshace.profile,
+                userName = profile.userName,
+                locale = profile.locale,
+                redirectUrl = '/' + locale + '/user/' + userName;
+
+            Backbone.history.navigate(redirectUrl, {trigger: true});
+        },
+
+        /**
+         * TODO: дописать
+         *
          * Метод обработчик неуспешной входа пользователя
          *
          * @method
-         * @name RegistrationView#userLoginFail
+         * @name LoginView#userLoginFail
          * @param {Object} response
          * @returns {undefined}
          */
