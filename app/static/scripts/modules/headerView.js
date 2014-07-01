@@ -16,6 +16,15 @@ define([
     return Backbone.Layout.extend({
 
         /**
+         * Ссылка на объект App
+         *
+         * @field
+         * @name LoginView#app
+         * @type {Object}
+         */
+        app: null,
+
+        /**
          * Класс родительского элемента, к которому
          * будет прикреплен вид
          *
@@ -57,9 +66,11 @@ define([
         /**
          * @constructor
          * @name HeaderView.initialize
+         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function () {
+        initialize: function (params) {
+            this.app = params.app;
         },
 
         /**
@@ -89,10 +100,13 @@ define([
          * @returns {Object}
          */
         serialize: function () {
-            var params = {};
-            params = _.extend(params, this.tabsConfig);
-            params.locale = Helpers.getLocale();
-            return params;
+            debugger;
+            var data = {};
+            data = _.extend(data, this.tabsConfig);
+            data.locale = Helpers.getLocale();
+            data.isAutentificated = this.app.isAuthenticated();
+            console.log(data);
+            return data;
         },
 
         /**

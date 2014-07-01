@@ -90,10 +90,12 @@ define([
          * @returns {Object}
          */
         serialize: function () {
-            var model = this.model.toJSON();
-            return {
-                post: model
-            };
+            var data = {},
+                model = this.model.toJSON();
+
+            data.isAutentificated = this.app.isAuthenticated();
+            data.post = model;
+            return data;
         },
 
         /**

@@ -84,6 +84,10 @@ define([
          * @returns {Object}
          */
         serialize: function () {
+            var data = {};
+
+            data.isAutentificated = this.app.isAuthenticated();
+            return data;
         },
 
         /**

@@ -213,6 +213,7 @@ define([
         serialize: function () {
             var data = this.model.toJSON();
             data.isLoginTab = true;
+            data.isAutentificated = this.app.isAuthenticated();
             return data;
         },
 

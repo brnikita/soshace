@@ -185,6 +185,8 @@ define([
          */
         serialize: function () {
             var data = this.model.toJSON();
+
+            data.isAutentificated = this.app.isAuthenticated();
             data.isRegistrationTab = true;
             return data;
         },

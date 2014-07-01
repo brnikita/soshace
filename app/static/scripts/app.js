@@ -57,10 +57,27 @@ require([
             _.bindAll(this, 'routerLinkHandler', 'initializeCompleted');
             this.setElements();
             $body = this.elements.body;
-            this.headerView = new HeaderView();
+            this.headerView = new HeaderView({
+                app: App
+            });
             this.backboneLayoutConfigure();
             Widgets.showLoader($body);
             this.getCommonData().done(this.initializeCompleted);
+        },
+
+        /**
+         * Метод вовзращает true, если есть профиль
+         * аутентифицированного пользователя
+         *
+         * @method
+         * @name App.isAuthenticated
+         * @returns {Boolean}
+         */
+        isAuthenticated: function(){
+            var profile = Soshace.profile;
+            debugger;
+            return !!(profile && typeof profile.userName === 'string' &&
+                profile.userName.length > 0);
         },
 
         /**

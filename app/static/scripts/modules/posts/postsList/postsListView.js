@@ -82,13 +82,13 @@ define([
          * @returns {Object}
          */
         serialize: function () {
-            var locale = Helpers.getLocale(),
+            var data = {},
                 posts = this.model.get('posts');
 
-            return {
-                locale: locale,
-                posts: posts
-            };
+            data.locale = Helpers.getLocale();
+            data.posts = posts;
+            data.isAutentificated = this.app.isAuthenticated();
+            return data;
         },
 
         /**
