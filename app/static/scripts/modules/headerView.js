@@ -118,7 +118,7 @@ define([
             var locale = Helpers.getLocale();
 
             event.preventDefault();
-            $.get(Soshace.urls.api.logout).done(function(){
+            $.get(Soshace.urls.api.logout).done(function () {
                 Soshace.profile = null;
                 Backbone.history.navigate('/' + locale, {trigger: true});
             });
@@ -134,6 +134,9 @@ define([
             data = _.extend(data, this.tabsConfig);
             data.locale = Helpers.getLocale();
             data.isAuthenticated = this.app.isAuthenticated();
+            if (data.isAuthenticated) {
+                data.userName = Soshace.profile.userName;
+            }
             return data;
         },
 

@@ -57,7 +57,7 @@ define([
             ':locale/add_post': 'addPostPage',
             ':locale/login': 'loginPage',
             ':locale/registration': 'registrationPage',
-            ':locale/user/:id': 'userPage',
+            ':locale/user/:username': 'userPage',
             ':locale/registration/confirm_email': 'finishRegistrationView'
         },
 
@@ -212,15 +212,15 @@ define([
          * @method
          * @name Router#userPage
          * @param {String} locale локаль
-         * @param {String} userId id пользователя
+         * @param {String} userName
          * @returns {undefined}
          */
-        userPage: function (locale, userId) {
+        userPage: function (locale, userName) {
             this.unbindPreviousView();
             this.views.userView = new UserView({
                 app: this.app,
                 locale: locale,
-                userId: userId
+                userName: userName
             });
         }
     });

@@ -27,7 +27,36 @@ define([
          * @type {Object}
          */
         defaults: {
-            locale: null
+            locale: null,
+            fullName: null,
+            profileImg: null,
+            posts: null,
+            isMale: null
+        },
+
+        /**
+         * Метод загружает данные пользователя
+         *
+         * @method
+         * @name UserModel.getUser
+         * @returns {jQuery.Deferred}
+         */
+        getUser: function(){
+            var deferred = $.Deferred(),
+                userName = this.get('userName'),
+                profileUserName = '',
+                profile = Soshace.profile;
+
+            if(profile !== null){
+                profileUserName = profile.userName;
+            }
+
+            if(profileUserName === userName){
+                this.set(profile);
+                return deferred.resolve(profile);
+            }
+
+            return $.get(Soshace.urls.api.user, {userName: userName});
         },
 
         /**

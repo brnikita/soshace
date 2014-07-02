@@ -15,7 +15,6 @@ define([
     'backbone.layoutmanager'
 ], function ($, _, Backbone, Widgets, UserModel) {
     return Backbone.Layout.extend({
-
         /**
          * Ссылка на объект App
          *
@@ -68,14 +67,47 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
-            Widgets.setBodyClass('bg-symbols bg-color-blue');
             this.app = params.app;
             if (Soshace.firstLoad) {
-                Soshace.firstLoad = false;
+                this.firstLoadHandler();
             } else {
-                this.app.headerView.changeTab('isUserPage');
-                this.render();
+                this.secondLoadHandler();
             }
+        },
+
+        /**
+         * Метод обработчик первой загрузки страницы
+         * Рендеринг был на сервере
+         *
+         * @method
+         * @name UserView#firstLoadHandler
+         * @returns {undefined}
+         */
+        firstLoadHandler: function () {
+            Soshace.firstLoad = false;
+
+        },
+
+        /**
+         * Метод обработчик второй загрузки страницы
+         * Клиентский рендеринг
+         *
+         * @method
+         * @name UserView#secondLoadHandler
+         * @returns {undefined}
+         */
+        secondLoadHandler: function () {
+            var _this = this;
+
+            _.bindAll(this, 'render');
+            this.app.headerView.changeTab('isUserPage');
+            Widgets.setBodyClass('bg-symbols bg-color-blue');
+            this.model = new UserModel();
+            this.model.set({
+                locale: _this.options.locale,
+                userName: _this.options.userName
+            });
+            this.model.getUser().done(this.render);
         },
 
         /**
@@ -84,8 +116,7 @@ define([
          * @returns {Object}
          */
         serialize: function () {
-            var data = {};
-
+            var data = this.model.toJSON();
             data.isAutentificated = this.app.isAuthenticated();
             return data;
         },
@@ -97,7 +128,7 @@ define([
          * @name UserView#viewExitHandler
          * @returns {undefined}
          */
-        viewExitHandler: function(){
+        viewExitHandler: function () {
 
         },
 
