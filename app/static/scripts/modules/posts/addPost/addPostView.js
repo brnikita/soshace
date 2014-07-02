@@ -774,6 +774,18 @@ define([
         },
 
         /**
+         * Метод вызывается роутером перед выходом из вида
+         *
+         * @method
+         * @name AddPostView#viewExitHandler
+         * @returns {undefined}
+         */
+        viewExitHandler: function(){
+            this.elements.window.off('touchend', this.touchHandler).
+                off('scroll', this.windowScrollHandler);
+        },
+
+        /**
          * @method
          * @name AddPostView#afterRender
          * @returns {undefined}
@@ -784,7 +796,7 @@ define([
             this.bindHotKeys(this.defaultConfig.hotKeys);
             this.bindToolbar();
             this.makeEditorFieldContentEditable();
-            this.elements.window.on('touchend', this.touchHandler).on('scroll', this.windowScrollHandler);
+            this.elements.window.on('touchend', this.touchHandler).off('scroll', this.windowScrollHandler);
         }
     });
 });

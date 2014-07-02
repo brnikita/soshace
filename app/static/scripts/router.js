@@ -82,9 +82,14 @@ define([
          */
         unbindPreviousView: function () {
             _.each(this.views, function (view) {
-                if (view !== null) {
-                    view.undelegateEvents();
-                    view.$el.removeData().unbind();
+                if (view === null) {
+                    return;
+                }
+                view.undelegateEvents();
+                view.$el.removeData().unbind();
+
+                if (typeof view.viewExitHandler === 'function') {
+                    view.viewExitHandler();
                 }
             });
         },

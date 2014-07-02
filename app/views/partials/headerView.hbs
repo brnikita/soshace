@@ -14,7 +14,8 @@
                                 {{i18n 'Profile'}}
                             </span>
                         {{else}}
-                            <a href="/{{locale}}/user/1" class="js-router-link header__menu__tab header__menu__tab-link">
+                            <a href="/{{locale}}/user/1"
+                               class="js-router-link header__menu__tab header__menu__tab-link">
                                 <span class="glyphicon glyphicon-user"></span>
                                 {{i18n 'Profile'}}
                             </a>
@@ -31,16 +32,23 @@
                             {{i18n 'Add Post'}}
                         </a>
                     {{/if}}
-                    {{#if isAuthPage}}
-                        <span class="header__menu__tab header__menu__tab-active">
-                            <span class="glyphicon glyphicon-log-in"></span>
-                            {{i18n 'Sign In'}}
-                        </span>
-                    {{else}}
-                        <a href="/{{locale}}/login" class="js-router-link header__menu__tab header__menu__tab-link">
-                            <span class="glyphicon glyphicon-log-in"></span>
-                            {{i18n 'Sign In'}}
+                    {{#if isAuthenticated}}
+                        <a href="#" class="header__menu__tab header__menu__tab-link js-sign-out">
+                            <span class="glyphicon glyphicon-log-out"></span>
+                            {{i18n 'Sign Out'}}
                         </a>
+                    {{else}}
+                        {{#if isAuthPage}}
+                            <span class="header__menu__tab header__menu__tab-active">
+                            <span class="glyphicon glyphicon-log-in"></span>
+                                {{i18n 'Sign In'}}
+                        </span>
+                        {{else}}
+                            <a href="/{{locale}}/login" class="js-router-link header__menu__tab header__menu__tab-link">
+                                <span class="glyphicon glyphicon-log-in"></span>
+                                {{i18n 'Sign In'}}
+                            </a>
+                        {{/if}}
                     {{/if}}
                 </div>
             </div>

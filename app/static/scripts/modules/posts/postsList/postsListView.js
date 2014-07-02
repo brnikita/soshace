@@ -20,7 +20,7 @@ define([
          * Ссылка на объект App
          *
          * @field
-         * @name PostsListView.app
+         * @name PostsListView#app
          * @type {Object}
          */
         app: null,
@@ -30,7 +30,7 @@ define([
          * будет прикреплен вид
          *
          * @field
-         * @name PostsListView.el
+         * @name PostsListView#el
          * @type {string}
          */
         el: '.js-content',
@@ -39,14 +39,14 @@ define([
          * Модель списка статей
          *
          * @field
-         * @name PostsListView.model
+         * @name PostsListView#model
          * @type {Backbone.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name PostsListView.elements
+         * @name PostsListView#elements
          * @type {Object}
          */
         elements: {
@@ -56,14 +56,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name PostsListView.elements
+         * @name PostsListView#elements
          * @type {string}
          */
         template: 'posts/postsListView',
 
         /**
          * @constructor
-         * @name PostsListView.initialize
+         * @name PostsListView#initialize
          * @returns {undefined}
          */
         initialize: function (params) {
@@ -78,7 +78,7 @@ define([
 
         /**
          * @method
-         * @name PostsListView.serialize
+         * @name PostsListView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -92,8 +92,18 @@ define([
         },
 
         /**
+         * Метод вызывается роутером перед выходом из вида
+         *
          * @method
-         * @name PostsListView.afterRender
+         * @name PostsListView#viewExitHandler
+         * @returns {undefined}
+         */
+        viewExitHandler: function(){
+        },
+
+        /**
+         * @method
+         * @name PostsListView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {

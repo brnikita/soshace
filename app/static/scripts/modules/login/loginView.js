@@ -218,6 +218,17 @@ define([
         },
 
         /**
+         * Метод вызывается роутером перед выходом из вида
+         *
+         * @method
+         * @name LoginView#viewExitHandler
+         * @returns {undefined}
+         */
+        viewExitHandler: function(){
+
+        },
+
+        /**
          * @method
          * @name LoginView#afterRender
          * @returns {undefined}

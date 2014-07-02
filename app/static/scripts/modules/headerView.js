@@ -100,12 +100,10 @@ define([
          * @returns {Object}
          */
         serialize: function () {
-            debugger;
             var data = {};
             data = _.extend(data, this.tabsConfig);
             data.locale = Helpers.getLocale();
-            data.isAutentificated = this.app.isAuthenticated();
-            console.log(data);
+            data.isAuthenticated = this.app.isAuthenticated();
             return data;
         },
 

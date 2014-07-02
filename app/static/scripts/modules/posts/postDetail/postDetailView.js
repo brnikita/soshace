@@ -20,7 +20,7 @@ define([
          * Ссылка на объект App
          *
          * @field
-         * @name PostDetailView.app
+         * @name PostDetailView#app
          * @type {Object}
          */
         app: null,
@@ -30,7 +30,7 @@ define([
          * будет прикреплен вид
          *
          * @field
-         * @name PostDetailView.el
+         * @name PostDetailView#el
          * @type {string}
          */
         el: '.js-content',
@@ -39,14 +39,14 @@ define([
          * Модель деталей статьи
          *
          * @field
-         * @name PostDetailView.model
+         * @name PostDetailView#model
          * @type {Backbone.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name PostDetailView.elements
+         * @name PostDetailView#elements
          * @type {Object}
          */
         elements: {
@@ -56,14 +56,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name PostDetailView.elements
+         * @name PostDetailView#elements
          * @type {string}
          */
         template: 'posts/postDetailView',
 
         /**
          * @constructor
-         * @name PostDetailView.initialize
+         * @name PostDetailView#initialize
          * @param {Object} params
          * @returns {undefined}
          */
@@ -86,7 +86,7 @@ define([
 
         /**
          * @method
-         * @name PostDetailView.serialize
+         * @name PostDetailView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -99,8 +99,18 @@ define([
         },
 
         /**
+         * Метод вызывается роутером перед выходом из вида
+         *
          * @method
-         * @name PostDetailView.afterRender
+         * @name PostDetailView#viewExitHandler
+         * @returns {undefined}
+         */
+        viewExitHandler: function(){
+        },
+        
+        /**
+         * @method
+         * @name PostDetailView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {

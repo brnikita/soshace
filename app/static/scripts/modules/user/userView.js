@@ -20,7 +20,7 @@ define([
          * Ссылка на объект App
          *
          * @field
-         * @name UserView.app
+         * @name UserView#app
          * @type {Object}
          */
         app: null,
@@ -30,7 +30,7 @@ define([
          * будет прикреплен вид
          *
          * @field
-         * @name UserView.el
+         * @name UserView#el
          * @type {string}
          */
         el: '.js-content',
@@ -39,14 +39,14 @@ define([
          * Модель деталей статьи
          *
          * @field
-         * @name UserView.model
+         * @name UserView#model
          * @type {Backbone.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name UserView.elements
+         * @name UserView#elements
          * @type {Object}
          */
         elements: {
@@ -56,14 +56,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name UserView.elements
+         * @name UserView#elements
          * @type {string}
          */
         template: 'userView',
 
         /**
          * @constructor
-         * @name UserView.initialize
+         * @name UserView#initialize
          * @param {Object} params
          * @returns {undefined}
          */
@@ -80,7 +80,7 @@ define([
 
         /**
          * @method
-         * @name UserView.serialize
+         * @name UserView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -91,8 +91,19 @@ define([
         },
 
         /**
+         * Метод вызывается роутером перед выходом из вида
+         *
          * @method
-         * @name UserView.afterRender
+         * @name UserView#viewExitHandler
+         * @returns {undefined}
+         */
+        viewExitHandler: function(){
+
+        },
+
+        /**
+         * @method
+         * @name UserView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {

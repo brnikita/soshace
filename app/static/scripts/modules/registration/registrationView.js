@@ -192,6 +192,17 @@ define([
         },
 
         /**
+         * Метод вызывается роутером перед выходом из вида
+         *
+         * @method
+         * @name RegistrationView#viewExitHandler
+         * @returns {undefined}
+         */
+        viewExitHandler: function(){
+
+        },
+
+        /**
          * @method
          * @name RegistrationView#afterRender
          * @returns {undefined}

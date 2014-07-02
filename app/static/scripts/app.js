@@ -75,7 +75,6 @@ require([
          */
         isAuthenticated: function(){
             var profile = Soshace.profile;
-            debugger;
             return !!(profile && typeof profile.userName === 'string' &&
                 profile.userName.length > 0);
         },
@@ -224,7 +223,6 @@ require([
                 link = $target.closest('.js-router-link').attr('href');
 
             event.preventDefault();
-            this.headerView.changeTab(link);
             Backbone.history.navigate(link, {trigger: true});
         },
 
