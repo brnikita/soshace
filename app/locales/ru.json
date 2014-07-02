@@ -89,5 +89,9 @@
 	" is already exists": " is already exists",
 	" is not registered yet.": " is not registered yet.",
 	"Server is too busy, try later": "Server is too busy, try later",
-	"Username": "Username"
+	"Username": "Username",
+	"For enable editor, you need to sign in": "For enable editor, you need to sign in",
+	"For enable editor, you need ": "For enable editor, you need ",
+	"sign in": "sign in",
+	"For enable editor, you need to ": "For enable editor, you need to "
 }

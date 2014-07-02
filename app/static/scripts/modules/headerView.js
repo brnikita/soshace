@@ -11,7 +11,8 @@ define([
     'underscore',
     'backbone',
     'utils/helpers',
-    'backbone.layoutmanager'
+    'backbone.layoutmanager',
+    'jquery.cookie'
 ], function ($, _, Backbone, Helpers) {
     return Backbone.Layout.extend({
 
@@ -55,6 +56,17 @@ define([
         },
 
         /**
+         * Список обработчиков событий
+         *
+         * @field
+         * @name HeaderView.events
+         * @type {Object}
+         */
+        events: {
+            'click .js-sign-out': 'signOut'
+        },
+
+        /**
          * Путь до шаблона
          *
          * @field
@@ -92,6 +104,24 @@ define([
                 tabConfig[tabName] = true;
             }
             this.render();
+        },
+
+        /**
+         * Метод обработчик влика на кнопке 'Выход'
+         *
+         * @method
+         * @name HeaderView.signOut
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        signOut: function (event) {
+            var locale = Helpers.getLocale();
+
+            event.preventDefault();
+            $.get(Soshace.urls.api.logout).done(function(){
+                Soshace.profile = null;
+                Backbone.history.navigate('/' + locale, {trigger: true});
+            });
         },
 
         /**

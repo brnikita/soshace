@@ -28,7 +28,7 @@ define([
          * @name LoginModel#url
          * @type {String}
          */
-        url: '/api/login',
+        url: Soshace.urls.api.login,
 
         /**
          * @constructor

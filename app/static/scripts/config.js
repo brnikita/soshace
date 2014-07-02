@@ -52,6 +52,8 @@ define(function () {
             locales: '/static/locales/',
             scripts: 'static/scripts/',
             api: {
+                login: '/api/login',
+                logout: '/api/logout',
                 postDetails: '/api/post',
                 posts: '/api/posts',
                 createUser: '/api/create_user',

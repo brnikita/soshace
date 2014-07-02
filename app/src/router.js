@@ -58,7 +58,12 @@ module.exports = function (App) {
 
     App.post('/api/login', function(request, response, next){
         var loginController = new LoginController(request, response, next);
-        loginController.loginPostHandler();
+        loginController.loginHandler();
+    });
+
+    App.get('/api/logout', function(request, response, next){
+        var loginController = new LoginController(request, response, next);
+        loginController.logoutHandler();
     });
 
     //добавляем пост

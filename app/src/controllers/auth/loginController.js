@@ -47,17 +47,31 @@ module.exports = ControllerInit.extend({
     /**
      * Обработчик запроса аворизации со страницы логина
      *
-     * @private
      * @method
-     * @name LoginController#loginPostHandler
+     * @name LoginController#loginHandler
      * @return {undefined}
      */
-    loginPostHandler: function () {
+    loginHandler: function () {
         var request = this.request,
             response = this.response,
             next = this.next;
 
         Passport.authenticate('local', this.authenticateHandler)(request, response, next);
+    },
+
+    /**
+     * Обработчик запроса выхода из сессии
+     *
+     * @method
+     * @name LoginController#logoutHandler
+     * @return {undefined}
+     */
+    logoutHandler: function () {
+        var request = this.request,
+            response = this.response;
+
+        request.logout();
+        response.send({isAuthenticated: false});
     },
 
     /**

@@ -769,7 +769,7 @@ define([
         serialize: function(){
             var data = this.model.toJSON();
             data.title = 'Add Post';
-            data.isAutentificated = this.app.isAuthenticated();
+            data.isAuthenticated = this.app.isAuthenticated();
             return data;
         },
 
