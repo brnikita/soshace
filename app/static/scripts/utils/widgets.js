@@ -15,6 +15,10 @@ define([
 
     return {
         /**
+         * TODO: костыльный метод, убрать его!
+         *
+         * @deprecated
+         *
          * @method
          * @name Widgets.showErrorMessages
          * @param {Array} errors массив содержащий объекты вида

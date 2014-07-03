@@ -13,7 +13,8 @@ define([
     'utils/widgets',
     'utils/helpers',
     './registrationModel',
-    'backbone.layoutmanager'
+    'backbone.layoutmanager',
+    'backbone.validation'
 ], function ($, _, Backbone, Widgets, Helpers, RegistrationModel) {
     return Backbone.Layout.extend({
 
@@ -88,6 +89,7 @@ define([
             this.model = new RegistrationModel({
                 locale: params.locale
             });
+            Backbone.Validation.bind(this);
             if (Soshace.firstLoad) {
                 this.firstLoadHandler();
             } else {
@@ -119,6 +121,14 @@ define([
             var _this = this;
 
             event.preventDefault();
+
+            var valid = this.model.validate(),
+                valid2;
+            if (!(valid2 = this.model.isValid(true))) {
+                debugger;
+                return;
+            }
+            debugger;
             this.model.save(null, {
                 success: _this.userRegistrationSuccess,
                 error: _this.userRegistrationFail
@@ -134,7 +144,7 @@ define([
          * @param {Object} response
          * @returns {undefined}
          */
-        userRegistrationSuccess: function(model, response){
+        userRegistrationSuccess: function (model, response) {
             var redirectUrl = response.redirect;
 
             Soshace.profile = response.profile;
@@ -149,7 +159,7 @@ define([
          * @param {Object} response
          * @returns {undefined}
          */
-        userRegistrationFail: function(response){
+        userRegistrationFail: function (response) {
 
         },
 
@@ -200,7 +210,7 @@ define([
          * @name RegistrationView#viewExitHandler
          * @returns {undefined}
          */
-        viewExitHandler: function(){
+        viewExitHandler: function () {
 
         },
 

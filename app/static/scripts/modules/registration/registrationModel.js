@@ -13,7 +13,7 @@ define([
 ], function ($, _, Backbone) {
     return Backbone.Model.extend({
         /**
-         * @property
+         * @field
          * @name RegistrationModel#defaults
          * @type {Object}
          */
@@ -23,6 +23,33 @@ define([
             fullName: null,
             password: null,
             userName: null
+        },
+
+        /**
+         * @field
+         * @name RegistrationModel#validation
+         * @type {Object}
+         */
+        validation: {
+            userName: {
+                required: true,
+                msg: 'Please enter an username'
+            },
+            fullName: {
+                required: true,
+                msg: 'Please enter a full name'
+            },
+            email: [{
+                required: true,
+                msg: 'Please enter an email address'
+            },{
+                pattern: 'email',
+                msg: 'Please enter a valid email'
+            }],
+            password: [{
+                required: true,
+                msg: 'Please enter a password'
+            }]
         },
 
         /**
