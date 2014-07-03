@@ -125,10 +125,10 @@ define([
             var valid = this.model.validate(),
                 valid2;
             if (!(valid2 = this.model.isValid(true))) {
-                debugger;
+                Widgets.showFieldError('email', 'dsfsdf');
                 return;
             }
-            debugger;
+
             this.model.save(null, {
                 success: _this.userRegistrationSuccess,
                 error: _this.userRegistrationFail

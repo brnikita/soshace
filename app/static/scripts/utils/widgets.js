@@ -217,6 +217,25 @@ define([
                 formattedHtml = prettyPrintOne(codeBlock.html(), codeLanguage, true);
                 codeBlock.html(formattedHtml);
             });
+        },
+
+        /**
+         * Метод показывает ошибку у поля
+         *
+         * @method
+         * @name Widgets.showFieldError
+         * @param {String} fieldName имя поля
+         * @param {String} error текст ошибки
+         * @returns {undefined}
+         */
+        showFieldError: function(fieldName, error){
+            var $field = $('#fieldName');
+
+            $field.addClass('field-error');
+            $field.tooltip({
+                placement: 'right',
+                title: error
+            }).tooltip('show');
         }
     };
 });
