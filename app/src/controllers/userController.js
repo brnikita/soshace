@@ -32,11 +32,10 @@ module.exports = ControllerInit.extend({
     getProfile: function () {
         var request = this.request,
             response = this.response,
-            userProfile = request.user || null;
+            userProfile = null;
 
-        if (userProfile !== null) {
-            userProfile = userProfile[0];
-            userProfile = _.pick(userProfile,
+        if (request.user && request.user[0]) {
+            userProfile = _.pick(request.user[0],
                 'fullName',
                 'userName',
                 'isMale',

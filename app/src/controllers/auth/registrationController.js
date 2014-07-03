@@ -156,6 +156,7 @@ module.exports = ControllerInit.extend({
         var request = this.request,
             response = this.response,
             locale = request.i18n.getLocale(),
+            profile,
             redirectUrl = '/' + locale + '/user/' + user.userName;
 
         request.login(user.id, _.bind(function (error) {
@@ -164,8 +165,17 @@ module.exports = ControllerInit.extend({
                 return;
             }
 
+            profile = _.pick(user,
+                'fullName',
+                'userName',
+                'isMale',
+                'emailConfirmed',
+                'admin',
+                'locale');
+
             SendMail.sendConfirmMail(request, user);
             response.send({
+                profile: profile,
                 redirect: redirectUrl
             });
         }, this));

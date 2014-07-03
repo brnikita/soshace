@@ -136,6 +136,8 @@ define([
          */
         userRegistrationSuccess: function(model, response){
             var redirectUrl = response.redirect;
+
+            Soshace.profile = response.profile;
             Backbone.history.navigate(redirectUrl, {trigger: true});
         },
 

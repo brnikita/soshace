@@ -41,19 +41,19 @@ define([
          * @name UserModel.getUser
          * @returns {jQuery.Deferred}
          */
-        getUser: function(){
+        getUser: function () {
             var deferred = $.Deferred(),
                 userName = this.get('userName'),
                 profileUserName = '',
                 profile = Soshace.profile;
 
-            if(profile !== null){
+            if (profile !== null) {
                 profileUserName = profile.userName;
-            }
 
-            if(profileUserName === userName){
-                this.set(profile);
-                return deferred.resolve(profile);
+                if (profileUserName === userName) {
+                    this.set(profile);
+                    return deferred.resolve(profile);
+                }
             }
 
             return $.get(Soshace.urls.api.user, {userName: userName});
