@@ -8,8 +8,10 @@
 
 define([
     'jquery',
-    'underscore'
-], function ($, _) {
+    'underscore',
+    'utils/helpers',
+    'utils/plugins/jquery.tooltip.custom'
+], function ($, _, Helpers) {
     var errorsContainerDefault = $('.js-body-messages'),
         $body = $('body');
 
@@ -220,6 +222,21 @@ define([
         },
 
         /**
+         * Метод показывает список ошибок у
+         * переданных полей
+         *
+         * @method
+         * @name Widgets.showFieldsErrors
+         * @param {Object} errors список ошибок
+         * @returns {undefined}
+         */
+        showFieldsErrors: function (errors) {
+            _.each(errors, _.bind(function (error, field) {
+                this.showFieldError(field, error);
+            }, this));
+        },
+
+        /**
          * Метод показывает ошибку у поля
          *
          * @method
@@ -228,14 +245,16 @@ define([
          * @param {String} error текст ошибки
          * @returns {undefined}
          */
-        showFieldError: function(fieldName, error){
-            var $field = $('#fieldName');
+        showFieldError: function (fieldName, error) {
+            var $field;
 
-            $field.addClass('field-error');
-            $field.tooltip({
+            fieldName = Helpers.hyphen(fieldName);
+            $field = $('#' + fieldName);
+
+            $field.showErrorTooltip({
                 placement: 'right',
                 title: error
-            }).tooltip('show');
+            });
         }
     };
 });

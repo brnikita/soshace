@@ -38,13 +38,23 @@ define([
          *
          * @method
          * @name Helpers.camelCase
-         * @param input
+         * @param {String} value
          * @returns {string}
          */
-        camelCase: function (input) {
-            return input.toLowerCase().replace(/-(.)/g, function (match, group1) {
-                return group1.toUpperCase();
-            });
+        camelCase: function (value) {
+            return $.camelCase(value);
+        },
+
+        /**
+         * Метод приводит строки типа camel-case к виду camelCase
+         *
+         * @method
+         * @name Helpers.camelCase
+         * @param {String} value
+         * @returns {string}
+         */
+        hyphen: function (value) {
+            return value.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
         },
 
         /**

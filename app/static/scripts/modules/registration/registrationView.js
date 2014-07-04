@@ -118,14 +118,14 @@ define([
          * @returns {undefined}
          */
         userRegistrationHandler: function (event) {
-            var _this = this;
+            var errors,
+                _this = this;
 
             event.preventDefault();
 
-            var valid = this.model.validate(),
-                valid2;
-            if (!(valid2 = this.model.isValid(true))) {
-                Widgets.showFieldError('email', 'dsfsdf');
+            errors  = this.model.validate();
+            if(errors){
+                Widgets.showFieldsErrors(errors);
                 return;
             }
 

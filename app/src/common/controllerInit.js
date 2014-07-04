@@ -1,6 +1,6 @@
 'use strict';
 
-var Class = require('../libs/class');
+var Class = require('../vendors/class');
 
 /**
  * Родительский класс для контороллеров
