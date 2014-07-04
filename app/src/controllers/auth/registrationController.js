@@ -26,7 +26,8 @@ module.exports = ControllerInit.extend({
 
         _.bindAll(this,
             'saveUserAtModel',
-            'userExistsHandler'
+            'userExistsHandler',
+            'renderConfirmAccountPageHandler'
         );
     },
 
@@ -60,12 +61,30 @@ module.exports = ControllerInit.extend({
      */
     renderConfirmAccountPage: function () {
         var request = this.request,
-            response = this.response,
-            renderParams = new RenderParams(request),
             confirmCode = request.query.code;
 
+        UsersModel.confirmEmail(confirmCode,
+            this.renderConfirmAccountPageHandler
+        );
+    },
+
+    /**
+     * TODO: добавить обработку ошибок
+     *
+     * Метод обработчик положительного
+     * подтверждения кода пользователя
+     *
+     * @method
+     * @name RegistrationController#renderConfirmAccountPageSuccess
+     * @returns {undefined}
+     */
+    renderConfirmAccountPageHandler: function () {
+        var request = this.request,
+            response = this.response,
+            renderParams = new RenderParams(request);
+
         response.render('auth/registrationFinish', _.extend(renderParams, {
-            error: true,
+            error: false,
             title: 'Complete registration',
             bodyClass: 'bg-symbols bg-color-yellow'
         }));

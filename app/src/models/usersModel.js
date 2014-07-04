@@ -136,6 +136,19 @@ UsersShema.statics.getUser = function (params) {
 };
 
 /**
+ * Метод возвращает данные профиля пользователя
+ *
+ * @method
+ * @name UsersShema.confirmEmail
+ * @param {String} code код подтверждения email
+ * @param {Function} callback
+ * @return {Cursor}
+ */
+UsersShema.statics.confirmEmail = function (code, callback) {
+    this.update({code: code}, {emailConfirmed: true}, null, callback);
+};
+
+/**
  * Метод проверяет существование пользователя с переданным email
  * в базе постоянных пользователей
  *
