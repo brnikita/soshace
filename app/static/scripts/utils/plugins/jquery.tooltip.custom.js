@@ -3,46 +3,50 @@
 define([
     'jquery',
     'underscore',
+    'utils/helpers',
     'bootstrap'
-], function ($, _) {
-    var $elementWithTooltip,
-        tooltipParams,
-        methods = {
-
-            /**
-             * @constructor
-             * @param {Object} params параметры тултипа
-             * @returns {undefined}
-             */
-            initialize: function (params) {
-                $elementWithTooltip = $(this);
-                tooltipParams = params;
-                debugger;
-                if (params.type === 'error') {
-                    methods.errorTooltip();
-                    return;
-                }
-            },
-
-            /**
-             * Метод показывает тултип с ошибкой
-             *
-             * @method
-             * @returns {undefined}
-             */
-            errorTooltip: function () {
-                debugger;
-                tooltipParams = _.extend(tooltipParams, {
-                    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div>' +
-                        '<div class="tooltip-inner"></div></div>'
-                });
-                $elementWithTooltip.tooltip(
-                    tooltipParams
-                ).tooltip('show');
-            }
-        };
-
+], function ($, _, Helpers) {
     $.fn.showErrorTooltip = function (params) {
+        var $elementWithTooltip,
+            tooltipParams,
+            methods = {
+
+                /**
+                 * @constructor
+                 * @param {Object} params параметры тултипа
+                 * @returns {undefined}
+                 */
+                initialize: function (params) {
+                    $elementWithTooltip = $(this);
+                    tooltipParams = params;
+                    params.trigger = 'manual';
+
+                    if (params.type === 'error') {
+                        methods.errorTooltip();
+                    }
+                },
+
+                /**
+                 * Метод показывает тултип с ошибкой
+                 *
+                 * @method
+                 * @returns {undefined}
+                 */
+                errorTooltip: function () {
+                    Helpers.renderTemplate('utils/plugins/errorTooltip', {
+                        width: 200
+                    }).done(function (template) {
+                        tooltipParams = _.extend(tooltipParams, {
+                            template: template,
+                            html: true
+                        });
+                        $elementWithTooltip.tooltip(
+                            tooltipParams
+                        ).tooltip('show');
+                    });
+                }
+            };
+
         params = _.extend(params, {type: 'error'});
         return methods.initialize.call(this, params);
     };

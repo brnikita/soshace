@@ -6,6 +6,16 @@
  */
 define(function () {
     window.Soshace = {
+
+        /**
+         * Путь до директории шаблонов
+         *
+         * @field
+         * @name Soshace.viewsPath
+         * @type {String}
+         */
+        viewsPath: '/static/views/',
+
         /**
          * Список сохраненных шаблонов
          *

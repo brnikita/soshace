@@ -17,7 +17,7 @@ require([
          * @field
          * @type {string}
          */
-        prefix: '/static/views/',
+        prefix: Soshace.viewsPath,
 
         /**
          * Метод загружает партиал по пути

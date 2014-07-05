@@ -250,9 +250,10 @@ define([
 
             fieldName = Helpers.hyphen(fieldName);
             $field = $('#' + fieldName);
-
+            $field.addClass('field-with-error');
             $field.showErrorTooltip({
                 placement: 'right',
+                width: 200,
                 title: error
             });
         }
