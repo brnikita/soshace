@@ -123,8 +123,8 @@ define([
 
             event.preventDefault();
 
-            errors  = this.model.validate();
-            if(errors){
+            errors = this.model.validate();
+            if (errors) {
                 Widgets.showFieldsErrors(errors);
                 return;
             }
@@ -185,9 +185,12 @@ define([
          */
         changeFormFieldHandler: function (event) {
             var $target = $(event.target),
-                params = Helpers.getInputData($target);
+                serializedField = Helpers.getInputData($target),
+                error = this.model.preValidate(serializedField);
 
-            this.model.set(params);
+            $target.removeClass('field-error');
+            $target.toggleClass('field-success', !error);
+            this.model.set(serializedField);
         },
 
         /**

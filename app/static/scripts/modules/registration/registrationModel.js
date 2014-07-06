@@ -42,7 +42,8 @@ define([
             email: [{
                 required: true,
                 msg: 'Please enter an<br/> email address'
-            },{
+            },
+                {
                 pattern: 'email',
                 msg: 'Please enter a valid email'
             }],

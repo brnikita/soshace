@@ -40,7 +40,9 @@ define([
                             template: template,
                             html: true
                         });
-                        $elementWithTooltip.tooltip(
+                        $elementWithTooltip.
+                            tooltip('destroy').
+                            tooltip(
                             tooltipParams
                         ).tooltip('show');
                     });

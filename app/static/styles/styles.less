@@ -3,7 +3,8 @@
 @import 'libs/prettify';
 @import '404';
 @import 'colors';
-@import 'errors';
+@import 'controls';
+@import 'tooltips';
 @import 'modules/posts/posts';
 @import 'modules/posts/addPost';
 @import 'modules/auth';
@@ -56,7 +57,7 @@ label {
   background-color: #f2dede;
 }
 
-.disable-cover{
+.disable-cover {
   position: absolute;
   top: 0;
   left: 0;
@@ -69,6 +70,7 @@ label {
 .header {
   position: fixed;
   width: 100%;
+  z-index: 2;
   background: #3e3d3d;
   -webkit-box-shadow: 0px 3px 3px 0px rgba(50, 50, 50, 0.3);
   -moz-box-shadow: 0px 3px 3px 0px rgba(50, 50, 50, 0.3);

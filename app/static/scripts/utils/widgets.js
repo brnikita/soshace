@@ -250,12 +250,28 @@ define([
 
             fieldName = Helpers.hyphen(fieldName);
             $field = $('#' + fieldName);
-            $field.addClass('field-with-error');
+            $field.addClass('field-error');
             $field.showErrorTooltip({
                 placement: 'right',
                 width: 200,
                 title: error
             });
+        },
+
+        /**
+         * Метод показывает ошибку у поля
+         *
+         * @method
+         * @name Widgets.showFieldError
+         * @param {String} fieldName имя поля
+         * @returns {undefined}
+         */
+        showFieldSuccess: function (fieldName) {
+            var $field;
+
+            fieldName = Helpers.hyphen(fieldName);
+            $field = $('#' + fieldName);
+            $field.addClass('field-success');
         }
     };
 });
