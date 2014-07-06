@@ -7,49 +7,39 @@ define([
     'bootstrap'
 ], function ($, _, Helpers) {
     $.fn.showErrorTooltip = function (params) {
-        var $elementWithTooltip,
-            tooltipParams,
-            methods = {
+        var $this = $(this);
 
-                /**
-                 * @constructor
-                 * @param {Object} params параметры тултипа
-                 * @returns {undefined}
-                 */
-                initialize: function (params) {
-                    $elementWithTooltip = $(this);
-                    tooltipParams = params;
-                    params.trigger = 'manual';
-
-                    if (params.type === 'error') {
-                        methods.errorTooltip();
-                    }
-                },
-
-                /**
-                 * Метод показывает тултип с ошибкой
-                 *
-                 * @method
-                 * @returns {undefined}
-                 */
-                errorTooltip: function () {
-                    Helpers.renderTemplate('utils/plugins/errorTooltip', {
-                        width: 200
-                    }).done(function (template) {
-                        tooltipParams = _.extend(tooltipParams, {
-                            template: template,
-                            html: true
-                        });
-                        $elementWithTooltip.
-                            tooltip('destroy').
-                            tooltip(
-                            tooltipParams
-                        ).tooltip('show');
-                    });
-                }
-            };
-
-        params = _.extend(params, {type: 'error'});
-        return methods.initialize.call(this, params);
+        Helpers.renderTemplate('utils/plugins/errorTooltip', {
+            width: 200
+        }).done(function (template) {
+            params = _.extend(params, {
+                template: template,
+                trigger: 'manual',
+                html: true
+            });
+            $this.
+                tooltip('destroy').
+                tooltip(
+                params
+            ).tooltip('show');
+        });
     };
+
+    $.fn.helperTooltip = function (params) {
+        var $this = $(this);
+
+        Helpers.renderTemplate('utils/plugins/helperTooltip', {
+            width: 200
+        }).done(function (template) {
+            params = _.extend(params, {
+                template: template,
+                trigger: 'focus',
+                html: true
+            });
+            $this.
+                tooltip(
+                params
+            );
+        });
+    }
 });
