@@ -9,8 +9,7 @@
 define([
     'jquery',
     'underscore',
-    'utils/helpers',
-    'utils/plugins/jquery.tooltip.custom'
+    'utils/helpers'
 ], function ($, _, Helpers) {
     var errorsContainerDefault = $('.js-body-messages'),
         $body = $('body');
@@ -251,11 +250,20 @@ define([
             fieldName = Helpers.hyphen(fieldName);
             $field = $('#' + fieldName);
             $field.addClass('field-error');
-            $field.showErrorTooltip({
-                placement: 'right',
-                width: 200,
-                title: error
-            });
+            Helpers.renderTemplate('utils/plugins/errorTooltip', {
+                width: 200
+            }).done(function (template) {
+                    $field.
+                        tooltip('destroy').
+                        tooltip({
+                            template: template,
+                            trigger: 'manual',
+                            html: true,
+                            placement: 'right',
+                            width: 200,
+                            title: error
+                        }).tooltip('show');
+                });
         },
 
         /**

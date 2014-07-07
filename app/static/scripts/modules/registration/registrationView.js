@@ -187,10 +187,18 @@ define([
             var $target = $(event.target),
                 serializedField = Helpers.getInputData($target),
                 error = this.model.preValidate(serializedField);
-
+            this.hideFieldError();
             $target.removeClass('field-error');
             $target.toggleClass('field-success', !error);
             this.model.set(serializedField);
+        },
+
+        /**
+         * @method
+         * @name
+         */
+        hideFieldError: function(){
+
         },
 
         /**
