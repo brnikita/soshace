@@ -9,7 +9,8 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
+    'backbone',
+    'backbone.validation'
 ], function ($, _, Backbone) {
     return Backbone.Model.extend({
         /**
@@ -26,15 +27,30 @@ define([
         },
 
         /**
+         * Возращаемый метод делает запрос на валидацию поля на сервере
+         * Метод не дает делать запросы чаще, чем раз в 500мс.
+         *
+         * @field
+         * @name RegistrationModel#validation
+         * @type {Function}
+         */
+        validateFieldByServer: _.debounce(function (serializedField, callback) {
+            $.get(Soshace.urls.api.registration.validateField, serializedField).
+                done(callback);
+        }, 500),
+
+        /**
          * @field
          * @name RegistrationModel#validation
          * @type {Object}
          */
         validation: {
-            userName: {
-                required: true,
-                msg: 'Please enter an username'
-            },
+            userName: [
+                {
+                    required: true,
+                    msg: 'Please enter an username'
+                }
+            ],
             fullName: {
                 required: true,
                 msg: 'Please enter a full name'
@@ -53,6 +69,10 @@ define([
                 {
                     required: true,
                     msg: 'Please enter a password'
+                },
+                {
+                    minLength: 6,
+                    msg: 'Password length should be more than 6 characters'
                 }
             ]
         },

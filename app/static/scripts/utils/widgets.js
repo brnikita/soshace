@@ -231,63 +231,6 @@ define([
                 formattedHtml = prettyPrintOne(codeBlock.html(), codeLanguage, true);
                 codeBlock.html(formattedHtml);
             });
-        },
-
-        /**
-         * Метод показывает список ошибок у
-         * переданных полей
-         *
-         * @method
-         * @name Widgets.showFieldsErrors
-         * @param {Object} errors список ошибок
-         * @returns {undefined}
-         */
-        showFieldsErrors: function (errors) {
-            _.each(errors, _.bind(function (error, fieldName) {
-                var $field;
-
-                fieldName = Helpers.hyphen(fieldName);
-                $field = $('#' + fieldName);
-                $field.controlStatus('error', error);
-            }, this));
-        },
-
-        /**
-         * Метод устанавливает всплывающие подсказоки у полей
-         *
-         * @method
-         * @name Widgets.setFieldsHelpers
-         * @param {Object} helpers список подсказок
-         * @returns {undefined}
-         */
-        setFieldsHelpers: function (helpers) {
-            _.each(helpers, _.bind(function (helper, fieldName) {
-                var $field;
-
-                fieldName = Helpers.hyphen(fieldName);
-                $field = $('#' + fieldName);
-                $field.controlStatus({
-                    helperOptions: {
-                        title: helper
-                    }
-                });
-            }, this));
-        },
-
-        /**
-         * Метод показывает ошибку у поля
-         *
-         * @method
-         * @name Widgets.showFieldError
-         * @param {String} fieldName имя поля
-         * @returns {undefined}
-         */
-        showFieldSuccess: function (fieldName) {
-            var $field;
-
-            fieldName = Helpers.hyphen(fieldName);
-            $field = $('#' + fieldName);
-            $field.addClass('field-success');
         }
     };
 });

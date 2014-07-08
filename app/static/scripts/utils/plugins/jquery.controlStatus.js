@@ -14,22 +14,17 @@ define([
     var methods = {
         /**
          * @constructor
-         * @param {Object} options
+         * @param {Object} [options]
          * @returns {jQuery}
          */
         initialize: function (options) {
             return this.each(function () {
-                var $this = $(this),
-                    helperOptions = options.helperOptions;
+                var $this = $(this);
 
-                if (helperOptions) {
-                    $this.data('controlStatus', {
-                        helperOptions: helperOptions
-                    });
-
+                if (options) {
+                    $this.data('controlStatus', options);
                     methods._addHelperListeners.call(this);
                 }
-
             });
         },
 
@@ -69,7 +64,8 @@ define([
          */
         _showHelper: function () {
             var $this = $(this),
-                controlStatusData = $this.data('controlStatus');
+                controlStatusData = $this.data('controlStatus'),
+                helperOptions;
 
             if (!(controlStatusData && controlStatusData.helperOptions)) {
                 return;
@@ -87,20 +83,20 @@ define([
                 helperIsShowing: true
             }));
 
-            Helpers.renderTemplate('utils/plugins/controlStatus/helperTooltip', {
-                width: 200
-            }).done(function (template) {
-                var helperOptions = controlStatusData && controlStatusData.helperOptions || {};
-                $this.removeClass('field-error');
-                $this.
-                    tooltip('destroy').
-                    tooltip(_.extend({
-                        template: template,
-                        trigger: 'manual',
-                        placement: 'right',
-                        html: true
-                    }, helperOptions)).tooltip('show');
-            });
+            helperOptions = controlStatusData && controlStatusData.helperOptions || {};
+
+            Helpers.renderTemplate('utils/plugins/controlStatus/helperTooltip', helperOptions).
+                done(function (template) {
+                    $this.removeClass('field-error');
+                    $this.
+                        tooltip('destroy').
+                        tooltip(_.extend({
+                            template: template,
+                            trigger: 'manual',
+                            placement: 'right',
+                            html: true
+                        }, helperOptions)).tooltip('show');
+                });
         },
 
         /**
@@ -133,26 +129,27 @@ define([
         error: function (error) {
             return this.each(function () {
                 var $this = $(this),
-                    controlStatusData = $this.data('controlStatus');
+                    controlStatusData = $this.data('controlStatus'),
+                    errorOptions;
 
                 $this.addClass('field-error');
                 $this.data('controlStatus', _.extend(controlStatusData, {
                     helperIsShowing: false
                 }));
-                Helpers.renderTemplate('utils/plugins/controlStatus/errorTooltip', {
-                    width: 200
-                }).done(function (template) {
-                    var errorOptions = controlStatusData && controlStatusData.errorOptions || {};
-                    $this.
-                        tooltip('destroy').
-                        tooltip(_.extend({
-                            template: template,
-                            trigger: 'manual',
-                            title: error,
-                            placement: 'right',
-                            html: true
-                        }, errorOptions)).tooltip('show');
-                });
+
+                errorOptions = controlStatusData && controlStatusData.errorOptions || {};
+                Helpers.renderTemplate('utils/plugins/controlStatus/errorTooltip', errorOptions).
+                    done(function (template) {
+                        $this.
+                            tooltip('destroy').
+                            tooltip(_.extend({
+                                template: template,
+                                trigger: 'manual',
+                                title: error,
+                                placement: 'right',
+                                html: true
+                            }, errorOptions)).tooltip('show');
+                    });
 
             });
         },
@@ -204,7 +201,7 @@ define([
          * @param {Boolean} flag если true - success, false - base
          * @returns {jQuery}
          */
-        toggleSuccessBase: function(flag){
+        toggleSuccessBase: function (flag) {
             return flag ? methods.success.call(this) : methods.base.call(this);
         },
 

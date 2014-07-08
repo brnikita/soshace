@@ -68,7 +68,10 @@ define(function () {
                 posts: '/api/posts',
                 createUser: '/api/create_user',
                 user: '/api/get_user',
-                profile: '/api/get_profile'
+                profile: '/api/get_profile',
+                registration: {
+                    validateField: '/api/registration/validate_field'
+                }
             }
         }
     };

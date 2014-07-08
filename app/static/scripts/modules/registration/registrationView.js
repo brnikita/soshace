@@ -126,7 +126,7 @@ define([
             errors = this.model.validate();
 
             if (errors) {
-                Widgets.showFieldsErrors(errors);
+                this.showFieldsErrors(errors);
                 return;
             }
 
@@ -189,7 +189,15 @@ define([
                 serializedField = Helpers.getInputData($target),
                 error = this.model.preValidate(serializedField);
 
-            $target.controlStatus('toggleSuccessBase', !error);
+            if (error) {
+                $target.controlStatus('base');
+                return;
+            }
+
+            this.model.validateFieldByServer(serializedField, function (response) {
+                var error = response.error;
+                $target.controlStatus('toggleSuccessBase', !error);
+            });
             this.model.set(serializedField);
         },
 
@@ -218,12 +226,58 @@ define([
         },
 
         /**
+         * Метод показывает список ошибок у
+         * переданных полей
+         *
+         * @method
+         * @name RegistrationView#showFieldsErrors
+         * @param {Object} errors список ошибок
+         * @returns {undefined}
+         */
+        showFieldsErrors: function (errors) {
+            _.each(errors, _.bind(function (error, fieldName) {
+                var $field;
+
+                fieldName = Helpers.hyphen(fieldName);
+                $field = $('#' + fieldName);
+                $field.controlStatus('error', error);
+            }, this));
+        },
+
+        /**
+         * Метод устанавливает всплывающие подсказоки у полей
+         *
+         * @method
+         * @name RegistrationView#setFieldsHelpers
+         * @param {Object} helpers список подсказок
+         * @returns {undefined}
+         */
+        setFieldsHelpers: function (helpers) {
+            _.each(helpers, _.bind(function (helper, fieldName) {
+                var $field;
+
+                fieldName = Helpers.hyphen(fieldName);
+                $field = $('#' + fieldName);
+                $field.controlStatus({
+                    helperOptions: {
+                        width: 200,
+                        title: helper,
+                        cssClass: 'auth-helper-tooltip'
+                    },
+                    errorOptions: {
+                        width: 200
+                    }
+                });
+            }, this));
+        },
+
+        /**
          * @method
          * @name RegistrationView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
-            Widgets.setFieldsHelpers(this.model.helpers);
+            this.setFieldsHelpers(this.model.helpers);
         }
     });
 });

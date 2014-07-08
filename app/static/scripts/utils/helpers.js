@@ -10,8 +10,9 @@
 define([
     'jquery',
     'underscore',
+    'handlebars',
     'jquery.cookie'
-], function ($, _) {
+], function ($, _, Handlebars) {
     return {
         /**
          * Метод возвращает данные формы в виде объекта
@@ -99,7 +100,7 @@ define([
         getInputData: function ($input) {
             var value = $input.val(),
                 name = $input.attr('name'),
-                params  = {};
+                params = {};
 
             name = this.camelCase(name);
             params[name] = value;
