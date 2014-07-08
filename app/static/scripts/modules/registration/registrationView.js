@@ -186,19 +186,27 @@ define([
          */
         changeFormFieldHandler: function (event) {
             var $target = $(event.target),
+                model = this.model,
                 serializedField = Helpers.getInputData($target),
-                error = this.model.preValidate(serializedField);
+                fieldName = _.keys(serializedField)[0];
 
-            if (error) {
+            model.set(serializedField);
+
+            if (!model.isValid(fieldName)) {
                 $target.controlStatus('base');
                 return;
             }
 
             this.model.validateFieldByServer(serializedField, function (response) {
-                var error = response.error;
+                var error,
+                    oldValue = serializedField[fieldName];
+
+                if (oldValue !== model.get(fieldName)) {
+                    return;
+                }
+                error = response.error;
                 $target.controlStatus('toggleSuccessBase', !error);
             });
-            this.model.set(serializedField);
         },
 
         /**
