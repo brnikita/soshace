@@ -9,7 +9,8 @@
 define([
     'jquery',
     'underscore',
-    'utils/helpers'
+    'utils/helpers',
+    'utils/plugins/jquery.controlStatus'
 ], function ($, _, Helpers) {
     var errorsContainerDefault = $('.js-body-messages'),
         $body = $('body');
@@ -63,6 +64,8 @@ define([
         },
 
         /**
+         * TODO: доделать
+         *
          * Метод меняет класс у тела страницы
          *
          * @method
@@ -77,7 +80,11 @@ define([
         },
 
         /**
+         * TODO: переделать на нормальные уведомления
+         *
          * Показывает сообщения
+         *
+         * @deprecated
          *
          * @method
          * @name Widgets.showMessages
@@ -133,8 +140,12 @@ define([
         },
 
         /**
+         * TODO: выпилить этот ужас
+         *
          * Скрывает сообщения об ошибках
          * Параметры аналогичные для показа сообщений
+         *
+         * @deprecated
          *
          * @method
          * @name Widgets.hideErrorMessages
@@ -200,6 +211,8 @@ define([
         },
 
         /**
+         * TODO: переделать на плагин
+         *
          * Форматирует блоки с классом .prettyprint
          * в переданном контексте
          *
@@ -230,40 +243,35 @@ define([
          * @returns {undefined}
          */
         showFieldsErrors: function (errors) {
-            _.each(errors, _.bind(function (error, field) {
-                this.showFieldError(field, error);
+            _.each(errors, _.bind(function (error, fieldName) {
+                var $field;
+
+                fieldName = Helpers.hyphen(fieldName);
+                $field = $('#' + fieldName);
+                $field.controlStatus('error', error);
             }, this));
         },
 
         /**
-         * Метод показывает ошибку у поля
+         * Метод устанавливает всплывающие подсказоки у полей
          *
          * @method
-         * @name Widgets.showFieldError
-         * @param {String} fieldName имя поля
-         * @param {String} error текст ошибки
+         * @name Widgets.setFieldsHelpers
+         * @param {Object} helpers список подсказок
          * @returns {undefined}
          */
-        showFieldError: function (fieldName, error) {
-            var $field;
+        setFieldsHelpers: function (helpers) {
+            _.each(helpers, _.bind(function (helper, fieldName) {
+                var $field;
 
-            fieldName = Helpers.hyphen(fieldName);
-            $field = $('#' + fieldName);
-            $field.addClass('field-error');
-            Helpers.renderTemplate('utils/plugins/errorTooltip', {
-                width: 200
-            }).done(function (template) {
-                    $field.
-                        tooltip('destroy').
-                        tooltip({
-                            template: template,
-                            trigger: 'manual',
-                            html: true,
-                            placement: 'right',
-                            width: 200,
-                            title: error
-                        }).tooltip('show');
+                fieldName = Helpers.hyphen(fieldName);
+                $field = $('#' + fieldName);
+                $field.controlStatus({
+                    helperOptions: {
+                        title: helper
+                    }
                 });
+            }, this));
         },
 
         /**

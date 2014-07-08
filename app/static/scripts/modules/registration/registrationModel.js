@@ -39,18 +39,36 @@ define([
                 required: true,
                 msg: 'Please enter a full name'
             },
-            email: [{
-                required: true,
-                msg: 'Please enter an<br/> email address'
-            },
+            email: [
                 {
-                pattern: 'email',
-                msg: 'Please enter a valid email'
-            }],
-            password: [{
-                required: true,
-                msg: 'Please enter a password'
-            }]
+                    required: true,
+                    msg: 'Please enter an<br/> email address'
+                },
+                {
+                    pattern: 'email',
+                    msg: 'Please enter a valid email'
+                }
+            ],
+            password: [
+                {
+                    required: true,
+                    msg: 'Please enter a password'
+                }
+            ]
+        },
+
+        /**
+         * Список подсказок к полям
+         *
+         * @field
+         * @name RegistrationModel#helpers
+         * @type {Object}
+         */
+        helpers: {
+            userName: 'user name',
+            fullName: 'Please enter a full name',
+            email: 'Please enter an<br/> email address',
+            password: 'Please enter a password'
         },
 
         /**

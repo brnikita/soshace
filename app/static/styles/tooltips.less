@@ -10,3 +10,17 @@
     background-color: #f24c48;
   }
 }
+
+.tooltip.helper-tooltip {
+  font-size: 14px;
+  &.tooltip.helper-tooltip.in {
+    opacity: 1;
+  }
+  &.right .tooltip-arrow {
+    border-right-color: #fff;
+  }
+  .tooltip-inner {
+    color: @gray-dark;
+    background-color: #fff;
+  }
+}

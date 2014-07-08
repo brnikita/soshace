@@ -14,7 +14,8 @@ define([
     'utils/helpers',
     './registrationModel',
     'backbone.layoutmanager',
-    'backbone.validation'
+    'backbone.validation',
+    'utils/plugins/jquery.controlStatus'
 ], function ($, _, Backbone, Widgets, Helpers, RegistrationModel) {
     return Backbone.Layout.extend({
 
@@ -63,7 +64,6 @@ define([
          */
         events: {
             'keyup .js-model-field': 'changeFormFieldHandler',
-            'blur .js-model-field': 'changeFormFieldHandler',
             'submit': 'userRegistrationHandler'
         },
 
@@ -124,6 +124,7 @@ define([
             event.preventDefault();
 
             errors = this.model.validate();
+
             if (errors) {
                 Widgets.showFieldsErrors(errors);
                 return;
@@ -187,18 +188,9 @@ define([
             var $target = $(event.target),
                 serializedField = Helpers.getInputData($target),
                 error = this.model.preValidate(serializedField);
-            this.hideFieldError();
-            $target.removeClass('field-error');
+
             $target.toggleClass('field-success', !error);
             this.model.set(serializedField);
-        },
-
-        /**
-         * @method
-         * @name
-         */
-        hideFieldError: function(){
-
         },
 
         /**
@@ -231,6 +223,7 @@ define([
          * @returns {undefined}
          */
         afterRender: function () {
+            Widgets.setFieldsHelpers(this.model.helpers);
         }
     });
 });
