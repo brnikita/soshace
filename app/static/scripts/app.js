@@ -53,15 +53,11 @@ require([
          * @returns {undefined}
          */
         initialize: function () {
-            var $body;
-
             _.bindAll(this, 'routerLinkHandler', 'initializeCompleted');
             this.setElements();
-            $body = this.elements.body;
             this.headerView = new HeaderView({
                 app: App
             });
-            Widgets.showLoader($body);
             this.getCommonData().done(this.initializeCompleted);
         },
 

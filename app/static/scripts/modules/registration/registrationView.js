@@ -189,7 +189,7 @@ define([
                 serializedField = Helpers.getInputData($target),
                 error = this.model.preValidate(serializedField);
 
-            $target.toggleClass('field-success', !error);
+            $target.controlStatus('toggleSuccessBase', !error);
             this.model.set(serializedField);
         },
 
