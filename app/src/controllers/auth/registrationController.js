@@ -183,7 +183,7 @@ module.exports = ControllerInit.extend({
                 message = errors && errors[fieldName] || null;
 
             response.send({
-                error: message
+                error: request.i18n.__(message)
             });
         });
     },
