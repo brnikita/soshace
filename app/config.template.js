@@ -20,7 +20,7 @@ global.Soshace = {
      *
      * @public
      * @constant
-     * name soshace.LOCAL_HOST
+     * @name soshace.LOCAL_HOST
      * @type {String}
      */
     LOCAL_HOST: 'localhost',
@@ -166,5 +166,16 @@ global.Soshace = {
      * @name Soshace.SESSION_KEY
      * @type {String}
      */
-    SESSION_KEY: 'session/key'
+    SESSION_KEY: 'session/key',
+
+    /**
+     * Список регулярных выражений
+     *
+     * @constant
+     * @name Soshace.PATTERNS
+     * @type {Object}
+     */
+    PATTERNS: {
+        email: /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+    }
 };

@@ -23,11 +23,6 @@
 </div>
 </body>
 </html>
-{{#unless isProduction}}
-    <script src="/static/scripts/libs/require.js"></script>
-    <script src="/static/require.conf.js"></script>
-    <script src="/static/scripts/app.js"></script>
-{{/unless}}
 {{#if isProduction}}
     <!-- Yandex.Metrika counter-->
     <noscript>
@@ -38,4 +33,8 @@
     <!-- /Yandex.Metrika counter-->
     <!--Минифицированные скрипты, версия берется из package.json-->
     <script src="/static/scripts/scripts.min.js?v={{version}}"></script>
+{{else}}
+    <script src="/static/scripts/libs/require.js"></script>
+    <script src="/static/require.conf.js"></script>
+    <script src="/static/scripts/app.js"></script>
 {{/if}}

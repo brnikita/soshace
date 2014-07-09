@@ -165,6 +165,30 @@ module.exports = ControllerInit.extend({
     },
 
     /**
+     * Метод валидирует поля регистрации
+     *
+     * @method
+     * @name RegistrationController#validateField
+     * @returns {undefined}
+     */
+    validateField: function () {
+        var request = this.request,
+            response = this.response,
+            requestData = request.query,
+            fieldName = _.keys(requestData)[0],
+            user = new UsersModel(requestData);
+        //TODO: добавить проверку на наличие поля в модели
+        user.validate(function (error) {
+            var errors = error && error.errors,
+                message = errors && errors[fieldName] || null;
+
+            response.send({
+                error: message
+            });
+        });
+    },
+
+    /**
      * Метод обработчик успешного добавления пользователя
      *
      * @method

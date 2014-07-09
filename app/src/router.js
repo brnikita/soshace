@@ -110,10 +110,8 @@ module.exports = function (App) {
         registrationController.renderConfirmAccountPage();
     });
 
-    //TODO: доделать API валидации поля
     App.get('/api/registration/validate_field', function(request, response){
-        response.send({
-            error: false
-        });
+        var registrationController = new RegistrationController(request, response);
+        registrationController.validateField();
     });
 };

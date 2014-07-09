@@ -10,7 +10,7 @@ define(function () {
         /**
          * Путь до директории шаблонов
          *
-         * @field
+         * @constant
          * @name Soshace.viewsPath
          * @type {String}
          */
@@ -54,7 +54,7 @@ define(function () {
          * Поле, содержащее относительнные пути
          * до статики и API
          *
-         * @field
+         * @constant
          * @name Soshace.urls
          * @type {Object}
          */
@@ -73,6 +73,17 @@ define(function () {
                     validateField: '/api/registration/validate_field'
                 }
             }
+        },
+
+        /**
+         * Список регулярных выражений
+         *
+         * @constant
+         * @name Soshace.patterns
+         * @type {Object}
+         */
+        patterns: {
+            email: /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
         }
     };
 

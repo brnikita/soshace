@@ -61,7 +61,7 @@ define([
                     msg: 'Please enter an<br/> email address'
                 },
                 {
-                    pattern: 'email',
+                    pattern: Soshace.patterns.email,
                     msg: 'Please enter a valid email'
                 }
             ],
