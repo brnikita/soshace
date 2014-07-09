@@ -176,6 +176,7 @@ global.Soshace = {
      * @type {Object}
      */
     PATTERNS: {
-        email: /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+        email: /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
+        userName: /^[a-z\.\-_0-9]+$/
     }
 };

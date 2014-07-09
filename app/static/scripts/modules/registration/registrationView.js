@@ -15,6 +15,7 @@ define([
     './registrationModel',
     'backbone.layoutmanager',
     'backbone.validation',
+    'utils/backboneValidationExtension',
     'utils/plugins/jquery.controlStatus'
 ], function ($, _, Backbone, Widgets, Helpers, RegistrationModel) {
     return Backbone.Layout.extend({

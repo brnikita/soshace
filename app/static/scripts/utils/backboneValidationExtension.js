@@ -12,6 +12,17 @@ define([
     'backbone.validation'
 ], function ($, _, Backbone) {
     _.extend(Backbone.Validation.validators, {
-        //пока пусто(
+        /**
+         * Метод валидации userName
+         *
+         * @method
+         * @param {String} value
+         * @returns {String | undefined}
+         */
+        userName: function(value){
+            if(!Soshace.patterns.userName.test(value)){
+               return 'Username is invalid';
+            }
+        }
     });
 });

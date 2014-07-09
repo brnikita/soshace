@@ -7,15 +7,15 @@
  */
 module.exports = {
     /**
-     * Метод проверяет на наличие значения
+     * Метод валидирует userName
      *
      * @method
-     * @name Validators.required
-     * @param {*} value
+     * @param {String} value
+     * @name Validators.userName
      * @returns {Boolean}
      */
-    required: function (value) {
-        return !!value;
+    userName: function(value){
+        return Soshace.PATTERNS.userName.test(value);
     },
 
     /**

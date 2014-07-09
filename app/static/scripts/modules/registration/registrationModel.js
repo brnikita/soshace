@@ -10,7 +10,8 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'backbone.validation'
+    'backbone.validation',
+    'utils/backboneValidationExtension'
 ], function ($, _, Backbone) {
     return Backbone.Model.extend({
         /**
@@ -49,6 +50,9 @@ define([
                 {
                     required: true,
                     msg: 'Please enter an username'
+                },
+                {
+                    userName: 1
                 }
             ],
             fullName: {
@@ -62,7 +66,7 @@ define([
                 },
                 {
                     pattern: Soshace.patterns.email,
-                    msg: 'Please enter a valid email'
+                    msg: 'Email is invalid'
                 }
             ],
             password: [

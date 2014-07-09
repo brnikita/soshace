@@ -2,6 +2,7 @@
 
 var Mongoose = require('mongoose'),
     Bcrypt = require('bcrypt'),
+    Validators = require('../common/validators'),
     SALT_WORK_FACTOR = 10;
 
 /**
@@ -26,12 +27,20 @@ var UsersShema = Mongoose.Schema({
     userName: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        validate: [
+            Validators.userName,
+            'Username is invalid'
+        ]
     },
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        validate: [
+            Validators.email,
+            'Email is invalid'
+        ]
     },
     isMale: {
         type: Boolean,

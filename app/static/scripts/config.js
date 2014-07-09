@@ -83,7 +83,8 @@ define(function () {
          * @type {Object}
          */
         patterns: {
-            email: /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+            email: /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
+            userName: /^[a-z\.\-_0-9]+$/
         }
     };
 
