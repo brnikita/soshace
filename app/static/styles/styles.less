@@ -69,46 +69,45 @@ html, body {
   .container {
     background: #3e3d3d;
   }
-  &__menu {
-    &__logo {
+  &__logo {
+    display: block;
+    padding: 5px 0 3px 15px;
+    float: left;
+    a {
       display: block;
-      padding: 5px 0 3px 15px;
-      a {
-        display: block;
-      }
-      img {
-        width: 130px;
-      }
     }
-    &__tabs {
-      float: right;
+    img {
+      width: 130px;
     }
-    &__tab {
-      color: #fff;
-      text-align: center;
-      height: 45px;
-      border-right: #3e3d3d 1px solid;
-      border-left: #3e3d3d 1px solid;
-      float: left;
-      padding: 9px 15px 0 15px;
-      &-link {
-        color: #fff !important;
-        line-height: 24px;
-      }
-      &-link:hover {
-        color: #fff !important;
-        text-decoration: none;
-        background: #282727;
-      }
-      &-active {
-        line-height: 24px;
-        background: #282727;
-      }
-      .glyphicon {
-        font-size: 20px;
-        vertical-align: top;
-        margin-right: 3px;
-      }
+  }
+  &__tabs {
+    float: right;
+  }
+  &__tab {
+    color: #fff;
+    text-align: center;
+    height: 45px;
+    border-right: #3e3d3d 1px solid;
+    border-left: #3e3d3d 1px solid;
+    float: left;
+    padding: 9px 15px 0 15px;
+    &-link {
+      color: #fff !important;
+      line-height: 24px;
+    }
+    &-link:hover {
+      color: #fff !important;
+      text-decoration: none;
+      background: #282727;
+    }
+    &-active {
+      line-height: 24px;
+      background: #282727;
+    }
+    .glyphicon {
+      font-size: 20px;
+      vertical-align: top;
+      margin-right: 3px;
     }
   }
 }
