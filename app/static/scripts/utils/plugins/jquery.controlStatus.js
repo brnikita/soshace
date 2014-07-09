@@ -84,7 +84,7 @@ define([
             }));
 
             helperOptions = controlStatusData && controlStatusData.helperOptions || {};
-
+            //TODO: переделать на блоки под полем
             Helpers.renderTemplate('utils/plugins/controlStatus/helperTooltip', helperOptions).
                 done(function (template) {
                     $this.removeClass('field-error');
@@ -138,6 +138,7 @@ define([
                 }));
 
                 errorOptions = controlStatusData && controlStatusData.errorOptions || {};
+                //TODO: переделать на блоки под полем
                 Helpers.renderTemplate('utils/plugins/controlStatus/errorTooltip', errorOptions).
                     done(function (template) {
                         $this.
