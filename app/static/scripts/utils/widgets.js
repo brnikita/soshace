@@ -8,11 +8,10 @@
 
 define([
     'jquery',
-    'underscore',
-    'utils/helpers',
-    'utils/plugins/jquery.controlStatus'
-], function ($, _, Helpers) {
+    'underscore'
+], function ($, _) {
     var errorsContainerDefault = $('.js-body-messages'),
+        $loader = $('.js-loader-mask'),
         $body = $('body');
 
     return {
@@ -181,33 +180,28 @@ define([
         },
 
         /**
-         * Метод перекрывает переданный элемент в параметрах
+         * Метод перекрывает страницу
          * лоадером
          *
          * @method
          * @name Widgets.showLoader
-         * @param {jQuery} $element элемент, к которому прибавляем лоадер
          * @returns {undefined}
          */
-        showLoader: function ($element) {
-            var $loader = $('.js-loader-mask').clone();
-
-            $element.css('position', 'relative');
-            $element.append($loader);
+        showLoader: function () {
+            $body.addClass('body-load');
             $loader.removeClass('hide');
         },
 
         /**
-         * Метод убирает с элемента лоадер
+         * Метод убирает со страницы лоадер
          *
          * @method
          * @name Widgets.showLoader
-         * @param {jQuery} $element элемент, с которого удаляем лоадер
          * @returns {undefined}
          */
-        hideLoader: function ($element) {
-            $('.js-loader-mask', $element).remove();
-            $element.removeAttr('style');
+        hideLoader: function () {
+            $body.removeClass('body-load');
+            $loader.addClass('hide');
         },
 
         /**
