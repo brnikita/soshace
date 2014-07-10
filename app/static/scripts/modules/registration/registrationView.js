@@ -84,7 +84,11 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
-            _.bindAll(this, 'render');
+            _.bindAll(this,
+                'render',
+                'userRegistrationSuccess',
+                'userRegistrationFail'
+            );
             Widgets.setBodyClass('bg-symbols bg-color-yellow');
             this.app = params.app;
             this.model = new RegistrationModel({
@@ -158,11 +162,20 @@ define([
          *
          * @method
          * @name RegistrationView#userRegistrationFail
+         * @param {Backbone.Model} model
          * @param {Object} response
          * @returns {undefined}
          */
-        userRegistrationFail: function (response) {
+        userRegistrationFail: function (model, response) {
+            var error = response.responseJSON && response.responseJSON.error;
+            if (typeof error === 'string') {
+                //TODO: добавить вывод системной ошибки
+                return;
+            }
 
+            if (typeof error === 'object') {
+                this.showFieldsErrors(error);
+            }
         },
 
         /**

@@ -3,6 +3,7 @@
 var Mongoose = require('mongoose'),
     Bcrypt = require('bcrypt'),
     Validators = require('../common/validators'),
+    Helpers = require('../common/helpers'),
     SALT_WORK_FACTOR = 10;
 
 /**
@@ -16,9 +17,7 @@ var Mongoose = require('mongoose'),
 var UsersShema = Mongoose.Schema({
     //код подтверждения email
     code: {
-        type: String,
-        required: true,
-        unique: true
+        type: String
     },
     fullName: {
         type: String,
@@ -98,21 +97,6 @@ UsersShema.methods.comparePassword = function (candidatePassword, callback) {
 };
 
 /**
- * Метод добавления пользователя
- *
- * @method
- * @name UsersShema.addUser
- * @param {Object} userData данные пользователя для записи в базу
- * @param {Function} callback
- * @return {undefined}
- */
-UsersShema.statics.addUser = function (userData, callback) {
-    if (userData && typeof callback === 'function') {
-        this.create(userData, callback);
-    }
-};
-
-/**
  * Шифруем пароль перед сохранением
  */
 UsersShema.pre('save', function (next) {
@@ -135,6 +119,17 @@ UsersShema.pre('save', function (next) {
             next();
         });
     });
+});
+
+/**
+ * Шифруем пароль перед сохранением
+ */
+UsersShema.pre('save', function (next) {
+    var user = this,
+        time = String((new Date()).getTime());
+
+    user.code = Helpers.encodeMd5(user.email + time);
+    next();
 });
 
 /**
@@ -167,20 +162,6 @@ UsersShema.statics.getUser = function (params) {
  */
 UsersShema.statics.confirmEmail = function (code, callback) {
     this.update({code: code}, {emailConfirmed: true}, null, callback);
-};
-
-/**
- * Метод проверяет существование пользователя с переданным email
- * в базе постоянных пользователей
- *
- * @method
- * @name UsersShema.isUserExists
- * @param {Object} email данные пользователя для записи в базу
- * @param {Function} callback
- * @return {undefined}
- */
-UsersShema.statics.isUserExists = function (email, callback) {
-    this.findOne({email: email}, callback);
 };
 
 module.exports = Mongoose.model('users', UsersShema);

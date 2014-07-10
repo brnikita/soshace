@@ -1,4 +1,5 @@
 {
+	"2342": "2342",
 	"Posts": "Статьи",
 	"Popular blog": "Популярный блог",
 	"New": "Новые",
@@ -94,19 +95,6 @@
 	"For enable editor, you need ": "For enable editor, you need ",
 	"sign in": "sign in",
 	"For enable editor, you need to ": "For enable editor, you need to ",
-	"null": null,
-	"User with same username already exists": {
-		"message": "User with same username already exists",
-		"name": "ValidatorError",
-		"path": "userName",
-		"type": "user defined",
-		"value": "kjhkjh"
-	},
-	"User with same email already exists": {
-		"message": "User with same email already exists",
-		"name": "ValidatorError",
-		"path": "email",
-		"type": "user defined",
-		"value": "nikita-bragin@mail.ru"
-	}
+	"User with same email already exists": "User with same email already exists",
+	"null": null
 }

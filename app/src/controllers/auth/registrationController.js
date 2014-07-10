@@ -25,8 +25,7 @@ module.exports = ControllerInit.extend({
         this.response = response;
 
         _.bindAll(this,
-            'saveUserAtModel',
-            'userExistsHandler',
+            'userSaveHandler',
             'renderConfirmAccountPageHandler'
         );
     },
@@ -101,67 +100,61 @@ module.exports = ControllerInit.extend({
     createUser: function () {
         var request = this.request,
             userData = request.body,
-            email;
+            user;
 
-        if (typeof userData === 'undefined') {
+        if (!'undefined') {
             this.sendError('Bad request');
             return;
         }
 
-        email = userData.email;
-        UsersModel.isUserExists(email, this.userExistsHandler);
+        user = new UsersModel(userData);
+        user.save(this.userSaveHandler);
     },
 
     /**
-     * Метод обработчик проверки на существование юзера в базе
+     * Метод обработчик сохранения пользователя в модели
      *
      * @method
-     * @name RegistrationController#userExistsHandler
-     * @param {Object | null} error
-     * @param {Object | null} user модель существующего пользователя
+     * @name RegistrationController#userSaveHandler
+     * @param {Object} error объект ошибки
+     * @param {Mongoose.model} user модель пользователя
      * @returns {undefined}
      */
-    userExistsHandler: function (error, user) {
-        var request = this.request,
-            email,
-            data;
+    userSaveHandler: function(error, user){
+        var errors;
 
-        if (error) {
+        if(error){
+            if(error.errors){
+                errors = this.formatErrors(error.errors);
+                this.sendError(errors);
+                return;
+            }
+
             this.sendError(this.i18n('Server is too busy, try later'));
             return;
         }
 
-        if (user) {
-            email = user.email;
-            this.sendError(this.i18n('User with email ') + email + this.i18n(' is already exists'));
-            return;
-        }
-
-        data = request.body;
-        this.saveUserAtModel(data);
+        this.userAddSuccess(user);
     },
 
     /**
-     * Метод сохраняет пользователя в модели пользователей
+     * Метод форматирует ошибки валидации
+     * для отправки на клиент
      *
      * @method
-     * @name RegistrationController#saveUserAtModel
-     * @param {Object} userData
-     * @returns {undefined}
+     * @name RegistrationController#formatErrors
+     * @param {Object} errors
+     * @returns {Object}
      */
-    saveUserAtModel: function (userData) {
-        var email = userData.email,
-            time = String((new Date()).getTime()),
-            code = Helpers.encodeMd5(email + time);
+    formatErrors: function(errors){
+        var request = this.request,
+            formattedErrors = {};
 
-        userData.code = code;
-        UsersModel.addUser(userData, _.bind(function (error, user) {
-            if (error) {
-                this.sendError(this.i18n('Server is too busy, try later'));
-                return;
-            }
-            this.userAddSuccess(user);
-        }, this));
+        _.each(errors, function(value, key){
+            formattedErrors[key] = request.i18n.__(value.message);
+        });
+
+        return formattedErrors;
     },
 
     /**
@@ -201,7 +194,7 @@ module.exports = ControllerInit.extend({
             response = this.response,
             locale = request.i18n.getLocale(),
             profile,
-            redirectUrl = '/' + locale + '/user/' + user.userName;
+            redirectUrl;
 
         request.login(user.id, _.bind(function (error) {
             if (error) {
@@ -217,6 +210,7 @@ module.exports = ControllerInit.extend({
                 'admin',
                 'locale');
 
+            redirectUrl = '/' + locale + '/user/' + user.userName;
             SendMail.sendConfirmMail(request, user);
             response.send({
                 profile: profile,
