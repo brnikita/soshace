@@ -1,7 +1,7 @@
 {{#if posts}}
-    <div class="container">
+    <div class="posts">
         {{#each posts}}
-            <div class="row content__post">
+            <div class="posts__item clearfix">
                 <div class="js-meta-information"></div>
                 <h1>
                     <a class="js-router-link" href="/{{../locale}}/posts/{{UTCYear}}/{{UTCMonth}}/{{UTCDate}}/{{titleUrl}}">{{title}}</a>
@@ -13,7 +13,7 @@
         {{/each}}
     </div>
 {{else}}
-    <div class="container page-not-found font-color-green">
+    <div class="page-not-found font-color-green">
         <h1>{{i18n 'No posts'}}</h1>
     </div>
 {{/if}}

@@ -15,29 +15,24 @@
     h2 {
       margin-top: 0;
     }
-    //TODO: избавиться от стилей tab-pane и nav-tabs
-    .nav-tabs {
-      border: none;
+    &__tabs {
+      margin: 0;
+      padding: 0;
       li {
         font-size: 22px;
         width: 80%;
         text-align: center;
+        list-style: none;
+        float: left;
       }
       li:first-child {
         width: 20%;
       }
-      .active {
-      }
-      li.active:first-child {
-      }
       .active a {
         background-color: #ffe293;
         color: #9a6202;
-        border: none;
-        border-radius: inherit;
         text-decoration: none;
         text-shadow: none;
-        width: 100%;
       }
       .active a:hover {
         color: #9a6202;
@@ -46,17 +41,16 @@
       li a {
         color: #fff;
         text-shadow: 0 1px 1px rgba(150, 150, 150, 0.5);
-        border: none;
         text-decoration: underline;
-        border-radius: inherit;
+        padding: 4px 0 5px 0;
+        width: 100%;
+        display: block;
       }
       li a:hover {
-        border: none;
         text-decoration: none;
-        background-color: inherit;
       }
     }
-    .tab-content {
+    &__content {
       background-color: #ffe293;
       padding: 15px;
       .box-shadow(0 -2px 2px 0 rgba(50, 50, 50, 0.2));
