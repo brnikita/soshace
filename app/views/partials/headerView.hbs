@@ -1,53 +1,51 @@
-<div class="header">
-    <div class="header-content">
-        <a href="/{{locale}}" class="js-router-link header__logo">
-            <img src="/static/images/logo.png" alt="Soshace" class="img-responsive"/>
-        </a>
+<div class="header-content">
+    <a href="/{{locale}}" class="js-router-link header__logo">
+        <img src="/static/images/logo.png" alt="Soshace" class="img-responsive"/>
+    </a>
 
-        <div class="header__tabs">
-            {{#if isAuthenticated}}
-                {{#if isUserPage}}
-                    <span class="header__tab header__tab-active">
-                                <span class="glyphicon glyphicon-user"></span>
-                        {{i18n 'Profile'}}
-                            </span>
-                {{else}}
-                    <a href="/{{locale}}/user/{{userName}}"
-                       class="js-router-link header__tab header__tab-link">
-                        <span class="glyphicon glyphicon-user"></span>
-                        {{i18n 'Profile'}}
-                    </a>
-                {{/if}}
-            {{/if}}
-            {{#if isAddPostPage}}
+    <div class="header__tabs">
+        {{#if isAuthenticated}}
+            {{#if isUserPage}}
                 <span class="header__tab header__tab-active">
+                                <span class="glyphicon glyphicon-user"></span>
+                    {{i18n 'Profile'}}
+                            </span>
+            {{else}}
+                <a href="/{{locale}}/user/{{userName}}"
+                   class="js-router-link header__tab header__tab-link">
+                    <span class="glyphicon glyphicon-user"></span>
+                    {{i18n 'Profile'}}
+                </a>
+            {{/if}}
+        {{/if}}
+        {{#if isAddPostPage}}
+            <span class="header__tab header__tab-active">
                             <span class="glyphicon glyphicon-pencil"></span>
-                    {{i18n 'Add Post'}}
+                {{i18n 'Add Post'}}
                         </span>
-            {{else}}
-                <a href="/{{locale}}/add_post" class="js-router-link header__tab header__tab-link">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                    {{i18n 'Add Post'}}
-                </a>
-            {{/if}}
-            {{#if isAuthenticated}}
-                <a href="#" class="header__tab header__tab-link js-sign-out">
-                    <span class="glyphicon glyphicon-log-out"></span>
-                    {{i18n 'Sign Out'}}
-                </a>
-            {{else}}
-                {{#if isAuthPage}}
-                    <span class="header__tab header__tab-active">
+        {{else}}
+            <a href="/{{locale}}/add_post" class="js-router-link header__tab header__tab-link">
+                <span class="glyphicon glyphicon-pencil"></span>
+                {{i18n 'Add Post'}}
+            </a>
+        {{/if}}
+        {{#if isAuthenticated}}
+            <a href="#" class="header__tab header__tab-link js-sign-out">
+                <span class="glyphicon glyphicon-log-out"></span>
+                {{i18n 'Sign Out'}}
+            </a>
+        {{else}}
+            {{#if isAuthPage}}
+                <span class="header__tab header__tab-active">
                             <span class="glyphicon glyphicon-log-in"></span>
-                        {{i18n 'Sign In'}}
+                    {{i18n 'Sign In'}}
                         </span>
-                {{else}}
-                    <a href="/{{locale}}/login" class="js-router-link header__tab header__tab-link">
-                        <span class="glyphicon glyphicon-log-in"></span>
-                        {{i18n 'Sign In'}}
-                    </a>
-                {{/if}}
+            {{else}}
+                <a href="/{{locale}}/login" class="js-router-link header__tab header__tab-link">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                    {{i18n 'Sign In'}}
+                </a>
             {{/if}}
-        </div>
+        {{/if}}
     </div>
 </div>
