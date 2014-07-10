@@ -29,8 +29,14 @@ var UsersShema = Mongoose.Schema({
         required: true,
         unique: true,
         validate: [
-            Validators.userName,
-            'Username is invalid'
+            {
+                validator: Validators.userName,
+                msg: 'Username is invalid'
+            },
+            {
+                validator: Validators.userNameUnique,
+                msg: 'User with same username already exists'
+            }
         ]
     },
     email: {
@@ -38,8 +44,14 @@ var UsersShema = Mongoose.Schema({
         required: true,
         unique: true,
         validate: [
-            Validators.email,
-            'Email is invalid'
+            {
+                validator: Validators.email,
+                msg: 'Email is invalid'
+            },
+            {
+                validator: Validators.emailUnique,
+                msg: 'User with same email already exists'
+            }
         ]
     },
     isMale: {

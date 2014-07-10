@@ -191,6 +191,10 @@ define([
                 serializedField = Helpers.getInputData($target),
                 fieldName = _.keys(serializedField)[0];
 
+            if (model.get(fieldName) === serializedField[fieldName]) {
+                return;
+            }
+
             model.set(serializedField);
 
             if (!model.isValid(fieldName)) {

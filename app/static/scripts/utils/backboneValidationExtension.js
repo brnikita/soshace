@@ -19,9 +19,9 @@ define([
          * @param {String} value
          * @returns {String | undefined}
          */
-        userName: function(value){
-            if(!Soshace.patterns.userName.test(value)){
-               return 'Username is invalid';
+        userName: function (value) {
+            if (!Soshace.patterns.userName.test(value)) {
+                return 'Username is invalid';
             }
         }
     });
