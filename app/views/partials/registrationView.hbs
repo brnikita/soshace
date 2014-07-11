@@ -1,41 +1,32 @@
-<!--TODO: избавиться от класса tab-pane-->
-<div class="tab-pane active">
-    <form role="form">
-        <div class="form-group">
-            <label for="user-name">{{i18n 'Username'}}</label>
-            <input type="text" class="form-control js-validate-input js-model-field"
-                   name="user-name"
-                   id="user-name"
-                   placeholder="{{i18n 'Username'}}">
-        </div>
-        //Имя пользователя - идентификатор уникальный для каждого пользователя.
-        //Использутся в адресе страницы профиля (пример: http://soshace.com/users/<i>user_name</i>)
-        //В записи может использоваться только латинский алфавит в нижнем регистре, цифры, ".", "_", "-".
-        <div class="form-group" class="js-registration-form">
-            <label for="full-name">{{i18n 'Full Name'}}</label>
-            <input type="text" class="form-control js-validate-input js-model-field" name="full-name"
-                   id="full-name"
-                   placeholder="{{i18n 'Full Name'}}">
-        </div>
-        <div class="form-group">
-            <label for="email">{{i18n 'Email address'}}</label>
-            <input type="text" class="form-control js-validate-input js-model-field" name="email"
-                   id="email"
-                   placeholder="{{i18n 'Enter email'}}">
-        </div>
-        //Используется для входа в систему.
-        //Старайтесь не офишировать свой email, это может помочь злоумышленникам получть доступ к вашему
-        //аккаунту.
-        <div class="form-group">
-            <label for="password">{{i18n 'Password'}}</label>
-            <input type="password" class="form-control js-validate-input js-model-field"
-                   name="password"
-                   id="password"
-                   placeholder="{{i18n 'Password'}}">
-        </div>
-        //Длина пароля должна быть не менее 6 символов.
-        //В пароле рекомендуется использовать одновременно
-        //цифры, буквы в верхнем и нижнем регистре, различные символы (".", "/", "?", "^" и т.д.)
-        <button type="submit" class="btn btn-warning js-sign-up">{{i18n 'Sign up'}}</button>
-    </form>
-</div>
+<form role="form">
+    <div class="form-group">
+        <label for="user-name">{{i18n 'Username'}}</label>
+        <input type="text" class="form-control js-validate-input js-model-field"
+               name="user-name"
+               id="user-name"
+               placeholder="{{i18n 'Username'}}">
+    </div>
+    <!--Имя пользователя - идентификатор уникальный для каждого пользователя.-->
+    <!--Использутся в адресе страницы профиля (пример: http://soshace.com/users/<i>user_name</i>)-->
+    <!--В записи может использоваться только латинский алфавит в нижнем регистре, цифры, ".", "_", "-".-->
+    <div class="form-group">
+        <label for="email">{{i18n 'Email address'}}</label>
+        <input type="text" class="form-control js-validate-input js-model-field" name="email"
+               id="email"
+               placeholder="{{i18n 'Enter email'}}">
+    </div>
+    <!--Используется для входа в систему.-->
+    <!--Старайтесь не офишировать свой email, это может помочь злоумышленникам получть доступ к вашему-->
+    <!--аккаунту.-->
+    <div class="form-group">
+        <label for="password">{{i18n 'Password'}}</label>
+        <input type="password" class="form-control js-validate-input js-model-field"
+               name="password"
+               id="password"
+               placeholder="{{i18n 'Password'}}">
+    </div>
+    <!--Длина пароля должна быть не менее 6 символов.-->
+    <!--В пароле рекомендуется использовать одновременно-->
+    <!--цифры, буквы в верхнем и нижнем регистре, различные символы (".", "/", "?", "^" и т.д.)-->
+    <button type="submit" class="btn btn-warning js-sign-up">{{i18n 'Sign up'}}</button>
+</form>

@@ -20,8 +20,7 @@ var UsersShema = Mongoose.Schema({
         type: String
     },
     fullName: {
-        type: String,
-        required: true
+        type: String
     },
     userName: {
         type: String,

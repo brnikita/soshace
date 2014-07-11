@@ -22,7 +22,6 @@ define([
         defaults: {
             locale: null,
             email: null,
-            fullName: null,
             password: null,
             userName: null
         },
@@ -55,10 +54,6 @@ define([
                     userName: 1
                 }
             ],
-            fullName: {
-                required: true,
-                msg: 'Please enter a full name'
-            },
             email: [
                 {
                     required: true,
@@ -90,7 +85,6 @@ define([
          */
         helpers: {
             userName: 'user name',
-            fullName: 'Please enter a full name',
             email: 'Please enter an<br/> email address',
             password: 'Please enter a password'
         },
