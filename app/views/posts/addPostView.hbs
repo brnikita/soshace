@@ -1,4 +1,3 @@
-//TODO: выпилить добавление ссылок
 {{#unless isAuthenticated}}
     <div class="container bg-danger add-post-warning">
         {{i18n 'For enable editor, you need to '}}
@@ -58,30 +57,11 @@
                         </div>
                         <div class="btn-group">
                             <a class="btn btn-default add-post__toolbar__add_image" title="{{i18n 'Add image'}}">
-                                <i class="fa fa-list-ul"></i>
-                            </a>
-                            <a class="btn btn-default add-post__toolbar__add_image" title="{{i18n 'Add image'}}">
                                 <i class="fa fa-picture-o"></i>
 
                                 <form action="/upload_img" method="POST" enctype="multipart/form-data">
                                     <input type="file" name="image" data-edit="insertImage"/>
                                 </form>
-                            </a>
-                        </div>
-                        <div class="btn-group">
-                            <a class="btn btn-default" data-edit="CreateLink" title="{{i18n 'Hyperlink'}}">
-                                <i class="fa fa-link"></i>
-                            </a>
-                            <a class="btn btn-default" data-edit="unlink" title="{{i18n 'Remove' Hyperlink}}">
-                                <i class="fa fa-cut"></i>
-                            </a>
-                        </div>
-                        <div class="btn-group">
-                            <a class="btn btn-default" data-edit="undo" title="{{i18n 'Undo'}} (Ctrl/Cmd+Z)">
-                                <i class="fa fa-undo"></i>
-                            </a>
-                            <a class="btn btn-default" data-edit="redo" title="{{i18n 'Redo'}} (Ctrl/Cmd+Y)">
-                                <i class="fa fa-repeat"></i>
                             </a>
                         </div>
                     </div>
