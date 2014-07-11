@@ -2,9 +2,10 @@
   position: relative;
   .box-shadow(0 0 2px 0 rgba(0, 0, 0, 0.3));
 
+  //TODO: переделать на общие уведомления
   &-warning {
     padding: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 
   &__content {
@@ -33,6 +34,9 @@
   &__toolbar {
     background-color: #cbe7f5;
     padding: 10px;
+    .btn-toolbar {
+      float: left;
+    }
     .btn-group:first-child {
       margin-left: 0;
     }

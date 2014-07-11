@@ -65,13 +65,14 @@ define([
         _showHelper: function () {
             var $this = $(this),
                 controlStatusData = $this.data('controlStatus'),
+                $formGroup = $this.parent(),
                 helperOptions;
 
             if (!(controlStatusData && controlStatusData.helperOptions)) {
                 return;
             }
 
-            if ($this.hasClass('field-success')) {
+            if ($formGroup.hasClass('has-success')) {
                 return;
             }
 
@@ -83,19 +84,21 @@ define([
                 helperIsShowing: true
             }));
 
+            if ($formGroup.hasClass('has-error')) {
+                $formGroup.removeClass('has-error');
+                $this.tooltip('destroy');
+            }
+
             helperOptions = controlStatusData && controlStatusData.helperOptions || {};
             //TODO: переделать на блоки под полем
             Helpers.renderTemplate('utils/plugins/controlStatus/helperTooltip', helperOptions).
                 done(function (template) {
-                    $this.removeClass('field-error');
-                    $this.
-                        tooltip('destroy').
-                        tooltip(_.extend({
-                            template: template,
-                            trigger: 'manual',
-                            placement: 'right',
-                            html: true
-                        }, helperOptions)).tooltip('show');
+                    $this.tooltip(_.extend({
+                        template: template,
+                        trigger: 'manual',
+                        placement: 'right',
+                        html: true
+                    }, helperOptions)).tooltip('show');
                 });
         },
 
@@ -129,20 +132,19 @@ define([
         error: function (error) {
             return this.each(function () {
                 var $this = $(this),
+                    $formGroup = $this.parent(),
                     controlStatusData = $this.data('controlStatus'),
                     errorOptions;
 
-                $this.addClass('field-error');
-                $this.data('controlStatus', _.extend(controlStatusData, {
-                    helperIsShowing: false
-                }));
+                $formGroup.addClass('has-error');
+                $formGroup.removeClass('has-success');
+                methods._hideHelper.call(this);
 
                 errorOptions = controlStatusData && controlStatusData.errorOptions || {};
                 //TODO: переделать на блоки под полем
                 Helpers.renderTemplate('utils/plugins/controlStatus/errorTooltip', errorOptions).
                     done(function (template) {
                         $this.
-                            tooltip('destroy').
                             tooltip(_.extend({
                                 template: template,
                                 trigger: 'manual',
@@ -163,15 +165,16 @@ define([
          */
         success: function () {
             return this.each(function () {
-                var $this = $(this);
+                var $this = $(this),
+                    $formGroup = $this.parent();
 
-                if ($this.hasClass('field-error')) {
-                    $this.removeClass('field-error');
+                if ($formGroup.hasClass('has-error')) {
+                    $formGroup.removeClass('has-error');
                     $this.tooltip('destroy');
                 }
 
                 methods._hideHelper.call(this);
-                $this.addClass('field-success');
+                $formGroup.addClass('has-success');
             });
         },
 
@@ -183,14 +186,15 @@ define([
          */
         base: function () {
             return this.each(function () {
-                var $this = $(this);
+                var $this = $(this),
+                    $formGroup = $this.parent();
 
-                if ($this.hasClass('field-error')) {
-                    $this.removeClass('field-error');
+                if ($formGroup.hasClass('has-error')) {
+                    $formGroup.removeClass('has-error');
                     $this.tooltip('destroy');
                 }
 
-                $this.removeClass('field-success');
+                $formGroup.removeClass('has-success');
                 methods._showHelper.call(this);
             });
         },
