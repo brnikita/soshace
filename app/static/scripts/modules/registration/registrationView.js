@@ -205,7 +205,8 @@ define([
                 model = this.model,
                 serializedField = Helpers.getInputData($target),
                 fieldName = serializedField.name,
-                fieldValue = serializedField.value;
+                fieldValue = serializedField.value,
+                params = {};
 
             if (model.get(fieldName) === fieldValue) {
                 return;
@@ -218,11 +219,11 @@ define([
                 return;
             }
 
-            this.model.validateFieldByServer(serializedField, function (response) {
-                var error,
-                    oldValue = serializedField[fieldName];
+            params[fieldName] =fieldValue;
+            this.model.validateFieldByServer(params, function (response) {
+                var error;
 
-                if (oldValue !== model.get(fieldName)) {
+                if (fieldValue !== model.get(fieldName)) {
                     return;
                 }
                 error = response.error;
