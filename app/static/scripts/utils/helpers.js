@@ -103,7 +103,8 @@ define([
                 params = {};
 
             name = this.camelCase(name);
-            params[name] = value;
+            params.name = name;
+            params.value = value;
 
             return params;
         },

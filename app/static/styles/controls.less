@@ -1,23 +1,51 @@
-.has-success {
-  .form-control {
-    background-color: #dafcc9;
-  }
+.form-group-status {
+  padding: 5px 10px 1px 10px;
+  font-size: 13px;
+  font-style: italic;
+  border-bottom: 1px solid #A1A0A0;
+}
+
+.form-group {
   .form-control-feedback {
-    .glyphicon-ok;
     .glyphicon;
     position: absolute;
     top: 35px;
   }
 }
 
-.has-error {
+.form-group.has-success {
+  .form-control-feedback {
+    .glyphicon-ok;
+  }
+  .form-control {
+    background-color: #dafcc9;
+  }
+  .form-group-status {
+    color: @state-success-text;
+  }
+}
+
+.form-group.has-error {
+  .form-control-feedback {
+    .glyphicon-remove;
+  }
   .form-control {
     background-color: #FCDBD9;
   }
+  .form-group-status {
+    color: @state-danger-text;
+    border-bottom-color: #CF7C7B;
+  }
+}
+
+.form-group.has-warning {
   .form-control-feedback {
-    .glyphicon-remove;
-    .glyphicon;
-    position: absolute;
-    top: 35px;
+    .glyphicon-warning-sign;
+  }
+  .form-control {
+    background-color: #FFEBC8;
+  }
+  .form-group-status {
+    color: @state-warning-text;
   }
 }

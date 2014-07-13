@@ -65,6 +65,8 @@ define([
          */
         events: {
             'keyup .js-model-field': 'changeFormFieldHandler',
+            'focus .js-model-field': 'focusFormFieldHandler',
+            'blur .js-model-field': 'blurFormFieldHandler',
             'submit': 'userRegistrationHandler'
         },
 
@@ -202,16 +204,17 @@ define([
             var $target = $(event.target),
                 model = this.model,
                 serializedField = Helpers.getInputData($target),
-                fieldName = _.keys(serializedField)[0];
+                fieldName = serializedField.name,
+                fieldValue = serializedField.value;
 
-            if (model.get(fieldName) === serializedField[fieldName]) {
+            if (model.get(fieldName) === fieldValue) {
                 return;
             }
 
-            model.set(serializedField);
+            model.set(fieldName, fieldValue);
 
             if (!model.isValid(fieldName)) {
-                $target.controlStatus('base');
+                $target.controlStatus('helper');
                 return;
             }
 
@@ -223,8 +226,71 @@ define([
                     return;
                 }
                 error = response.error;
-                $target.controlStatus('toggleSuccessBase', !error);
+
+                if(error){
+                    $target.controlStatus('warning', error);
+                    return;
+                }
+
+                $target.controlStatus('success', error);
             });
+        },
+
+        /**
+         * Метод обработчик получения фокуса полем
+         *
+         * @method
+         * @name RegistrationView#changeFormFieldHandler
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        focusFormFieldHandler: function (event) {
+            var $target = $(event.target),
+                controlStatusData = $target.data('controlStatus'),
+                status = controlStatusData.status;
+
+            if (status === 'success') {
+                return;
+            }
+
+            if (status === 'warning') {
+                return;
+            }
+
+            if (status === 'error') {
+                return;
+            }
+
+            $target.controlStatus('helper');
+        },
+
+        /**
+         * Метод обработчик получения фокуса полем
+         *
+         * @method
+         * @name RegistrationView#changeFormFieldHandler
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        blurFormFieldHandler: function (event) {
+            var $target = $(event.target),
+                controlStatusData = $target.data('controlStatus'),
+                status = controlStatusData.status,
+                serializedField = Helpers.getInputData($target);
+
+            if (status === 'success') {
+                return;
+            }
+
+            if (status === 'warning') {
+                return;
+            }
+
+            if (status === 'error') {
+                return;
+            }
+
+            $target.controlStatus('error', this.model.preValidate(serializedField));
         },
 
         /**
@@ -285,14 +351,7 @@ define([
                 fieldName = Helpers.hyphen(fieldName);
                 $field = $('#' + fieldName);
                 $field.controlStatus({
-                    helperOptions: {
-                        width: 200,
-                        title: helper,
-                        cssClass: 'auth-helper-tooltip'
-                    },
-                    errorOptions: {
-                        width: 200
-                    }
+                    helperTitle: helper
                 });
             }, this));
         },

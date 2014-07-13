@@ -7,109 +7,68 @@
 
 define([
     'jquery',
-    'underscore',
-    'utils/helpers',
-    'bootstrap'
-], function ($, _, Helpers) {
+    'underscore'
+], function ($, _) {
     var methods = {
         /**
          * @constructor
          * @param {Object} [options]
+         *                  options.helperTitle - текст подсказки для поля
          * @returns {jQuery}
          */
         initialize: function (options) {
             return this.each(function () {
-                var $this = $(this);
+                var $this = $(this),
+                    $formGroup = $this.parent();
 
                 if (options) {
                     $this.data('controlStatus', options);
-                    methods._addHelperListeners.call(this);
+                    $formGroup.addClass('has-feedback');
+                    $formGroup.append($('<span>', {
+                        'class': 'form-control-feedback'
+                    }));
+                    $formGroup.append($('<div>', {
+                        'class': 'form-group-status',
+                        style: 'display: none;'
+                    }));
                 }
             });
         },
 
         /**
-         * Метод добавляет слушатели на элемент, если есть подсказка
-         * у поля
-         *
-         * @private
-         * @method
-         * @returns {undefined}
-         */
-        _addHelperListeners: function () {
-            var $this = $(this);
-            $this.on('focus keyup', methods._showHelper);
-            $this.on('blur', methods._hideHelper);
-        },
-
-        /**
-         * Метод удаляет слушатели с элемента
-         *
-         * @private
-         * @method
-         * @returns {undefined}
-         */
-        _removeHelperListeners: function () {
-            var $this = $(this);
-            $this.off('focus keyup', methods._showHelper);
-            $this.off('blur', methods._hideHelper);
-        },
-
-        /**
          * Метод показывает тултип подсказки у поля
          *
-         * @private
          * @method
          * @returns {undefined}
          */
-        _showHelper: function () {
+        helper: function () {
             var $this = $(this),
                 controlStatusData = $this.data('controlStatus'),
                 $formGroup = $this.parent(),
-                helperOptions;
+                $groupStatus =  $('.form-group-status', $formGroup);
 
-            if (!(controlStatusData && controlStatusData.helperOptions)) {
-                return;
-            }
+            $formGroup.removeClass('has-error');
+            $formGroup.removeClass('has-success');
+            $formGroup.removeClass('has-warning');
+            $groupStatus.html(controlStatusData.helperTitle);
 
-            if ($formGroup.hasClass('has-success')) {
-                return;
-            }
-
-            if (controlStatusData.helperIsShowing) {
-                return;
+            if (!controlStatusData.helperIsShowing) {
+                $groupStatus.slideDown();
             }
 
             $this.data('controlStatus', _.extend(controlStatusData, {
-                helperIsShowing: true
+                helperIsShowing: true,
+                status: 'helper'
             }));
-
-            if ($formGroup.hasClass('has-error')) {
-                $formGroup.removeClass('has-error');
-                $this.tooltip('destroy');
-            }
-
-            helperOptions = controlStatusData && controlStatusData.helperOptions || {};
-            //TODO: переделать на блоки под полем
-            Helpers.renderTemplate('utils/plugins/controlStatus/helperTooltip', helperOptions).
-                done(function (template) {
-                    $this.tooltip(_.extend({
-                        template: template,
-                        trigger: 'manual',
-                        placement: 'right',
-                        html: true
-                    }, helperOptions)).tooltip('show');
-                });
         },
 
         /**
          * Метод скрывает тултипы подсказки у поля
          *
-         * @private
          * @method
          * @returns {undefined}
          */
-        _hideHelper: function () {
+        hideHelper: function () {
             var $this = $(this),
                 controlStatusData = $this.data('controlStatus');
 
@@ -120,40 +79,38 @@ define([
             $this.data('controlStatus', _.extend(controlStatusData, {
                 helperIsShowing: false
             }));
-            $this.tooltip('destroy');
+
+            $this.siblings('.form-group-status').
+                slideUp();
         },
 
         /**
          * Метод отображает ошибку у поля
          *
          * @method
+         * @param {String} error текст ошибки
          * @returns {jQuery}
          */
         error: function (error) {
             return this.each(function () {
                 var $this = $(this),
-                    $formGroup = $this.parent(),
                     controlStatusData = $this.data('controlStatus'),
-                    errorOptions;
+                    $formGroup = $this.parent(),
+                    $groupStatus = $('.form-group-status', $formGroup);
 
-                $formGroup.addClass('has-error');
                 $formGroup.removeClass('has-success');
-                methods._hideHelper.call(this);
+                $formGroup.removeClass('has-warning');
+                $formGroup.addClass('has-error');
+                $groupStatus.html(error);
 
-                errorOptions = controlStatusData && controlStatusData.errorOptions || {};
-                //TODO: переделать на блоки под полем
-                Helpers.renderTemplate('utils/plugins/controlStatus/errorTooltip', errorOptions).
-                    done(function (template) {
-                        $this.
-                            tooltip(_.extend({
-                                template: template,
-                                trigger: 'manual',
-                                title: error,
-                                placement: 'right',
-                                html: true
-                            }, errorOptions)).tooltip('show');
-                    });
+                if (!(controlStatusData && controlStatusData.helperIsShowing)) {
+                    $groupStatus.slideDown();
+                }
 
+                $this.data('controlStatus', _.extend(controlStatusData, {
+                    helperIsShowing: true,
+                    status: 'error'
+                }));
             });
         },
 
@@ -166,15 +123,47 @@ define([
         success: function () {
             return this.each(function () {
                 var $this = $(this),
+                    controlStatusData = $this.data('controlStatus'),
                     $formGroup = $this.parent();
 
-                if ($formGroup.hasClass('has-error')) {
-                    $formGroup.removeClass('has-error');
-                    $this.tooltip('destroy');
+                $formGroup.removeClass('has-error');
+                $formGroup.removeClass('has-warning');
+                $formGroup.addClass('has-success');
+                methods.hideHelper.call(this);
+
+                $this.data('controlStatus', _.extend(controlStatusData, {
+                    status: 'success'
+                }));
+            });
+        },
+
+        /**
+         * Метод устаналивает поле в состояние предупреждения
+         *
+         * @method
+         * @param {String} warning текст предупрждения
+         * @returns {jQuery}
+         */
+        warning: function (warning) {
+            return this.each(function () {
+                var $this = $(this),
+                    controlStatusData = $this.data('controlStatus'),
+                    $formGroup = $this.parent(),
+                    $groupStatus = $('.form-group-status', $formGroup);
+
+                $formGroup.removeClass('has-error');
+                $formGroup.removeClass('has-success');
+                $formGroup.addClass('has-warning');
+                $groupStatus.html(warning);
+
+                if (!(controlStatusData && controlStatusData.helperIsShowing)) {
+                    $groupStatus.slideDown();
                 }
 
-                methods._hideHelper.call(this);
-                $formGroup.addClass('has-success');
+                $this.data('controlStatus', _.extend(controlStatusData, {
+                    helperIsShowing: true,
+                    status: 'warning'
+                }));
             });
         },
 
@@ -187,27 +176,17 @@ define([
         base: function () {
             return this.each(function () {
                 var $this = $(this),
+                    controlStatusData = $this.data('controlStatus'),
                     $formGroup = $this.parent();
 
-                if ($formGroup.hasClass('has-error')) {
-                    $formGroup.removeClass('has-error');
-                    $this.tooltip('destroy');
-                }
-
+                $formGroup.removeClass('has-error');
                 $formGroup.removeClass('has-success');
-                methods._showHelper.call(this);
+                $formGroup.removeClass('has-warning');
+                methods.hideHelper.call(this);
+                $this.data('controlStatus', _.extend(controlStatusData, {
+                    status: null
+                }));
             });
-        },
-
-        /**
-         * Метод переключает состояния поля в зависимости от флага
-         *
-         * @method
-         * @param {Boolean} flag если true - success, false - base
-         * @returns {jQuery}
-         */
-        toggleSuccessBase: function (flag) {
-            return flag ? methods.success.call(this) : methods.base.call(this);
         },
 
         /**
@@ -218,10 +197,13 @@ define([
          */
         destroy: function () {
             return this.each(function () {
-                var $this = $(this);
-                $this.tooltip('destroy');
+                var $this = $(this),
+                    $formGroup = $this.parent();
+
                 $this.removeData('controlStatus');
-                methods._removeHelperListeners.call(this);
+                $formGroup.removeClass('has-feedback');
+                $('.form-group-status', $formGroup).remove();
+                $('.form-control-feedback', $formGroup).remove();
             });
         }
     };

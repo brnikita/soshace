@@ -57,7 +57,7 @@ define([
             email: [
                 {
                     required: true,
-                    msg: 'Please enter an<br/> email address'
+                    msg: 'Please enter an email address'
                 },
                 {
                     pattern: Soshace.patterns.email,
@@ -85,7 +85,7 @@ define([
          */
         helpers: {
             userName: 'user name',
-            email: 'Please enter an<br/> email address',
+            email: 'Please enter an email address',
             password: 'Please enter a password'
         },
 

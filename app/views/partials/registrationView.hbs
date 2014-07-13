@@ -1,32 +1,29 @@
-<form role="form">
-    <div class="form-group has-feedback">
+<form role="form" novalidate="novalidate">
+    <div class="form-group">
         <label for="user-name">{{i18n 'Username'}}</label>
         <input type="text" class="form-control js-validate-input js-model-field"
                name="user-name"
                id="user-name"
                placeholder="{{i18n 'Username'}}" />
-        <span class="form-control-feedback"></span>
     </div>
     <!--Имя пользователя - идентификатор уникальный для каждого пользователя.-->
     <!--Использутся в адресе страницы профиля (пример: http://soshace.com/users/<i>user_name</i>)-->
     <!--В записи может использоваться только латинский алфавит в нижнем регистре, цифры, ".", "_", "-".-->
-    <div class="form-group has-feedback">
+    <div class="form-group">
         <label for="email">{{i18n 'Email address'}}</label>
         <input type="text" class="form-control js-validate-input js-model-field" name="email"
                id="email"
                placeholder="{{i18n 'Email address'}}" />
-        <span class="form-control-feedback"></span>
     </div>
     <!--Используется для входа в систему.-->
     <!--Старайтесь не офишировать свой email, это может помочь злоумышленникам получть доступ к вашему-->
     <!--аккаунту.-->
-    <div class="form-group has-feedback">
+    <div class="form-group">
         <label for="password">{{i18n 'Password'}}</label>
         <input type="password" class="form-control js-validate-input js-model-field"
                name="password"
                id="password"
                placeholder="{{i18n 'Password'}}" />
-        <span class="form-control-feedback"></span>
     </div>
     <!--Длина пароля должна быть не менее 6 символов.-->
     <!--В пароле рекомендуется использовать одновременно-->
