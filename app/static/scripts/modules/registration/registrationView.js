@@ -193,51 +193,6 @@ define([
         },
 
         /**
-         * Метод обработчик события изменения поля формы
-         *
-         * @method
-         * @name RegistrationView#changeFormFieldHandler
-         * @param {jQuery.Event} event
-         * @returns {undefined}
-         */
-        changeFormFieldHandler: function (event) {
-            var $target = $(event.target),
-                model = this.model,
-                serializedField = Helpers.getInputData($target),
-                fieldName = serializedField.name,
-                fieldValue = serializedField.value,
-                params = {};
-
-            if (model.get(fieldName) === fieldValue) {
-                return;
-            }
-
-            model.set(fieldName, fieldValue);
-
-            if (!model.isValid(fieldName)) {
-                $target.controlStatus('helper');
-                return;
-            }
-
-            params[fieldName] =fieldValue;
-            this.model.validateFieldByServer(params, function (response) {
-                var error;
-
-                if (fieldValue !== model.get(fieldName)) {
-                    return;
-                }
-                error = response.error;
-
-                if(error){
-                    $target.controlStatus('warning', error);
-                    return;
-                }
-
-                $target.controlStatus('success', error);
-            });
-        },
-
-        /**
          * Метод обработчик получения фокуса полем
          *
          * @method
@@ -251,10 +206,6 @@ define([
                 status = controlStatusData.status;
 
             if (status === 'success') {
-                return;
-            }
-
-            if (status === 'warning') {
                 return;
             }
 
@@ -275,23 +226,94 @@ define([
          */
         blurFormFieldHandler: function (event) {
             var $target = $(event.target),
-                controlStatusData = $target.data('controlStatus'),
-                status = controlStatusData.status,
-                serializedField = Helpers.getInputData($target);
+                serializedField = Helpers.serializeField($target),
+                fieldName = serializedField.name,
+                fieldValue,
+                error;
 
-            if (status === 'success') {
+            //В противном случае у поля уже есть ошибка
+            //Используется такой определения ошибки, т.к. у поля ошибки появляются с задержкой
+            if (this.model.get(fieldName) !== null) {
                 return;
             }
 
-            if (status === 'warning') {
+            serializedField = Helpers.serializeField($target);
+            fieldValue = serializedField.value;
+            error = this.model.preValidate(fieldName, fieldValue);
+            $target.controlStatus('error', error);
+        },
+
+        /**
+         * Метод обработчик события изменения поля формы
+         *
+         * @method
+         * @name RegistrationView#changeFormFieldHandler
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        changeFormFieldHandler: function (event) {
+            //Выбрано специально большой интервал,
+            //чтобы подсказка не мелькала слишком часто
+            var changeStatusInterval = 1500,
+                $target = $(event.target),
+                model = this.model,
+                serializedField = Helpers.serializeField($target),
+                fieldName = serializedField.name,
+                fieldValue = serializedField.value;
+
+            if (model.get(fieldName) === fieldValue) {
                 return;
             }
 
-            if (status === 'error') {
+            //Если в поле попали первый раз
+            if (model.get(fieldName) === null && fieldValue === '') {
                 return;
             }
 
-            $target.controlStatus('error', this.model.preValidate(serializedField));
+            model.set(fieldName, fieldValue);
+            $target.controlStatus('helper');
+            _.debounce(_.bind(this.setStatus, this), changeStatusInterval)($target, serializedField);
+        },
+
+        /**
+         * Метод устанавливает статусы для полей success или error
+         *
+         * @method
+         * @name RegistrationView#changeFormFieldHandler
+         * @param {jQuery} $field ссылка на поле
+         * @param serializedField сериализованное поле {name: '', value: ''}
+         * @returns {undefined}
+         */
+        setStatus: function ($field, serializedField) {
+            var model = this.model,
+                fieldValue = serializedField.value,
+                fieldName = serializedField.name,
+                error;
+
+            if (fieldValue !== model.get(fieldName)) {
+                return;
+            }
+
+            error = model.preValidate(fieldName, fieldValue);
+
+            if (error) {
+                $field.controlStatus('error', error);
+                return;
+            }
+
+            model.validateFieldByServer(serializedField).done(function (response) {
+                if (fieldValue !== model.get(fieldName)) {
+                    return;
+                }
+                error = response.error;
+
+                if (error) {
+                    $field.controlStatus('error', error);
+                    return;
+                }
+
+                $field.controlStatus('success', error);
+            });
         },
 
         /**
@@ -347,12 +369,14 @@ define([
          */
         setFieldsHelpers: function (helpers) {
             _.each(helpers, _.bind(function (helper, fieldName) {
-                var $field;
+                var $field,
+                    successTitle = this.model.successMessages[fieldName];
 
                 fieldName = Helpers.hyphen(fieldName);
                 $field = $('#' + fieldName);
                 $field.controlStatus({
-                    helperTitle: helper
+                    helperTitle: helper,
+                    successTitle: successTitle
                 });
             }, this));
         },

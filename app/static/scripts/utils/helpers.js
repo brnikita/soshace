@@ -93,20 +93,19 @@ define([
          * Метод возвращает сериализованный инпут
          *
          * @method
-         * @name Helpers.camelCase
+         * @name Helpers.serializeField
          * @param {jQuery} $input
          * @returns {Object}
          */
-        getInputData: function ($input) {
+        serializeField: function ($input) {
             var value = $input.val(),
                 name = $input.attr('name'),
-                params = {};
+                _this = this;
 
-            name = this.camelCase(name);
-            params.name = name;
-            params.value = value;
-
-            return params;
+            return {
+                name: _this.camelCase(name),
+                value: $.trim(value)
+            };
         },
 
         /**

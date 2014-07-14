@@ -14,6 +14,8 @@ define([
          * @constructor
          * @param {Object} [options]
          *                  options.helperTitle - текст подсказки для поля
+         *                  options.successTitle - текст сообщения для
+         *                  успешного поля
          * @returns {jQuery}
          */
         initialize: function (options) {
@@ -49,7 +51,6 @@ define([
 
             $formGroup.removeClass('has-error');
             $formGroup.removeClass('has-success');
-            $formGroup.removeClass('has-warning');
             $groupStatus.html(controlStatusData.helperTitle);
 
             if (!controlStatusData.helperIsShowing) {
@@ -99,7 +100,6 @@ define([
                     $groupStatus = $('.form-group-status', $formGroup);
 
                 $formGroup.removeClass('has-success');
-                $formGroup.removeClass('has-warning');
                 $formGroup.addClass('has-error');
                 $groupStatus.html(error);
 
@@ -124,45 +124,19 @@ define([
             return this.each(function () {
                 var $this = $(this),
                     controlStatusData = $this.data('controlStatus'),
-                    $formGroup = $this.parent();
-
-                $formGroup.removeClass('has-error');
-                $formGroup.removeClass('has-warning');
-                $formGroup.addClass('has-success');
-                methods.hideHelper.call(this);
-
-                $this.data('controlStatus', _.extend(controlStatusData, {
-                    status: 'success'
-                }));
-            });
-        },
-
-        /**
-         * Метод устаналивает поле в состояние предупреждения
-         *
-         * @method
-         * @param {String} warning текст предупрждения
-         * @returns {jQuery}
-         */
-        warning: function (warning) {
-            return this.each(function () {
-                var $this = $(this),
-                    controlStatusData = $this.data('controlStatus'),
                     $formGroup = $this.parent(),
                     $groupStatus = $('.form-group-status', $formGroup);
 
                 $formGroup.removeClass('has-error');
-                $formGroup.removeClass('has-success');
-                $formGroup.addClass('has-warning');
-                $groupStatus.html(warning);
+                $formGroup.addClass('has-success');
+                $groupStatus.html(controlStatusData.successTitle);
 
                 if (!(controlStatusData && controlStatusData.helperIsShowing)) {
                     $groupStatus.slideDown();
                 }
 
                 $this.data('controlStatus', _.extend(controlStatusData, {
-                    helperIsShowing: true,
-                    status: 'warning'
+                    status: 'success'
                 }));
             });
         },
@@ -181,7 +155,6 @@ define([
 
                 $formGroup.removeClass('has-error');
                 $formGroup.removeClass('has-success');
-                $formGroup.removeClass('has-warning');
                 methods.hideHelper.call(this);
                 $this.data('controlStatus', _.extend(controlStatusData, {
                     status: null

@@ -27,19 +27,6 @@ define([
         },
 
         /**
-         * Возращаемый метод делает запрос на валидацию поля на сервере
-         * Метод не дает делать запросы чаще, чем раз в 500мс.
-         *
-         * @field
-         * @name RegistrationModel#validation
-         * @type {Function}
-         */
-        validateFieldByServer: _.debounce(function (serializedField, callback) {
-            $.get(Soshace.urls.api.registration.validateField, serializedField).
-                done(callback);
-        }, 500),
-
-        /**
          * @field
          * @name RegistrationModel#validation
          * @type {Object}
@@ -48,7 +35,7 @@ define([
             userName: [
                 {
                     required: true,
-                    msg: 'Please enter an username'
+                    msg: 'Username can\'t be empty'
                 },
                 {
                     userName: 1
@@ -57,7 +44,7 @@ define([
             email: [
                 {
                     required: true,
-                    msg: 'Please enter an email address'
+                    msg: 'Email can\'t be empty'
                 },
                 {
                     pattern: Soshace.patterns.email,
@@ -67,7 +54,7 @@ define([
             password: [
                 {
                     required: true,
-                    msg: 'Please enter a password'
+                    msg: 'Password can\'t be empty'
                 },
                 {
                     minLength: 6,
@@ -84,9 +71,23 @@ define([
          * @type {Object}
          */
         helpers: {
-            userName: 'user name',
-            email: 'Please enter an email address',
-            password: 'Please enter a password'
+            userName: 'You can only use the Latin alphabet, numbers, ".", "_", "-".',
+            email: 'Please enter your e-mail address',
+            password: 'Good password should contain: ' +
+                'numbers, upper-and lowercase letters, symbols (".", "/", "?", "^", etc.)'
+        },
+
+        /**
+         * Список подписей к успешным полям
+         *
+         * @field
+         * @name RegistrationModel#successMessages
+         * @type {Object}
+         */
+        successMessages: {
+            userName: 'Great user name!',
+            email: 'Great email!',
+            password: 'Great password!'
         },
 
         /**
@@ -104,6 +105,23 @@ define([
          */
         initialize: function (params) {
             this.set({locale: params.locale}, {silent: true});
+        },
+
+        /**
+         * Метод делает запрос на валидацию поля на сервере
+         *
+         * @method
+         * @name RegistrationModel#validation
+         * @param {Object} serializedField
+         * @returns {jQuery.Deferred}
+         */
+        validateFieldByServer: function (serializedField) {
+            var params = {},
+                name = serializedField.name,
+                value = serializedField.value;
+
+            params[name] = value;
+            return $.get(Soshace.urls.api.registration.validateField, params);
         }
     });
 });
