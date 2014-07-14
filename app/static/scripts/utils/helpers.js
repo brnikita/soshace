@@ -11,8 +11,9 @@ define([
     'jquery',
     'underscore',
     'handlebars',
-    'jquery.cookie'
-], function ($, _, Handlebars) {
+    'jquery.cookie',
+    'utils/helpers'
+], function ($, _, Handlebars, Helpers) {
     return {
         /**
          * Метод возвращает данные формы в виде объекта
@@ -118,6 +119,29 @@ define([
          */
         getLocale: function () {
             return $.cookie('locale') || 'en';
+        },
+
+        /**
+         * Метод переводит переданныу строку
+         *
+         * @method
+         * @name Helpers.i18n
+         * @param {String} value
+         * @returns {String}
+         */
+        i18n: function (value) {
+            var locale = this.getLocale(),
+                translations = Soshace.locales[locale];
+
+            if (typeof translations === 'undefined') {
+                return value;
+            }
+
+            if (typeof translations[value] === 'undefined') {
+                return value;
+            }
+
+            return translations[value];
         }
     };
 });

@@ -67,7 +67,7 @@ require([
          * @name App.isAuthenticated
          * @returns {Boolean}
          */
-        isAuthenticated: function(){
+        isAuthenticated: function () {
             var profile = Soshace.profile;
             return !!(profile && typeof profile.userName === 'string' &&
                 profile.userName.length > 0);
@@ -83,7 +83,7 @@ require([
          */
         initializeCompleted: function () {
             var $body = this.elements.body;
-            Widgets.hideLoader($body);
+            Widgets.hideLoader();
             $body.on('click', '.js-router-link', this.routerLinkHandler);
             this.router = new Router({
                 app: App
@@ -176,6 +176,10 @@ require([
                 locale = Helpers.getLocale(),
                 locales = Soshace.locales,
                 localeUrl = Soshace.urls.locales + locale + '.json';
+
+            if (locale === 'en') {
+                return deferred.resolve({});
+            }
 
             if (typeof locales[locale] !== 'undefined') {
                 return deferred.resolve(locales[locale]);

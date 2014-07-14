@@ -24,31 +24,40 @@ var UsersShema = Mongoose.Schema({
     },
     userName: {
         type: String,
-        required: true,
         unique: true,
+        //TODO: разобраться почему mongoose прогоняет все валидаторы
+        //Валидация идет с конца!
         validate: [
             {
-                validator: Validators.userName,
-                msg: 'Username is invalid'
+                validator: Validators.userNameUnique,
+                msg: 'User with same username already exists.'
             },
             {
-                validator: Validators.userNameUnique,
-                msg: 'User with same username already exists'
+                validator: Soshace.PATTERNS.userName,
+                msg: 'You can only use the Latin alphabet, numbers, ".", "_", "-".'
+            },
+            {
+                validator: Validators.required,
+                msg: 'Username can&#39;t be blank.'
             }
         ]
     },
     email: {
         type: String,
-        required: true,
         unique: true,
+        //Валидация идет с конца!
         validate: [
             {
-                validator: Validators.email,
-                msg: 'Email is invalid'
+                validator: Validators.emailUnique,
+                msg: 'User with same email already exists.'
             },
             {
-                validator: Validators.emailUnique,
-                msg: 'User with same email already exists'
+                validator: Soshace.PATTERNS.email,
+                msg: 'Email is invalid.'
+            },
+            {
+                validator: Validators.required,
+                msg: 'Email can&#39;t be blank.'
             }
         ]
     },
@@ -58,7 +67,17 @@ var UsersShema = Mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        validate: [
+            //Валидация идет с конца!
+            {
+                validator: Validators.passwordMinLength,
+                msg: 'Password length should&#39;t be less than 6 characters.'
+            },
+            {
+                validator: Validators.required,
+                msg: 'Password can&#39;t be blank.'
+            }
+        ]
     },
     emailConfirmed: {
         type: Boolean,

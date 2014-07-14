@@ -133,7 +133,7 @@ define([
             errors = this.model.validate();
 
             if (errors) {
-                this.showFieldsErrors(errors);
+                this.showFieldsErrors(errors, true);
                 return;
             }
 
@@ -240,6 +240,7 @@ define([
             serializedField = Helpers.serializeField($target);
             fieldValue = serializedField.value;
             error = this.model.preValidate(fieldName, fieldValue);
+            error = Helpers.i18n(error);
             $target.controlStatus('error', error);
         },
 
@@ -297,6 +298,7 @@ define([
             error = model.preValidate(fieldName, fieldValue);
 
             if (error) {
+                error = Helpers.i18n(error);
                 $field.controlStatus('error', error);
                 return;
             }
@@ -347,14 +349,18 @@ define([
          * @method
          * @name RegistrationView#showFieldsErrors
          * @param {Object} errors список ошибок
+         * @param {Boolean} [translate] true - перевести ошибки
          * @returns {undefined}
          */
-        showFieldsErrors: function (errors) {
+        showFieldsErrors: function (errors, translate) {
             _.each(errors, _.bind(function (error, fieldName) {
                 var $field;
 
                 fieldName = Helpers.hyphen(fieldName);
                 $field = $('#' + fieldName);
+                if (translate) {
+                    error = Helpers.i18n(error);
+                }
                 $field.controlStatus('error', error);
             }, this));
         },
@@ -375,8 +381,8 @@ define([
                 fieldName = Helpers.hyphen(fieldName);
                 $field = $('#' + fieldName);
                 $field.controlStatus({
-                    helperTitle: helper,
-                    successTitle: successTitle
+                    helperTitle: Helpers.i18n(helper),
+                    successTitle: Helpers.i18n(successTitle)
                 });
             }, this));
         },

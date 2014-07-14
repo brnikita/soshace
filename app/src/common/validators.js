@@ -1,3 +1,5 @@
+//TODO: разобраться почему mongoose прогоняет все валидаторы!
+//TODO: Исправить валидацию!
 'use strict';
 
 /**
@@ -7,15 +9,31 @@
  */
 module.exports = {
     /**
-     * Метод валидирует userName
+     * Метод проверяет на существование
      *
      * @method
-     * @param {String} value
-     * @name Validators.userName
+     * @param {*} value
+     * @name Validators.required
      * @returns {Boolean}
      */
-    userName: function (value) {
-        return Soshace.PATTERNS.userName.test(value);
+    required: function (value) {
+        if (value === '') {
+            return false;
+        }
+
+        if (value === null) {
+            return false;
+        }
+
+        if (typeof value === 'undefined') {
+            return false;
+        }
+
+        if (typeof value === 'string') {
+                return !(/^\s+$/.test(value));
+        }
+
+        return true;
     },
 
     /**
@@ -38,18 +56,6 @@ module.exports = {
     },
 
     /**
-     * Метод валидирует email
-     *
-     * @method
-     * @param {String} value
-     * @name Validators.email
-     * @returns {Boolean}
-     */
-    email: function (value) {
-        return Soshace.PATTERNS.email.test(value);
-    },
-
-    /**
      * Метод проверки email на уникальность
      *
      * @method
@@ -66,5 +72,18 @@ module.exports = {
             }
             respond(true);
         });
+    },
+
+    /**
+     * Метод валидирует длину пароля не меньше 6 символов
+     *
+     * @method
+     * @param {String} value
+     * @name Validators.email
+     * @returns {Boolean}
+     */
+    passwordMinLength: function(value){
+        value = String(value);
+        return value.length >= 6;
     }
 };

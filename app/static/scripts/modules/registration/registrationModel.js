@@ -35,7 +35,7 @@ define([
             userName: [
                 {
                     required: true,
-                    msg: 'Username can\'t be empty'
+                    msg: 'Username can&#39;t be blank.'
                 },
                 {
                     userName: 1
@@ -44,21 +44,21 @@ define([
             email: [
                 {
                     required: true,
-                    msg: 'Email can\'t be empty'
+                    msg: 'Email can&#39;t be blank.'
                 },
                 {
                     pattern: Soshace.patterns.email,
-                    msg: 'Email is invalid'
+                    msg: 'Email is invalid.'
                 }
             ],
             password: [
                 {
                     required: true,
-                    msg: 'Password can\'t be empty'
+                    msg: 'Password can&#39;t be blank.'
                 },
                 {
                     minLength: 6,
-                    msg: 'Password length should be more than 6 characters'
+                    msg: 'Password length should&#39;t be less than 6 characters.'
                 }
             ]
         },
@@ -71,10 +71,11 @@ define([
          * @type {Object}
          */
         helpers: {
-            userName: 'You can only use the Latin alphabet, numbers, ".", "_", "-".',
-            email: 'Please enter your e-mail address',
-            password: 'Good password should contain: ' +
-                'numbers, upper-and lowercase letters, symbols (".", "/", "?", "^", etc.)'
+            userName: 'You can only use the Latin alphabet, numbers, &#34;.&#34;, &#34;_&#34;, &#34;-&#34;.',
+            email: 'Please enter your e-mail address.',
+            password: 'Safe password should contain: ' +
+                'numbers, upper-and lowercase letters, symbols' +
+                ' (&#34;.&#34;, &#34;/&#34;, &#34;?&#34;, &#34;^&#34;, etc.).'
         },
 
         /**
@@ -85,7 +86,7 @@ define([
          * @type {Object}
          */
         successMessages: {
-            userName: 'Great user name!',
+            userName: 'Great username!',
             email: 'Great email!',
             password: 'Great password!'
         },

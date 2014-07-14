@@ -3,8 +3,7 @@ var _ = require('underscore'),
     ControllerInit = require('../../common/controllerInit'),
     UsersModel = require('../../models/usersModel'),
     RenderParams = require('../../common/renderParams'),
-    SendMail = require('../../common/sendMail'),
-    Helpers = require('../../common/helpers');
+    SendMail = require('../../common/sendMail');
 
 
 /**

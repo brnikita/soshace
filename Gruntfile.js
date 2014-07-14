@@ -26,7 +26,7 @@ module.exports = function (grunt) {
             scripts: {
                 files: '<%= blog.app %>/static/scripts/**/*.js',
                 tasks: [
-                    'copy:dev'
+                    'copy:scripts'
                 ]
             },
             css: {
@@ -38,13 +38,13 @@ module.exports = function (grunt) {
             images: {
                 files: '<%= blog.app %>/static/images/{,*/}*.{png,jpg,jpeg,gif,svg}',
                 tasks: [
-                    'copy:dev'
+                    'copy:images'
                 ]
             },
             icons: {
                 files: '<%= blog.app %>/static/*.ico',
                 tasks: [
-                    'copy:dev'
+                    'copy:images'
                 ]
             },
             requireConfig: {
@@ -56,13 +56,19 @@ module.exports = function (grunt) {
             fonts: {
                 files: '<%= blog.app %>/static/fonts/*',
                 tasks: [
-                    'copy:dev'
+                    'copy:fonts'
                 ]
             },
             views: {
                 files: '<%= blog.app %>/views/**/*.hbs',
                 tasks: [
-                    'copy:dev'
+                    'copy:views'
+                ]
+            },
+            locales: {
+                files: '<%= blog.app %>/locales/*.json',
+                tasks: [
+                    'copy:locales'
                 ]
             }
         },
@@ -80,32 +86,38 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            dev: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: '<%= blog.app %>/static',
-                        dest: '<%= blog.dist %>',
-                        src: [
-                            '*.{ico,png,txt}',
-                            'scripts/**/*.js',
-                            'images/{,*/}*.{png,jpg,jpeg,gif,svg}',
-                            'fonts/*'
-                        ]
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= blog.app %>',
-                        src: 'views/**/*.hbs',
-                        dest: '<%= blog.dist %>'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= blog.app %>',
-                        src: 'locales/**/*.json',
-                        dest: '<%= blog.dist %>'
-                    }
+            scripts: {
+                expand: true,
+                cwd: '<%= blog.app %>/static/',
+                dest: '<%= blog.dist %>',
+                src: 'scripts/**/*.js'
+            },
+            images: {
+                expand: true,
+                cwd: '<%= blog.app %>/static/',
+                dest: '<%= blog.dist %>',
+                src: [
+                    '*.{ico,png,txt}',
+                    'images/{,*/}*.{png,jpg,jpeg,gif,svg}'
                 ]
+            },
+            fonts: {
+                expand: true,
+                cwd: '<%= blog.app %>/static',
+                dest: '<%= blog.dist %>',
+                src: 'fonts/*'
+            },
+            views: {
+                expand: true,
+                cwd: '<%= blog.app %>',
+                src: 'views/**/*.hbs',
+                dest: '<%= blog.dist %>'
+            },
+            locales: {
+                expand: true,
+                cwd: '<%= blog.app %>',
+                src: 'locales/**/*.json',
+                dest: '<%= blog.dist %>'
             },
             prod: {
                 files: [
@@ -183,11 +195,20 @@ module.exports = function (grunt) {
     });
 
     //Девелоперская версия
+    grunt.registerTask('copyDev', [
+        'copy:requireConfig',
+        'copy:scripts',
+        'copy:views',
+        'copy:locales',
+        'copy:images',
+        'copy:fonts'
+    ]);
+
+    //Девелоперская версия
     grunt.registerTask('dev', [
         'newer:jshint:all',
         'clean',
-        'copy:requireConfig',
-        'copy:dev',
+        'copyDev',
         'less:dev',
         'watch'
     ]);
@@ -202,8 +223,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('default', [
-        'copy:requireConfig',
-        'copy:dev',
+        'copyDev',
         'less:dev',
         'watch'
     ]);
