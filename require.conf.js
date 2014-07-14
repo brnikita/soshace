@@ -3,32 +3,32 @@ require.config(
         baseUrl: '/static/scripts/',
         paths: {
             'utils': 'utils',
-            'jquery': 'libs/jquery',
-            'underscore': 'libs/underscore',
-            'underscore.string': 'libs/underscore/underscore.string',
-            'bootstrap': 'libs/bootstrap',
-            'prettify': 'libs/prettify',
-            'handlebars': 'libs/handlebars',
-            'google-analytics': 'libs/google-analytics',
-            'yandex-metrika': 'libs/yandex-metrika',
-            'jquery.validation': 'libs/jquery/jquery.validation',
-            'jquery.hotkeys': 'libs/jquery/jquery.hotkeys',
-            'jquery.cookie': 'libs/jquery/jquery.cookie',
-            'jquery.fileupload': 'libs/jquery/jquery.fileupload',
-            'jquery.ui.widget': 'libs/jquery/jquery.ui.widget',
-            'jquery.iframe-transport': 'libs/jquery/jquery.iframe-transport',
-            'backbone': 'libs/backbone',
-            'backbone.layoutmanager': 'libs/backbone/backbone.layoutmanager',
-            'backbone.validation': 'libs/backbone/backbone.validation'
+            'jquery': 'vendors/jquery',
+            'underscore': 'vendors/underscore',
+            'underscore.string': 'vendors/underscore/underscore.string',
+            'bootstrap': 'vendors/bootstrap',
+            'prettify': 'vendors/prettify',
+            'handlebars': 'vendors/handlebars',
+            'google-analytics': 'vendors/google-analytics',
+            'yandex-metrika': 'vendors/yandex-metrika',
+            'jquery.hotkeys': 'vendors/jquery/jquery.hotkeys',
+            'jquery.cookie': 'vendors/jquery/jquery.cookie',
+            'jquery.fileupload': 'vendors/jquery/jquery.fileupload',
+            'jquery.ui.widget': 'vendors/jquery/jquery.ui.widget',
+            'backbone': 'vendors/backbone',
+            'backbone.layoutmanager': 'vendors/backbone/backbone.layoutmanager',
+            'backbone.validation': 'vendors/backbone/backbone.validation',
+            'config': 'config'
 
         },
         shim: {
-            'bootstrap': {
-                deps: [
-                    'jquery'
-                ]
+            underscore: {
+                exports: '_'
             },
-            'jquery.validation': {
+            jquery: {
+                exports: '$'
+            },
+            'bootstrap': {
                 deps: [
                     'jquery'
                 ]
@@ -44,11 +44,6 @@ require.config(
                 ]
             },
             'jquery.ui.widget': {
-                deps: [
-                    'jquery'
-                ]
-            },
-            'jquery.iframe-transport': {
                 deps: [
                     'jquery'
                 ]
@@ -69,22 +64,23 @@ require.config(
                 deps: [
                     'jquery',
                     'underscore'
-                ]
+                ],
+                exports: 'Backbone'
             },
             'backbone.layoutmanager': {
                 deps: [
                     'backbone'
                 ]
             },
-            'backbone.validation': {
-                deps: [
-                    'backbone',
-                    'underscore'
-                ]
-            },
             'handlebars': {
                 exports: 'Handlebars'
             }
-        }
+        },
+        deps: [
+            'config',
+            'underscore',
+            'jquery',
+            'backbone'
+        ]
     }
 );

@@ -9,11 +9,9 @@ require([
     'utils/helpers',
     'utils/widgets',
     'modules/headerView',
-    'config',
     'utils/handlebarsHelpers',
     'backbone.layoutmanager',
     'utils/backboneLayoutConfigure',
-    'jquery.validation',
     'google-analytics',
     'yandex-metrika'
 ], function ($, _, Handlebars, Backbone, Router, Helpers, Widgets, HeaderView) {

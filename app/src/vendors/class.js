@@ -1,3 +1,5 @@
+//TODO: переписать класс на jshint валидный
+/* jshint ignore:start */
 /* Simple JavaScript Inheritance
  * By John Resig http://ejohn.org/
  * MIT Licensed.
@@ -23,8 +25,8 @@ Class.extend = function (prop) {
     // Copy the properties over onto the new prototype
     for (var name in prop) {
         // Check if we're overwriting an existing function
-        prototype[name] = typeof prop[name] == "function" &&
-            typeof _super[name] == "function" && fnTest.test(prop[name]) ?
+        prototype[name] = typeof prop[name] === 'function' &&
+            typeof _super[name] === 'function' && fnTest.test(prop[name]) ?
             (function (name, fn) {
                 return function () {
                     var tmp = this._super;
@@ -64,3 +66,4 @@ Class.extend = function (prop) {
 };
 
 module.exports = Class;
+/* jshint ignore:end */

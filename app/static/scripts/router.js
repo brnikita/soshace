@@ -17,7 +17,17 @@ define([
     'modules/finishRegistration/finishRegistrationView',
     'modules/login/loginView',
     'modules/user/userView'
-], function ($, _, Backbone, HeaderView, PostsListView, PostDetailView, AddPostView, RegistrationView, FinishRegistrationView, LoginView, UserView) {
+], function ($,
+             _,
+             Backbone,
+             HeaderView,
+             PostsListView,
+             PostDetailView,
+             AddPostView,
+             RegistrationView,
+             FinishRegistrationView,
+             LoginView,
+             UserView) {
     return Backbone.Router.extend({
 
         /**

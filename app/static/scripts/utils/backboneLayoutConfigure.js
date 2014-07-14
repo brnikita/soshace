@@ -4,6 +4,7 @@ require([
     'underscore',
     'handlebars',
     'backbone',
+    'config',
     'backbone.layoutmanager'
 ], function ($, _, Handlebars, Backbone) {
     Backbone.Layout.configure({

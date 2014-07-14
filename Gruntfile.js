@@ -115,6 +115,7 @@ module.exports = function (grunt) {
                         dest: '<%= blog.dist %>',
                         src: [
                             '*.{ico,png,txt}',
+                            'scripts/**/*.js',
                             'images/{,*/}*.{png,jpg,jpeg,gif,svg}',
                             'fonts/*'
                         ]
@@ -175,7 +176,7 @@ module.exports = function (grunt) {
                     name: 'app',
                     mainConfigFile: 'require.conf.js',
                     out: '<%= blog.dist %>/scripts/scripts.min.js',
-                    include: ['libs/require.js']
+                    include: ['vendors/require.js']
                 }
             }
         }
