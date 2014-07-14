@@ -394,6 +394,10 @@ define([
          */
         afterRender: function () {
             this.setFieldsHelpers(this.model.helpers);
+            //Используется асинхронный вызов, чтобы навесились обработчики событий
+            setTimeout(function () {
+                $('#user-name').focus();
+            }, 0);
         }
     });
 });

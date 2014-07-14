@@ -11,14 +11,14 @@ define([
     'jquery',
     'underscore',
     'handlebars',
-    'jquery.cookie',
-    'utils/helpers'
-], function ($, _, Handlebars, Helpers) {
+    'jquery.cookie'
+], function ($, _, Handlebars) {
     return {
         /**
+         * TODO: в jquery есть такое же
          * Метод возвращает данные формы в виде объекта
          *
-         * @public
+         * @deprecated
          * @method
          * @name Helpers.serializeFormObject
          * @param {jQuery} formElement ссылка на элемент формы
@@ -142,6 +142,17 @@ define([
             }
 
             return translations[value];
+        },
+
+        /**
+         * Метод возвращает true, если есть поддержка History API
+         *
+         * @method
+         * @name Helpers.checkHistoryApiSupport
+         * @returns {boolean}
+         */
+        checkHistoryApiSupport: function () {
+            return !!(window.history && history.pushState);
         }
     };
 });

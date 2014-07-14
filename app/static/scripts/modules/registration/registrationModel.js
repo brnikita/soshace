@@ -71,11 +71,9 @@ define([
          * @type {Object}
          */
         helpers: {
-            userName: 'You can only use the Latin alphabet, numbers, &#34;.&#34;, &#34;_&#34;, &#34;-&#34;.',
+            userName: 'Use the Latin alphabet, numbers, &#34;.&#34;, &#34;_&#34;, &#34;-&#34;.',
             email: 'Please enter your e-mail address.',
-            password: 'Safe password should contain: ' +
-                'numbers, upper-and lowercase letters, symbols' +
-                ' (&#34;.&#34;, &#34;/&#34;, &#34;?&#34;, &#34;^&#34;, etc.).'
+            password: 'Use the numbers, upper-and lowercase letters, symbols'
         },
 
         /**

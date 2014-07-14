@@ -21,7 +21,7 @@ define([
          */
         userName: function (value) {
             if (!Soshace.patterns.userName.test(value)) {
-                return 'You can only use the Latin alphabet, numbers, ".", "_", "-".';
+                return 'Use the Latin alphabet, numbers, &#34;.&#34;, &#34;_&#34;, &#34;-&#34;.';
             }
         }
     });

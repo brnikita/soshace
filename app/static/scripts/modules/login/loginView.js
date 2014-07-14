@@ -176,8 +176,12 @@ define([
          */
         changeFormFieldHandler: function (event) {
             var $target = $(event.target),
-                params = Helpers.getInputData($target);
+                serializedField = Helpers.serializeField($target),
+                fieldName = serializedField.name,
+                fieldValue = serializedField.value,
+                params = {};
 
+            params[fieldName] = fieldValue;
             this.model.set(params);
         },
 
@@ -234,6 +238,7 @@ define([
          * @returns {undefined}
          */
         afterRender: function () {
+            $('#email').focus();
         }
     });
 });

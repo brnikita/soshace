@@ -34,7 +34,7 @@ var UsersShema = Mongoose.Schema({
             },
             {
                 validator: Soshace.PATTERNS.userName,
-                msg: 'You can only use the Latin alphabet, numbers, ".", "_", "-".'
+                msg: 'Use the Latin alphabet, numbers, &#34;.&#34;, &#34;_&#34;, &#34;-&#34;.'
             },
             {
                 validator: Validators.required,

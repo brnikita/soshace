@@ -133,8 +133,10 @@ require([
             var $target = $(event.target),
                 link = $target.closest('.js-router-link').attr('href');
 
-            event.preventDefault();
-            Backbone.history.navigate(link, {trigger: true});
+            if (Helpers.checkHistoryApiSupport) {
+                event.preventDefault();
+                Backbone.history.navigate(link, {trigger: true});
+            }
         },
 
         /**
