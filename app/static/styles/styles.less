@@ -7,6 +7,7 @@
 @import 'modules/posts/posts';
 @import 'modules/posts/addPost';
 @import 'modules/auth';
+@import 'modules/user';
 
 img.center {
   margin: 0 auto;
@@ -43,6 +44,22 @@ html, body {
   right: 20px;
   .alert {
     margin-bottom: 10px;
+  }
+}
+
+.page-warning {
+  margin-top: 15px;
+  padding: 30px 0;
+  text-align: center;
+  background-color: #FFEDBB;
+  color: #9a6202;
+  .box-shadow(0 0 2px 0 rgba(0, 0, 0, 0.3));
+  a {
+    color: #9a6202;
+    text-decoration: underline;
+  }
+  h1 {
+    margin: 0;
   }
 }
 
@@ -114,7 +131,7 @@ html, body {
   }
 }
 
-.content{
+.content {
   max-width: 1200px;
   margin: 0 auto;
   padding-top: 10px;

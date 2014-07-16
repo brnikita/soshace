@@ -95,12 +95,13 @@ define([
                 if (view === null) {
                     return;
                 }
-                view.undelegateEvents();
-                view.$el.removeData().unbind();
 
                 if (typeof view.viewExitHandler === 'function') {
                     view.viewExitHandler();
                 }
+
+                view.undelegateEvents();
+                view.$el.removeData().unbind();
             });
         },
 

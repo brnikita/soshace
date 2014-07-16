@@ -1,20 +1,25 @@
-<div class="container">
-    <div class="row" style="background-color:#cbe7f5;">
-        <div class="col-md-4">
+<div class="user">
+    <div class="user__profile">
+        <div>
             <img data-src="holder.js/140x140" class="img-rounded" alt="140x140"
                  src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjcwIiB5PSI3MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE0MHgxNDA8L3RleHQ+PC9zdmc+"
                  style="width: 140px; height: 140px;">
         </div>
-        <div class="col-md-8">
+        <div>
             <h1 class="font-color-blue">{{fullName}}</h1>
         </div>
+        <div>
+            <a href="/{{locale}}/add_post"
+               class="btn btn-primary js-router-link">{{i18n 'Add post'}}</a>
+        </div>
     </div>
-    <div class="row">
-        <a href="/{{locale}}/add_post" class="btn btn-primary add-post__toolbar__send js-router-link">{{i18n 'Add post'}}</a>
-    </div>
-    <div class="row">
-        <h2>
-            {{i18n 'No posts'}}
-        </h2>
+    <div>
+        <div class="page-warning">
+            <h1>
+                <a class="js-router-link" href="/ru/add_post">
+                    {{{i18n 'You have&#39;t any posts'}}}
+                </a>
+            </h1>
+        </div>
     </div>
 </div>

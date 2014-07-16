@@ -47,11 +47,6 @@ module.exports = function (App) {
         userController.getProfile();
     });
 
-    App.post('/api/create_user_complete', function(request, resposne){
-        var registrationController = new RegistrationController(request, resposne);
-        registrationController.createUserComplete();
-    });
-
     App.post('/api/login', function(request, response, next){
         var loginController = new LoginController(request, response, next);
         loginController.loginHandler();
