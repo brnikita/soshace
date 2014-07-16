@@ -45,17 +45,19 @@ var SendMail = {
         var renderParams = new RenderParams(request),
             locale = request.i18n.getLocale(),
             mailTemplatePath = Soshace.DIR_NAME + '/app/views/mails/confirmationMailView.hbs',
-            confirmationLink = this.getConfirmationLink(locale, user.code);
+            confirmationLink = this.getConfirmationLink(locale, user.code),
+            mailSubject  = request.i18n.__('Confirmation message from Soshace blog');
 
         Handlebars.render(mailTemplatePath, _.extend(renderParams,{
             host: Soshace.PRODUCTION_HOST,
-            fullName: user.fullName,
-            emailConfirmLink: confirmationLink
+            userName: user.userName,
+            emailConfirmLink: confirmationLink,
+            locale: locale
         }), function (error, template) {
             transport.sendMail({
                 from: Soshace.MAIL_NO_REPLY,
                 to: user.email,
-                subject: 'Confirmation message',
+                subject: mailSubject,
                 html: template
             });
         });

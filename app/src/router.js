@@ -8,13 +8,9 @@ var PostsController = require('./controllers/posts/postsController'),
     UserController = require('./controllers/userController');
 
 module.exports = function (App) {
-    App.get('/', function (request, response) {
-        var locale = request.i18n.getLocale();
-        response.redirect('/' + locale);
-    });
-
+    //--------------------API------------------------------//
     //Загружаем изображение
-    App.post('/upload_img', function(request, response){
+    App.post('/api/upload_img', function(request, response){
         var uploadImageController = new UploadImageController(request, response);
         uploadImageController.upload();
     });
@@ -66,6 +62,18 @@ module.exports = function (App) {
         loginController.logoutHandler();
     });
 
+    App.get('/api/registration/validate_field', function(request, response){
+        var registrationController = new RegistrationController(request, response);
+        registrationController.validateField();
+    });
+
+    //--------------------API END------------------------------//
+
+    App.get('/', function (request, response) {
+        var locale = request.i18n.getLocale();
+        response.redirect('/' + locale);
+    });
+
     //добавляем пост
     App.get('/:locale/add_post', function(request, response){
         var addPostsController = new AddPostsController(request, response);
@@ -108,10 +116,5 @@ module.exports = function (App) {
     App.get('/:locale/registration/confirm_email', function(request, response){
         var registrationController = new RegistrationController(request, response);
         registrationController.renderConfirmAccountPage();
-    });
-
-    App.get('/api/registration/validate_field', function(request, response){
-        var registrationController = new RegistrationController(request, response);
-        registrationController.validateField();
     });
 };

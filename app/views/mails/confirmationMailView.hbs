@@ -4,15 +4,22 @@
     <meta http-equiv='content-type' content='text/html; charset=utf-8'/>
 </head>
 <body>
-<h4>{{i18n 'Popular blog'}} <a href="http://soshace.com/">Soshace</a></h4>
-<p>{{i18n 'Hello'}}.</p>
 <p>
-    {{i18n 'To confirm the email you need to click on this link:'}}
+    {{i18n 'Hello'}}, {{userName}}.
+</p>
+
+<p>
+    {{{i18n "To confirm the <a href='http://soshace.com'>Soshace</a> blog account you need to click on this link:"}}}
 
     <a href="{{emailConfirmLink}}">{{emailConfirmLink}}</a>
 </p>
+
 <p>
     {{i18n 'If you are not registered on our site, just ignore this letter.'}}
+</p>
+
+<p>
+    {{{i18n "With best wishes, <a href='http://soshace.com'>Soshace</a> blog team."}}}
 </p>
 </body>
 <html>
