@@ -1,25 +1,66 @@
 <div class="user">
     <div class="user__profile">
-        <div>
-            <img data-src="holder.js/140x140" class="img-rounded" alt="140x140"
-                 src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjcwIiB5PSI3MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE0MHgxNDA8L3RleHQ+PC9zdmc+"
-                 style="width: 140px; height: 140px;">
+        <div class="user__profile__info clearfix">
+            <div class="user__profile__info__avatar">
+                <div>
+                    <img data-src="holder.js/140x140" class="img-rounded" alt="140x140"
+                         src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjcwIiB5PSI3MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE0MHgxNDA8L3RleHQ+PC9zdmc+"
+                         style="width: 140px; height: 140px;">
+                </div>
+            </div>
+            <div class="user__profile__info__description">
+                <div class="user__profile__block">
+                    <div>{{i18n 'First Name Last Name'}}:</div>
+                    <h3 class="font-color-blue">
+                        <input type="text" value="{{name}}"/>
+                        <input type="text" value="{{surname}}"/>
+                    </h3>
+                </div>
+                <div class="user__profile__block">
+                    <div>
+                        {{i18n 'Sex'}}:
+                    </div>
+                    <div>
+                        <input type="" value="{{sex}}"/>
+                    </div>
+                </div>
+                <div class="user__profile__block">
+                    <div>
+                        {{i18n 'Birthday'}}
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+                <div class="user__profile__block">
+                    <div>
+                        {{i18n 'Inforfomation obout author'}}:
+                    </div>
+                    <div>
+                        <textarea>
+
+                        </textarea>
+                    </div>
+                </div>
+                <div class="user__profile__block">
+                    <div>
+                        {{i18n 'Hobbies'}}
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            <h1 class="font-color-blue">{{fullName}}</h1>
-        </div>
-        <div>
+        <div class="user__profile__footer">
             <a href="/{{locale}}/add_post"
                class="btn btn-primary js-router-link">{{i18n 'Add post'}}</a>
         </div>
     </div>
     <div>
         <div class="page-warning">
-            <h1>
+            <h2>
                 <a class="js-router-link" href="/ru/add_post">
-                    {{{i18n 'You have&#39;t any posts'}}}
+                    {{{i18n 'Here could be your posts'}}}
                 </a>
-            </h1>
+            </h2>
         </div>
     </div>
 </div>
