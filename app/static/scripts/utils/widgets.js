@@ -24,8 +24,7 @@ define([
          * @returns {undefined}
          */
         setBodyClass: function (bodyClass) {
-            $body.removeAttr('class');
-            $body.addClass(bodyClass);
+            $body.attr('class', bodyClass);
         },
 
         /**

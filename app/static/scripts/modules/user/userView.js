@@ -122,11 +122,13 @@ define([
          * @returns {undefined}
          */
         showNotConfirmedEmailMessage: function () {
-            var emailConfirmed = this.app.isAuthenticated() &&
-                    Soshace.profile.emailConfirmed,
-                $messages = this.elements.messages;
+            var $messages = this.elements.messages;
 
-            if (emailConfirmed) {
+            if (!this.app.isAuthenticated()) {
+                return;
+            }
+
+            if (Soshace.profile.emailConfirmed) {
                 return;
             }
 

@@ -15,10 +15,9 @@ define([
     'underscore',
     'underscore.string',
     'backbone',
-    'utils/widgets',
-    './addPostModel',
     'utils/helpers',
     'utils/widgets',
+    './addPostModel',
     'bootstrap',
     'prettify',
     'jquery.hotkeys',
@@ -545,19 +544,19 @@ define([
         bindHotKeys: function (hotKeys) {
             $.each(hotKeys, _.bind(function (hotKey, command) {
                 this.elements.formFields.postBody.keydown(hotKey, _.bind(function (event) {
-                        if (this.elements.formFields.postBody.attr('contenteditable') &&
-                            this.elements.formFields.postBody.is(':visible')) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            this.execCommand(command);
-                        }
-                    }, this)).keyup(hotKey, _.bind(function (event) {
-                        if (this.elements.formFields.postBody.attr('contenteditable') &&
-                            this.elements.formFields.postBody.is(':visible')) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                    }, this));
+                    if (this.elements.formFields.postBody.attr('contenteditable') &&
+                        this.elements.formFields.postBody.is(':visible')) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        this.execCommand(command);
+                    }
+                }, this)).keyup(hotKey, _.bind(function (event) {
+                    if (this.elements.formFields.postBody.attr('contenteditable') &&
+                        this.elements.formFields.postBody.is(':visible')) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                }, this));
             }, this));
         },
 
@@ -659,7 +658,7 @@ define([
             this.addSaveLinkBtnListener();
 
             this.elements.toolbar.find('input[type=text][data-' + this.defaultConfig.commandRole + ']').
-                on('focus',function () {
+                on('focus', function () {
                     var input = $(this);
 
                     if (!input.data(_this.defaultConfig.selectionMarker)) {
@@ -804,15 +803,40 @@ define([
          * @returns {undefined}
          */
         showNotConfirmedEmailMessage: function () {
-            var emailConfirmed = this.app.isAuthenticated() &&
-                    Soshace.profile.emailConfirmed,
-                $messages = this.elements.messages;
+            var $messages = this.elements.messages;
 
-            if (emailConfirmed) {
+            if (!this.app.isAuthenticated()) {
+                return;
+            }
+
+            if (Soshace.profile.emailConfirmed) {
                 return;
             }
 
             Helpers.renderTemplate('messages/notConfirmedEmail').
+                done(function (template) {
+                    $messages.append(template);
+                });
+        },
+
+        /**
+         * Метод отображает уведомление о том,
+         * что нужно зарегстрироваться, чтобы добавить статью
+         *
+         * @method
+         * @name UserView#showSignInMessage
+         * @returns {undefined}
+         */
+        showSignInMessage: function () {
+            var $messages = this.elements.messages;
+
+            if (this.app.isAuthenticated()) {
+                return;
+            }
+
+            Helpers.renderTemplate('messages/enableEditor', {
+                locale: Helpers.getLocale()
+            }).
                 done(function (template) {
                     $messages.append(template);
                 });

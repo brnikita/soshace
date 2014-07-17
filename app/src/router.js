@@ -110,6 +110,6 @@ module.exports = function (App) {
 
     App.get('/:locale/registration/confirm_email', function(request, response){
         var registrationController = new RegistrationController(request, response);
-        registrationController.renderConfirmAccountPage();
+        registrationController.confirmEmail();
     });
 };

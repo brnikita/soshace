@@ -220,6 +220,21 @@ module.exports = ControllerInit.extend({
     },
 
     /**
+     * Метод возвращает True, если редактор должен быть заблокирован
+     *
+     * @method
+     * @name AddPostsController.isEditorDisabled
+     * @returns {Boolean}
+     */
+    isEditorDisabled: function () {
+        var request = this.request,
+            emailConfirmed = request.isAuthenticated() &&
+                request.user[0].emailConfirmed;
+
+        return !emailConfirmed;
+    },
+
+    /**
      * Рендерим страницу добавления поста
      *
      * @public
@@ -235,6 +250,7 @@ module.exports = ControllerInit.extend({
         response.render('posts/addPostView', _.extend(renderParams, {
             title: 'Add Post',
             isAddPostPage: true,
+            editorDisabled: this.isEditorDisabled(),
             bodyClass: 'bg-color-blue bg-symbols'
         }));
     }

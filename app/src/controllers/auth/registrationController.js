@@ -25,7 +25,7 @@ module.exports = ControllerInit.extend({
 
         _.bindAll(this,
             'userSaveHandler',
-            'renderConfirmAccountPageHandler'
+            'confirmEmailHandler'
         );
     },
 
@@ -51,18 +51,18 @@ module.exports = ControllerInit.extend({
     },
 
     /**
-     * Страница подтверждения аккаунта с email
+     * Метод обработчик подтверждения аккаунта с email
      *
      * @function
-     * @name RegistrationController#renderConfirmAccountPage
+     * @name RegistrationController#confirmEmail
      * @return {undefined}
      */
-    renderConfirmAccountPage: function () {
+    confirmEmail: function () {
         var request = this.request,
             confirmCode = request.query.code;
 
         UsersModel.confirmEmail(confirmCode,
-            this.renderConfirmAccountPageHandler
+            this.confirmEmailHandler
         );
     },
 
@@ -74,19 +74,17 @@ module.exports = ControllerInit.extend({
      * подтверждения кода пользователя
      *
      * @method
-     * @name RegistrationController#renderConfirmAccountPageSuccess
+     * @name RegistrationController#confirmEmailHandler
      * @returns {undefined}
      */
-    renderConfirmAccountPageHandler: function () {
+    confirmEmailHandler: function () {
         var request = this.request,
             response = this.response,
-            renderParams = new RenderParams(request);
+            locale = request.i18n.getLocale();
 
-        response.render('auth/registrationFinish', _.extend(renderParams, {
-            error: false,
-            title: 'Complete registration',
-            bodyClass: 'bg-symbols bg-color-yellow'
-        }));
+        console.log(arguments);
+        request.login(user.id);
+        response.redirect('/' + locale + '/add_post/');
     },
 
     /**
@@ -119,11 +117,11 @@ module.exports = ControllerInit.extend({
      * @param {Mongoose.model} user модель пользователя
      * @returns {undefined}
      */
-    userSaveHandler: function(error, user){
+    userSaveHandler: function (error, user) {
         var errors;
 
-        if(error){
-            if(error.errors){
+        if (error) {
+            if (error.errors) {
                 errors = this.formatErrors(error.errors);
                 this.sendError(errors);
                 return;
@@ -145,11 +143,11 @@ module.exports = ControllerInit.extend({
      * @param {Object} errors
      * @returns {Object}
      */
-    formatErrors: function(errors){
+    formatErrors: function (errors) {
         var request = this.request,
             formattedErrors = {};
 
-        _.each(errors, function(value, key){
+        _.each(errors, function (value, key) {
             formattedErrors[key] = request.i18n.__(value.message);
         });
 
