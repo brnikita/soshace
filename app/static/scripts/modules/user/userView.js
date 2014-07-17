@@ -12,8 +12,9 @@ define([
     'backbone',
     'utils/widgets',
     './userModel',
+    'utils/helpers',
     'backbone.layoutmanager'
-], function ($, _, Backbone, Widgets, UserModel) {
+], function ($, _, Backbone, Widgets, UserModel, Helpers) {
     return Backbone.Layout.extend({
         /**
          * Ссылка на объект App
@@ -44,11 +45,14 @@ define([
         model: null,
 
         /**
+         * Ссылки на DOM элементы
+         *
          * @field
          * @name UserView#elements
          * @type {Object}
          */
         elements: {
+            messages: null
         },
 
         /**
@@ -85,7 +89,7 @@ define([
          */
         firstLoadHandler: function () {
             Soshace.firstLoad = false;
-
+            this.afterRender();
         },
 
         /**
@@ -111,6 +115,28 @@ define([
         },
 
         /**
+         * Метод показвыает сообщение о том, что email не подтвержден
+         *
+         * @method
+         * @name UserView#showNotConfirmedEmailMessage
+         * @returns {undefined}
+         */
+        showNotConfirmedEmailMessage: function () {
+            var emailConfirmed = Soshace.profile &&
+                    Soshace.profile.emailConfirmed,
+                $messages = this.elements.messages;
+
+            if (emailConfirmed) {
+                return;
+            }
+
+            Helpers.renderTemplate('messages/notConfirmedEmail').
+                done(function (template) {
+                    $messages.append(template);
+                });
+        },
+
+        /**
          * @method
          * @name UserView#serialize
          * @returns {Object}
@@ -133,11 +159,24 @@ define([
         },
 
         /**
+         * Метод сохраняет DOM элементы
+         *
+         * @method
+         * @name UserView#setElements
+         * @returns {undefined}
+         */
+        setElements: function () {
+            this.elements.messages = this.$('.js-messages');
+        },
+
+        /**
          * @method
          * @name UserView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
+            this.setElements();
+            this.showNotConfirmedEmailMessage();
         }
     });
 });
