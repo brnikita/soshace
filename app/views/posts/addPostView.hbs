@@ -1,9 +1,4 @@
-{{#unless isAuthenticated}}
-    <div class="bg-danger add-post-warning">
-        {{i18n 'For enable editor, you need to '}}
-        <a href="/{{locale}}/login" class="js-router-link">{{i18n 'sign in'}}.</a>
-    </div>
-{{/unless}}
+<div class="js-messages"></div>
 <div class="modal fade js-add-link-modal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -86,7 +81,7 @@
             {{i18n 'Here should be the post'}}
         </div>
     </div>
-    {{#unless isAuthenticated}}
+    {{#if editorDisabled}}
         <div class="disable-cover"></div>
-    {{/unless}}
+    {{/if}}
 </div>

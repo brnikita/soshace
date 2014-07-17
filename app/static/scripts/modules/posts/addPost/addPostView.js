@@ -17,13 +17,14 @@ define([
     'backbone',
     'utils/widgets',
     './addPostModel',
+    'utils/helpers',
     'utils/widgets',
     'bootstrap',
     'prettify',
     'jquery.hotkeys',
     'jquery.fileupload',
     'backbone.layoutmanager'
-], function ($, _, _s, Backbone, Widgets, AddPostModel) {
+], function ($, _, _s, Backbone, Helpers, Widgets, AddPostModel) {
     return Backbone.Layout.extend({
 
         /**
@@ -164,7 +165,8 @@ define([
             addLinkModal: null,
             linkSaveButton: null,
             linkNameInput: null,
-            window: null
+            window: null,
+            messages: null
         },
 
         /**
@@ -763,6 +765,21 @@ define([
             this.elements.toolbarRowElement = this.$('.js-editor-toolbar-row');
             this.elements.linkSaveButton = this.$('.js-add-link-save');
             this.elements.linkUrlInput = this.$('.js-add-link-modal-link-url');
+            this.elements.messages = this.$('.js-messages');
+        },
+
+        /**
+         * Метод возвращает True, если редактор должен быть заблокирован
+         *
+         * @method
+         * @name AddPostView#isEditorDisabled
+         * @returns {Boolean}
+         */
+        isEditorDisabled: function () {
+            var emailConfirmed = this.app.isAuthenticated() &&
+                Soshace.profile.emailConfirmed;
+
+            return !emailConfirmed;
         },
 
         /**
@@ -770,11 +787,35 @@ define([
          * @name AddPostView#serialize
          * @returns {Object}
          */
-        serialize: function(){
+        serialize: function () {
             var data = this.model.toJSON();
+
             data.title = 'Add Post';
-            data.isAuthenticated = this.app.isAuthenticated();
+            data.editorDisabled = this.isEditorDisabled();
+
             return data;
+        },
+
+        /**
+         * Метод показвыает сообщение о том, что email не подтвержден
+         *
+         * @method
+         * @name UserView#showNotConfirmedEmailMessage
+         * @returns {undefined}
+         */
+        showNotConfirmedEmailMessage: function () {
+            var emailConfirmed = this.app.isAuthenticated() &&
+                    Soshace.profile.emailConfirmed,
+                $messages = this.elements.messages;
+
+            if (emailConfirmed) {
+                return;
+            }
+
+            Helpers.renderTemplate('messages/notConfirmedEmail').
+                done(function (template) {
+                    $messages.append(template);
+                });
         },
 
         /**
@@ -784,7 +825,7 @@ define([
          * @name AddPostView#viewExitHandler
          * @returns {undefined}
          */
-        viewExitHandler: function(){
+        viewExitHandler: function () {
             this.elements.window.off('touchend', this.touchHandler).
                 off('scroll', this.windowScrollHandler);
         },
@@ -801,6 +842,8 @@ define([
             this.bindToolbar();
             this.makeEditorFieldContentEditable();
             this.elements.window.on('touchend', this.touchHandler).off('scroll', this.windowScrollHandler);
+            this.showSignInMessage();
+            this.showNotConfirmedEmailMessage();
         }
     });
 });
