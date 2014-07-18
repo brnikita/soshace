@@ -12,7 +12,7 @@ var Mongoose = require('mongoose'),
  *
  * @class
  * @name UsersShema
- * @type {Schema}
+ * @type {Mongoose.Schema}
  */
 var UsersShema = Mongoose.Schema({
     //код подтверждения email
@@ -87,6 +87,9 @@ var UsersShema = Mongoose.Schema({
     admin: {
         type: Boolean,
         default: false
+    },
+    systemMessages: {
+
     },
     locale: {
         type: String,
@@ -175,11 +178,12 @@ UsersShema.statics.getUser = function (params) {
  * @method
  * @name UsersShema.confirmEmail
  * @param {String} code код подтверждения email
+ * @param {Function} callback
  * @return {Cursor}
  */
-UsersShema.statics.confirmEmail = function (code) {
+UsersShema.statics.confirmEmail = function (code, callback) {
     return this.collection.findAndModify({code: code}, [
         ['_id', 'asc']
-    ], {$set: {emailConfirmed: true}});
+    ], {$set: {emailConfirmed: true}}, {}, callback);
 };
 module.exports = Mongoose.model('users', UsersShema);

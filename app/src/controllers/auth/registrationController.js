@@ -62,7 +62,7 @@ module.exports = ControllerInit.extend({
             confirmCode = request.query.code;
 
         //TODO: добавить обработку ошибок и исключений
-        UsersModel.confirmEmail(confirmCode).exec(this.confirmEmailHandler);
+        UsersModel.confirmEmail(confirmCode, this.confirmEmailHandler);
     },
 
     /**
@@ -74,16 +74,28 @@ module.exports = ControllerInit.extend({
      *
      * @method
      * @name RegistrationController#confirmEmailHandler
+     * @param {Object} error
+     * @param {Object} user
      * @returns {undefined}
      */
-    confirmEmailHandler: function () {
+    confirmEmailHandler: function (error, user) {
         var request = this.request,
             response = this.response,
             locale = request.i18n.getLocale();
 
-        console.log(arguments);
-        request.login(user.id);
-        response.redirect('/' + locale + '/add_post/');
+        if (error) {
+            //TODO: поменять на render
+            this.sendError(this.i18n('Server is too busy, try later'));
+            return;
+        }
+        request.login(user._id, _.bind(function (error) {
+            if (error) {
+                //TODO: поменять на render
+                this.sendError(this.i18n('Server is too busy, try later'));
+                return;
+            }
+            response.redirect('/' + locale + '/add_post/');
+        }, this));
     },
 
     /**
@@ -98,8 +110,8 @@ module.exports = ControllerInit.extend({
             userData = request.body,
             user;
 
-        if (!'undefined') {
-            this.sendError('Bad request');
+        if (!userData) {
+            this.sendError(this.i18n('Bad request'));
             return;
         }
 
@@ -192,7 +204,7 @@ module.exports = ControllerInit.extend({
             profile,
             redirectUrl;
 
-        request.login(user.id, _.bind(function (error) {
+        request.login(user._id, _.bind(function (error) {
             if (error) {
                 this.sendError(this.i18n('Server is too busy, try later'));
                 return;

@@ -7,7 +7,7 @@ var Mongoose = require('mongoose');
  *
  * @class
  * @name PostsShema
- * @type {Schema}
+ * @type {Mongoose.Schema}
  */
 var PostsShema = Mongoose.Schema({
     //путь в урле после даты
