@@ -61,9 +61,8 @@ module.exports = ControllerInit.extend({
         var request = this.request,
             confirmCode = request.query.code;
 
-        UsersModel.confirmEmail(confirmCode,
-            this.confirmEmailHandler
-        );
+        //TODO: добавить обработку ошибок и исключений
+        UsersModel.confirmEmail(confirmCode).exec(this.confirmEmailHandler);
     },
 
     /**

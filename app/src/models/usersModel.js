@@ -175,11 +175,11 @@ UsersShema.statics.getUser = function (params) {
  * @method
  * @name UsersShema.confirmEmail
  * @param {String} code код подтверждения email
- * @param {Function} callback
  * @return {Cursor}
  */
-UsersShema.statics.confirmEmail = function (code, callback) {
-    this.update({code: code}, {emailConfirmed: true}, null, callback);
+UsersShema.statics.confirmEmail = function (code) {
+    return this.collection.findAndModify({code: code}, [
+        ['_id', 'asc']
+    ], {$set: {emailConfirmed: true}});
 };
-
 module.exports = Mongoose.model('users', UsersShema);

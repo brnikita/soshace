@@ -115,9 +115,11 @@
 	"To confirm the <a href='http://soshace.com'>Soshace</a> blog account you need to click on this link:": "Для подтверждения аккаунта в блоге <a href='http://soshace.com'>Soshace</a>, вам нужно перейти по следующей ссылке:",
 	"With best wishes, <a href='http://soshace.com'>Soshace</a> blog team.": "С наилучшими пожеланиями, команда блога <a href='http://soshace.com'>Soshace</a>.",
 	"Here could be your posts": "Здесь могли бы быть ваши статьи",
-	"First Name Last Name": "First Name Last Name",
-	"Sex": "Sex",
-	"Birthday": "Birthday",
+	"First Name Last Name": "Имя фамилия",
+	"Sex": "Пол",
+	"Birthday": "День рождения",
 	"Inforfomation obout author": "Inforfomation obout author",
-	"Hobbies": "Hobbies"
+	"Hobbies": "Увлечения",
+	"To your email address have sent confirmation message.": "На ваш электронный почтовый адрес было отправлено письмо с подтверждетнием.",
+	"Please confirm your email to get full access of Soshace account.": "Пожалуйста, подтвердите ваш электронный почтовый адрес для получения полного доступа к аккаунту Soshace"
 }
