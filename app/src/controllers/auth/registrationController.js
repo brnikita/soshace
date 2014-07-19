@@ -1,6 +1,6 @@
 'use strict';
 var _ = require('underscore'),
-    ControllerInit = require('../../common/controllerInit'),
+    Controller = require('../../common/controller'),
     UsersModel = require('../../models/usersModel'),
     RenderParams = require('../../common/renderParams'),
     SendMail = require('../../common/sendMail');
@@ -11,7 +11,7 @@ var _ = require('underscore'),
  *
  * @class RegistrationController
  */
-module.exports = ControllerInit.extend({
+module.exports = Controller.extend({
 
     /**
      * @constructor

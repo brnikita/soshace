@@ -1,3 +1,6 @@
+//TODO: Провести оптимизацию роутера!
+//TODO: example {'post /api/create': 'posts/postsController create'}
+//TODO: example {'get /api/get_user': 'userController get'}
 'use strict';
 
 var PostsController = require('./controllers/posts/postsController'),

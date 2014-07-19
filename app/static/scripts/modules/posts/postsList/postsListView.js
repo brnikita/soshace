@@ -3,7 +3,7 @@
 /**
  * Вид страницы списка постов
  *
- * @module PostsListView
+ * @class PostsListView
  */
 
 define([
@@ -11,30 +11,10 @@ define([
     'underscore',
     'backbone',
     'utils/widgets',
-    './postsListModel',
     'utils/helpers',
     'backbone.layoutmanager'
-], function ($, _, Backbone, Widgets, PostsListModel, Helpers) {
+], function ($, _, Backbone, Widgets, Helpers) {
     return Backbone.Layout.extend({
-        /**
-         * Ссылка на объект App
-         *
-         * @field
-         * @name PostsListView#app
-         * @type {Object}
-         */
-        app: null,
-
-        /**
-         * Класс родительского элемента, к которому
-         * будет прикреплен вид
-         *
-         * @field
-         * @name PostsListView#el
-         * @type {string}
-         */
-        el: '.js-content',
-
         /**
          * Модель списка статей
          *
@@ -66,14 +46,8 @@ define([
          * @name PostsListView#initialize
          * @returns {undefined}
          */
-        initialize: function (params) {
-            Widgets.setBodyClass('bg-color-green bg-symbols');
-            this.app = params.app;
-            this.model = new PostsListModel();
-            this.model.on('updatePosts', _.bind(function () {
-                this.render();
-            }, this));
-            this.model.getPosts(params.locale, params.page);
+        initialize: function () {
+
         },
 
         /**
@@ -87,18 +61,8 @@ define([
 
             data.locale = Helpers.getLocale();
             data.posts = posts;
-            data.isAutentificated = this.app.isAuthenticated();
+            data.isAutentificated = Soshace.app.isAuthenticated();
             return data;
-        },
-
-        /**
-         * Метод вызывается роутером перед выходом из вида
-         *
-         * @method
-         * @name PostsListView#viewExitHandler
-         * @returns {undefined}
-         */
-        viewExitHandler: function(){
         },
 
         /**

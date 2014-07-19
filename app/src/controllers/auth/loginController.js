@@ -1,6 +1,6 @@
 'use strict';
 var _ = require('underscore'),
-    ControllerInit = require('../../common/controllerInit'),
+    Controller = require('../../common/controller'),
     RenderParams = require('../../common/renderParams'),
     Passport = require('passport');
 
@@ -9,11 +9,11 @@ var _ = require('underscore'),
  *
  * @class LoginController
  */
-module.exports = ControllerInit.extend({
+module.exports = Controller.extend({
 
     /**
      * @constructor
-     * @name ControllerInit#initialize
+     * @name LoginController#initialize
      * @param {Object} request объект запроса
      * @param {Object} response Объект ответа
      * @returns {undefined}

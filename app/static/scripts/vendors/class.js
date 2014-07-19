@@ -63,5 +63,3 @@ Class.extend = function (prop) {
 
     return Class;
 };
-
-module.exports = Class;

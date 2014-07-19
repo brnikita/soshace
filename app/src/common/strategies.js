@@ -3,17 +3,19 @@
 var _ = require('underscore'),
     Mongoose = require('mongoose'),
     ObjectId = Mongoose.Types.ObjectId,
-    UsersModel = require('../../models/usersModel');
+    Passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy,
+    UsersModel = require('../models/usersModel');
 
 /**
  * Методы конфигурации стратегий
  */
-var StrategiesController = {
+var Strategies = {
     /**
      * Создаем идентификатор для новой сессии
      *
      * @function
-     * @name StrategiesController.serializeUser
+     * @name Strategies.serializeUser
      * @param userId
      * @param done
      * @return {undefined}
@@ -26,7 +28,7 @@ var StrategiesController = {
      * Получаем данные сессии по идентификатору сессии из куки запроса
      *
      * @function
-     * @name StrategiesController.deSerializeUser
+     * @name Strategies.deSerializeUser
      * @param userId
      * @param done
      * @return {undefined}
@@ -41,7 +43,7 @@ var StrategiesController = {
      * Callback для конфигурации локальной стратегии
      *
      * @function
-     * @name StrategiesController.local
+     * @name Strategies.local
      * @param {String} userEmail
      * @param {String} userPassword
      * @param {Function} done
@@ -66,8 +68,25 @@ var StrategiesController = {
                 }
             });
         });
+    },
+
+    /**
+     * Конфигурирем утентификацию, используя локальнуб стратегию
+     *
+     * @method
+     * @name Strategies.localStrategy
+     * @returns {undefined}
+     */
+    localStrategy: function () {
+        Passport.serializeUser(this.serializeUser);
+        Passport.deserializeUser(this.deSerializeUser);
+
+        //Конфигурируем утентификацию через форму логина
+        Passport.use(new LocalStrategy({
+            usernameField: 'email'
+        }, this.local));
     }
 };
 
-_.bindAll(StrategiesController, 'serializeUser', 'deSerializeUser', 'local');
-module.exports = StrategiesController;
+_.bindAll(Strategies, 'serializeUser', 'deSerializeUser', 'local');
+module.exports = Strategies;

@@ -33,11 +33,10 @@ define([
         /**
          * @constructor
          * @name LoginModel#initialize
-         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function (params) {
-            this.set({locale: params.locale}, {silent: true});
+        initialize: function () {
+
         }
     });
 });

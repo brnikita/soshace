@@ -27,16 +27,6 @@ define([
         app: null,
 
         /**
-         * Класс родительского элемента, к которому
-         * будет прикреплен вид
-         *
-         * @field
-         * @name HeaderView.el
-         * @type {string}
-         */
-        el: '.js-header',
-
-        /**
          * @field
          * @name HeaderView.elements
          * @type {Object}

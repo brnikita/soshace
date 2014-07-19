@@ -1,5 +1,5 @@
 'use strict';
-var ControllerInit = require('../../common/controllerInit'),
+var Controller = require('../../common/controller'),
     PostsModel = require('../../models/postsModel'),
     Unidecode = require('unidecode'),
     Helper = require('../../common/helpers'),
@@ -13,7 +13,7 @@ var ControllerInit = require('../../common/controllerInit'),
  * @class AddPostController
  *
  */
-module.exports = ControllerInit.extend({
+module.exports = Controller.extend({
 
     /**
      * TODO: написать тест

@@ -3,7 +3,7 @@
 /**
  * Модель списка статей
  *
- * @module PostsListModel
+ * @class PostsListModel
  */
 
 define([

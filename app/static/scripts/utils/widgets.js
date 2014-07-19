@@ -14,20 +14,6 @@ define([
 
     return {
         /**
-         * TODO: сделать, чтобы метод не удалял классы целиком
-         *
-         * Метод меняет класс у тела страницы
-         *
-         * @method
-         * @name Widgets.showMessages
-         * @param {string} bodyClass новый класс body
-         * @returns {undefined}
-         */
-        setBodyClass: function (bodyClass) {
-            $body.attr('class', bodyClass);
-        },
-
-        /**
          * Метод перекрывает страницу
          * лоадером
          *

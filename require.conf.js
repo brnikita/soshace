@@ -9,6 +9,7 @@ require.config(
             'bootstrap': 'vendors/bootstrap',
             'prettify': 'vendors/prettify',
             'handlebars': 'vendors/handlebars',
+            'class': 'vendors/class',
             'google-analytics': 'vendors/google-analytics',
             'yandex-metrika': 'vendors/yandex-metrika',
             'jquery.hotkeys': 'vendors/jquery/jquery.hotkeys',
@@ -74,6 +75,9 @@ require.config(
             },
             'handlebars': {
                 exports: 'Handlebars'
+            },
+            'class': {
+                exports: 'Class'
             }
         },
         deps: [

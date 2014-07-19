@@ -18,7 +18,7 @@ require([
          * @field
          * @type {string}
          */
-        prefix: Soshace.viewsPath,
+        prefix: Soshace.paths.views,
 
         /**
          * Метод загружает партиал по пути
@@ -30,12 +30,14 @@ require([
         fetchPartial: function (partialName) {
             var deferred = $.Deferred(),
                 hbs = Soshace.hbs,
-                path;
+                path,
+                done = this.async();
 
             path = this.prefix + 'partials/' + partialName + '.hbs';
 
+
             if (hbs[path]) {
-                return deferred.resolve(hbs[path]);
+                done(deferred.resolve(hbs[path]));
             }
 
             $.get(path, function (contents) {
@@ -58,18 +60,14 @@ require([
             // Check for a global JST object.  When you build your templates for
             // production, ensure they are all attached here.
             var hbs = Soshace.hbs,
-                done;
+                done = this.async();
 
             path += '.hbs';
 
             // If the path exists in the object, use it instead of fetching remotely.
             if (hbs[path]) {
-                return hbs[path];
+                done(hbs[path]);
             }
-
-            // If it does not exist in the JST object, mark this function as
-            // asynchronous.
-            done = this.async();
 
             // Fetch via jQuery's GET.  The third argument specifies the dataType.
             $.get(path, function (contents) {

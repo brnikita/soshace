@@ -3,7 +3,7 @@
 /**
  * Модель страницы просмотра статьи
  *
- * @module PostDetailModel
+ * @class PostDetailModel
  */
 
 define([

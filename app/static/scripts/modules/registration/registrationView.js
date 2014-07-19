@@ -3,41 +3,20 @@
 /**
  * Вид страницы регистрации
  *
- * @module RegistrationView
+ * @class RegistrationView
  */
 
 define([
     'jquery',
     'underscore',
     'backbone',
-    'utils/widgets',
     'utils/helpers',
-    './registrationModel',
     'backbone.layoutmanager',
     'backbone.validation',
     'utils/backboneValidationExtension',
     'utils/plugins/jquery.controlStatus'
-], function ($, _, Backbone, Widgets, Helpers, RegistrationModel) {
+], function ($, _, Backbone, Helpers) {
     return Backbone.Layout.extend({
-
-        /**
-         * Ссылка на объект App
-         *
-         * @field
-         * @name RegistrationView#app
-         * @type {Object}
-         */
-        app: null,
-
-        /**
-         * Класс родительского элемента, к которому
-         * будет прикреплен вид
-         *
-         * @field
-         * @name RegistrationView#el
-         * @type {string}
-         */
-        el: '.js-content',
 
         /**
          * Модель формы регистрации
@@ -82,38 +61,15 @@ define([
         /**
          * @constructor
          * @name RegistrationView#initialize
-         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function (params) {
+        initialize: function () {
             _.bindAll(this,
                 'render',
                 'userRegistrationSuccess',
                 'userRegistrationFail'
             );
-            Widgets.setBodyClass('bg-symbols bg-color-yellow');
-            this.app = params.app;
-            this.model = new RegistrationModel({
-                locale: params.locale
-            });
             Backbone.Validation.bind(this);
-            if (Soshace.firstLoad) {
-                this.firstLoadHandler();
-            } else {
-                this.secondLoadHandler();
-            }
-        },
-
-        /**
-         * Метод исполняется, если страница была отрендерена на серевере
-         *
-         * @method
-         * @name RegistrationView#firstLoadHandler
-         * @returns {undefined}
-         */
-        firstLoadHandler: function () {
-            Soshace.firstLoad = false;
-            this.afterRender();
         },
 
         /**
@@ -178,18 +134,6 @@ define([
             if (typeof error === 'object') {
                 this.showFieldsErrors(error);
             }
-        },
-
-        /**
-         * Метод исполняется при клиентском рендере страницы
-         *
-         * @method
-         * @name RegistrationView#secondLoadHandler
-         * @returns {undefined}
-         */
-        secondLoadHandler: function () {
-            this.fetchPartial('registrationView').done(this.render);
-            this.app.headerView.changeTab('isAuthPage');
         },
 
         /**
@@ -329,17 +273,6 @@ define([
             data.isAutentificated = this.app.isAuthenticated();
             data.isRegistrationTab = true;
             return data;
-        },
-
-        /**
-         * Метод вызывается роутером перед выходом из вида
-         *
-         * @method
-         * @name RegistrationView#viewExitHandler
-         * @returns {undefined}
-         */
-        viewExitHandler: function () {
-
         },
 
         /**

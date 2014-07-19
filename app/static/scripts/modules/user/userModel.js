@@ -3,7 +3,7 @@
 /**
  * Модель страницы пользователя
  *
- * @module UserModel
+ * @class UserModel
  */
 
 define([

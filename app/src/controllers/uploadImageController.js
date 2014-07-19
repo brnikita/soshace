@@ -1,6 +1,6 @@
 'use strict';
 
-var ControllerInit = require('../common/controllerInit'),
+var Controller = require('../common/controller'),
     Fs = require('fs'),
     Crypto = require('crypto'),
     _ = require('underscore'),
@@ -14,7 +14,7 @@ var ControllerInit = require('../common/controllerInit'),
  * @class UploadImageController
  *
  */
-module.exports = ControllerInit.extend({
+module.exports = Controller.extend({
 
     /**
      * Формат изображений, в котором мы записываем их на диск

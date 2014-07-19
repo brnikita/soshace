@@ -11,8 +11,7 @@ var _ = require('underscore'),
     I18n = require('i18n-2'),
     Router = require('./app/src/router'),
     Passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy,
-    strategies = require('./app/src/controllers/auth/strategiesController'),
+    Strategies = require('./app/src/common/strategies'),
     Handlebars = require('express3-handlebars');
 
 var Blog = {
@@ -31,7 +30,7 @@ var Blog = {
         this.configure();
         //Подрубаемся к базе
         DbConnection.databaseOpen(_.bind(function () {
-            this.passportStrategies();
+            Strategies.localStrategy();
             new Router(App);
             App.listen(Soshace.PORT, Soshace.HOST);
         }, this));
@@ -64,7 +63,6 @@ var Blog = {
             defaultLocale: Soshace.DEFAULT_LOCALE
         });
 
-//        App.use(Express.logger());
         App.use(Express.cookieParser());
         App.use(Express.bodyParser());
         App.use(Express.methodOverride());
@@ -103,24 +101,6 @@ var Blog = {
 
         // default to plain-text. send()
         response.type('txt').send('Not found');
-    },
-
-    /**
-     * Конфигурирем утентификацию через соц. сети
-     * и нашу форму логина
-     *
-     * @method
-     * @name Blog.passportStrategies
-     * @returns {undefined}
-     */
-    passportStrategies: function () {
-        Passport.serializeUser(strategies.serializeUser);
-        Passport.deserializeUser(strategies.deSerializeUser);
-
-        //Конфигурируем утентификацию через форму логина
-        Passport.use(new LocalStrategy({
-            usernameField: 'email'
-        }, strategies.local));
     }
 };
 

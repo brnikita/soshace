@@ -3,7 +3,7 @@
 /**
  * Модель страницы добавления статьи
  *
- * @module AddPostModel
+ * @class AddPostModel
  */
 
 define([
@@ -41,11 +41,9 @@ define([
         /**
          * @constructor
          * @name AddPostModel.initialize
-         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function (params) {
-            this.set({locale: params.locale}, {silent: true});
+        initialize: function () {
         }
     });
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-var ControllerInit = require('../../common/controllerInit'),
+var Controller = require('../../common/controller'),
     _ = require('underscore'),
     PostsModel = require('../../models/postsModel'),
     RenderParams = require('../../common/renderParams');
@@ -11,7 +11,7 @@ var ControllerInit = require('../../common/controllerInit'),
  *
  * @class PostsController
  */
-module.exports = ControllerInit.extend({
+module.exports = Controller.extend({
     /**
      * Получаем пост целиком
      *

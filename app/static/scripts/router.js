@@ -9,25 +9,8 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'modules/headerView',
-    'modules/posts/postsList/postsListView',
-    'modules/posts/postDetail/postDetailView',
-    'modules/posts/addPost/addPostView',
-    'modules/registration/registrationView',
-    'modules/finishRegistration/finishRegistrationView',
-    'modules/login/loginView',
-    'modules/user/userView'
-], function ($,
-             _,
-             Backbone,
-             HeaderView,
-             PostsListView,
-             PostDetailView,
-             AddPostView,
-             RegistrationView,
-             FinishRegistrationView,
-             LoginView,
-             UserView) {
+    'config'
+], function ($, _, Backbone) {
     return Backbone.Router.extend({
 
         /**
@@ -40,36 +23,30 @@ define([
         app: null,
 
         /**
-         * Список видов
+         * Ротинг по контроллерам: каждому роуту соответствует контроллер,
+         * у контроллера вызывается метод routeHandler
          *
          * @field
-         * @name Router#views
+         * @name Router#controllersRoutes
          * @type {Object}
          */
-        views: {
-            postDetailView: null,
-            loginView: null,
-            registrationView: null,
-            postsListView: null,
-            addPostView: null,
-            finishRegistrationView: null,
-            userView: null
+        controllersRoutes: {
+            ':locale': 'modules/posts/postsList/postsListController',
+            ':locale/posts/:year/:month/:date/:title': 'modules/posts/postDetail/postDetailController',
+            ':locale/add_post': 'modules/posts/addPost/addPostController',
+            ':locale/login': 'modules/login/loginController',
+            ':locale/registration': 'modules/registration/registrationController',
+            ':locale/user/:username': 'modules/user/userController'
         },
 
         /**
-         * @property
-         * @name Router#routes
+         * Поле содержит список экземпляров контроллеров
+         *
+         * @field
+         * @name Router#controllers
          * @type {Object}
          */
-        routes: {
-            ':locale': 'postsPage',
-            ':locale/posts/:year/:month/:date/:title': 'postPage',
-            ':locale/add_post': 'addPostPage',
-            ':locale/login': 'loginPage',
-            ':locale/registration': 'registrationPage',
-            ':locale/user/:username': 'userPage',
-            ':locale/registration/confirm_email': 'finishRegistrationView'
-        },
+        controllers: null,
 
         /**
          * @constructor
@@ -78,161 +55,69 @@ define([
          */
         initialize: function (params) {
             this.app = params.app;
+            this.controllers = {};
+            this.setRouter();
             Backbone.history.start({
                 pushState: true
             });
         },
 
         /**
-         * Метод удаляет слушатели предыдущих видов
+         * Метод устанавливает роутер по списку роутов
+         * controllersRoutes
          *
          * @method
-         * @name Router#unbindPreviousView
+         * @name Router#setRouter
          * @returns {undefined}
          */
-        unbindPreviousView: function () {
-            _.each(this.views, function (view) {
-                if (view === null) {
-                    return;
-                }
+        setRouter: function(){
+            _.each(this.controllersRoutes, _.bind(function(controllerPath, route){
+                this.route(route, controllerPath);
+            }, this));
 
-                if (typeof view.viewExitHandler === 'function') {
-                    view.viewExitHandler();
-                }
-
-                view.undelegateEvents();
-                view.$el.removeData().unbind();
-            });
+            this.on('route', this.handleRouteByController, this);
         },
 
         /**
-         * Метод обработки роута страницы статей (главная)
+         * Метод возвращает экземпляр контроллера по пути
          *
          * @method
-         * @name Router#postsPage
-         * @param {String} locale локаль
-         * @returns {undefined}
+         * @name Router#getController
+         * @param {String} path путь до контроллера
+         * @returns {jQuery.Deferred}
          */
-        postsPage: function (locale) {
-            if (Soshace.firstLoad) {
-                Soshace.firstLoad = false;
-                return;
+        getController: function (path) {
+            var deferred = $.Deferred(),
+                controllers = this.controllers,
+                controller = controllers[path];
+
+            if (typeof controller !== 'undefined') {
+                return deferred.resolve(controller);
             }
-            this.unbindPreviousView();
-            this.app.headerView.changeTab('isPostsPage');
-            this.views.postsListView = new PostsListView({
-                app: this.app,
-                locale: locale
+
+            require([].concat(path), function (Controller) {
+                controller = new Controller();
+                controllers[path] = controller;
+                deferred.resolve(controller);
             });
+
+            return deferred;
         },
 
         /**
-         * Метод обработки роута страницы просмотра статьи
+         * Метод передает параметры запроса роутеру
          *
          * @method
-         * @name Router#postPage
-         * @param {String} locale локаль
-         * @param {String} year год
-         * @param {String} month месяц
-         * @param {String} date день
-         * @param {String} title заголовок из урла
+         * @name Router#handleRouteByController
+         * @param {String} controllerPath путь до контроллера
+         * @param {Array} routeParams параметры запроса
          * @returns {undefined}
          */
-        postPage: function (locale, year, month, date, title) {
-            if (Soshace.firstLoad) {
-                Soshace.firstLoad = false;
-                return;
-            }
-            this.unbindPreviousView();
-            this.app.headerView.changeTab();
-            this.views.postDetailView = new PostDetailView({
-                app: this.app,
-                locale: locale,
-                year: year,
-                month: month,
-                date: date,
-                title: title
-            });
-        },
-
-        /**
-         * Метод обработки роута страницы добавления статьи
-         *
-         * @method
-         * @name Router#addPostPage
-         * @param {String} locale локаль
-         * @returns {undefined}
-         */
-        addPostPage: function (locale) {
-            this.unbindPreviousView();
-            this.views.addPostView = new AddPostView({
-                app: this.app,
-                locale: locale
-            });
-        },
-
-        /**
-         * Метод обработки роута страницы логина
-         *
-         * @method
-         * @name Router#loginPage
-         * @param {String} locale локаль
-         * @returns {undefined}
-         */
-        loginPage: function (locale) {
-            this.unbindPreviousView();
-            this.views.loginView = new LoginView({
-                app: this.app,
-                locale: locale
-            });
-        },
-
-        /**
-         * Метод обработки роута страницы добавления статьи
-         *
-         * @method
-         * @name Router#registrationPage
-         * @param {String} locale локаль
-         * @returns {undefined}
-         */
-        registrationPage: function (locale) {
-            this.unbindPreviousView();
-            this.views.registrationView = new RegistrationView({
-                app: this.app,
-                locale: locale
-            });
-        },
-
-        /**
-         * Метод обработчик роута страницы завершения регитсрации
-         *
-         * @method
-         * @name Router#finishRegistrationView
-         * @param {String} locale
-         * @returns {undefined}
-         */
-        finishRegistrationView: function (locale) {
-            this.unbindPreviousView();
-            this.views.finishRegistrationView = new FinishRegistrationView({
-                app: this.app,
-                locale: locale
-            });
-        },
-
-        /**
-         * @method
-         * @name Router#userPage
-         * @param {String} locale локаль
-         * @param {String} userName
-         * @returns {undefined}
-         */
-        userPage: function (locale, userName) {
-            this.unbindPreviousView();
-            this.views.userView = new UserView({
-                app: this.app,
-                locale: locale,
-                userName: userName
-            });
+        handleRouteByController: function (controllerPath, routeParams) {
+            this.getController(controllerPath).
+                done(function(controller){
+                    controller.routeHandler.apply(controller, routeParams);
+                });
         }
     });
 });

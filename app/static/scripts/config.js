@@ -10,15 +10,14 @@ define(function () {
     }
 
     window.Soshace = {
-
         /**
-         * Путь до директории шаблонов
+         * Ссылка на экземпляр приложения
          *
-         * @constant
-         * @name Soshace.viewsPath
-         * @type {String}
+         * @field
+         * @name Soshace.app
+         * @type {Backbone.Layout}
          */
-        viewsPath: '/static/views/',
+        app: null,
 
         /**
          * Список сохраненных шаблонов
@@ -53,6 +52,19 @@ define(function () {
          * @type {Object}
          */
         locales: {},
+
+        /**
+         * Список путей
+         *
+         * @field
+         * @name Soshace.paths
+         * @type {Object}
+         */
+        paths: {
+            static: '/static/',
+            scripts: '/static/scripts/',
+            views: '/static/views/'
+        },
 
         /**
          * Поле, содержащее относительнные пути

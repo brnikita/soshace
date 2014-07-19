@@ -158,8 +158,8 @@ module.exports = function (grunt) {
                 'Gruntfile.js',
                 '<%= blog.app %>/static/{,*/}*.js',
                 '<%= blog.app %>/src/{,*/}*.js',
-                '!<%= blog.app %>/static/scripts/libs/{,*/}*.js',
-                '!<%= blog.app %>/src/libs/{,*/}*.js'
+                '!<%= blog.app %>/static/scripts/vendors/{,*/}*.js',
+                '!<%= blog.app %>/src/vendors/{,*/}*.js'
             ]
         },
 

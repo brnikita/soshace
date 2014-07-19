@@ -7,7 +7,7 @@
 /**
  * Вид страницы добавления поста
  *
- * @module AddPostView
+ * @class AddPostView
  */
 
 define([
@@ -17,42 +17,14 @@ define([
     'backbone',
     'utils/helpers',
     'utils/widgets',
-    './addPostModel',
     'bootstrap',
     'prettify',
     'jquery.hotkeys',
     'jquery.fileupload',
-    'backbone.layoutmanager'
-], function ($, _, _s, Backbone, Helpers, Widgets, AddPostModel) {
+    'backbone.layoutmanager',
+    'config'
+], function ($, _, _s, Backbone, Helpers, Widgets) {
     return Backbone.Layout.extend({
-
-        /**
-         * Ссылка на объект App
-         *
-         * @field
-         * @name AddPostView#app
-         * @type {Object}
-         */
-        app: null,
-
-        /**
-         * Класс родительского элемента, к которому
-         * будет прикреплен вид
-         *
-         * @field
-         * @name AddPostView#el
-         * @type {string}
-         */
-        el: '.js-content',
-
-        /**
-         * Модель деталей статьи
-         *
-         * @field
-         * @name AddPostView#model
-         * @type {Backbone.Model | null}
-         */
-        model: null,
 
         /**
          * Список ошибок: поля и тексты ошибок
@@ -188,10 +160,9 @@ define([
         /**
          * @constructor
          * @name AddPostView#initialize
-         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function (params) {
+        initialize: function () {
             var commandRole = this.defaultConfig.commandRole;
 
             _.bindAll(this,
@@ -199,20 +170,6 @@ define([
                 'windowScrollHandler',
                 'touchHandler'
             );
-
-            Widgets.setBodyClass('bg-symbols bg-color-blue');
-            this.app = params.app;
-            this.model = new AddPostModel({
-                locale: params.locale
-            });
-
-            if (Soshace.firstLoad) {
-                Soshace.firstLoad = false;
-                this.afterRender();
-            } else {
-                this.app.headerView.changeTab('isAddPostPage');
-                this.render();
-            }
 
             this.toolbarBtnSelector = 'a[data-' +
                 commandRole +
@@ -775,7 +732,8 @@ define([
          * @returns {Boolean}
          */
         isEditorDisabled: function () {
-            var emailConfirmed = this.app.isAuthenticated() &&
+            var app = Soshace.app,
+                emailConfirmed = app.isAuthenticated() &&
                 Soshace.profile.emailConfirmed;
 
             return !emailConfirmed;
@@ -803,9 +761,10 @@ define([
          * @returns {undefined}
          */
         showNotConfirmedEmailMessage: function () {
-            var $messages = this.elements.messages;
+            var app = Soshace.app,
+                $messages = this.elements.messages;
 
-            if (!this.app.isAuthenticated()) {
+            if (!app.isAuthenticated()) {
                 return;
             }
 
@@ -828,9 +787,10 @@ define([
          * @returns {undefined}
          */
         showSignInMessage: function () {
-            var $messages = this.elements.messages;
+            var app = Soshace.app,
+                $messages = this.elements.messages;
 
-            if (this.app.isAuthenticated()) {
+            if (app.isAuthenticated()) {
                 return;
             }
 

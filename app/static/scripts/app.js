@@ -15,47 +15,44 @@ require([
     'google-analytics',
     'yandex-metrika'
 ], function ($, _, Handlebars, Backbone, Router, Helpers, Widgets, HeaderView) {
-    var App = {
+    var App = Backbone.Layout.extend({
 
         /**
          * @property
-         * @name App.router
+         * @name App#router
          * @type {Backbone.Router | null}
          */
         router: null,
 
         /**
-         * Экземпляр вид шапки
-         *
          * @field
-         * @name App.headerView
-         * @type {Backbone.Layout | null}
+         * @name App#el
+         * @type {String}
          */
-        headerView: null,
+        el: 'body',
 
         /**
          * Список ссылкок на элемнты DOM
          *
          * @field
-         * @name App.elements
+         * @name App#elements
          * @type {Object}
          */
         elements: {
-            body: null,
             title: null
         },
 
         /**
-         * @method
-         * @name App.initialize
+         * @constructor
+         * @name App#initialize
          * @returns {undefined}
          */
         initialize: function () {
             _.bindAll(this, 'routerLinkHandler', 'initializeCompleted');
             this.setElements();
-            this.headerView = new HeaderView({
-                app: App
-            });
+            this.setView('.js-header', new HeaderView({
+                app: this
+            }));
             this.getCommonData().done(this.initializeCompleted);
         },
 
@@ -64,7 +61,7 @@ require([
          * аутентифицированного пользователя
          *
          * @method
-         * @name App.isAuthenticated
+         * @name App#isAuthenticated
          * @returns {Boolean}
          */
         isAuthenticated: function () {
@@ -78,15 +75,14 @@ require([
          * Когда загружается все необходимы польховательские данные
          *
          * @method
-         * @name App.initializeCompleted
+         * @name App#initializeCompleted
          * @returns {undefined}
          */
         initializeCompleted: function () {
-            var $body = this.elements.body;
             Widgets.hideLoader();
-            $body.on('click', '.js-router-link', this.routerLinkHandler);
+            this.$el.on('click', '.js-router-link', this.routerLinkHandler);
             this.router = new Router({
-                app: App
+                app: this
             });
         },
 
@@ -97,7 +93,7 @@ require([
          * Такие как: локали, данные профиля пользователя
          *
          * @method
-         * @name App.getCommonData
+         * @name App#getCommonData
          * @returns {jQuery.Deferred}
          */
         getCommonData: function () {
@@ -112,11 +108,10 @@ require([
          * элементы DOM
          *
          * @method
-         * @name App.setElements
+         * @name App#setElements
          * @returns {undefined}
          */
         setElements: function () {
-            this.elements.body = $('body');
             this.elements.title = $('title');
         },
 
@@ -125,7 +120,7 @@ require([
          * роутера
          *
          * @method
-         * @name App.routerLinkHandler
+         * @name App#routerLinkHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
@@ -145,7 +140,7 @@ require([
          * Возвращает деферред объект
          *
          * @method
-         * @name App.getProfileData
+         * @name App#getProfileData
          * @returns {jQuery.Deferred}
          */
         getProfileData: function () {
@@ -170,7 +165,7 @@ require([
          * в глобальную переменную Soshace.
          *
          * @method
-         * @name App.getCurrentLocale
+         * @name App#getCurrentLocale
          * @returns {deferred}
          */
         getCurrentLocale: function () {
@@ -194,9 +189,9 @@ require([
 
             return deferred;
         }
-    };
+    });
 
-    App.initialize();
+    Soshace.app = new App();
 });
 
 

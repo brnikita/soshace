@@ -12,29 +12,9 @@ define([
     'backbone',
     'utils/helpers',
     'utils/widgets',
-    './loginModel',
     'backbone.layoutmanager'
-], function ($, _, Backbone, Helpers, Widgets, LoginModel) {
+], function ($, _, Backbone, Helpers, Widgets) {
     return Backbone.Layout.extend({
-
-        /**
-         * Ссылка на объект App
-         *
-         * @field
-         * @name LoginView#app
-         * @type {Object}
-         */
-        app: null,
-
-        /**
-         * Класс родительского элемента, к которому
-         * будет прикреплен вид
-         *
-         * @field
-         * @name LoginView#el
-         * @type {string}
-         */
-        el: '.js-content',
 
         /**
          * Модель формы логина
@@ -76,25 +56,14 @@ define([
         /**
          * @constructor
          * @name LoginView#initialize
-         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function (params) {
+        initialize: function () {
             _.bindAll(this,
                 'render',
                 'userLoginSuccess',
                 'authenticatedHandler'
             );
-            Widgets.setBodyClass('bg-symbols bg-color-yellow');
-            this.app = params.app;
-            this.model = new LoginModel({
-                locale: params.locale
-            });
-            if (Soshace.firstLoad) {
-                this.firstLoadHandler();
-            } else {
-                this.secondLoadHandler();
-            }
         },
 
         /**
@@ -186,30 +155,6 @@ define([
         },
 
         /**
-         * Метод исполняется, если страница была отрендерена на серевере
-         *
-         * @method
-         * @name LoginView#firstLoadHandler
-         * @returns {undefined}
-         */
-        firstLoadHandler: function () {
-            Soshace.firstLoad = false;
-            this.afterRender();
-        },
-
-        /**
-         * Метод исполняется при клиентском рендере страницы
-         *
-         * @method
-         * @name LoginView#secondLoadHandler
-         * @returns {undefined}
-         */
-        secondLoadHandler: function () {
-            this.fetchPartial('loginView').done(this.render);
-            this.app.headerView.changeTab('isAuthPage');
-        },
-
-        /**
          * @method
          * @name LoginView#serialize
          * @returns {Object}
@@ -219,17 +164,6 @@ define([
             data.isLoginTab = true;
             data.isAutentificated = this.app.isAuthenticated();
             return data;
-        },
-
-        /**
-         * Метод вызывается роутером перед выходом из вида
-         *
-         * @method
-         * @name LoginView#viewExitHandler
-         * @returns {undefined}
-         */
-        viewExitHandler: function(){
-
         },
 
         /**

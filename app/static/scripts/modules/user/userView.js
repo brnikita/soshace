@@ -3,38 +3,17 @@
 /**
  * Вид страницы пользователя
  *
- * @module UserView
+ * @class UserView
  */
 
 define([
     'jquery',
     'underscore',
     'backbone',
-    'utils/widgets',
-    './userModel',
     'utils/helpers',
     'backbone.layoutmanager'
-], function ($, _, Backbone, Widgets, UserModel, Helpers) {
+], function ($, _, Backbone, Helpers) {
     return Backbone.Layout.extend({
-        /**
-         * Ссылка на объект App
-         *
-         * @field
-         * @name UserView#app
-         * @type {Object}
-         */
-        app: null,
-
-        /**
-         * Класс родительского элемента, к которому
-         * будет прикреплен вид
-         *
-         * @field
-         * @name UserView#el
-         * @type {string}
-         */
-        el: '.js-content',
-
         /**
          * Модель деталей статьи
          *
@@ -67,51 +46,9 @@ define([
         /**
          * @constructor
          * @name UserView#initialize
-         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function (params) {
-            this.app = params.app;
-            if (Soshace.firstLoad) {
-                this.firstLoadHandler();
-            } else {
-                this.secondLoadHandler();
-            }
-        },
-
-        /**
-         * Метод обработчик первой загрузки страницы
-         * Рендеринг был на сервере
-         *
-         * @method
-         * @name UserView#firstLoadHandler
-         * @returns {undefined}
-         */
-        firstLoadHandler: function () {
-            Soshace.firstLoad = false;
-            this.afterRender();
-        },
-
-        /**
-         * Метод обработчик второй загрузки страницы
-         * Клиентский рендеринг
-         *
-         * @method
-         * @name UserView#secondLoadHandler
-         * @returns {undefined}
-         */
-        secondLoadHandler: function () {
-            var _this = this;
-
-            _.bindAll(this, 'render');
-            this.app.headerView.changeTab('isUserPage');
-            Widgets.setBodyClass('bg-symbols bg-color-blue');
-            this.model = new UserModel();
-            this.model.set({
-                locale: _this.options.locale,
-                userName: _this.options.userName
-            });
-            this.model.getUser().done(this.render);
+        initialize: function () {
         },
 
         /**
@@ -147,17 +84,6 @@ define([
             var data = this.model.toJSON();
             data.isAutentificated = this.app.isAuthenticated();
             return data;
-        },
-
-        /**
-         * Метод вызывается роутером перед выходом из вида
-         *
-         * @method
-         * @name UserView#viewExitHandler
-         * @returns {undefined}
-         */
-        viewExitHandler: function () {
-
         },
 
         /**

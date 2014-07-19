@@ -1,5 +1,5 @@
 'use strict';
-var ControllerInit = require('../common/controllerInit'),
+var Controller = require('../common/controller'),
     _ = require('underscore'),
     RenderParams = require('../common/renderParams');
 /**
@@ -7,7 +7,7 @@ var ControllerInit = require('../common/controllerInit'),
  *
  * @class UserController
  */
-module.exports = ControllerInit.extend({
+module.exports = Controller.extend({
 
     /**
      * Метод отдает в ответе json с данными профиля

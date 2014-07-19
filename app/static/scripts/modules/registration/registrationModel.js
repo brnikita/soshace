@@ -3,7 +3,7 @@
 /**
  * Модель страницы регистрации
  *
- * @module RegistrationModel
+ * @class RegistrationModel
  */
 
 define([
@@ -94,16 +94,14 @@ define([
          * @name RegistrationModel#url
          * @type {string}
          */
-        url: '/api/create_user',
+        url: Soshace.urls.api.createUser,
 
         /**
          * @constructor
          * @name RegistrationModel#initialize
-         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function (params) {
-            this.set({locale: params.locale}, {silent: true});
+        initialize: function () {
         },
 
         /**
