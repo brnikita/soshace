@@ -30,7 +30,7 @@ module.exports = {
         }
 
         if (typeof value === 'string') {
-                return !(/^\s+$/.test(value));
+            return !(/^\s+$/.test(value));
         }
 
         return true;

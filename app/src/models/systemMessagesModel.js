@@ -18,3 +18,5 @@ var SystemMessagesShema = Mongoose.Schema({
         default: false
     }
 });
+
+module.exports = Mongoose.model('systemMessages', SystemMessagesShema);

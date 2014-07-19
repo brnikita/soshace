@@ -62,7 +62,7 @@ module.exports = function (grunt) {
             views: {
                 files: '<%= blog.app %>/views/**/*.hbs',
                 tasks: [
-                    'copy:views'
+                    'handlebars'
                 ]
             },
             locales: {
@@ -74,7 +74,7 @@ module.exports = function (grunt) {
         },
 
         // Очищаем папку статики
-        clean: ['<%= blog.dist %>/*'],
+        clean: ['<%= blog.dist %>'],
 
         // Копируем файлы из папки статики
         copy: {
@@ -106,12 +106,6 @@ module.exports = function (grunt) {
                 cwd: '<%= blog.app %>/static',
                 dest: '<%= blog.dist %>',
                 src: 'fonts/*'
-            },
-            views: {
-                expand: true,
-                cwd: '<%= blog.app %>',
-                src: 'views/**/*.hbs',
-                dest: '<%= blog.dist %>'
             },
             locales: {
                 expand: true,
@@ -191,6 +185,18 @@ module.exports = function (grunt) {
                     include: ['vendors/require.js']
                 }
             }
+        },
+
+        //Шаблоны
+        handlebars: {
+            compile: {
+                options: {
+                    namespace: 'Soshace.hbs'
+                },
+                files: {
+                    '<%= blog.dist %>/views/templates.js': '<%= blog.app %>/views/**/*.hbs'
+                }
+            }
         }
     });
 
@@ -198,7 +204,6 @@ module.exports = function (grunt) {
     grunt.registerTask('copyDev', [
         'copy:requireConfig',
         'copy:scripts',
-        'copy:views',
         'copy:locales',
         'copy:images',
         'copy:fonts'
@@ -210,6 +215,7 @@ module.exports = function (grunt) {
         'clean',
         'copyDev',
         'less:dev',
+        'handlebars',
         'watch'
     ]);
 
@@ -219,12 +225,14 @@ module.exports = function (grunt) {
         'clean',
         'copy:prod',
         'requirejs',
-        'less:prod'
+        'less:prod',
+        'handlebars'
     ]);
 
     grunt.registerTask('default', [
         'copyDev',
         'less:dev',
+        'handlebars',
         'watch'
     ]);
 };
