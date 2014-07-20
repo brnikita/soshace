@@ -44,6 +44,7 @@ define(['underscore', 'utils/controller', './postDetailModel', './postDetailView
              * @returns {undefined}
              */
             firstLoad: function () {
+                this.view.$el = $('.js-content-el');
                 this.view.afterRender();
             },
 
@@ -56,22 +57,13 @@ define(['underscore', 'utils/controller', './postDetailModel', './postDetailView
              */
             secondLoad: function () {
                 var view = this.view,
-                    params = this.options,
                     app = Soshace.app;
 
-                this.model.on('change', function () {
+                app.setView('.js-content', view);
+                this.model.on('postReceived', function () {
                     view.render();
                 });
-
-                this.model.fetch({data: {
-                    locale: params.locale,
-                    year: params.year,
-                    month: params.month,
-                    date: params.date,
-                    title: params.title
-                }});
-
-                app.setView('.js-content', view);
+                this.model.getPost(this.routeParams);
                 app.$el.attr('class', 'bg-symbols bg-color-green');
                 app.getView('.js-header').changeTab();
             }

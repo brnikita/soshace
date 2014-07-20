@@ -11,9 +11,8 @@ define([
     'underscore',
     'backbone',
     'utils/helpers',
-    'backbone.layoutmanager',
     'jquery.cookie',
-    'config'
+    'backbone.layoutmanager'
 ], function ($, _, Backbone, Helpers) {
     return Backbone.Layout.extend({
 
@@ -64,7 +63,7 @@ define([
          * @name HeaderView.elements
          * @type {string}
          */
-        template: 'partials/headerView',
+        template: Soshace.hbs['partials/headerView'],
 
         /**
          * @constructor
@@ -125,8 +124,9 @@ define([
             data = _.extend(data, this.tabsConfig);
             data.locale = Helpers.getLocale();
             data.isAuthenticated = this.app.isAuthenticated();
+            data.paths = Soshace.paths;
             if (data.isAuthenticated) {
-                data.userName = Soshace.profile.userName;
+                data.profileUserName = Soshace.profile.userName;
             }
             return data;
         },

@@ -32,16 +32,15 @@ define([
         /**
          * @method
          * @name PostsListModel.getPosts
-         * @param {string} locale локаль
-         * @param {string} page номер страницы
+         * @param {Array} routeParams параметры запроса
          * @returns {undefined}
          */
-        getPosts: function (locale, page) {
+        getPosts: function (routeParams) {
             this.fetch({
-                data: $.param({
-                    locale: locale,
-                    page: page
-                }),
+                data: {
+                    locale: routeParams[0],
+                    page: routeParams[1]
+                },
                 silent: true
             }).done(this.getPostsSuccess);
         },
@@ -59,7 +58,7 @@ define([
                 postsList = null;
             }
             this.set({posts: postsList}, {silent: true});
-            this.trigger('updatePosts');
+            this.trigger('postsReceived');
         }
     });
 });

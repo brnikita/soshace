@@ -1,6 +1,6 @@
 <div class="header-content clearfix">
     <a href="/{{locale}}" class="js-router-link header__logo">
-        <img src="/static/images/logo.png" alt="Soshace" class="img-responsive"/>
+        <img src="{{paths.static}}images/logo.png" alt="Soshace" class="img-responsive"/>
     </a>
 
     <div class="header__tabs">
@@ -13,7 +13,7 @@
                     </span>
                 </span>
             {{else}}
-                <a href="/{{locale}}/user/{{userName}}"
+                <a href="/{{locale}}/user/{{profileUserName}}"
                    class="js-router-link header__tab header__tab-link">
                     <span class="glyphicon glyphicon-user"></span>
                     <span class="hidden-xs">

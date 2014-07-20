@@ -17,12 +17,9 @@ define([
     'backbone',
     'utils/helpers',
     'utils/widgets',
-    'bootstrap',
     'prettify',
     'jquery.hotkeys',
-    'jquery.fileupload',
-    'backbone.layoutmanager',
-    'config'
+    'jquery.fileupload'
 ], function ($, _, _s, Backbone, Helpers, Widgets) {
     return Backbone.Layout.extend({
 
@@ -155,7 +152,7 @@ define([
          * @name AddPostView#elements
          * @type {string}
          */
-        template: 'posts/addPostView',
+        template: Soshace.hbs['posts/addPostView'],
 
         /**
          * @constructor
@@ -734,7 +731,7 @@ define([
         isEditorDisabled: function () {
             var app = Soshace.app,
                 emailConfirmed = app.isAuthenticated() &&
-                Soshace.profile.emailConfirmed;
+                    Soshace.profile.emailConfirmed;
 
             return !emailConfirmed;
         },
@@ -772,10 +769,7 @@ define([
                 return;
             }
 
-            Helpers.renderTemplate('messages/notConfirmedEmail').
-                done(function (template) {
-                    $messages.append(template);
-                });
+            $messages.append(Soshace.hbs['messages/notConfirmedEmail']());
         },
 
         /**
@@ -788,18 +782,17 @@ define([
          */
         showSignInMessage: function () {
             var app = Soshace.app,
-                $messages = this.elements.messages;
+                $messages = this.elements.messages,
+                template;
 
             if (app.isAuthenticated()) {
                 return;
             }
 
-            Helpers.renderTemplate('messages/enableEditor', {
+            template = Soshace.hbs['messages/enableEditor']({
                 locale: Helpers.getLocale()
-            }).
-                done(function (template) {
-                    $messages.append(template);
-                });
+            });
+            $messages.append(template);
         },
 
         /**

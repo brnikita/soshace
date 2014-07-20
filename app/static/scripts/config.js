@@ -62,8 +62,7 @@ define(function () {
          */
         paths: {
             static: '/static/',
-            scripts: '/static/scripts/',
-            views: '/static/views/'
+            scripts: '/static/scripts/'
         },
 
         /**

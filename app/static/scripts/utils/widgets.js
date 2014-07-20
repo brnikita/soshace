@@ -9,8 +9,7 @@
 define([
     'jquery'
 ], function ($) {
-    var $loader = $('.js-loader-mask'),
-        $body = $('body');
+    var $loader = $('.js-loader-mask');
 
     return {
         /**
@@ -22,7 +21,7 @@ define([
          * @returns {undefined}
          */
         showLoader: function () {
-            $body.addClass('body-load');
+            Soshace.app.$el.addClass('body-load');
             $loader.removeClass('hide');
         },
 
@@ -34,7 +33,7 @@ define([
          * @returns {undefined}
          */
         hideLoader: function () {
-            $body.removeClass('body-load');
+            Soshace.app.$el.removeClass('body-load');
             $loader.addClass('hide');
         },
 

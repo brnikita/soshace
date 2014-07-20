@@ -9,10 +9,8 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
-    'utils/helpers',
-    'backbone.layoutmanager'
-], function ($, _, Backbone, Helpers) {
+    'backbone'
+], function ($, _, Backbone) {
     return Backbone.Layout.extend({
         /**
          * Модель деталей статьи
@@ -41,7 +39,7 @@ define([
          * @name UserView#elements
          * @type {string}
          */
-        template: 'userView',
+        template: Soshace.hbs.userView,
 
         /**
          * @constructor
@@ -59,9 +57,10 @@ define([
          * @returns {undefined}
          */
         showNotConfirmedEmailMessage: function () {
-            var $messages = this.elements.messages;
+            var app = Soshace.app,
+                $messages = this.elements.messages;
 
-            if (!this.app.isAuthenticated()) {
+            if (!app.isAuthenticated()) {
                 return;
             }
 
@@ -69,10 +68,7 @@ define([
                 return;
             }
 
-            Helpers.renderTemplate('messages/notConfirmedEmail').
-                done(function (template) {
-                    $messages.append(template);
-                });
+            $messages.append(Soshace.hbs['messages/notConfirmedEmail']());
         },
 
         /**
@@ -81,8 +77,9 @@ define([
          * @returns {Object}
          */
         serialize: function () {
-            var data = this.model.toJSON();
-            data.isAutentificated = this.app.isAuthenticated();
+            var app = Soshace.app,
+                data = this.model.toJSON();
+            data.isAutentificated = app.isAuthenticated();
             return data;
         },
 

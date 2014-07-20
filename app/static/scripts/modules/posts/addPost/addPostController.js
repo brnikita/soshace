@@ -44,6 +44,7 @@ define(['utils/controller', './addPostModel', './addPostView'],
              * @returns {undefined}
              */
             firstLoad: function () {
+                this.view.$el = $('.js-content-el');
                 this.view.afterRender();
             },
 

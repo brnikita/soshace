@@ -12,8 +12,8 @@ define([
     'backbone',
     'utils/helpers',
     'utils/widgets',
-    'backbone.layoutmanager'
-], function ($, _, Backbone, Helpers, Widgets) {
+    'handlebars'
+], function ($, _, Backbone, Helpers, Widgets, Handlebars) {
     return Backbone.Layout.extend({
 
         /**
@@ -51,7 +51,7 @@ define([
          * @name LoginView#template
          * @type {string}
          */
-        template: 'auth/authView',
+        template: Soshace.hbs['auth/authView'],
 
         /**
          * @constructor
@@ -63,6 +63,10 @@ define([
                 'render',
                 'userLoginSuccess',
                 'authenticatedHandler'
+            );
+            Handlebars.registerPartial(
+                'loginView',
+                Soshace.hbs['partials/loginView']
             );
         },
 
@@ -94,12 +98,13 @@ define([
          * @returns {undefined}
          */
         userLoginSuccess: function (model, response) {
-            var error = response.error;
+            var app = Soshace.app,
+                error = response.error;
 
             if (error) {
                 Widgets.showMessages(error);
             } else {
-                this.app.getProfileData().
+                app.getProfileData().
                     done(this.authenticatedHandler);
             }
         },
@@ -160,9 +165,10 @@ define([
          * @returns {Object}
          */
         serialize: function () {
-            var data = this.model.toJSON();
+            var app = Soshace.app,
+                data = this.model.toJSON();
             data.isLoginTab = true;
-            data.isAutentificated = this.app.isAuthenticated();
+            data.isAutentificated = app.isAuthenticated();
             return data;
         },
 

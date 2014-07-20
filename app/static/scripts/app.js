@@ -1,20 +1,15 @@
 'use strict';
 
-require([
+define([
     'jquery',
     'underscore',
-    'handlebars',
     'backbone',
     'router',
     'utils/helpers',
     'utils/widgets',
     'modules/headerView',
-    'utils/handlebarsHelpers',
-    'backbone.layoutmanager',
-    'utils/backboneLayoutConfigure',
-    'google-analytics',
-    'yandex-metrika'
-], function ($, _, Handlebars, Backbone, Router, Helpers, Widgets, HeaderView) {
+    'backbone.layoutmanager'
+], function ($, _, Backbone, Router, Helpers, Widgets, HeaderView) {
     var App = Backbone.Layout.extend({
 
         /**

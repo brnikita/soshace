@@ -11,11 +11,11 @@ define([
     'underscore',
     'backbone',
     'utils/helpers',
-    'backbone.layoutmanager',
+    'handlebars',
     'backbone.validation',
     'utils/backboneValidationExtension',
     'utils/plugins/jquery.controlStatus'
-], function ($, _, Backbone, Helpers) {
+], function ($, _, Backbone, Helpers, Handlebars) {
     return Backbone.Layout.extend({
 
         /**
@@ -56,7 +56,7 @@ define([
          * @name RegistrationView#template
          * @type {string}
          */
-        template: 'auth/authView',
+        template: Soshace.hbs['auth/authView'],
 
         /**
          * @constructor
@@ -68,6 +68,10 @@ define([
                 'render',
                 'userRegistrationSuccess',
                 'userRegistrationFail'
+            );
+            Handlebars.registerPartial(
+                'registrationView',
+                Soshace.hbs['partials/registrationView']
             );
             Backbone.Validation.bind(this);
         },
@@ -268,9 +272,10 @@ define([
          * @returns {Object}
          */
         serialize: function () {
-            var data = this.model.toJSON();
+            var app = Soshace.app,
+                data = this.model.toJSON();
 
-            data.isAutentificated = this.app.isAuthenticated();
+            data.isAutentificated = app.isAuthenticated();
             data.isRegistrationTab = true;
             return data;
         },

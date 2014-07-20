@@ -11,8 +11,7 @@ define([
     'underscore',
     'backbone',
     'utils/widgets',
-    'utils/helpers',
-    'backbone.layoutmanager'
+    'utils/helpers'
 ], function ($, _, Backbone, Widgets, Helpers) {
     return Backbone.Layout.extend({
         /**
@@ -39,7 +38,7 @@ define([
          * @name PostsListView#elements
          * @type {string}
          */
-        template: 'posts/postsListView',
+        template: Soshace.hbs['posts/postsListView'],
 
         /**
          * @constructor

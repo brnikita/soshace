@@ -5,8 +5,13 @@
  *
  * @class UserController
  */
-define(['utils/controller', './userModel', './userView'],
-    function (Controller, UserModel, UserView) {
+define([
+        'underscore',
+        'utils/controller',
+        './userModel',
+        './userView'
+    ],
+    function (_, Controller, UserModel, UserView) {
         return Controller.extend({
 
             /**
@@ -44,6 +49,7 @@ define(['utils/controller', './userModel', './userView'],
              * @returns {undefined}
              */
             firstLoad: function () {
+                this.view.$el = $('.js-content-el');
                 this.view.afterRender();
             },
 
@@ -55,17 +61,17 @@ define(['utils/controller', './userModel', './userView'],
              * @returns {undefined}
              */
             secondLoad: function () {
-                var options = this.options,
+                var params = this.routeParams,
                     view = this.view,
                     app = Soshace.app;
 
                 this.model.set({
-                    locale: options.locale,
-                    userName: options.userName
+                    locale: params[0],
+                    userName: params[1]
                 });
-                this.model.getUser().done(view.render);
 
                 app.setView('.js-content', view);
+                this.model.getUser().done(_.bind(view.render, view));
                 app.getView('.js-header').changeTab('isUserPage');
                 app.$el.attr('class', 'bg-symbols bg-color-blue');
             }

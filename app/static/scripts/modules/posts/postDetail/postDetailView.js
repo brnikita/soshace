@@ -9,8 +9,7 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
-    'backbone.layoutmanager'
+    'backbone'
 ], function ($, _, Backbone) {
     return Backbone.Layout.extend({
 
@@ -38,7 +37,7 @@ define([
          * @name PostDetailView#elements
          * @type {string}
          */
-        template: 'posts/postDetailView',
+        template: Soshace.hbs['posts/postDetailView'],
 
         /**
          * @constructor
@@ -54,10 +53,11 @@ define([
          * @returns {Object}
          */
         serialize: function () {
-            var data = {},
+            var app = Soshace.app,
+                data = {},
                 model = this.model.toJSON();
 
-            data.isAutentificated = this.app.isAuthenticated();
+            data.isAutentificated = app.isAuthenticated();
             data.post = model;
             return data;
         },

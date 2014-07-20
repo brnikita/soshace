@@ -10,7 +10,9 @@
  */
 module.exports = function (request) {
     var HandlebarsHelpers = require('./handlebarsHelpers'),
-        helpers = new HandlebarsHelpers(request);
+        helpers = new HandlebarsHelpers(request),
+        profile = request.user && request.user[0],
+        profileUserName = profile && profile.userName;
 
     return {
         isProduction: Soshace.IS_PRODUCTION,
@@ -18,6 +20,8 @@ module.exports = function (request) {
         helpers: helpers,
         bodyClass: 'bg-color-green bg-symbols',
         locale: request.i18n.getLocale(),
-        isAuthenticated: request.isAuthenticated()
+        isAuthenticated: request.isAuthenticated(),
+        paths: Soshace.PATHS,
+        profileUserName: profileUserName
     };
 };

@@ -59,12 +59,6 @@ module.exports = function (grunt) {
                     'copy:fonts'
                 ]
             },
-            views: {
-                files: '<%= blog.app %>/views/**/*.hbs',
-                tasks: [
-                    'handlebars'
-                ]
-            },
             locales: {
                 files: '<%= blog.app %>/locales/*.json',
                 tasks: [
@@ -129,12 +123,6 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: '<%= blog.app %>',
-                        src: 'views/**/*.hbs',
-                        dest: '<%= blog.dist %>'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= blog.app %>',
                         src: 'locales/**/*.json',
                         dest: '<%= blog.dist %>'
                     }
@@ -191,10 +179,20 @@ module.exports = function (grunt) {
         handlebars: {
             compile: {
                 options: {
-                    namespace: 'Soshace.hbs'
+                    amd: ['handlebars', 'config'],
+                    namespace: 'Soshace.hbs',
+                    processName: function(filePath) {
+                        return filePath.replace(/app\/views\/|\.hbs/g, '');
+                    }
                 },
                 files: {
-                    '<%= blog.dist %>/views/templates.js': '<%= blog.app %>/views/**/*.hbs'
+                    '<%= blog.dist %>/scripts/templates.js': [
+                        '<%= blog.app %>/views/auth/*.hbs',
+                        '<%= blog.app %>/views/messages/*.hbs',
+                        '<%= blog.app %>/views/partials/*.hbs',
+                        '<%= blog.app %>/views/posts/*.hbs',
+                        '<%= blog.app %>/views/userView.hbs'
+                    ]
                 }
             }
         }
@@ -224,9 +222,9 @@ module.exports = function (grunt) {
         'newer:jshint:all',
         'clean',
         'copy:prod',
+        'handlebars',
         'requirejs',
-        'less:prod',
-        'handlebars'
+        'less:prod'
     ]);
 
     grunt.registerTask('default', [

@@ -44,6 +44,7 @@ define(['underscore', 'utils/controller', './postsListModel', './postsListView']
              * @returns {undefined}
              */
             firstLoad: function () {
+                this.view.$el = $('.js-content-el');
                 this.view.afterRender();
             },
 
@@ -56,15 +57,13 @@ define(['underscore', 'utils/controller', './postsListModel', './postsListView']
              */
             secondLoad: function () {
                 var view = this.view,
-                    options = this.options,
                     app = Soshace.app;
 
-                this.model.on('updatePosts', _.bind(function () {
+                app.setView('.js-content', view);
+                this.model.on('postsReceived', _.bind(function () {
                     view.render();
                 }, this));
-
-                this.model.getPosts(options.locale, options.page);
-                app.setView('.js-content', view);
+                this.model.getPosts(this.routeParams);
                 app.$el.attr('class', 'bg-symbols bg-color-green');
                 app.getView('.js-header').changeTab();
             }

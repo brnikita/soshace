@@ -6,9 +6,9 @@
     <title>{{title}}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <link href="/static/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="{{paths.static}}favicon.ico" rel="shortcut icon" type="image/x-icon">
     <!--Откомпилированные compass файлы, версия берется из package.json-->
-    <link href="/static/styles/styles.css?v=0.0.3" rel="stylesheet">
+    <link href="{{paths.styles}}styles.css?v=0.0.3" rel="stylesheet">
 </head>
 <body class="{{bodyClass}} body-load">
 <div class="loader js-loader-mask"></div>
@@ -16,7 +16,9 @@
     {{> headerView}}
 </div>
 <div class="js-content content">
-    {{{body}}}
+    <div class="js-content-el">
+        {{{body}}}
+    </div>
 </div>
 </body>
 </html>
@@ -29,9 +31,7 @@
     </noscript>
     <!-- /Yandex.Metrika counter-->
     <!--Минифицированные скрипты, версия берется из package.json-->
-    <script src="/static/scripts/scripts.min.js?v={{version}}"></script>
+    <script src="{{paths.scripts}}scripts.min.js?v={{version}}"></script>
 {{else}}
-    <script src="/static/scripts/vendors/require.js"></script>
-    <script src="/static/require.conf.js"></script>
-    <script src="/static/scripts/app.js"></script>
+    <script data-main="{{paths.static}}require.conf" src="{{paths.scripts}}vendors/require.js"></script>
 {{/if}}

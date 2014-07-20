@@ -10,9 +10,8 @@
 define([
     'jquery',
     'underscore',
-    'handlebars',
     'jquery.cookie'
-], function ($, _, Handlebars) {
+], function ($, _) {
     return {
         /**
          * TODO: в jquery есть такое же
@@ -33,37 +32,6 @@ define([
             });
 
             return formObject;
-        },
-
-        /**
-         * Метод загружает шаблон по пути и рендерит его
-         * Передает параметры в шаблон
-         *
-         * @method
-         * @name Helpers.renderTemplate
-         * @param {String} templatePath путь до шаблона
-         * @param {Object} params параметры шаблона
-         * @returns {jQuery.Deferred}
-         */
-        renderTemplate: function (templatePath, params) {
-            var deferred = $.Deferred(),
-                hbs = Soshace.hbs,
-                path;
-
-            path = Soshace.viewsPath + templatePath + '.hbs';
-
-            if (hbs[path]) {
-                return deferred.resolve(hbs[path](params));
-            }
-
-            $.get(path, function (contents) {
-                var template = Handlebars.compile(contents);
-
-                hbs[path] = template;
-                deferred.resolve(template(params));
-            }, 'text');
-
-            return deferred;
         },
 
         /**

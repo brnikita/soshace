@@ -44,6 +44,7 @@ define(['utils/controller', './registrationModel', './registrationView'],
              * @returns {undefined}
              */
             firstLoad: function () {
+                this.view.$el = $('.js-content-el');
                 this.view.afterRender();
             },
 
@@ -55,15 +56,15 @@ define(['utils/controller', './registrationModel', './registrationView'],
              * @returns {undefined}
              */
             secondLoad: function () {
-                var options = this.options,
+                var params = this.routeParams,
                     view = this.view,
                     app = Soshace.app;
 
-                this.model.set({locale: options.locale}, {silent: true});
-                app.setView('.js-content', view);
-                view.fetchPartial('registrationView').done(view.render);
+                this.model.set({locale: params[0]}, {silent: true});
                 app.getView('.js-header').changeTab('isAuthPage');
                 app.$el.attr('class', 'bg-symbols bg-color-yellow');
+                app.setView('.js-content', view).render();
+
             }
         });
     });

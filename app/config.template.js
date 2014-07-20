@@ -178,5 +178,19 @@ global.Soshace = {
     PATTERNS: {
         email: /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
         userName: /^[a-z\.\-_0-9]+$/
+    },
+
+    /**
+     * Список путей
+     *
+     * @constant
+     * @name Soshace.PATHS
+     * @type {Object}
+     */
+    PATHS: {
+        static: '/static/',
+        scripts: '/static/scripts/',
+        styles: '/static/styles/',
+        views: '/static/views/'
     }
 };

@@ -19,7 +19,8 @@ require.config(
             'backbone': 'vendors/backbone',
             'backbone.layoutmanager': 'vendors/backbone/backbone.layoutmanager',
             'backbone.validation': 'vendors/backbone/backbone.validation',
-            'config': 'config'
+            'config': 'config',
+            'templates': 'templates'
 
         },
         shim: {
@@ -82,9 +83,16 @@ require.config(
         },
         deps: [
             'config',
+            'handlebars',
+            'templates',
             'underscore',
             'jquery',
-            'backbone'
+            'backbone',
+            'bootstrap',
+            'utils/handlebarsHelpers',
+            'google-analytics',
+            'yandex-metrika',
+            'app'
         ]
     }
 );

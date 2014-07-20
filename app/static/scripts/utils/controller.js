@@ -5,9 +5,16 @@
  *
  * @class Controller
  */
-define(['class', 'config'], function (Class) {
+define(['class'], function (Class) {
     return Class.extend({
-        options: null,
+        /**
+         * Параметры запроса из роута
+         *
+         * @field
+         * @name Controller#routeParams
+         * @type {Array | null}
+         */
+        routeParams: null,
 
         /**
          * Метод вызывает при рендере на сервере
@@ -41,12 +48,11 @@ define(['class', 'config'], function (Class) {
          *
          * @method
          * @name Controller#routeHandler
-         * @param {Object} options параметры запроса
          * @returns {undefined}
          */
-        routeHandler: function (options) {
-            if (typeof options !== 'undefined') {
-                this.options = options;
+        routeHandler: function () {
+            if (typeof arguments !== 'undefined') {
+                this.routeParams = arguments;
             }
 
             if (Soshace.firstLoad) {
