@@ -166,7 +166,7 @@ module.exports = function (grunt) {
         requirejs: {
             compile: {
                 options: {
-                    baseUrl: '<%= blog.app %>/static/scripts/',
+                    baseUrl: '<%= blog.dist %>/scripts/',
                     name: 'app',
                     mainConfigFile: 'require.conf.js',
                     out: '<%= blog.dist %>/scripts/scripts.min.js',

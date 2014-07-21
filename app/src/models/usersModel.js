@@ -4,7 +4,8 @@ var Mongoose = require('mongoose'),
     Bcrypt = require('bcrypt'),
     Validators = require('../common/validators'),
     Helpers = require('../common/helpers'),
-    SALT_WORK_FACTOR = 10;
+    SALT_WORK_FACTOR = 10,
+    SystemMessageSchema = require('schemas/systemMessagesSchema');
 
 /**
  * Класс для работы с моделью пользователей
@@ -88,9 +89,7 @@ var UsersShema = Mongoose.Schema({
         type: Boolean,
         default: false
     },
-    systemMessages: {
-
-    },
+    systemMessages:  [SystemMessageSchema],
     locale: {
         type: String,
         required: true,
@@ -184,6 +183,8 @@ UsersShema.statics.getUser = function (params) {
 UsersShema.statics.confirmEmail = function (code, callback) {
     return this.collection.findAndModify({code: code}, [
         ['_id', 'asc']
-    ], {$set: {emailConfirmed: true}}, {}, callback);
+    ], {$set: {
+            emailConfirmed: true
+        }}, {}, callback);
 };
 module.exports = Mongoose.model('users', UsersShema);

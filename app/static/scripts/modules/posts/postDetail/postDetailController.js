@@ -5,7 +5,12 @@
  *
  * @class PostDetailController
  */
-define(['underscore', 'utils/controller', './postDetailModel', './postDetailView'],
+define([
+    'underscore',
+    'utils/controller',
+    './postDetailModel',
+    './postDetailView'
+],
     function (_, Controller, PostDetailModel, PostDetailView) {
         return Controller.extend({
 

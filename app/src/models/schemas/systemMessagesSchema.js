@@ -11,6 +11,7 @@ var Mongoose = require('mongoose');
  */
 var SystemMessagesShema = Mongoose.Schema({
     templatePath: {
+        default: '',
         type: String
     },
     isShown: {
@@ -19,4 +20,4 @@ var SystemMessagesShema = Mongoose.Schema({
     }
 });
 
-module.exports = Mongoose.model('systemMessages', SystemMessagesShema);
+module.exports = SystemMessagesShema;

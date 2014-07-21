@@ -122,5 +122,5 @@
 	"Hobbies": "Увлечения",
 	"To your email address have sent confirmation message.": "На ваш электронный почтовый адрес было отправлено письмо с подтверждетнием.",
 	"Please confirm your email to get full access of Soshace account.": "Пожалуйста, подтвердите ваш электронный почтовый адрес для получения полного доступа к аккаунту Soshace",
-    "To enable editor, you need to <a href='/{{locale}}/login' class='js-router-link'>sign in</a>.": "Чтобы включить редактор, вам нужно <a href='/{{locale}}/login' class='js-router-link'>войти</a>."
+	"To enable editor, you need to <a href='/{{locale}}/login' class='js-router-link'>sign in</a>.": "Чтобы включить редактор, вам нужно <a href='/{{locale}}/login' class='js-router-link'>войти</a>."
 }
