@@ -214,9 +214,10 @@ module.exports = Controller.extend({
                 'fullName',
                 'userName',
                 'isMale',
-                'emailConfirmed',
                 'admin',
-                'locale');
+                'locale',
+                'systemMessages'
+            );
 
             redirectUrl = '/' + locale + '/user/' + user.userName;
             SendMail.sendConfirmMail(request, user);

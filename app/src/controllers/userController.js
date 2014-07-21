@@ -39,8 +39,8 @@ module.exports = Controller.extend({
                 'fullName',
                 'userName',
                 'isMale',
-                'emailConfirmed',
                 'admin',
+                'systemMessages',
                 'locale');
         }
 

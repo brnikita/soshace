@@ -1,3 +1,4 @@
+//TODO: вынести в отдельный модуль node.js
 /* Simple JavaScript Inheritance
  * By John Resig http://ejohn.org/
  * MIT Licensed.

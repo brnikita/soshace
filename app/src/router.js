@@ -1,118 +1,151 @@
-//TODO: Провести оптимизацию роутера!
-//TODO: example {'post /api/create': 'posts/postsController create'}
-//TODO: example {'get /api/get_user': 'userController get'}
 'use strict';
 
-var PostsController = require('./controllers/posts/postsController'),
-    UploadImageController = require('./controllers/uploadImageController'),
-    AddPostsController = require('./controllers/posts/addPostController'),
-    RegistrationController = require('./controllers/auth/registrationController'),
-    LoginController = require('./controllers/auth/loginController'),
-    UserController = require('./controllers/userController');
+var _ = require('underscore'),
+    Class = require('./vendors/class');
 
-module.exports = function (App) {
-    //--------------------API------------------------------//
-    //Загружаем изображение
-    App.post('/api/upload_img', function(request, response){
-        var uploadImageController = new UploadImageController(request, response);
-        uploadImageController.upload();
-    });
+module.exports = Class.extend({
+    /**
+     * Префикс для путей к контроллерам
+     *
+     * @field
+     * @name Router#controllersPrefix
+     * @type {String}
+     */
+    controllersPrefix: './controllers/',
 
-    //Получаем список постов
-    App.get('/api/posts', function (request, response) {
-        var postsController = new PostsController(request, response);
-        postsController.getPosts();
-    });
-    //Получаем пост
-    App.get('/api/post', function (request, response) {
-        var postsController = new PostsController(request, response);
-        postsController.getPost();
-    });
+    /**
+     * Ссылка на приложение
+     *
+     * @field
+     * @name Router#app
+     * @type {Object}
+     */
+    app: null,
 
-    //Добавляем пост
-    App.post('/api/post', function(request, response){
-        var addPostsController = new AddPostsController(request, response);
-        addPostsController.addPost();
-    });
+    /**
+     * Список контроллеров
+     *
+     * @field
+     * @name Router#controllers
+     * @type {Object}
+     */
+    controllers: null,
 
-    App.post('/api/create_user', function(request, response){
-        var registrationController = new RegistrationController(request, response);
-        registrationController.createUser();
-    });
+    /**
+     * example {'post /api/create': 'posts/postsController create'}
+     * example {'get /api/get_user': 'userController get'}
+     *
+     * 1 Тип запроса: GET, POST, PUT, DELETE
+     * 2 Путь запроса
+     * 3 Путь до контроллера
+     * 4 Метод контроллера
+     *
+     * @field
+     * @name Router#routes
+     * @type {Object}
+     */
+    routes: {
+        //TODO: переделать api на RestFull API
+        //-----------------API start------------------
+        'post /api/upload_img': 'uploadImageController upload',
+        'get /api/posts': 'posts/postsController getPosts',
+        'get /api/post': 'posts/postsController getPost',
+        'post /api/post': 'posts/addPostController addPost',
+        'post /api/create_user': 'auth/registrationController createUser',
+        'get /api/get_user': 'userController getUser',
+        'get /api/get_profile': 'userController getProfile',
+        'post /api/login': 'auth/loginController loginHandler',
+        'get /api/logout': 'auth/loginController logoutHandler',
+        'get /api/registration/validate_field': 'auth/registrationController validateField',
+        //-------------------API end--------------------
 
-    App.get('/api/get_user', function(request, response){
-        var userController = new UserController(request, response);
-        userController.getUser();
-    });
+        'get /:locale/add_post': 'posts/addPostController renderAddPost',
+        'get /:locale': 'posts/postsController renderPosts',
+        'get /:locale/posts/:year/:month/:date/:titleUrl': 'posts/postsController renderPost',
+        'get /:locale/registration': 'auth/registrationController renderRegistration',
+        'get /:locale/login': 'auth/loginController renderLogin',
+        'get /:locale/user/:id': 'userController renderUserPage',
+        'get /:locale/registration/confirm_email': 'auth/registrationController confirmEmail'
+    },
 
-    App.get('/api/get_profile', function(request, response){
-        var userController = new UserController(request, response);
-        userController.getProfile();
-    });
 
-    App.post('/api/login', function(request, response, next){
-        var loginController = new LoginController(request, response, next);
-        loginController.loginHandler();
-    });
+    /**
+     * @constructor
+     * @name Router#initialize
+     * @returns {undefined}
+     */
+    initialize: function (app) {
+        this.app = app;
+        this.controllers = {};
+        this.parseRoutes();
+        this.other();
+    },
 
-    App.get('/api/logout', function(request, response, next){
-        var loginController = new LoginController(request, response, next);
-        loginController.logoutHandler();
-    });
+    //TODO: вынести все в контроллеры!!!
+    other: function () {
+        var App = this.app;
 
-    App.get('/api/registration/validate_field', function(request, response){
-        var registrationController = new RegistrationController(request, response);
-        registrationController.validateField();
-    });
+        App.get('/', function (request, response) {
+            var locale = request.i18n.getLocale();
+            response.redirect('/' + locale);
+        });
 
-    //--------------------API END------------------------------//
+        App.get('/:locale/posts', function (request, response) {
+            response.redirect('/ru');
+        });
+    },
 
-    App.get('/', function (request, response) {
-        var locale = request.i18n.getLocale();
-        response.redirect('/' + locale);
-    });
+    /**
+     * Метод возвращает контроллер по пути
+     *
+     * @method
+     * @name Router#getController
+     * @param {String} path путь до контроллера
+     * @returns {Object}
+     */
+    getController: function (path) {
+        var prefix = this.controllersPrefix,
+            fullPath = prefix + path,
+            controllers = this.controllers,
+            controller = controllers[path];
 
-    //добавляем пост
-    App.get('/:locale/add_post', function(request, response){
-        var addPostsController = new AddPostsController(request, response);
-        addPostsController.renderAddPost();
-    });
+        if (controller) {
+            return controller;
+        }
 
-    //Главная страница
-    App.get('/:locale', function (request, response) {
-        var postsController = new PostsController(request, response);
-        postsController.renderPosts();
-    });
+        controller = controllers[path] = require(fullPath);
+        return controller;
+    },
 
-    App.get('/:locale/posts', function (request, response) {
-        response.redirect('/ru');
-    });
+    /**
+     * Метод разбирает роуты
+     *
+     * example {'post /api/create': 'posts/postsController create'}
+     * example {'get /api/get_user': 'userController get'}
+     *
+     * @method
+     * @name Router#initialize
+     * @returns {undefined}
+     */
+    parseRoutes: function () {
+        var app = this.app,
+            routes = this.routes;
 
-    //Страница отдельного поста
-    App.get('/:locale/posts/:year/:month/:date/:titleUrl', function (request, response) {
-        var postsController = new PostsController(request, response);
-        postsController.renderPost();
-    });
+        _.each(routes, _.bind(function (controller, route) {
+            var controllerData = controller.match(/[^\s]+/g),
+                controllerPath = controllerData[0],
+                controllerMethod = controllerData[1],
+                routeData = route.match(/[^\s]+/g),
+                requestType = routeData[0],
+                requestPath = routeData[1];
 
-    //страница регистрации
-    App.get('/:locale/registration', function(request, response){
-        var registrationController = new RegistrationController(request, response);
-        registrationController.renderRegistration();
-    });
+            app[requestType](requestPath, _.bind(function (request, response, next) {
+                var Controller = this.getController(controllerPath),
+                    controller = new Controller(request, response, next);
 
-    //страница входа
-    App.get('/:locale/login', function(request, response){
-        var loginController = new LoginController(request, response);
-        loginController.renderLogin();
-    });
+                controller[controllerMethod]();
+            }, this));
+        }, this));
+    }
 
-    App.get('/:locale/user/:id', function(request, response){
-        var userController = new UserController(request, response);
-        userController.renderUserPage();
-    });
-
-    App.get('/:locale/registration/confirm_email', function(request, response){
-        var registrationController = new RegistrationController(request, response);
-        registrationController.confirmEmail();
-    });
-};
+});

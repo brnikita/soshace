@@ -5,7 +5,7 @@ var Mongoose = require('mongoose'),
     Validators = require('../common/validators'),
     Helpers = require('../common/helpers'),
     SALT_WORK_FACTOR = 10,
-    SystemMessageSchema = require('schemas/systemMessagesSchema');
+    SystemMessageSchema = require('./schemas/systemMessagesSchema');
 
 /**
  * Класс для работы с моделью пользователей
@@ -89,7 +89,7 @@ var UsersShema = Mongoose.Schema({
         type: Boolean,
         default: false
     },
-    systemMessages:  [SystemMessageSchema],
+    systemMessages: [SystemMessageSchema],
     locale: {
         type: String,
         required: true,
@@ -142,7 +142,7 @@ UsersShema.pre('save', function (next) {
 });
 
 /**
- * Шифруем пароль перед сохранением
+ * Создаем код подтверждения email
  */
 UsersShema.pre('save', function (next) {
     var user = this,
@@ -153,7 +153,17 @@ UsersShema.pre('save', function (next) {
 });
 
 /**
- * Метод возвращает данные профиля пользователя
+ * Создаем добавляем системное сообщение о необходимости подтвердить email
+ */
+UsersShema.pre('save', function (next) {
+    this.systemMessages.push({
+        templatePath: 'messages/notConfirmedEmail'
+    });
+    next();
+});
+
+/**
+ * Метод возвращает данные пользователя
  *
  * @method
  * @name UsersShema.getUser
@@ -164,10 +174,27 @@ UsersShema.statics.getUser = function (params) {
     return this.findOne(params, {
         fullName: 1,
         userName: 1,
+        isMale: 1
+    });
+};
+
+/**
+ * Метод возвращает данные профиля пользователя
+ *
+ * @method
+ * @name UsersShema.getProfile
+ * @param {Object} params
+ * @return {Cursor}
+ */
+UsersShema.statics.getProfile = function (params) {
+    return this.findOne(params, {
+        fullName: 1,
+        userName: 1,
         isMale: 1,
         emailConfirmed: 1,
         admin: 1,
-        locale: 1
+        locale: 1,
+        systemMessages: 1
     });
 };
 
@@ -183,8 +210,15 @@ UsersShema.statics.getUser = function (params) {
 UsersShema.statics.confirmEmail = function (code, callback) {
     return this.collection.findAndModify({code: code}, [
         ['_id', 'asc']
-    ], {$set: {
+    ], {
+        $set: {
             emailConfirmed: true
-        }}, {}, callback);
+        },
+        $push: {
+            systemMessages: {
+                templatePath: 'messages/successConfirmEmail'
+            }
+        }
+    }, {}, callback);
 };
 module.exports = Mongoose.model('users', UsersShema);

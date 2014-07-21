@@ -14,10 +14,8 @@ var SystemMessagesShema = Mongoose.Schema({
         default: '',
         type: String
     },
-    isShown: {
-        type: Boolean,
-        default: false
-    }
+    //Сообщение может быть удалено POST запросом
+    userControl: false
 });
 
 module.exports = SystemMessagesShema;
