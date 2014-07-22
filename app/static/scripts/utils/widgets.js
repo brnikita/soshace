@@ -7,8 +7,9 @@
  */
 
 define([
+    'underscore',
     'jquery'
-], function ($) {
+], function (_, $) {
     var $loader = $('.js-loader-mask');
 
     return {
@@ -46,7 +47,8 @@ define([
          * @returns {undefined}
          */
         showSystemMessage: function () {
-            var systemMessages = Soshace && Soshace.profile && Soshace.profile.systemMessages,
+            var app = Soshace.app,
+                systemMessages = app.isAuthenticated() && Soshace.profile.systemMessages,
                 messagesExist = systemMessages instanceof Array && systemMessages.length > 0,
                 currentPage = Soshace.pageAlias,
                 firstAvailableMessage;
@@ -55,7 +57,16 @@ define([
                 return;
             }
 
+            _.every(systemMessages, function (message) {
+                if (message.pages.indexOf(currentPage) !== -1) {
+                    firstAvailableMessage = message;
+                    return false;
+                }
 
+                return true;
+            });
+
+            debugger;
         },
 
         /**

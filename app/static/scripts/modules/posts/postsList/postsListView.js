@@ -60,7 +60,7 @@ define([
 
             data.locale = Helpers.getLocale();
             data.posts = posts;
-            data.isAutentificated = Soshace.app.isAuthenticated();
+            data.isAuthenticated = Soshace.app.isAuthenticated();
             return data;
         },
 

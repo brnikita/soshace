@@ -9,8 +9,9 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
-], function ($, _, Backbone) {
+    'backbone',
+    'utils/widgets'
+], function ($, _, Backbone, Widgets) {
     return Backbone.Layout.extend({
         /**
          * Модель деталей статьи
@@ -50,28 +51,6 @@ define([
         },
 
         /**
-         * Метод показвыает сообщение о том, что email не подтвержден
-         *
-         * @method
-         * @name UserView#showNotConfirmedEmailMessage
-         * @returns {undefined}
-         */
-        showNotConfirmedEmailMessage: function () {
-            var app = Soshace.app,
-                $messages = this.elements.messages;
-
-            if (!app.isAuthenticated()) {
-                return;
-            }
-
-            if (Soshace.profile.emailConfirmed) {
-                return;
-            }
-
-            $messages.append(Soshace.hbs['messages/notConfirmedEmail']());
-        },
-
-        /**
          * @method
          * @name UserView#serialize
          * @returns {Object}
@@ -79,7 +58,7 @@ define([
         serialize: function () {
             var app = Soshace.app,
                 data = this.model.toJSON();
-            data.isAutentificated = app.isAuthenticated();
+            data.isAuthenticated = app.isAuthenticated();
             return data;
         },
 
@@ -101,7 +80,7 @@ define([
          */
         afterRender: function () {
             this.setElements();
-            this.showNotConfirmedEmailMessage();
+            Widgets.showSystemMessage();
         }
     });
 });

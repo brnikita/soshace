@@ -57,7 +57,7 @@ define([
                 data = {},
                 model = this.model.toJSON();
 
-            data.isAutentificated = app.isAuthenticated();
+            data.isAuthenticated = app.isAuthenticated();
             data.post = model;
             return data;
         },

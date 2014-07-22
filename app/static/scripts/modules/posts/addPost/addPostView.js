@@ -751,28 +751,6 @@ define([
         },
 
         /**
-         * Метод показвыает сообщение о том, что email не подтвержден
-         *
-         * @method
-         * @name UserView#showNotConfirmedEmailMessage
-         * @returns {undefined}
-         */
-        showNotConfirmedEmailMessage: function () {
-            var app = Soshace.app,
-                $messages = this.elements.messages;
-
-            if (!app.isAuthenticated()) {
-                return;
-            }
-
-            if (Soshace.profile.emailConfirmed) {
-                return;
-            }
-
-            $messages.append(Soshace.hbs['messages/notConfirmedEmail']());
-        },
-
-        /**
          * Метод отображает уведомление о том,
          * что нужно зарегстрироваться, чтобы добавить статью
          *
@@ -820,7 +798,7 @@ define([
             this.makeEditorFieldContentEditable();
             this.elements.window.on('touchend', this.touchHandler).off('scroll', this.windowScrollHandler);
             this.showSignInMessage();
-            this.showNotConfirmedEmailMessage();
+            Widgets.showSystemMessage();
         }
     });
 });

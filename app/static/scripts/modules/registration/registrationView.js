@@ -275,7 +275,7 @@ define([
             var app = Soshace.app,
                 data = this.model.toJSON();
 
-            data.isAutentificated = app.isAuthenticated();
+            data.isAuthenticated = app.isAuthenticated();
             data.isRegistrationTab = true;
             return data;
         },
