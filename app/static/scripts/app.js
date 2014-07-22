@@ -45,9 +45,7 @@ define([
         initialize: function () {
             _.bindAll(this, 'routerLinkHandler', 'initializeCompleted');
             this.setElements();
-            this.setView('.js-header', new HeaderView({
-                app: this
-            }));
+            this.setView('.js-header', new HeaderView());
             this.getCommonData().done(this.initializeCompleted);
         },
 

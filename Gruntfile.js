@@ -64,6 +64,12 @@ module.exports = function (grunt) {
                 tasks: [
                     'copy:locales'
                 ]
+            },
+            views: {
+                files: '<%= blog.app %>/views/**/*.hbs',
+                tasks: [
+                    'handlebars'
+                ]
             }
         },
 

@@ -51,7 +51,9 @@ define([
                 systemMessages = app.isAuthenticated() && Soshace.profile.systemMessages,
                 messagesExist = systemMessages instanceof Array && systemMessages.length > 0,
                 currentPage = Soshace.pageAlias,
-                firstAvailableMessage;
+                firstAvailableMessage,
+                template,
+                templateOptions;
 
             if (!messagesExist) {
                 return;
@@ -62,11 +64,15 @@ define([
                     firstAvailableMessage = message;
                     return false;
                 }
-
-                return true;
             });
 
-            debugger;
+            if (!firstAvailableMessage) {
+                return;
+            }
+
+            template = Soshace.hbs[firstAvailableMessage.templatePath];
+            templateOptions = firstAvailableMessage.templateOptions;
+            $('.js-messages').append(template(templateOptions));
         },
 
         /**

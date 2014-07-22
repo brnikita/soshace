@@ -157,7 +157,9 @@ UsersShema.pre('save', function (next) {
  */
 UsersShema.pre('save', function (next) {
     this.systemMessages.push({
-        templatePath: 'messages/notConfirmedEmail'
+        templatePath: 'messages/notConfirmedEmail',
+        pages: ['user', 'addPost'],
+        readOnly: true
     });
     next();
 });
@@ -216,7 +218,14 @@ UsersShema.statics.confirmEmail = function (code, callback) {
         },
         $push: {
             systemMessages: {
-                templatePath: 'messages/successConfirmEmail'
+                templatePath: 'messages/successConfirmEmail',
+                showOnce: true,
+                pages: ['addPost']
+            }
+        },
+        $pull: {
+            systemMessages: {
+                templatePath: 'messages/notConfirmedEmail'
             }
         }
     }, {}, callback);

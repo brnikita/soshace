@@ -15,16 +15,6 @@ define([
     'backbone.layoutmanager'
 ], function ($, _, Backbone, Helpers) {
     return Backbone.Layout.extend({
-
-        /**
-         * Ссылка на объект App
-         *
-         * @field
-         * @name LoginView#app
-         * @type {Object}
-         */
-        app: null,
-
         /**
          * @field
          * @name HeaderView.elements
@@ -68,11 +58,9 @@ define([
         /**
          * @constructor
          * @name HeaderView.initialize
-         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function (params) {
-            this.app = params.app;
+        initialize: function () {
         },
 
         /**
@@ -120,10 +108,12 @@ define([
          * @returns {Object}
          */
         serialize: function () {
-            var data = {};
+            var app = Soshace.app,
+                data = {};
+
             data = _.extend(data, this.tabsConfig);
             data.locale = Helpers.getLocale();
-            data.isAuthenticated = this.app.isAuthenticated();
+            data.isAuthenticated = app.isAuthenticated();
             data.paths = Soshace.paths;
             if (data.isAuthenticated) {
                 data.profileUserName = Soshace.profile.userName;
