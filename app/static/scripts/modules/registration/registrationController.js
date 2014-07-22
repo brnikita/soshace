@@ -8,6 +8,14 @@
 define(['utils/controller', './registrationModel', './registrationView'],
     function (Controller, RegistrationModel, RegistrationView) {
         return Controller.extend({
+            /**
+             * Алиас страницы
+             *
+             * @field
+             * @name RegistrationController#pageAlias
+             * @type {String}
+             */
+            pageAlias: 'registration',
 
             /**
              * @field

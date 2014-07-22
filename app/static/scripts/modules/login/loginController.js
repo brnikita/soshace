@@ -8,6 +8,14 @@
 define(['utils/controller', './loginModel', './loginView'],
     function (Controller, LoginModel, LoginView) {
         return Controller.extend({
+            /**
+             * Алиас страницы
+             *
+             * @field
+             * @name LoginController#pageAlias
+             * @type {String}
+             */
+            pageAlias: 'login',
 
             /**
              * @field

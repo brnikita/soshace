@@ -100,7 +100,16 @@ define(function () {
         patterns: {
             email: /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
             userName: /^[a-z\.\-_0-9]+$/
-        }
+        },
+
+        /**
+         * Алиас текущей страницы, задается в контроллере страницы
+         *
+         * @field
+         * @name Soshace.pageAlias
+         * @type {String}
+         */
+        pageAlias: 'home'
     };
 
     return window.Soshace;

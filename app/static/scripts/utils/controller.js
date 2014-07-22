@@ -8,6 +8,15 @@
 define(['class'], function (Class) {
     return Class.extend({
         /**
+         * Алиас страницы
+         *
+         * @field
+         * @name Controller#pageAlias
+         * @type {String}
+         */
+        pageAlias: Soshace.pageAlias,
+
+        /**
          * Параметры запроса из роута
          *
          * @field
@@ -51,6 +60,8 @@ define(['class'], function (Class) {
          * @returns {undefined}
          */
         routeHandler: function () {
+            Soshace.pageAlias = this.pageAlias;
+
             if (typeof arguments !== 'undefined') {
                 this.routeParams = arguments;
             }

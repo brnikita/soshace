@@ -13,10 +13,18 @@ define([
     ],
     function (_, Controller, UserModel, UserView) {
         return Controller.extend({
+            /**
+             * Алиас страницы
+             *
+             * @field
+             * @name UserController#pageAlias
+             * @type {String}
+             */
+            pageAlias: 'user',
 
             /**
              * @field
-             * @name ГыукController#model
+             * @name UserController#model
              * @type {Backbone.Model}
              */
             model: null,

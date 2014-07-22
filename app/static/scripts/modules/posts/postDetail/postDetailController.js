@@ -13,6 +13,14 @@ define([
 ],
     function (_, Controller, PostDetailModel, PostDetailView) {
         return Controller.extend({
+            /**
+             * Алиас страницы
+             *
+             * @field
+             * @name PostDetailController#pageAlias
+             * @type {String}
+             */
+            pageAlias: 'postDetail',
 
             /**
              * @field

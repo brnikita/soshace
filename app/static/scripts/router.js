@@ -11,15 +11,14 @@ define([
     'backbone'
 ], function ($, _, Backbone) {
     return Backbone.Router.extend({
-
         /**
-         * Сссылка на app.js
+         * Ссылка на текущий контроллер
          *
          * @field
-         * @name Router#app
-         * @type {Object}
+         * @name Router#currentController
+         * @type {Controller | null}
          */
-        app: null,
+        currentController: null,
 
         /**
          * Ротинг по контроллерам: каждому роуту соответствует контроллер,
@@ -52,8 +51,7 @@ define([
          * @name Router#initialize
          * @returns {undefined}
          */
-        initialize: function (params) {
-            this.app = params.app;
+        initialize: function () {
             this.controllers = {};
             this.setRouter();
             Backbone.history.start({
@@ -114,9 +112,10 @@ define([
          */
         handleRouteByController: function (controllerPath, routeParams) {
             this.getController(controllerPath).
-                done(function(controller){
+                done(_.bind(function(controller){
+                    this.currentController = controller;
                     controller.routeHandler.apply(controller, routeParams);
-                });
+                }, this));
         }
     });
 });

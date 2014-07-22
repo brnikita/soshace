@@ -38,6 +38,27 @@ define([
         },
 
         /**
+         * Метод отображает первое доступное для показа
+         * сообщение из пула системных сообщений Soshace.profile.systemMessages
+         *
+         * @method
+         * @name Widgets.showSystemMessage
+         * @returns {undefined}
+         */
+        showSystemMessage: function () {
+            var systemMessages = Soshace && Soshace.profile && Soshace.profile.systemMessages,
+                messagesExist = systemMessages instanceof Array && systemMessages.length > 0,
+                currentPage = Soshace.pageAlias,
+                firstAvailableMessage;
+
+            if (!messagesExist) {
+                return;
+            }
+
+
+        },
+
+        /**
          * TODO: переделать на плагин
          *
          * Форматирует блоки с классом .prettyprint

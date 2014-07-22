@@ -15,7 +15,7 @@ define([
         /**
          * @property
          * @name App#router
-         * @type {Backbone.Router | null}
+         * @type {Router | null}
          */
         router: null,
 
@@ -76,9 +76,7 @@ define([
         initializeCompleted: function () {
             Widgets.hideLoader();
             this.$el.on('click', '.js-router-link', this.routerLinkHandler);
-            this.router = new Router({
-                app: this
-            });
+            this.router = new Router();
         },
 
         /**

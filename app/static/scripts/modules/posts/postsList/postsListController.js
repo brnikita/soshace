@@ -8,6 +8,14 @@
 define(['underscore', 'utils/controller', './postsListModel', './postsListView'],
     function (_, Controller, PostsListModel, PostsListView) {
         return Controller.extend({
+            /**
+             * Алиас страницы
+             *
+             * @field
+             * @name PostsListController#pageAlias
+             * @type {String}
+             */
+            pageAlias: 'home',
 
             /**
              * @field

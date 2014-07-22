@@ -8,6 +8,14 @@
 define(['utils/controller', './addPostModel', './addPostView'],
     function (Controller, AddPostModel, AddPostView) {
         return Controller.extend({
+            /**
+             * Алиас страницы
+             *
+             * @field
+             * @name AddPostController#pageAlias
+             * @type {String}
+             */
+            pageAlias: 'addPost',
 
             /**
              * @field
