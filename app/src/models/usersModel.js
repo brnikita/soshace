@@ -201,6 +201,9 @@ UsersShema.statics.getProfile = function (params) {
 };
 
 /**
+ * TODO: нужно разнести на два запроса
+ * http://stackoverflow.com/questions/4584665/field-name-duplication-not-allowed-with-modifiers-on-update
+ *
  * Метод возвращает данные профиля пользователя
  *
  * @method
@@ -210,9 +213,7 @@ UsersShema.statics.getProfile = function (params) {
  * @return {Cursor}
  */
 UsersShema.statics.confirmEmail = function (code, callback) {
-    return this.collection.findAndModify({code: code}, [
-        ['_id', 'asc']
-    ], {
+    return this.collection.findAndModify({code: code}, [], {
         $set: {
             emailConfirmed: true
         },
@@ -228,6 +229,6 @@ UsersShema.statics.confirmEmail = function (code, callback) {
                 templatePath: 'messages/notConfirmedEmail'
             }
         }
-    }, {}, callback);
+    }, {new: true}, callback);
 };
 module.exports = Mongoose.model('users', UsersShema);

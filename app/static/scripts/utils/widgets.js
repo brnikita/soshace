@@ -64,6 +64,7 @@ define([
                     firstAvailableMessage = message;
                     return false;
                 }
+                return true;
             });
 
             if (!firstAvailableMessage) {
