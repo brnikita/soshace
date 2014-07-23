@@ -57,8 +57,10 @@ define([
              * @returns {undefined}
              */
             firstLoad: function () {
-                this.view.$el = $('.js-content-el');
-                this.view.afterRender();
+                var view = this.view,
+                    app = Soshace.app;
+
+                app.setView('.js-content', view).afterRender();
             },
 
             /**

@@ -331,6 +331,7 @@ define([
          * @returns {undefined}
          */
         afterRender: function () {
+            debugger;
             this.setFieldsHelpers(this.model.helpers);
             //Используется асинхронный вызов, чтобы навесились обработчики событий
             setTimeout(function () {
