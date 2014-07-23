@@ -30,11 +30,17 @@ define([
          */
         controllersRoutes: {
             ':locale': 'modules/posts/postsList/postsListController',
+            ':locale/': 'modules/posts/postsList/postsListController',
             ':locale/posts/:year/:month/:date/:title': 'modules/posts/postDetail/postDetailController',
+            ':locale/posts/:year/:month/:date/:title/': 'modules/posts/postDetail/postDetailController',
             ':locale/add_post': 'modules/posts/addPost/addPostController',
+            ':locale/add_post/': 'modules/posts/addPost/addPostController',
             ':locale/login': 'modules/login/loginController',
+            ':locale/login/': 'modules/login/loginController',
             ':locale/registration': 'modules/registration/registrationController',
-            ':locale/user/:username': 'modules/user/userController'
+            ':locale/registration/': 'modules/registration/registrationController',
+            ':locale/user/:username': 'modules/user/userController',
+            ':locale/user/:username/': 'modules/user/userController'
         },
 
         /**

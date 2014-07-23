@@ -201,19 +201,20 @@ UsersShema.statics.getProfile = function (params) {
 };
 
 /**
- * TODO: нужно разнести на два запроса
+ * mongo не дает одновременно сделать $push и $pull
  * http://stackoverflow.com/questions/4584665/field-name-duplication-not-allowed-with-modifiers-on-update
  *
- * Метод возвращает данные профиля пользователя
+ * Метод ставит email пользователя в статус утверждена
+ * и добавляет сообщение об успехе
  *
  * @method
  * @name UsersShema.confirmEmail
  * @param {String} code код подтверждения email
  * @param {Function} callback
- * @return {Cursor}
+ * @return {undefined}
  */
 UsersShema.statics.confirmEmail = function (code, callback) {
-    return this.collection.findAndModify({code: code}, [], {
+   this.collection.findAndModify({code: code}, [], {
         $set: {
             emailConfirmed: true
         },
@@ -223,7 +224,24 @@ UsersShema.statics.confirmEmail = function (code, callback) {
                 showOnce: true,
                 pages: ['addPost']
             }
-        },
+        }
+    }, {new: true}, callback);
+};
+
+/**
+ * mongo не дает одновременно сделать $push и $pull
+ * http://stackoverflow.com/questions/4584665/field-name-duplication-not-allowed-with-modifiers-on-update
+ *
+ * Метод удаляет сообщение о том, что email не утвержден
+ *
+ * @method
+ * @name UsersShema.deleteNotConfirmedEmailMessage
+ * @param {String} userId id пользователя
+ * @param {Function} callback
+ * @return {undefined}
+ */
+UsersShema.statics.deleteNotConfirmedEmailMessage = function (userId, callback) {
+    this.collection.findAndModify({_id: userId}, [], {
         $pull: {
             systemMessages: {
                 templatePath: 'messages/notConfirmedEmail'

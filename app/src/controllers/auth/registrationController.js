@@ -25,7 +25,8 @@ module.exports = Controller.extend({
 
         _.bindAll(this,
             'userSaveHandler',
-            'confirmEmailHandler'
+            'confirmEmailHandler',
+            'loginUser'
         );
     },
 
@@ -61,13 +62,13 @@ module.exports = Controller.extend({
         var request = this.request,
             confirmCode = request.query.code;
 
+        //TODO: добавить проверку, что пользователь уже подтвердил email
         //TODO: добавить обработку ошибок и исключений
         UsersModel.confirmEmail(confirmCode, this.confirmEmailHandler);
     },
 
     /**
      * TODO: добавить обработку ошибок
-     * TODO: логинить юзера сразу после подтверждения
      *
      * Метод обработчик положительного
      * подтверждения кода пользователя
@@ -79,6 +80,28 @@ module.exports = Controller.extend({
      * @returns {undefined}
      */
     confirmEmailHandler: function (error, user) {
+        if (error) {
+            //TODO: поменять на render
+            this.sendError(this.i18n('Server is too busy, try later'));
+            return;
+        }
+
+        UsersModel.deleteNotConfirmedEmailMessage(user._id, this.loginUser);
+    },
+
+    /**
+     * TODO: добавить обработку ошибок
+     *
+     * Метод обработчик положительного
+     * подтверждения кода пользователя
+     *
+     * @method
+     * @name RegistrationController#loginUser
+     * @param {Object} error
+     * @param {Object} user
+     * @returns {undefined}
+     */
+    loginUser: function(error, user){
         var request = this.request,
             response = this.response,
             locale = request.i18n.getLocale();
@@ -88,6 +111,7 @@ module.exports = Controller.extend({
             this.sendError(this.i18n('Server is too busy, try later'));
             return;
         }
+
         request.login(user._id, _.bind(function (error) {
             if (error) {
                 //TODO: поменять на render
