@@ -10,9 +10,10 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'utils/helpers',
     'backbone.validation',
     'utils/backboneValidationExtension'
-], function ($, _, Backbone) {
+], function ($, _, Backbone, Helpers) {
     return Backbone.Model.extend({
         /**
          * @field
@@ -102,6 +103,8 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
+            var locale = Helpers.getLocale();
+            this.set({locale: locale}, {silent: true});
         },
 
         /**

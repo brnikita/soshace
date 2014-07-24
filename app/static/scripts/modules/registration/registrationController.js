@@ -66,14 +66,12 @@ define(['utils/controller', './registrationModel', './registrationView'],
              * @returns {undefined}
              */
             secondLoad: function () {
-                var params = this.routeParams,
-                    view = new RegistrationView({
+                var view = new RegistrationView({
                         model: this.model
                     }),
                     app = Soshace.app;
 
                 this.view = view;
-                this.model.set({locale: params[0]}, {silent: true});
                 app.$el.attr('class', 'bg-symbols bg-color-yellow');
                 app.setView('.js-content', view).render();
 

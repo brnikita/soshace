@@ -1,6 +1,7 @@
 'use strict';
 var _ = require('underscore'),
     Controller = require('../../common/controller'),
+    UsersModel = require('../../models/usersModel'),
     RenderParams = require('../../common/renderParams'),
     Passport = require('passport');
 
@@ -54,8 +55,15 @@ module.exports = Controller.extend({
     loginHandler: function () {
         var request = this.request,
             response = this.response,
+            data = request.body,
+            email = data.email,
             next = this.next;
 
+        UsersModel.validateEmail(email, function(error){
+            if(error){
+                this.sendError(error, 400);
+            }
+        });
         Passport.authenticate('local', this.authenticateHandler)(request, response, next);
     },
 
@@ -89,7 +97,6 @@ module.exports = Controller.extend({
 
         if (error) {
             return this.sendError(this.i18n('Server is too busy, try later'));
-
         }
 
         if (!userId) {

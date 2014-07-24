@@ -56,13 +56,13 @@ module.exports = Class.extend({
      * @method
      * @name ControllerInit#sendError
      * @param {String} message
-     * @param {String} [status] 404, 500
+     * @param {String} [status] 404, 500 по-умолчанию 400
      * @returns {undefined}
      */
     sendError: function (message, status) {
         var response = this.response;
 
-        status = status || 404;
+        status = status || 400;
         response.status(status).send({
             error: message
         });

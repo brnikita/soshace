@@ -152,7 +152,7 @@ define([
          * Метод обработчик получения фокуса полем
          *
          * @method
-         * @name RegistrationView#changeFormFieldHandler
+         * @name RegistrationView#focusFormFieldHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
@@ -176,7 +176,7 @@ define([
          * Метод обработчик получения фокуса полем
          *
          * @method
-         * @name RegistrationView#changeFormFieldHandler
+         * @name RegistrationView#blurFormFieldHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
@@ -251,7 +251,7 @@ define([
                 return;
             }
 
-            error = model.preValidate(fieldName, fieldValue);
+//            error = model.preValidate(fieldName, fieldValue);
 
             if (error) {
                 error = Helpers.i18n(error);

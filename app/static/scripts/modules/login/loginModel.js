@@ -9,8 +9,9 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
-], function ($, _, Backbone) {
+    'backbone',
+    'utils/helpers'
+], function ($, _, Backbone, Helpers) {
     return Backbone.Model.extend({
         /**
          * @property
@@ -36,7 +37,8 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
-
+            var locale = Helpers.getLocale();
+            this.set({locale: locale}, {silent: true});
         }
     });
 });

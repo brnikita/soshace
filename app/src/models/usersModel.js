@@ -46,6 +46,7 @@ var UsersShema = Mongoose.Schema({
     email: {
         type: String,
         unique: true,
+        //TODO: разобраться почему mongoose прогоняет все валидаторы
         //Валидация идет с конца!
         validate: [
             {
@@ -68,8 +69,9 @@ var UsersShema = Mongoose.Schema({
     },
     password: {
         type: String,
+        //TODO: разобраться почему mongoose прогоняет все валидаторы
+        //Валидация идет с конца!
         validate: [
-            //Валидация идет с конца!
             {
                 validator: Validators.passwordMinLength,
                 msg: 'Password length should&#39;t be less than 6 characters.'
@@ -201,6 +203,18 @@ UsersShema.statics.getProfile = function (params) {
 };
 
 /**
+ * Метод находит пользователя по email
+ *
+ * @method
+ * @name UsersShema.getUserByEmail
+ * @param {String} email проверяемый email
+ * @return {undefined}
+ */
+UsersShema.statics.getUserByEmail = function (email) {
+    return this.findOne({email: email});
+};
+
+/**
  * mongo не дает одновременно сделать $push и $pull
  * http://stackoverflow.com/questions/4584665/field-name-duplication-not-allowed-with-modifiers-on-update
  *
@@ -214,7 +228,7 @@ UsersShema.statics.getProfile = function (params) {
  * @return {undefined}
  */
 UsersShema.statics.confirmEmail = function (code, callback) {
-   this.collection.findAndModify({code: code}, [], {
+    this.collection.findAndModify({code: code}, [], {
         $set: {
             emailConfirmed: true
         },

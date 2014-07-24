@@ -86,6 +86,7 @@ module.exports = Controller.extend({
             return;
         }
 
+        //TODO: здесь вылетает бага, если код подтверждения отправлен неверный
         UsersModel.deleteNotConfirmedEmailMessage(user._id, this.loginUser);
     },
 
