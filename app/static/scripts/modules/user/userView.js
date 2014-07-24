@@ -45,9 +45,15 @@ define([
         /**
          * @constructor
          * @name UserView#initialize
+         * @params {Object} params
          * @returns {undefined}
          */
-        initialize: function () {
+        initialize: function (params) {
+            var $el = params && params.$el;
+
+            if ($el) {
+                this.$el = $el;
+            }
         },
 
         /**

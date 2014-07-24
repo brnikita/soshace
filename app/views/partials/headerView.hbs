@@ -5,7 +5,7 @@
 
     <div class="header__tabs">
         {{#if isAuthenticated}}
-            {{#if isUserPage}}
+            {{#if isUserTab}}
                 <span class="header__tab header__tab-active">
                     <span class="glyphicon glyphicon-user"></span>
                     <span class="hidden-xs">
@@ -22,7 +22,7 @@
                 </a>
             {{/if}}
         {{/if}}
-        {{#if isAddPostPage}}
+        {{#if isAddPostTab}}
             <span class="header__tab header__tab-active">
                 <span class="glyphicon glyphicon-pencil"></span>
                 <span class="hidden-xs">
@@ -45,7 +45,7 @@
                 </span>
             </a>
         {{else}}
-            {{#if isAuthPage}}
+            {{#if isAuthTab}}
                 <span class="header__tab header__tab-active">
                     <span class="glyphicon glyphicon-log-in"></span>
                     <span class="hidden-xs">

@@ -43,10 +43,15 @@ define([
         /**
          * @constructor
          * @name PostsListView#initialize
+         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function () {
+        initialize: function (params) {
+            var $el = params && params.$el;
 
+            if ($el) {
+                this.$el = $el;
+            }
         },
 
         /**

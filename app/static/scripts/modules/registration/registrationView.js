@@ -61,14 +61,22 @@ define([
         /**
          * @constructor
          * @name RegistrationView#initialize
+         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function () {
+        initialize: function (params) {
+            var $el = params.$el;
+
             _.bindAll(this,
                 'render',
                 'userRegistrationSuccess',
                 'userRegistrationFail'
             );
+
+            if ($el) {
+                this.$el = $el;
+            }
+
             Handlebars.registerPartial(
                 'registrationView',
                 Soshace.hbs['partials/registrationView']
@@ -331,7 +339,6 @@ define([
          * @returns {undefined}
          */
         afterRender: function () {
-            debugger;
             this.setFieldsHelpers(this.model.helpers);
             //Используется асинхронный вызов, чтобы навесились обработчики событий
             setTimeout(function () {

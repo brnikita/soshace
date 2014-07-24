@@ -249,7 +249,7 @@ module.exports = Controller.extend({
 
         response.render('posts/addPostView', _.extend(renderParams, {
             title: 'Add Post',
-            isAddPostPage: true,
+            isAddPostTab: true,
             editorDisabled: this.isEditorDisabled(),
             bodyClass: 'bg-color-blue bg-symbols'
         }));

@@ -62,7 +62,7 @@ module.exports = Controller.extend({
             renderParams = new RenderParams(request);
 
         response.render('userView', _.extend(renderParams, {
-            isUserPage: true,
+            isUserTab: true,
             title: 'User Profile',
             bodyClass: 'bg-color-blue bg-symbols'
         }));

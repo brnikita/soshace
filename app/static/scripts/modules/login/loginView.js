@@ -56,14 +56,22 @@ define([
         /**
          * @constructor
          * @name LoginView#initialize
+         * @params {Object} params
          * @returns {undefined}
          */
-        initialize: function () {
+        initialize: function (params) {
+            var $el = params && params.$el;
+
             _.bindAll(this,
                 'render',
                 'userLoginSuccess',
                 'authenticatedHandler'
             );
+
+            if ($el) {
+                this.$el = $el;
+            }
+
             Handlebars.registerPartial(
                 'loginView',
                 Soshace.hbs['partials/loginView']

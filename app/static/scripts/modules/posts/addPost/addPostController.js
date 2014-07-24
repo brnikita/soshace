@@ -20,27 +20,24 @@ define(['utils/controller', './addPostModel', './addPostView'],
             /**
              * @field
              * @name AddPostController#model
-             * @type {Backbone.Model}
+             * @type {AddPostModel}
              */
             model: null,
 
             /**
              * @field
              * @name AddPostController#view
-             * @type {Backbone.Layout}
+             * @type {AddPostView}
              */
             view: null,
 
             /**
              * @constructor
-             * @name
+             * @name AddPostController#initialize
              * @returns {undefined}
              */
             initialize: function () {
                 this.model = new AddPostModel();
-                this.view = new AddPostView({
-                    model: this.model
-                });
             },
 
 
@@ -52,10 +49,13 @@ define(['utils/controller', './addPostModel', './addPostView'],
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = this.view,
-                    app = Soshace.app;
+                var view = new AddPostView({
+                        model: this.model,
+                        $el: $('.js-content-first-load')
+                    });
 
-                app.setView('.js-content', view).afterRender();
+                view.afterRender();
+                this.view = view;
             },
 
             /**
@@ -66,13 +66,14 @@ define(['utils/controller', './addPostModel', './addPostView'],
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = this.view,
+                var view = new AddPostView({
+                        model: this.model
+                    }),
                     app = Soshace.app;
 
-                app.setView('.js-content', view);
-                app.getView('.js-header').changeTab('isAddPostPage');
+                this.view = view;
+                app.setView('.js-content', view).render();
                 app.$el.attr('class', 'bg-symbols bg-color-blue');
-                view.render();
             }
         });
     });

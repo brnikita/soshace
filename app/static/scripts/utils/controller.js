@@ -60,12 +60,16 @@ define(['class'], function (Class) {
          * @returns {undefined}
          */
         routeHandler: function () {
-            Soshace.pageAlias = this.pageAlias;
+            var app = Soshace.app,
+                pageAlias = this.pageAlias;
+
+            Soshace.pageAlias = pageAlias;
 
             if (typeof arguments !== 'undefined') {
                 this.routeParams = arguments;
             }
 
+            app.getView('.js-header').changeTab(pageAlias);
             if (Soshace.firstLoad) {
                 Soshace.firstLoad = false;
                 this.firstLoad();

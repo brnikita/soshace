@@ -20,27 +20,24 @@ define(['utils/controller', './loginModel', './loginView'],
             /**
              * @field
              * @name LoginController#model
-             * @type {Backbone.Model}
+             * @type {LoginModel}
              */
             model: null,
 
             /**
              * @field
              * @name LoginController#view
-             * @type {Backbone.Layout}
+             * @type {LoginView}
              */
             view: null,
 
             /**
              * @constructor
-             * @name
+             * @name LoginController#initialize
              * @returns {undefined}
              */
             initialize: function () {
                 this.model = new LoginModel();
-                this.view = new LoginView({
-                    model: this.model
-                });
             },
 
 
@@ -52,10 +49,12 @@ define(['utils/controller', './loginModel', './loginView'],
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = this.view,
-                    app = Soshace.app;
-
-                app.setView('.js-content', view).afterRender();
+                var view = new LoginView({
+                    model: this.model,
+                    $el: $('.js-content-first-load')
+                });
+                view.afterRender();
+                this.view = view;
             },
 
             /**
@@ -67,11 +66,13 @@ define(['utils/controller', './loginModel', './loginView'],
              */
             secondLoad: function () {
                 var params = this.routeParams,
-                    view = this.view,
+                    view = new LoginView({
+                        model: this.model
+                    }),
                     app = Soshace.app;
 
+                this.view = view;
                 this.model.set({locale: params[0]}, {silent: true});
-                app.getView('.js-header').changeTab('isAuthPage');
                 app.$el.attr('class', 'bg-symbols bg-color-yellow');
                 app.setView('.js-content', view).render();
             }

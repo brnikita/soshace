@@ -7,7 +7,7 @@ define([
     'router',
     'utils/helpers',
     'utils/widgets',
-    'modules/headerView',
+    'modules/header/headerView',
     'backbone.layoutmanager'
 ], function ($, _, Backbone, Router, Helpers, Widgets, HeaderView) {
     var App = Backbone.Layout.extend({
@@ -34,7 +34,8 @@ define([
          * @type {Object}
          */
         elements: {
-            title: null
+            title: null,
+            content: null
         },
 
         /**
@@ -104,6 +105,7 @@ define([
          */
         setElements: function () {
             this.elements.title = $('title');
+            this.elements.content = $('.js-content');
         },
 
         /**

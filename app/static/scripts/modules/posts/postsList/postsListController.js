@@ -20,27 +20,24 @@ define(['underscore', 'utils/controller', './postsListModel', './postsListView']
             /**
              * @field
              * @name PostsListController#model
-             * @type {Backbone.Model}
+             * @type {PostsListModel}
              */
             model: null,
 
             /**
              * @field
              * @name PostsListController#view
-             * @type {Backbone.Layout}
+             * @type {PostsListView}
              */
             view: null,
 
             /**
              * @constructor
-             * @name
+             * @name PostsListController#initialize
              * @returns {undefined}
              */
             initialize: function () {
                 this.model = new PostsListModel();
-                this.view = new PostsListView({
-                    model: this.model
-                });
             },
 
 
@@ -52,10 +49,13 @@ define(['underscore', 'utils/controller', './postsListModel', './postsListView']
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = this.view,
-                    app = Soshace.app;
+                var view = new PostsListView({
+                    model: this.model,
+                    $el: $('.js-content-first-load')
+                });
 
-                app.setView('.js-content', view).afterRender();
+                view.afterRender();
+                this.view = view;
             },
 
             /**
@@ -66,16 +66,18 @@ define(['underscore', 'utils/controller', './postsListModel', './postsListView']
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = this.view,
+                var view = new PostsListView({
+                        model: this.model
+                    }),
                     app = Soshace.app;
 
+                this.view = view;
                 app.setView('.js-content', view);
                 this.model.on('postsReceived', _.bind(function () {
                     view.render();
                 }, this));
                 this.model.getPosts(this.routeParams);
                 app.$el.attr('class', 'bg-symbols bg-color-green');
-                app.getView('.js-header').changeTab();
             }
         });
     });

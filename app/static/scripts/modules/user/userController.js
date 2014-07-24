@@ -25,27 +25,24 @@ define([
             /**
              * @field
              * @name UserController#model
-             * @type {Backbone.Model}
+             * @type {UserModel}
              */
             model: null,
 
             /**
              * @field
              * @name UserController#view
-             * @type {Backbone.Layout}
+             * @type {UserView}
              */
             view: null,
 
             /**
              * @constructor
-             * @name
+             * @name UserController#initialize
              * @returns {undefined}
              */
             initialize: function () {
                 this.model = new UserModel();
-                this.view = new UserView({
-                    model: this.model
-                });
             },
 
 
@@ -57,8 +54,13 @@ define([
              * @returns {undefined}
              */
             firstLoad: function () {
-                this.view.$el = $('.js-content-el');
-                this.view.afterRender();
+                var view = new UserView({
+                    model: this.model,
+                    $el: $('.js-content-first-load')
+                });
+
+                view.afterRender();
+                this.view = view;
             },
 
             /**
@@ -70,7 +72,9 @@ define([
              */
             secondLoad: function () {
                 var params = this.routeParams,
-                    view = this.view,
+                    view = new UserView({
+                        model: this.model
+                    }),
                     app = Soshace.app;
 
                 this.model.set({
@@ -78,9 +82,9 @@ define([
                     userName: params[1]
                 });
 
+                this.view = view;
                 app.setView('.js-content', view);
                 this.model.getUser().done(_.bind(view.render, view));
-                app.getView('.js-header').changeTab('isUserPage');
                 app.$el.attr('class', 'bg-symbols bg-color-blue');
             }
         });

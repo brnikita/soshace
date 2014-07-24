@@ -20,27 +20,24 @@ define(['utils/controller', './registrationModel', './registrationView'],
             /**
              * @field
              * @name RegistrationController#model
-             * @type {Backbone.Model}
+             * @type {RegistrationModel}
              */
             model: null,
 
             /**
              * @field
              * @name RegistrationController#view
-             * @type {Backbone.Layout}
+             * @type {RegistrationView}
              */
             view: null,
 
             /**
              * @constructor
-             * @name
+             * @name RegistrationController#initialize
              * @returns {undefined}
              */
             initialize: function () {
                 this.model = new RegistrationModel();
-                this.view = new RegistrationView({
-                    model: this.model
-                });
             },
 
 
@@ -52,10 +49,13 @@ define(['utils/controller', './registrationModel', './registrationView'],
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = this.view,
-                    app = Soshace.app;
+                var view = new RegistrationView({
+                    model: this.model,
+                    $el: $('.js-content-first-load')
+                });
 
-                app.setView('.js-content', view).afterRender();
+                view.afterRender();
+                this.view = view;
             },
 
             /**
@@ -67,11 +67,13 @@ define(['utils/controller', './registrationModel', './registrationView'],
              */
             secondLoad: function () {
                 var params = this.routeParams,
-                    view = this.view,
+                    view = new RegistrationView({
+                        model: this.model
+                    }),
                     app = Soshace.app;
 
+                this.view = view;
                 this.model.set({locale: params[0]}, {silent: true});
-                app.getView('.js-header').changeTab('isAuthPage');
                 app.$el.attr('class', 'bg-symbols bg-color-yellow');
                 app.setView('.js-content', view).render();
 

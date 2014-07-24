@@ -29,10 +29,23 @@ define([
          * @type {Object}
          */
         tabsConfig: {
-            isPostsPage: false,
-            isAddPostPage: false,
-            isAuthPage: false,
-            isUserPage: false
+            isAddPostTab: false,
+            isAuthTab: false,
+            isUserTab: false
+        },
+
+        /**
+         * Соотношение алиаса страницы и названия таба
+         *
+         * @field
+         * @name HeaderView.pageAliasToTab
+         * @type {Object}
+         */
+        pageAliasToTab: {
+            login: 'isAuthTab',
+            registration: 'isAuthTab',
+            addPost: 'isAddPostTab',
+            user: 'isUserTab'
         },
 
         /**
@@ -68,11 +81,12 @@ define([
          *
          * @method
          * @name HeaderView.changeTab
-         * @param {string} [tabName] имя таба
+         * @param {string} [pageAlias] алиас страницы
          * @returns {undefined}
          */
-        changeTab: function (tabName) {
-            var tabConfig = this.tabsConfig;
+        changeTab: function (pageAlias) {
+            var tabName = pageAlias && this.pageAliasToTab[pageAlias],
+                tabConfig = this.tabsConfig;
 
             _.each(tabConfig, function (value, tab) {
                 tabConfig[tab] = false;

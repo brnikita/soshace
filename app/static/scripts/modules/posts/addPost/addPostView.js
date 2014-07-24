@@ -157,16 +157,22 @@ define([
         /**
          * @constructor
          * @name AddPostView#initialize
+         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function () {
-            var commandRole = this.defaultConfig.commandRole;
+        initialize: function (params) {
+            var $el = params && params.$el,
+                commandRole = this.defaultConfig.commandRole;
 
             _.bindAll(this,
                 'showServerMessages',
                 'windowScrollHandler',
                 'touchHandler'
             );
+
+            if ($el) {
+                this.$el = $el;
+            }
 
             this.toolbarBtnSelector = 'a[data-' +
                 commandRole +

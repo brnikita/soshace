@@ -25,14 +25,14 @@ define([
             /**
              * @field
              * @name PostDetailController#model
-             * @type {Backbone.Model}
+             * @type {PostDetailModel}
              */
             model: null,
 
             /**
              * @field
              * @name PostDetailController#view
-             * @type {Backbone.Layout}
+             * @type {PostDetailView}
              */
             view: null,
 
@@ -43,9 +43,6 @@ define([
              */
             initialize: function () {
                 this.model = new PostDetailModel();
-                this.view = new PostDetailView({
-                    model: this.model
-                });
             },
 
 
@@ -57,10 +54,13 @@ define([
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = this.view,
-                    app = Soshace.app;
+                var view = new PostDetailView({
+                    model: this.model,
+                    $el: $('.js-content-first-load')
+                });
 
-                app.setView('.js-content', view).afterRender();
+                view.afterRender();
+                this.view = view;
             },
 
             /**
@@ -71,7 +71,9 @@ define([
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = this.view,
+                var view = new PostDetailView({
+                        model: this.model
+                    }),
                     app = Soshace.app;
 
                 app.setView('.js-content', view);
@@ -80,7 +82,6 @@ define([
                 });
                 this.model.getPost(this.routeParams);
                 app.$el.attr('class', 'bg-symbols bg-color-green');
-                app.getView('.js-header').changeTab();
             }
         });
     });

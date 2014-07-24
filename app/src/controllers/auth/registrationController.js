@@ -44,7 +44,7 @@ module.exports = Controller.extend({
             renderParams = new RenderParams(request);
 
         response.render('auth/authView', _.extend(renderParams, {
-            isAuthPage: true,
+            isAuthTab: true,
             isRegistrationTab: true,
             title: 'Registration page',
             bodyClass: 'bg-symbols bg-color-yellow'
