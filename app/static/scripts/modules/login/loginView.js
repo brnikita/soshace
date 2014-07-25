@@ -12,7 +12,10 @@ define([
     'backbone',
     'utils/helpers',
     'utils/widgets',
-    'handlebars'
+    'handlebars',
+    'backbone.validation',
+    'utils/backboneValidationExtension',
+    'utils/plugins/jquery.controlStatus'
 ], function ($, _, Backbone, Helpers, Widgets, Handlebars) {
     return Backbone.Layout.extend({
 
@@ -31,6 +34,7 @@ define([
          * @type {Object}
          */
         elements: {
+            validateFields: null
         },
 
         /**
@@ -41,6 +45,7 @@ define([
         events: {
             'keyup .js-model-field': 'changeFormFieldHandler',
             'blur .js-model-field': 'changeFormFieldHandler',
+            'focus .js-validate-input': 'validateFieldFocusHandler',
             'submit .js-login-form': 'userLoginHandler'
         },
 
@@ -76,6 +81,8 @@ define([
                 'loginView',
                 Soshace.hbs['partials/loginView']
             );
+
+            Backbone.Validation.bind(this);
         },
 
         /**
@@ -87,13 +94,45 @@ define([
          * @returns {undefined}
          */
         userLoginHandler: function (event) {
-            var _this = this;
+            var errors,
+                _this = this;
 
             event.preventDefault();
+
+            errors = this.model.validate();
+
+            if (errors) {
+                this.showFieldsErrors(errors, true);
+                return;
+            }
+
             this.model.save(null, {
                 success: _this.userLoginSuccess,
                 error: _this.userLoginFail
             });
+        },
+
+        /**
+         * Метод показывает список ошибок у
+         * переданных полей
+         *
+         * @method
+         * @name LoginView#showFieldsErrors
+         * @param {Object} errors список ошибок
+         * @param {Boolean} [translate] true - перевести ошибки
+         * @returns {undefined}
+         */
+        showFieldsErrors: function (errors, translate) {
+            _.each(errors, _.bind(function (error, fieldName) {
+                var $field;
+
+                fieldName = Helpers.hyphen(fieldName);
+                $field = $('#' + fieldName);
+                if (translate) {
+                    error = Helpers.i18n(error);
+                }
+                $field.controlStatus('error', error);
+            }, this));
         },
 
         /**
@@ -135,17 +174,24 @@ define([
         },
 
         /**
-         * TODO: дописать
-         *
-         * Метод обработчик неуспешной входа пользователя
+         * Метод обработчик неуспешного логина пользователя
          *
          * @method
-         * @name LoginView#userLoginFail
+         * @name RegistrationView#userLoginFail
+         * @param {Backbone.Model} model
          * @param {Object} response
          * @returns {undefined}
          */
-        userLoginFail: function (response) {
+        userLoginFail: function (model, response) {
+            var error = response.responseJSON && response.responseJSON.error;
+            if (typeof error === 'string') {
+                //TODO: добавить вывод системной ошибки
+                return;
+            }
 
+            if (typeof error === 'object') {
+                this.showFieldsErrors(error);
+            }
         },
 
         /**
@@ -181,11 +227,38 @@ define([
         },
 
         /**
+         * Метод сохраняет ссылки на элементы DOM
+         *
+         * @method
+         * @name LoginView#setElements
+         * @returns {undefined}
+         */
+        setElements: function(){
+            this.elements.validateFields = this.$('.js-validate-input');
+        },
+
+        /**
+         * Метод обработчик получения фокуса полем валидации
+         *
+         * @method
+         * @name LoginView#validateFieldFocusHandler
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        validateFieldFocusHandler: function(event){
+            var $target = $(event.target);
+
+            $target.controlStatus('base');
+        },
+
+        /**
          * @method
          * @name LoginView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
+            this.setElements();
+            this.elements.validateFields.controlStatus();
             $('#email').focus();
         }
     });

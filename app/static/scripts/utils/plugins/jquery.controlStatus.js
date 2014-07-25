@@ -23,17 +23,16 @@ define([
                 var $this = $(this),
                     $formGroup = $this.parent();
 
-                if (options) {
-                    $this.data('controlStatus', options);
-                    $formGroup.addClass('has-feedback');
-                    $formGroup.append($('<span>', {
-                        'class': 'form-control-feedback'
-                    }));
-                    $formGroup.append($('<div>', {
-                        'class': 'form-group-status',
-                        style: 'display: none;'
-                    }));
-                }
+                options = options || {};
+                $this.data('controlStatus', options);
+                $formGroup.addClass('has-feedback');
+                $formGroup.append($('<span>', {
+                    'class': 'form-control-feedback'
+                }));
+                $formGroup.append($('<div>', {
+                    'class': 'form-group-status',
+                    style: 'display: none;'
+                }));
             });
         },
 
@@ -47,7 +46,7 @@ define([
             var $this = $(this),
                 controlStatusData = $this.data('controlStatus'),
                 $formGroup = $this.parent(),
-                $groupStatus =  $('.form-group-status', $formGroup);
+                $groupStatus = $('.form-group-status', $formGroup);
 
             $formGroup.removeClass('has-error');
             $formGroup.removeClass('has-success');
@@ -95,7 +94,7 @@ define([
         error: function (error) {
             return this.each(function () {
                 var $this = $(this),
-                    controlStatusData = $this.data('controlStatus'),
+                    controlStatusData = $this.data('controlStatus') || {},
                     $formGroup = $this.parent(),
                     $groupStatus = $('.form-group-status', $formGroup);
 
@@ -103,7 +102,7 @@ define([
                 $formGroup.addClass('has-error');
                 $groupStatus.html(error);
 
-                if (!(controlStatusData && controlStatusData.helperIsShowing)) {
+                if (!(controlStatusData.helperIsShowing)) {
                     $groupStatus.slideDown();
                 }
 
