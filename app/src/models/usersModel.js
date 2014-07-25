@@ -112,7 +112,7 @@ var UsersShema = Mongoose.Schema({
 UsersShema.methods.comparePassword = function (candidatePassword, callback) {
     Bcrypt.compare(candidatePassword, this.password, function (error, isMatch) {
         if (error) {
-            return callback(error);
+            return callback({password: 'Password is not correct'});
         }
         callback(null, isMatch);
     });
@@ -208,10 +208,32 @@ UsersShema.statics.getProfile = function (params) {
  * @method
  * @name UsersShema.getUserByEmail
  * @param {String} email проверяемый email
- * @return {undefined}
+ * @return {Cursor}
  */
 UsersShema.statics.getUserByEmail = function (email) {
     return this.findOne({email: email});
+};
+
+/**
+ * Метод делает проверку email, используется при логине,
+ * т.к. валидация модели не подходит
+ *
+ * @method
+ * @name UsersShema.validateEmail
+ * @param {String} email проверяемый email
+ * @return {Object} ошибка
+ */
+UsersShema.statics.validateEmail = function (email) {
+    var blankEmail = email === null || typeof email === 'undefined' ||
+        typeof email === 'string' && /^\s+$/.test(email);
+
+    if (blankEmail) {
+        return {email: 'Email can&#39;t be blank.'};
+    }
+
+    if (!Soshace.PATTERNS.email.test(email)) {
+        return {email: 'Email is invalid.'};
+    }
 };
 
 /**

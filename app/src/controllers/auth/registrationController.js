@@ -109,14 +109,14 @@ module.exports = Controller.extend({
 
         if (error) {
             //TODO: поменять на render
-            this.sendError(this.i18n('Server is too busy, try later'));
+            this.sendError('Server is too busy, try later');
             return;
         }
 
         request.login(user._id, _.bind(function (error) {
             if (error) {
                 //TODO: поменять на render
-                this.sendError(this.i18n('Server is too busy, try later'));
+                this.sendError('Server is too busy, try later');
                 return;
             }
             response.redirect('/' + locale + '/add_post/');
@@ -136,7 +136,7 @@ module.exports = Controller.extend({
             user;
 
         if (!userData) {
-            this.sendError(this.i18n('Bad request'));
+            this.sendError('Bad request');
             return;
         }
 
@@ -154,40 +154,17 @@ module.exports = Controller.extend({
      * @returns {undefined}
      */
     userSaveHandler: function (error, user) {
-        var errors;
-
         if (error) {
             if (error.errors) {
-                errors = this.formatErrors(error.errors);
-                this.sendError(errors);
+                this.sendError(error.errors);
                 return;
             }
 
-            this.sendError(this.i18n('Server is too busy, try later'));
+            this.sendError('Server is too busy, try later');
             return;
         }
 
         this.userAddSuccess(user);
-    },
-
-    /**
-     * Метод форматирует ошибки валидации
-     * для отправки на клиент
-     *
-     * @method
-     * @name RegistrationController#formatErrors
-     * @param {Object} errors
-     * @returns {Object}
-     */
-    formatErrors: function (errors) {
-        var request = this.request,
-            formattedErrors = {};
-
-        _.each(errors, function (value, key) {
-            formattedErrors[key] = request.i18n.__(value.message);
-        });
-
-        return formattedErrors;
     },
 
     /**
@@ -209,7 +186,7 @@ module.exports = Controller.extend({
                 message = errors && errors[fieldName] || null;
 
             response.send({
-                error: request.i18n.__(message)
+                error: message
             });
         });
     },
@@ -231,7 +208,7 @@ module.exports = Controller.extend({
 
         request.login(user._id, _.bind(function (error) {
             if (error) {
-                this.sendError(this.i18n('Server is too busy, try later'));
+                this.sendError('Server is too busy, try later');
                 return;
             }
 

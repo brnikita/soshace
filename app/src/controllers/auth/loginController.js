@@ -22,7 +22,11 @@ module.exports = Controller.extend({
     initialize: function (request, response) {
         this.request = request;
         this.response = response;
-        _.bindAll(this, 'authenticateHandler', 'userLogin');
+        _.bindAll(this,
+            'authenticateHandler',
+            'userLogin',
+            'validateLoginData'
+        );
     },
 
     /**
@@ -54,16 +58,48 @@ module.exports = Controller.extend({
      */
     loginHandler: function () {
         var request = this.request,
+            data = request.body,
+            email = data.email,
+            error = UsersModel.validateEmail(email);
+
+        if (error) {
+            this.sendError(this.i18n(error), 400);
+            return;
+        }
+
+        UsersModel.getUserByEmail(email).
+            exec(this.validateLoginData);
+    },
+
+    /**
+     * @method
+     * @name LoginController#validateLoginData
+     * @param error
+     * @param user
+     * @returns {undefined}
+     */
+    validateLoginData: function(error, user){
+        var request = this.request,
             response = this.response,
             data = request.body,
             email = data.email,
-            next = this.next;
+            password = data.password,
+            next = this.next,
+            passwordError,
+            message = 'User with email {{' + email + '}} is not registered yet.';
 
-        UsersModel.validateEmail(email, function(error){
-            if(error){
-                this.sendError(error, 400);
-            }
-        });
+        if (error) {
+            this.sendError(message);
+            return;
+        }
+
+        passwordError = user.comparePassword(password);
+
+        if (passwordError) {
+            this.sendError(passwordError);
+            return;
+        }
+
         Passport.authenticate('local', this.authenticateHandler)(request, response, next);
     },
 
@@ -96,13 +132,13 @@ module.exports = Controller.extend({
             requestBody;
 
         if (error) {
-            return this.sendError(this.i18n('Server is too busy, try later'));
+            return this.sendError('Server is too busy, try later');
         }
 
         if (!userId) {
             requestBody = request.body;
             userEmail = requestBody.email;
-            message = this.i18n('User with email ') + userEmail + this.i18n(' is not registered yet.');
+            message = 'User with email {{' + userEmail + '}} is not registered yet.';
             return this.sendError(message);
         }
 
@@ -118,7 +154,7 @@ module.exports = Controller.extend({
         var response = this.response;
 
         if (error) {
-            return this.sendError(this.i18n('Server is too busy, try later'));
+            return this.sendError('Server is too busy, try later');
         }
 
         response.send({isAuthenticated: true});
