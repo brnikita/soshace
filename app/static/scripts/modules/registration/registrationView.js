@@ -251,7 +251,7 @@ define([
                 return;
             }
 
-//            error = model.preValidate(fieldName, fieldValue);
+            error = model.preValidate(fieldName, fieldValue);
 
             if (error) {
                 error = Helpers.i18n(error);
@@ -266,11 +266,11 @@ define([
                 error = response.error;
 
                 if (error) {
-                    $field.controlStatus('error', error);
+                    $field.controlStatus('error', error.message);
                     return;
                 }
 
-                $field.controlStatus('success', error);
+                $field.controlStatus('success');
             });
         },
 

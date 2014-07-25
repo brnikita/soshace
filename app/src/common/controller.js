@@ -55,16 +55,16 @@ module.exports = Class.extend({
      *
      * @method
      * @name ControllerInit#sendError
-     * @param {String} message
+     * @param {*} error
      * @param {String} [status] 404, 500 по-умолчанию 400
      * @returns {undefined}
      */
-    sendError: function (message, status) {
+    sendError: function (error, status) {
         var response = this.response;
 
         status = status || 400;
         response.status(status).send({
-            error: message
+            error: error
         });
     },
 
@@ -85,19 +85,5 @@ module.exports = Class.extend({
             error: null,
             message: message
         });
-    },
-
-    /**
-     * Метод переводит переданную строку
-     *
-     * @method
-     * @name ControllerInit#i18n
-     * @param value {String} строка для перевода
-     * @returns {String} перевод
-     */
-    i18n: function (value) {
-        var request = this.request;
-
-        return request.i18n.__(value);
     }
 });

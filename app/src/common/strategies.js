@@ -50,23 +50,55 @@ var Strategies = {
      * @return {undefined}
      */
     local: function (userEmail, userPassword, done) {
-        UsersModel.findOne({ email: userEmail }, function (error, user) {
+        var emailError = UsersModel.validateEmail(userEmail);
+        if (emailError) {
+            done({email: emailError});
+            return;
+        }
+
+        UsersModel.getUserByEmail(userEmail).exec(_.bind(function(error, user){
+            this.getUserByEmailHandler(error, user, userEmail, userPassword, done);
+        }, this));
+    },
+
+    /**
+     * Метод обработчик получения пользователя по email внутри локальной стратегии
+     *
+     * @method
+     * @name Strategies.getUserByEmailHandler
+     * @param {*} error
+     * @param {Object | null} user
+     * @param {String} userEmail
+     * @param {String} userPassword
+     * @param {Function} done
+     * @returns {undefined}
+     */
+    getUserByEmailHandler: function (error, user, userEmail, userPassword, done) {
+        var passwordError;
+
+        if (error) {
+            done('Server is too busy, try later');
+            return;
+        }
+
+        if (!user) {
+            done({email: 'User with email {{' + userEmail + '}} is not registered yet.'});
+            return;
+        }
+
+        passwordError = UsersModel.validatePassword(userPassword);
+
+        if (passwordError) {
+            done({password: passwordError});
+            return;
+        }
+
+        user.comparePassword(userPassword, function (error) {
             if (error) {
-                return done(error);
+                return done({password: error});
             }
-            if (!user) {
-                return done(null, false, { message: 'User with email ' + userEmail + ' is not registered yet.'});
-            }
-            user.comparePassword(userPassword, function (error, isMatch) {
-                if (error) {
-                    return done(error);
-                }
-                if (isMatch) {
-                    return done(null, user.id);
-                } else {
-                    return done(null, false, { message: 'Invalid password' });
-                }
-            });
+
+            return done(null, user.id);
         });
     },
 

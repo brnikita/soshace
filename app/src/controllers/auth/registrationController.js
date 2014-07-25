@@ -82,7 +82,7 @@ module.exports = Controller.extend({
     confirmEmailHandler: function (error, user) {
         if (error) {
             //TODO: поменять на render
-            this.sendError(this.i18n('Server is too busy, try later'));
+            this.sendError('Server is too busy, try later', 503);
             return;
         }
 
@@ -109,14 +109,14 @@ module.exports = Controller.extend({
 
         if (error) {
             //TODO: поменять на render
-            this.sendError('Server is too busy, try later');
+            this.sendError('Server is too busy, try later', 503);
             return;
         }
 
         request.login(user._id, _.bind(function (error) {
             if (error) {
                 //TODO: поменять на render
-                this.sendError('Server is too busy, try later');
+                this.sendError('Server is too busy, try later', 503);
                 return;
             }
             response.redirect('/' + locale + '/add_post/');
@@ -160,7 +160,7 @@ module.exports = Controller.extend({
                 return;
             }
 
-            this.sendError('Server is too busy, try later');
+            this.sendError('Server is too busy, try later', 503);
             return;
         }
 
@@ -208,7 +208,7 @@ module.exports = Controller.extend({
 
         request.login(user._id, _.bind(function (error) {
             if (error) {
-                this.sendError('Server is too busy, try later');
+                this.sendError('Server is too busy, try later', 503);
                 return;
             }
 

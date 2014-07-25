@@ -112,9 +112,14 @@ var UsersShema = Mongoose.Schema({
 UsersShema.methods.comparePassword = function (candidatePassword, callback) {
     Bcrypt.compare(candidatePassword, this.password, function (error, isMatch) {
         if (error) {
-            return callback({password: 'Password is not correct'});
+            return callback('Password is not correct');
         }
-        callback(null, isMatch);
+
+        if (!isMatch) {
+            return callback('Password is not correct');
+        }
+
+        callback(null);
     });
 };
 
@@ -221,18 +226,38 @@ UsersShema.statics.getUserByEmail = function (email) {
  * @method
  * @name UsersShema.validateEmail
  * @param {String} email проверяемый email
- * @return {Object} ошибка
+ * @return {String | undefined} ошибка
  */
 UsersShema.statics.validateEmail = function (email) {
-    var blankEmail = email === null || typeof email === 'undefined' ||
-        typeof email === 'string' && /^\s+$/.test(email);
+    var emailNotEmpty = Validators.required(email);
 
-    if (blankEmail) {
-        return {email: 'Email can&#39;t be blank.'};
+    if (!emailNotEmpty) {
+        return 'Email can&#39;t be blank.';
     }
 
     if (!Soshace.PATTERNS.email.test(email)) {
-        return {email: 'Email is invalid.'};
+        return 'Email is invalid.';
+    }
+};
+
+/**
+ * Метод делает проверку password, используется при логине,
+ * т.к. валидация модели не подходит
+ *
+ * @method
+ * @name UsersShema.validatePassword
+ * @param {String} password проверяемый пароль
+ * @return {String | undefined} ошибка
+ */
+UsersShema.statics.validatePassword = function (password) {
+    var passwordNotEmpty = Validators.required(password);
+
+    if (!passwordNotEmpty) {
+        return 'Password can&#39;t be blank.';
+    }
+
+    if (!Validators.passwordMinLength(password)) {
+        return 'Password can&#39;t be less than 6 characters.';
     }
 };
 

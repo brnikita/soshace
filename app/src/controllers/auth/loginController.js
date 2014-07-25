@@ -1,7 +1,6 @@
 'use strict';
 var _ = require('underscore'),
     Controller = require('../../common/controller'),
-    UsersModel = require('../../models/usersModel'),
     RenderParams = require('../../common/renderParams'),
     Passport = require('passport');
 
@@ -24,8 +23,7 @@ module.exports = Controller.extend({
         this.response = response;
         _.bindAll(this,
             'authenticateHandler',
-            'userLogin',
-            'validateLoginData'
+            'userLogin'
         );
     },
 
@@ -58,47 +56,8 @@ module.exports = Controller.extend({
      */
     loginHandler: function () {
         var request = this.request,
-            data = request.body,
-            email = data.email,
-            error = UsersModel.validateEmail(email);
-
-        if (error) {
-            this.sendError(this.i18n(error), 400);
-            return;
-        }
-
-        UsersModel.getUserByEmail(email).
-            exec(this.validateLoginData);
-    },
-
-    /**
-     * @method
-     * @name LoginController#validateLoginData
-     * @param error
-     * @param user
-     * @returns {undefined}
-     */
-    validateLoginData: function(error, user){
-        var request = this.request,
             response = this.response,
-            data = request.body,
-            email = data.email,
-            password = data.password,
-            next = this.next,
-            passwordError,
-            message = 'User with email {{' + email + '}} is not registered yet.';
-
-        if (error) {
-            this.sendError(message);
-            return;
-        }
-
-        passwordError = user.comparePassword(password);
-
-        if (passwordError) {
-            this.sendError(passwordError);
-            return;
-        }
+            next = this.next;
 
         Passport.authenticate('local', this.authenticateHandler)(request, response, next);
     },
@@ -121,25 +80,19 @@ module.exports = Controller.extend({
     /**
      * @method
      * @name LoginController#authenticateHandler
-     * @param error
-     * @param userId
+     * @param {*} error
+     * @param {String} userId
      * @returns {undefined}
      */
     authenticateHandler: function (error, userId) {
-        var request = this.request,
-            message,
-            userEmail,
-            requestBody;
+        var request = this.request;
 
-        if (error) {
-            return this.sendError('Server is too busy, try later');
+        if (typeof error === 'string') {
+            return this.sendError(error, 500);
         }
 
-        if (!userId) {
-            requestBody = request.body;
-            userEmail = requestBody.email;
-            message = 'User with email {{' + userEmail + '}} is not registered yet.';
-            return this.sendError(message);
+        if (error) {
+            return this.sendError(error);
         }
 
         request.login(userId, this.userLogin);
@@ -154,7 +107,7 @@ module.exports = Controller.extend({
         var response = this.response;
 
         if (error) {
-            return this.sendError('Server is too busy, try later');
+            return this.sendError('Server is too busy, try later', 503);
         }
 
         response.send({isAuthenticated: true});
