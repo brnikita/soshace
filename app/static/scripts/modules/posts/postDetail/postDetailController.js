@@ -6,11 +6,11 @@
  * @class PostDetailController
  */
 define([
-    'underscore',
-    'utils/controller',
-    './postDetailModel',
-    './postDetailView'
-],
+        'underscore',
+        'utils/controller',
+        './postDetailModel',
+        './postDetailView'
+    ],
     function (_, Controller, PostDetailModel, PostDetailView) {
         return Controller.extend({
             /**
@@ -76,11 +76,10 @@ define([
                     }),
                     app = Soshace.app;
 
-                app.setView('.js-content', view);
-                this.model.on('postReceived', function () {
-                    view.render();
-                });
-                this.model.getPost(this.routeParams);
+                this.model.getPost(this.routeParams).
+                    done(function(){
+                        app.setView('.js-content', view).render();
+                    });
                 app.$el.attr('class', 'bg-symbols bg-color-green');
             }
         });

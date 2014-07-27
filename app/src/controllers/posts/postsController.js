@@ -12,6 +12,22 @@ var Controller = require('../../common/controller'),
  * @class PostsController
  */
 module.exports = Controller.extend({
+
+    /**
+     * Метод перенаправляет на тсраницу постов
+     *
+     * @method
+     * @name PostsController#redirectToPosts
+     * @returns {undefined}
+     */
+    redirectToPosts: function(){
+        var request = this.request,
+            response = this.response,
+            locale = request.i18n.getLocale();
+
+        response.redirect('/' + locale);
+    },
+
     /**
      * Получаем пост целиком
      *
@@ -22,14 +38,8 @@ module.exports = Controller.extend({
     getPost: function () {
         var request = this.request,
             response = this.response,
-            query = request.query,
             params = {
-                'public': true,
-                'locale': query.locale,
-                'UTCYear': query.year,
-                'UTCMonth': query.month,
-                'UTCDate': query.date,
-                'titleUrl': query.title
+                '_id': request.params._id
             };
 
         PostsModel.getPost(params).exec(function (error, post) {
@@ -74,19 +84,15 @@ module.exports = Controller.extend({
             response = this.response,
             renderParams = new RenderParams(request),
             params = {
-                'public': true,
-                'locale': request.params.locale,
-                'UTCYear': request.params.year,
-                'UTCMonth': request.params.month,
-                'UTCDate': request.params.date,
-                'titleUrl': request.params.titleUrl
+                '_id': request.params._id
             };
 
         PostsModel.getPost(params).exec(function (error, post) {
             if (post) {
                 response.render('posts/postDetailView', _.extend(renderParams, {
                     post: post,
-                    title: post.title
+                    title: post.title,
+                    id: post._id
                 }));
                 return;
             }

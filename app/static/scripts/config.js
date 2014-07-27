@@ -79,11 +79,11 @@ define(function () {
             api: {
                 login: '/api/login',
                 logout: '/api/logout',
-                postDetails: '/api/post',
+                postDetails: '/api/posts/0',
                 posts: '/api/posts',
-                createUser: '/api/create_user',
-                user: '/api/get_user',
-                profile: '/api/get_profile',
+                createUser: '/api/users',
+                user: '/api/users/0',
+                profile: '/api/profile',
                 registration: {
                     validateField: '/api/registration/validate_field'
                 }

@@ -45,26 +45,30 @@ module.exports = Class.extend({
      * @type {Object}
      */
     routes: {
-        //TODO: переделать api на RestFull API
         //-----------------API start------------------
-        'post /api/upload_img': 'uploadImageController upload',
+        'post /api/image': 'imageController createImage',
         'get /api/posts': 'posts/postsController getPosts',
-        'get /api/post': 'posts/postsController getPost',
-        'post /api/post': 'posts/addPostController addPost',
-        'post /api/create_user': 'auth/registrationController createUser',
-        'get /api/get_user': 'userController getUser',
-        'get /api/get_profile': 'userController getProfile',
+        'get /api/posts/:_id': 'posts/postsController getPost',
+        'patch /api/posts/:_id': 'posts/postsController updatePost',
+        'post /api/posts': 'posts/postsController createPost',
+        'post /api/users': 'usersController createUser',
+        'get /api/users/:_id': 'usersController getUser',
+        'patch /api/users/:_id': 'usersController updateUser',
+        'get /api/profile': 'userController getProfile',
         'post /api/login': 'auth/loginController loginHandler',
         'get /api/logout': 'auth/loginController logoutHandler',
         'get /api/registration/validate_field': 'auth/registrationController validateField',
         //-------------------API end--------------------
 
-        'get /:locale/add_post': 'posts/addPostController renderAddPost',
+        'get /': 'posts/postsController redirectToPosts',
         'get /:locale': 'posts/postsController renderPosts',
-        'get /:locale/posts/:year/:month/:date/:titleUrl': 'posts/postsController renderPost',
+        'get /:locale/posts': 'posts/postsController renderPosts',
+        'get /:locale/posts/new': 'posts/postController renderEditPost',
+        'get /:locale/posts/:_id/edit': 'posts/postController renderEditPost',
+        'get /:locale/posts/:_id': 'posts/postsController renderPost',
         'get /:locale/registration': 'auth/registrationController renderRegistration',
         'get /:locale/login': 'auth/loginController renderLogin',
-        'get /:locale/user/:id': 'userController renderUserPage',
+        'get /:locale/users/:_id': 'userController renderUserPage',
         'get /:locale/registration/confirm_email': 'auth/registrationController confirmEmail'
     },
 
@@ -78,21 +82,6 @@ module.exports = Class.extend({
         this.app = app;
         this.controllers = {};
         this.parseRoutes();
-        this.other();
-    },
-
-    //TODO: вынести все в контроллеры!!!
-    other: function () {
-        var App = this.app;
-
-        App.get('/', function (request, response) {
-            var locale = request.i18n.getLocale();
-            response.redirect('/' + locale);
-        });
-
-        App.get('/:locale/posts', function (request, response) {
-            response.redirect('/ru');
-        });
     },
 
     /**

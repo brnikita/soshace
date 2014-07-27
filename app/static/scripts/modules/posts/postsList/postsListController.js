@@ -72,9 +72,8 @@ define(['underscore', 'utils/controller', './postsListModel', './postsListView']
                     app = Soshace.app;
 
                 this.view = view;
-                app.setView('.js-content', view);
                 this.model.on('postsReceived', _.bind(function () {
-                    view.render();
+                    app.setView('.js-content', view).render();
                 }, this));
                 this.model.getPosts(this.routeParams);
                 app.$el.attr('class', 'bg-symbols bg-color-green');

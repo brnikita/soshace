@@ -14,11 +14,25 @@ define([
     return Backbone.Model.extend({
 
         /**
+         * @field
+         * @name PostDetailModel.default
+         * @type {String | null}
+         */
+        default: {
+            _id: null
+        },
+
+        /**
          * @method
-         * @name PostDetailModel.initialize
+         * @name PostDetailModel.url
          * @returns {string}
          */
-        url: Soshace.urls.api.postDetails,
+        url: function () {
+            var url = Soshace.urls.api.postDetails,
+                _id = this.get('_id');
+
+            return url.replace('0', _id);
+        },
 
         /**
          * @constructor
@@ -34,19 +48,11 @@ define([
          * @method
          * @name PostDetailModel.initialize
          * @param {Array} routeParams параметры зароса
-         * @returns {undefined}
+         * @returns {jQuery.Deferred}
          */
         getPost: function (routeParams) {
-            this.fetch({data: {
-                locale: routeParams[0],
-                year: routeParams[1],
-                month: routeParams[2],
-                date: routeParams[3],
-                title: routeParams[4]
-            }}, {silent: true}).
-                done(_.bind(function () {
-                    this.trigger('postReceived');
-                }, this));
+            this.set('_id', routeParams[1]);
+            return this.fetch();
         }
     });
 });

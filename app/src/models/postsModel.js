@@ -10,29 +10,9 @@ var Mongoose = require('mongoose');
  * @type {Mongoose.Schema}
  */
 var PostsShema = Mongoose.Schema({
-    //путь в урле после даты
-    titleUrl: {
-        type: String
-    },
     //отображать ли пост в общем доступе
     public: {
         type: Boolean
-    },
-    //для сортировки
-    date: {
-        type: Date
-    },
-    //для улобной выборки по году YYYY (по гринвичу UTC)
-    UTCYear: {
-        type: String
-    },
-    //для удобной выборки помесяцу MM (по гринвичу UTC)
-    UTCMonth: {
-        type: String
-    },
-    //для удобной выборки по дню DD (по гринвичу UTC)
-    UTCDate: {
-        type: String
     },
     locale: {
         type: String
@@ -56,6 +36,8 @@ var PostsShema = Mongoose.Schema({
 });
 
 /**
+ * TODO: проверить необходимость такой сортировки
+ *
  * Получаем список постов
  *
  * @method
@@ -70,14 +52,10 @@ PostsShema.statics.getPosts = function (params) {
         'locale': params.locale,
         'public': params.public
     }, {
+        _id: 1,
         title: 1,
-        description: 1,
-        titleUrl: 1,
-        date: 1,
-        UTCYear: 1,
-        UTCMonth: 1,
-        UTCDate: 1
-    }).sort({date: -1}).
+        description: 1
+    }).sort({_id: -1}).
         skip(Soshace.POSTS_PER_PAGE * page).
         limit(Soshace.POSTS_PER_PAGE);
 };
@@ -92,9 +70,9 @@ PostsShema.statics.getPosts = function (params) {
  */
 PostsShema.statics.getPost = function (params) {
     return this.findOne(params, {
+        _id: 1,
         title: 1,
-        body: 1,
-        date: 1
+        body: 1
     });
 };
 
