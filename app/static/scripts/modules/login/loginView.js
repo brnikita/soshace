@@ -169,7 +169,7 @@ define([
             var profile = Soshace.profile,
                 userName = profile.userName,
                 locale = profile.locale,
-                redirectUrl = '/' + locale + '/user/' + userName;
+                redirectUrl = '/' + locale + '/users/' + userName;
 
             Backbone.history.navigate(redirectUrl, {trigger: true});
         },

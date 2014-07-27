@@ -43,8 +43,8 @@ define([
             ':locale/login/': 'modules/login/loginController',
             ':locale/registration': 'modules/registration/registrationController',
             ':locale/registration/': 'modules/registration/registrationController',
-            ':locale/user/:username': 'modules/user/userController',
-            ':locale/user/:username/': 'modules/user/userController'
+            ':locale/users/:username': 'modules/user/userController',
+            ':locale/users/:username/': 'modules/user/userController'
         },
 
         /**
