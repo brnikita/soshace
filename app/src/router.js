@@ -53,7 +53,7 @@ module.exports = Class.extend({
         'post /api/posts': 'posts/postsController createPost',
         'post /api/users': 'usersController createUser',
         'get /api/users/:_id': 'usersController getUser',
-        'patch /api/users/:_id': 'usersController updateUser',
+        'patch /api/users/:_id': 'usersController updateProfile',
         'get /api/profile': 'userController getProfile',
         'post /api/login': 'auth/loginController loginHandler',
         'get /api/logout': 'auth/loginController logoutHandler',

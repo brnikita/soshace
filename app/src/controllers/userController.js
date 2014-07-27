@@ -22,6 +22,18 @@ module.exports = Controller.extend({
     },
 
     /**
+     * Метод обновления профиля пользователя
+     *
+     * @method
+     * @name UserController#updateUser
+     * @returns {undefined}
+     */
+    updateProfile: function(){
+        var response = this.response,
+            request = this.request;
+    },
+
+    /**
      * Метод отдает в ответе json с данными профиля
      * текущего авторизованного пользователя
      *
