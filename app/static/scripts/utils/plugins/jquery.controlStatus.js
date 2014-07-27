@@ -20,11 +20,12 @@ define([
          */
         initialize: function (options) {
             return this.each(function () {
-                var $this = $(this),
+                var controlOptions = {},
+                    $this = $(this),
                     $formGroup = $this.parent();
 
-                options = options || {};
-                $this.data('controlStatus', options);
+                _.extend(controlOptions, options || {});
+                $this.data('controlStatus', controlOptions);
                 $formGroup.addClass('has-feedback');
                 $formGroup.append($('<span>', {
                     'class': 'form-control-feedback'

@@ -70,6 +70,7 @@ define([
             _.bindAll(this,
                 'render',
                 'userLoginSuccess',
+                'userLoginFail',
                 'authenticatedHandler'
             );
 
