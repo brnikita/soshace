@@ -2,7 +2,7 @@
 var _ = require('underscore'),
     Controller = require('../../common/controller'),
     UsersModel = require('../../models/usersModel'),
-    RenderParams = require('../../common/renderParams'),
+    requestParams = require('../../common/requestParams'),
     SendMail = require('../../common/sendMail');
 
 
@@ -41,9 +41,9 @@ module.exports = Controller.extend({
     renderRegistration: function () {
         var request = this.request,
             response = this.response,
-            renderParams = new RenderParams(request);
+            requestParams = requestParams(request);
 
-        response.render('auth/authView', _.extend(renderParams, {
+        response.render('auth/authView', _.extend(requestParams, {
             isAuthTab: true,
             isRegistrationTab: true,
             title: 'Registration page',

@@ -1,7 +1,8 @@
 'use strict';
 var Controller = require('../common/controller'),
     _ = require('underscore'),
-    RenderParams = require('../common/renderParams');
+    UsersModel = require('../../models/usersModel'),
+    requestParams = require('../common/requestParams');
 /**
  * Контроллер страницы профиля пользователя
  *
@@ -23,14 +24,49 @@ module.exports = Controller.extend({
 
     /**
      * Метод обновления профиля пользователя
+     * В параметрах запроса нужно передавать метод из модели
+     * для работы с передаваемыми данными
+     * {method: systemMessageDelete}
      *
      * @method
      * @name UserController#updateUser
      * @returns {undefined}
      */
-    updateProfile: function(){
+    updateProfile: function () {
         var response = this.response,
-            request = this.request;
+            request = this.request,
+            requestParams = requestParams(request),
+            params = request.params,
+            query = request.query,
+            userId,
+            method;
+
+        if (!requestParams.isAuthenticated) {
+            this.sendError('User is not authorized.');
+            return;
+        }
+
+        if (params.username !== requestParams.profile.username) {
+            this.sendError('User is not authorized.');
+            return;
+        }
+
+        userId = requestParams.profile._id;
+        method = query.method;
+
+        if (typeof UsersModel[method] === 'function') {
+            UsersModel[method](userId, query, _.bind(function (error, user) {
+                if (error) {
+                    this.sendError(error);
+                    return;
+                }
+
+                response.send({user: user});
+            }, this));
+            return;
+        }
+
+        this.sendError('The Method {{' + method + '}} is not supported.', 405);
     },
 
     /**
@@ -72,9 +108,9 @@ module.exports = Controller.extend({
     renderUserPage: function () {
         var request = this.request,
             response = this.response,
-            renderParams = new RenderParams(request);
+            requestParams = requestParams(request);
 
-        response.render('userView', _.extend(renderParams, {
+        response.render('userView', _.extend(requestParams, {
             isUserTab: true,
             title: 'User Profile',
             bodyClass: 'bg-color-blue bg-symbols'

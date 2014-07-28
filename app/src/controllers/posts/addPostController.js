@@ -5,7 +5,7 @@ var Controller = require('../../common/controller'),
     Helper = require('../../common/helpers'),
     _ = require('underscore'),
     _s = require('underscore.string'),
-    RenderParams = require('../../common/renderParams');
+    requestParams = require('../../common/requestParams');
 
 /**
  * Контроллер, отвечающий за добавление статьи
@@ -245,9 +245,9 @@ module.exports = Controller.extend({
     renderAddPost: function () {
         var request = this.request,
             response = this.response,
-            renderParams = new RenderParams(request);
+            requestParams = requestParams(request);
 
-        response.render('posts/addPostView', _.extend(renderParams, {
+        response.render('posts/addPostView', _.extend(requestParams, {
             title: 'Add Post',
             isAddPostTab: true,
             editorDisabled: this.isEditorDisabled(),

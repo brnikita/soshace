@@ -3,7 +3,7 @@
 var Controller = require('../../common/controller'),
     _ = require('underscore'),
     PostsModel = require('../../models/postsModel'),
-    RenderParams = require('../../common/renderParams');
+    requestParams = require('../../common/requestParams');
 
 
 /**
@@ -82,14 +82,14 @@ module.exports = Controller.extend({
     renderPost: function () {
         var request = this.request,
             response = this.response,
-            renderParams = new RenderParams(request),
+            requestParams = requestParams(request),
             params = {
                 '_id': request.params._id
             };
 
         PostsModel.getPost(params).exec(function (error, post) {
             if (post) {
-                response.render('posts/postDetailView', _.extend(renderParams, {
+                response.render('posts/postDetailView', _.extend(requestParams, {
                     post: post,
                     title: post.title,
                     id: post._id
@@ -110,7 +110,7 @@ module.exports = Controller.extend({
     renderPosts: function () {
         var request = this.request,
             response = this.response,
-            renderParams = new RenderParams(request),
+            requestParams = requestParams(request),
             params = {
                 'public': true,
                 'locale': request.params.locale,
@@ -118,7 +118,7 @@ module.exports = Controller.extend({
             };
 
         PostsModel.getPosts(params).exec(function (error, posts) {
-            response.render('posts/postsListView', _.extend(renderParams, {
+            response.render('posts/postsListView', _.extend(requestParams, {
                 isPostsTab: true,
                 title: 'Soshace blog',
                 posts: posts

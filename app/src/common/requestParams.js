@@ -1,8 +1,8 @@
-//TODO: переделать в модуль получения переменных
 'use strict';
 
 /**
- * Конструктор основных переменных для рендера шаблонов
+ * Модуль возвращает переменные, зависисмые от запроса и
+ * переменные общие для шаблонов
  *
  * @constructor
  * @name RenderParams
@@ -23,6 +23,7 @@ module.exports = function (request) {
         locale: request.i18n.getLocale(),
         isAuthenticated: request.isAuthenticated(),
         paths: Soshace.PATHS,
+        profile: profile,
         profileUserName: profileUserName
     };
 };

@@ -87,6 +87,7 @@ define([
         afterRender: function () {
             this.setElements();
             Widgets.showSystemMessage();
+            this.save({method: 'systemMessageDelete', systemMessage: []});
         }
     });
 });

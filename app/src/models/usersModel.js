@@ -1,6 +1,7 @@
 'use strict';
 
-var Mongoose = require('mongoose'),
+var _ = require('underscore'),
+    Mongoose = require('mongoose'),
     Bcrypt = require('bcrypt'),
     Validators = require('../common/validators'),
     Helpers = require('../common/helpers'),
@@ -18,7 +19,9 @@ var Mongoose = require('mongoose'),
 var UsersShema = Mongoose.Schema({
     //код подтверждения email
     code: {
-        type: String
+        type: String,
+        //поле не может быть изменено пользователем
+        readonly: true
     },
     fullName: {
         type: String
@@ -45,6 +48,8 @@ var UsersShema = Mongoose.Schema({
     },
     email: {
         type: String,
+        //поле не может быть изменено пользователем
+        readonly: true,
         unique: true,
         //TODO: разобраться почему mongoose прогоняет все валидаторы
         //Валидация идет с конца!
@@ -84,10 +89,14 @@ var UsersShema = Mongoose.Schema({
     },
     emailConfirmed: {
         type: Boolean,
-        default: false
+        default: false,
+        //поле не может быть изменено пользователем
+        readonly: true
     },
     //Является ли пользователь админом
     admin: {
+        //поле не может быть изменено пользователем
+        readonly: true,
         type: Boolean,
         default: false
     },
@@ -120,6 +129,43 @@ UsersShema.methods.comparePassword = function (candidatePassword, callback) {
         }
 
         callback(null);
+    });
+};
+
+/**
+ * Метод удаляет переданное системное сообщение
+ *
+ * @method
+ * @name UsersShema#systemMessageDelete
+ * @param {Object} systemMessage удяляемое системное сообщение
+ * @param {Function} callback
+ * @returns {undefined}
+ */
+UsersShema.methods.systemMessageDelete = function (systemMessage, callback) {
+    var currentTemplate = systemMessage.templatePath,
+        newMessagesList,
+        currentSystemMessage = _.findWhere(this.systemMessages, {templatePath: currentTemplate});
+
+    if (!currentSystemMessage) {
+        callback({error: {message: 'System message not found', type: 404}});
+        return;
+    }
+
+    if (currentSystemMessage.readonly) {
+        callback({error: {message: 'This message can not be removed', type: 403}});
+        return;
+    }
+
+    newMessagesList = _.without(this.systemMessages, currentSystemMessage);
+    this.systemMessages = newMessagesList;
+
+    this.save(function (error, user) {
+        if (error) {
+            callback({error: {message: 'Server is too busy, try later.', type: 503}});
+            return;
+        }
+
+        callback(null, user);
     });
 };
 
@@ -204,6 +250,28 @@ UsersShema.statics.getProfile = function (params) {
         admin: 1,
         locale: 1,
         systemMessages: 1
+    });
+};
+
+/**
+ * Метод удаляет системное сообщение
+ *
+ * @method
+ * @name UsersShema.systemMessageDelete
+ * @param {Object} userId id пользователя
+ * @param {Object} query
+ * @param {Function} callback
+ * @return {undefined}
+ */
+UsersShema.statics.systemMessageDelete = function (userId, query, callback) {
+
+    this.collection.findOne({_id: userId}, function (error, user) {
+        if (error) {
+            callback({error: {message: 'Server is too busy, try later.', type: 503}});
+            return;
+        }
+
+        user.systemMessageDelete(query.systemMessage, callback);
     });
 };
 

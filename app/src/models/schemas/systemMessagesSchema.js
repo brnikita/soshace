@@ -21,7 +21,7 @@ var SystemMessagesShema = new Schema({
         default: null
     },
     //Сообщение закрывается пользователем
-    closeByUser: {
+    closedByUser: {
         type: Boolean,
         default: false
     },

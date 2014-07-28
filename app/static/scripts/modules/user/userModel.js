@@ -19,7 +19,10 @@ define([
          * @name UserModel.initialize
          * @returns {string}
          */
-        url: Soshace.urls.api.saveUser,
+        url: function(){
+            var username = this.get('username');
+            return Soshace.urls.api.user.replace('0', username);
+        },
 
         /**
          * @property
@@ -27,6 +30,7 @@ define([
          * @type {Object}
          */
         defaults: {
+            username: null,
             locale: null,
             fullName: null,
             profileImg: null,
