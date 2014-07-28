@@ -1,3 +1,16 @@
+<style>
+    li { list-style-type: none; } /* Убираем исходную нумерацию у списка */
+    ol { counter-reset: list1; } /* Инициируем счетчик */
+    ol li:before {
+        counter-increment: list1; /* Увеличиваем значение счетчика */
+        content: counter(list1) ". "; /* Выводим число */
+    }
+    ol ol { counter-reset: list2; } /* Инициируем счетчик вложенного списка */
+    ol ol li:before {
+        counter-increment: list2; /* Увеличиваем значение счетчика вложенного списка */
+        content: counter(list1) "." counter(list2) ". "; /* Выводим число */
+    }
+</style>
 Soshace.com
 ====
 
