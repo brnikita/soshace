@@ -3,7 +3,7 @@
 var Controller = require('../../common/controller'),
     _ = require('underscore'),
     PostsModel = require('../../models/postsModel'),
-    requestParams = require('../../common/requestParams');
+    RequestParams = require('../../common/requestParams');
 
 
 /**
@@ -82,7 +82,7 @@ module.exports = Controller.extend({
     renderPost: function () {
         var request = this.request,
             response = this.response,
-            requestParams = requestParams(request),
+            requestParams = new RequestParams(request),
             params = {
                 '_id': request.params._id
             };
@@ -110,7 +110,7 @@ module.exports = Controller.extend({
     renderPosts: function () {
         var request = this.request,
             response = this.response,
-            requestParams = requestParams(request),
+            requestParams = new RequestParams(request),
             params = {
                 'public': true,
                 'locale': request.params.locale,

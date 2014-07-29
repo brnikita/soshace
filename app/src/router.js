@@ -51,10 +51,10 @@ module.exports = Class.extend({
         'get /api/posts/:_id': 'posts/postsController getPost',
         'patch /api/posts/:_id': 'posts/postsController updatePost',
         'post /api/posts': 'posts/postsController createPost',
-        'post /api/users': 'usersController createUser',
+        'post /api/users': 'auth/registrationController createUser',
         'get /api/users/:username': 'usersController getUser',
         'patch /api/users/:username': 'usersController updateProfile',
-        'get /api/profile': 'userController getProfile',
+        'get /api/profile': 'usersController getProfile',
         'post /api/login': 'auth/loginController loginHandler',
         'get /api/logout': 'auth/loginController logoutHandler',
         'get /api/registration/validate_field': 'auth/registrationController validateField',
@@ -68,7 +68,7 @@ module.exports = Class.extend({
         'get /:locale/posts/:_id': 'posts/postsController renderPost',
         'get /:locale/registration': 'auth/registrationController renderRegistration',
         'get /:locale/login': 'auth/loginController renderLogin',
-        'get /:locale/users/:username': 'userController renderUserPage',
+        'get /:locale/users/:username': 'usersController renderUserPage',
         'get /:locale/registration/confirm_email': 'auth/registrationController confirmEmail'
     },
 

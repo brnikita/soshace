@@ -2,7 +2,7 @@
 
 var _ = require('underscore'),
     Handlebars = require('express3-handlebars').create(),
-    RenderParams = require('./renderParams');
+    RequestParams = require('./requestParams');
 
 /**
  * Модуль отправки сообщений
@@ -42,13 +42,13 @@ var SendMail = {
      * @return {undefined}
      */
     sendConfirmMail: function (request, user) {
-        var renderParams = new RenderParams(request),
+        var requestParams = new RequestParams(request),
             locale = request.i18n.getLocale(),
             mailTemplatePath = Soshace.DIR_NAME + '/app/views/mails/confirmationMailView.hbs',
             confirmationLink = this.getConfirmationLink(locale, user.code),
             mailSubject  = request.i18n.__('Confirmation message from Soshace blog');
 
-        Handlebars.render(mailTemplatePath, _.extend(renderParams,{
+        Handlebars.render(mailTemplatePath, _.extend(requestParams,{
             host: Soshace.PRODUCTION_HOST,
             userName: user.userName,
             emailConfirmLink: confirmationLink,

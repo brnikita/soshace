@@ -5,7 +5,7 @@
  * переменные общие для шаблонов
  *
  * @constructor
- * @name RenderParams
+ * @name requestParams
  * @param {Object} request
  * @returns {Object}
  */

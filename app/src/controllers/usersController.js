@@ -1,12 +1,12 @@
 'use strict';
 var Controller = require('../common/controller'),
     _ = require('underscore'),
-    UsersModel = require('../../models/usersModel'),
-    requestParams = require('../common/requestParams');
+    UsersModel = require('../models/usersModel'),
+    RequestParams = require('../common/requestParams');
 /**
  * Контроллер страницы профиля пользователя
  *
- * @class UserController
+ * @class UsersController
  */
 module.exports = Controller.extend({
 
@@ -15,7 +15,7 @@ module.exports = Controller.extend({
      * пользователя
      *
      * @method
-     * @name UserController#getUser
+     * @name UsersController#getUser
      * @returns {undefined}
      */
     getUser: function () {
@@ -29,13 +29,13 @@ module.exports = Controller.extend({
      * {method: systemMessageDelete}
      *
      * @method
-     * @name UserController#updateUser
+     * @name UsersController#updateUser
      * @returns {undefined}
      */
     updateProfile: function () {
         var response = this.response,
             request = this.request,
-            requestParams = requestParams(request),
+            requestParams = new RequestParams(request),
             params = request.params,
             query = request.query,
             userId,
@@ -74,7 +74,7 @@ module.exports = Controller.extend({
      * текущего авторизованного пользователя
      *
      * @method
-     * @name UserController#getProfile
+     * @name UsersController#getProfile
      * @returns {undefined}
      */
     getProfile: function () {
@@ -102,13 +102,13 @@ module.exports = Controller.extend({
      * Метод рендерит страницу пользователя
      *
      * @method
-     * @name UserController#renderLogin
+     * @name UsersController#renderLogin
      * @return {undefined}
      */
     renderUserPage: function () {
         var request = this.request,
             response = this.response,
-            requestParams = requestParams(request);
+            requestParams = new RequestParams(request);
 
         response.render('userView', _.extend(requestParams, {
             isUserTab: true,

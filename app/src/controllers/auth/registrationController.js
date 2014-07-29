@@ -2,7 +2,8 @@
 var _ = require('underscore'),
     Controller = require('../../common/controller'),
     UsersModel = require('../../models/usersModel'),
-    requestParams = require('../../common/requestParams'),
+    RequestParams = require('../../common/requestParams'),
+    SystemMessagesModel = require('../../models/systemMessages'),
     SendMail = require('../../common/sendMail');
 
 
@@ -41,7 +42,7 @@ module.exports = Controller.extend({
     renderRegistration: function () {
         var request = this.request,
             response = this.response,
-            requestParams = requestParams(request);
+            requestParams = new RequestParams(request);
 
         response.render('auth/authView', _.extend(requestParams, {
             isAuthTab: true,
@@ -49,6 +50,42 @@ module.exports = Controller.extend({
             title: 'Registration page',
             bodyClass: 'bg-symbols bg-color-yellow'
         }));
+    },
+
+    /**
+     * Метод удаляет сообщение о том, что email не подтвержден и добавляет успешное
+     * сообщение
+     *
+     * @method
+     * @name RegistrationController#updateUserMessagesAfterConfirmEmail
+     * @param {UsersModel} user
+     * @returns {undefined}
+     */
+    updateUserMessagesAfterConfirmEmail: function (user, callback) {
+        SystemMessagesModel.removeMessage(user._id, 'notConfirmedEmail', function (error) {
+            var successConfirmEmail;
+
+            if (error) {
+                callback(error);
+                return;
+            }
+
+            successConfirmEmail = new SystemMessagesModel({
+                alias: 'successConfirmEmail',
+                owner: user._id,
+                templatePath: 'messages/successConfirmEmail',
+                showOnce: true,
+                pages: ['addPost']
+            });
+            successConfirmEmail.save(function (error) {
+                if (error) {
+                    callback({error: {messsage: 'Server is too busy, try later', code: 503}});
+                    return;
+                }
+
+                callback(null, user);
+            });
+        });
     },
 
     /**
@@ -69,6 +106,7 @@ module.exports = Controller.extend({
 
     /**
      * TODO: добавить обработку ошибок
+     * TODO: здесь вылетает бага, если код подтверждения отправлен неверный
      *
      * Метод обработчик положительного
      * подтверждения кода пользователя
@@ -76,7 +114,7 @@ module.exports = Controller.extend({
      * @method
      * @name RegistrationController#confirmEmailHandler
      * @param {Object} error
-     * @param {Object} user
+     * @param {UsersModel} user
      * @returns {undefined}
      */
     confirmEmailHandler: function (error, user) {
@@ -86,8 +124,7 @@ module.exports = Controller.extend({
             return;
         }
 
-        //TODO: здесь вылетает бага, если код подтверждения отправлен неверный
-        UsersModel.deleteNotConfirmedEmailMessage(user._id, this.loginUser);
+        this.updateUserMessagesAfterConfirmEmail(user, this.loginUser);
     },
 
     /**
@@ -99,10 +136,10 @@ module.exports = Controller.extend({
      * @method
      * @name RegistrationController#loginUser
      * @param {Object} error
-     * @param {Object} user
+     * @param {UsersModel} user
      * @returns {undefined}
      */
-    loginUser: function(error, user){
+    loginUser: function (error, user) {
         var request = this.request,
             response = this.response,
             locale = request.i18n.getLocale();
@@ -150,7 +187,7 @@ module.exports = Controller.extend({
      * @method
      * @name RegistrationController#userSaveHandler
      * @param {Object} error объект ошибки
-     * @param {Mongoose.model} user модель пользователя
+     * @param {UsersModel} user модель пользователя
      * @returns {undefined}
      */
     userSaveHandler: function (error, user) {
@@ -180,6 +217,7 @@ module.exports = Controller.extend({
             requestData = request.query,
             fieldName = _.keys(requestData)[0],
             user = new UsersModel(requestData);
+
         //TODO: добавить проверку на наличие поля в модели
         user.validate(function (error) {
             var errors = error && error.errors,
@@ -192,11 +230,32 @@ module.exports = Controller.extend({
     },
 
     /**
+     * Метод добавляет системное сообщение о том, что пользователь
+     * не подтвердил email
+     *
+     * @method
+     * @name RegistrationController#addNotConfirmedEmailMessage
+     * @param {UsersModel} user
+     * @returns {undefined}
+     */
+    addNotConfirmedEmailMessage: function (user) {
+        var notConfirmedEmailMessage = new SystemMessagesModel({
+            alias: 'notConfirmedEmail',
+            owner: user._id,
+            templatePath: 'messages/notConfirmedEmail',
+            pages: ['user', 'addPost'],
+            readOnly: true
+        });
+
+        notConfirmedEmailMessage.save();
+    },
+
+    /**
      * Метод обработчик успешного добавления пользователя
      *
      * @method
      * @name RegistrationController#userAddSuccess
-     * @param {Mongoose.model} user
+     * @param {UsersModel} user
      * @returns {undefined}
      */
     userAddSuccess: function (user) {
@@ -206,6 +265,7 @@ module.exports = Controller.extend({
             profile,
             redirectUrl;
 
+        this.addNotConfirmedEmailMessage(user);
         request.login(user._id, _.bind(function (error) {
             if (error) {
                 this.sendError('Server is too busy, try later', 503);
@@ -221,7 +281,7 @@ module.exports = Controller.extend({
                 'systemMessages'
             );
 
-            redirectUrl = '/' + locale + '/user/' + user.userName;
+            redirectUrl = '/' + locale + '/users/' + user.userName;
             SendMail.sendConfirmMail(request, user);
             response.send({
                 profile: profile,

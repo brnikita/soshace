@@ -1,7 +1,7 @@
 'use strict';
 var _ = require('underscore'),
     Controller = require('../../common/controller'),
-    requestParams = require('../../common/requestParams'),
+    RequestParams = require('../../common/requestParams'),
     Passport = require('passport');
 
 /**
@@ -37,7 +37,7 @@ module.exports = Controller.extend({
     renderLogin: function () {
         var request = this.request,
             response = this.response,
-            requestParams = requestParams(request);
+            requestParams = new RequestParams(request);
 
         response.render('auth/authView', _.extend(requestParams, {
             isAuthTab: true,

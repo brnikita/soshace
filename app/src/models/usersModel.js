@@ -5,8 +5,7 @@ var _ = require('underscore'),
     Bcrypt = require('bcrypt'),
     Validators = require('../common/validators'),
     Helpers = require('../common/helpers'),
-    SALT_WORK_FACTOR = 10,
-    SystemMessageSchema = require('./schemas/systemMessagesSchema');
+    SALT_WORK_FACTOR = 10;
 
 /**
  * Класс для работы с моделью пользователей
@@ -100,7 +99,6 @@ var UsersShema = Mongoose.Schema({
         type: Boolean,
         default: false
     },
-    systemMessages: [SystemMessageSchema],
     locale: {
         type: String,
         required: true,
@@ -121,51 +119,16 @@ var UsersShema = Mongoose.Schema({
 UsersShema.methods.comparePassword = function (candidatePassword, callback) {
     Bcrypt.compare(candidatePassword, this.password, function (error, isMatch) {
         if (error) {
-            return callback('Password is not correct');
-        }
-
-        if (!isMatch) {
-            return callback('Password is not correct');
-        }
-
-        callback(null);
-    });
-};
-
-/**
- * Метод удаляет переданное системное сообщение
- *
- * @method
- * @name UsersShema#systemMessageDelete
- * @param {Object} systemMessage удяляемое системное сообщение
- * @param {Function} callback
- * @returns {undefined}
- */
-UsersShema.methods.systemMessageDelete = function (systemMessage, callback) {
-    var currentTemplate = systemMessage.templatePath,
-        newMessagesList,
-        currentSystemMessage = _.findWhere(this.systemMessages, {templatePath: currentTemplate});
-
-    if (!currentSystemMessage) {
-        callback({error: {message: 'System message not found', type: 404}});
-        return;
-    }
-
-    if (currentSystemMessage.readonly) {
-        callback({error: {message: 'This message can not be removed', type: 403}});
-        return;
-    }
-
-    newMessagesList = _.without(this.systemMessages, currentSystemMessage);
-    this.systemMessages = newMessagesList;
-
-    this.save(function (error, user) {
-        if (error) {
-            callback({error: {message: 'Server is too busy, try later.', type: 503}});
+            callback({error: {message: 'Password is not correct', code: 400}});
             return;
         }
 
-        callback(null, user);
+        if (!isMatch) {
+            callback({error: {message: 'Password is not correct', code: 400}});
+            return;
+        }
+
+        callback(null);
     });
 };
 
@@ -176,17 +139,20 @@ UsersShema.pre('save', function (next) {
     var user = this;
 
     if (!user.isModified('password')) {
-        return next();
+        next();
+        return;
     }
 
     Bcrypt.genSalt(SALT_WORK_FACTOR, function (error, salt) {
         if (error) {
-            return next(error);
+            next(error);
+            return;
         }
 
         Bcrypt.hash(user.password, salt, function (error, hash) {
             if (error) {
-                return next(error);
+                next(error);
+                return;
             }
             user.password = hash;
             next();
@@ -202,18 +168,6 @@ UsersShema.pre('save', function (next) {
         time = String((new Date()).getTime());
 
     user.code = Helpers.encodeMd5(user.email + time);
-    next();
-});
-
-/**
- * Создаем добавляем системное сообщение о необходимости подтвердить email
- */
-UsersShema.pre('save', function (next) {
-    this.systemMessages.push({
-        templatePath: 'messages/notConfirmedEmail',
-        pages: ['user', 'addPost'],
-        readOnly: true
-    });
     next();
 });
 
@@ -250,28 +204,6 @@ UsersShema.statics.getProfile = function (params) {
         admin: 1,
         locale: 1,
         systemMessages: 1
-    });
-};
-
-/**
- * Метод удаляет системное сообщение
- *
- * @method
- * @name UsersShema.systemMessageDelete
- * @param {Object} userId id пользователя
- * @param {Object} query
- * @param {Function} callback
- * @return {undefined}
- */
-UsersShema.statics.systemMessageDelete = function (userId, query, callback) {
-
-    this.collection.findOne({_id: userId}, function (error, user) {
-        if (error) {
-            callback({error: {message: 'Server is too busy, try later.', type: 503}});
-            return;
-        }
-
-        user.systemMessageDelete(query.systemMessage, callback);
     });
 };
 
@@ -346,36 +278,8 @@ UsersShema.statics.confirmEmail = function (code, callback) {
     this.collection.findAndModify({code: code}, [], {
         $set: {
             emailConfirmed: true
-        },
-        $push: {
-            systemMessages: {
-                templatePath: 'messages/successConfirmEmail',
-                showOnce: true,
-                pages: ['addPost']
-            }
         }
     }, {new: true}, callback);
 };
 
-/**
- * mongo не дает одновременно сделать $push и $pull
- * http://stackoverflow.com/questions/4584665/field-name-duplication-not-allowed-with-modifiers-on-update
- *
- * Метод удаляет сообщение о том, что email не утвержден
- *
- * @method
- * @name UsersShema.deleteNotConfirmedEmailMessage
- * @param {String} userId id пользователя
- * @param {Function} callback
- * @return {undefined}
- */
-UsersShema.statics.deleteNotConfirmedEmailMessage = function (userId, callback) {
-    this.collection.findAndModify({_id: userId}, [], {
-        $pull: {
-            systemMessages: {
-                templatePath: 'messages/notConfirmedEmail'
-            }
-        }
-    }, {new: true}, callback);
-};
 module.exports = Mongoose.model('users', UsersShema);
