@@ -84,6 +84,8 @@ define(function () {
                 createUser: '/api/users',
                 user: '/api/users/0',
                 profile: '/api/profile',
+                systemMessage: '/api/system_messages/0',
+                systemMessages: '/api/system_messages',
                 registration: {
                     validateField: '/api/registration/validate_field'
                 }

@@ -18,7 +18,7 @@ var SystemMessagesShema = new Schema({
         type: String
     },
     //id пользователя, к которому относится сообщение
-    owner: {
+    ownerId: {
         default: null,
         type: ObjectId
     },
@@ -52,6 +52,26 @@ var SystemMessagesShema = new Schema({
         default: false
     }
 });
+
+/**
+ * Метод возвращает сисстемные сообщения для пользователя
+ *
+ * @method
+ * @name SystemMessagesShema.getMessages
+ * @param {ObjectId} userId пользователь, которому принадлежит сообщение
+ * @param {Function} callback
+ * @return {undefined}
+ */
+SystemMessagesShema.statics.getMessages = function (userId, callback) {
+    this.find({owner: userId}, function (error, messages) {
+        if (error) {
+            callback({error: {message: 'Server is too busy, try later', code: 503}});
+            return;
+        }
+
+        callback(null, messages);
+    });
+};
 
 /**
  * Метод удаляет сообщение из коллекции

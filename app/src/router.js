@@ -58,6 +58,9 @@ module.exports = Class.extend({
         'post /api/login': 'auth/loginController loginHandler',
         'get /api/logout': 'auth/loginController logoutHandler',
         'get /api/registration/validate_field': 'auth/registrationController validateField',
+        'get /api/system_messages': 'systemMessagesController getMessages',
+        'delete /api/system_messages/:alias': 'systemMessagesController deleteMessage',
+        'patch /api/system_messages/:alias': 'systemMessagesController updateMessage',
         //-------------------API end--------------------
 
         'get /': 'posts/postsController redirectToPosts',

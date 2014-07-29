@@ -3,7 +3,7 @@ var _ = require('underscore'),
     Controller = require('../../common/controller'),
     UsersModel = require('../../models/usersModel'),
     RequestParams = require('../../common/requestParams'),
-    SystemMessagesModel = require('../../models/systemMessages'),
+    SystemMessagesModel = require('../../models/systemMessagesModel'),
     SendMail = require('../../common/sendMail');
 
 
@@ -72,14 +72,14 @@ module.exports = Controller.extend({
 
             successConfirmEmail = new SystemMessagesModel({
                 alias: 'successConfirmEmail',
-                owner: user._id,
+                ownerId: user._id,
                 templatePath: 'messages/successConfirmEmail',
                 showOnce: true,
                 pages: ['addPost']
             });
             successConfirmEmail.save(function (error) {
                 if (error) {
-                    callback({error: {messsage: 'Server is too busy, try later', code: 503}});
+                    callback({error: {message: 'Server is too busy, try later', code: 503}});
                     return;
                 }
 
@@ -156,7 +156,7 @@ module.exports = Controller.extend({
                 this.sendError('Server is too busy, try later', 503);
                 return;
             }
-            response.redirect('/' + locale + '/add_post/');
+            response.redirect('/' + locale + '/posts/new/');
         }, this));
     },
 
@@ -241,7 +241,7 @@ module.exports = Controller.extend({
     addNotConfirmedEmailMessage: function (user) {
         var notConfirmedEmailMessage = new SystemMessagesModel({
             alias: 'notConfirmedEmail',
-            owner: user._id,
+            ownerId: user._id,
             templatePath: 'messages/notConfirmedEmail',
             pages: ['user', 'addPost'],
             readOnly: true
