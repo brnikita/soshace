@@ -56,7 +56,7 @@ define([
          * @name RegistrationView#template
          * @type {string}
          */
-        template: Soshace.hbs['auth/authView'],
+        template: Soshace.hbs['auth/auth'],
 
         /**
          * @constructor
@@ -79,7 +79,7 @@ define([
 
             Handlebars.registerPartial(
                 'registrationView',
-                Soshace.hbs['partials/registrationView']
+                Soshace.hbs['partials/registration']
             );
             Backbone.Validation.bind(this);
         },

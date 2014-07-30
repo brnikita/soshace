@@ -39,7 +39,7 @@ module.exports = Controller.extend({
             response = this.response,
             requestParams = new RequestParams(request);
 
-        response.render('auth/authView', _.extend(requestParams, {
+        response.render('auth/auth', _.extend(requestParams, {
             isAuthTab: true,
             isLoginTab: true,
             title: 'Registration page',

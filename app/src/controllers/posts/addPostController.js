@@ -247,7 +247,7 @@ module.exports = Controller.extend({
             response = this.response,
             requestParams = new RequestParams(request);
 
-        response.render('posts/addPostView', _.extend(requestParams, {
+        response.render('posts/addPost', _.extend(requestParams, {
             title: 'Add Post',
             isAddPostTab: true,
             editorDisabled: this.isEditorDisabled(),

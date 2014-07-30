@@ -19,7 +19,14 @@ define([
          * @type {String | null}
          */
         default: {
-            _id: null
+            _id: null,
+            locale: null,
+            //Загловок поста
+            title: null,
+            //Категория, используется в урлах
+            category: null,
+            //Тело поста
+            body: null
         },
 
         /**

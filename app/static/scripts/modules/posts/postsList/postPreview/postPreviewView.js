@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Вид страницы просмотра статьи
+ * Вид предпросмотра статьи
  *
- * @class PostDetailView
+ * @class PostPreviewView
  */
 
 define([
@@ -17,14 +17,14 @@ define([
          * Модель деталей статьи
          *
          * @field
-         * @name PostDetailView#model
+         * @name PostPreviewView#model
          * @type {Backbone.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name PostDetailView#elements
+         * @name PostPreviewView#elements
          * @type {Object}
          */
         elements: {
@@ -34,14 +34,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name PostDetailView#elements
+         * @name PostPreviewView#elements
          * @type {string}
          */
         template: Soshace.hbs['posts/postDetail'],
 
         /**
          * @constructor
-         * @name PostDetailView#initialize
+         * @name PostPreviewView#initialize
          * @params {Object} params
          * @returns {undefined}
          */
@@ -55,7 +55,7 @@ define([
 
         /**
          * @method
-         * @name PostDetailView#serialize
+         * @name PostPreviewView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -70,7 +70,7 @@ define([
 
         /**
          * @method
-         * @name PostDetailView#afterRender
+         * @name PostPreviewView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {

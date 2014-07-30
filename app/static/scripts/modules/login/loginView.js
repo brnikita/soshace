@@ -56,7 +56,7 @@ define([
          * @name LoginView#template
          * @type {string}
          */
-        template: Soshace.hbs['auth/authView'],
+        template: Soshace.hbs['auth/auth'],
 
         /**
          * @constructor
@@ -80,7 +80,7 @@ define([
 
             Handlebars.registerPartial(
                 'loginView',
-                Soshace.hbs['partials/loginView']
+                Soshace.hbs['partials/login']
             );
 
             Backbone.Validation.bind(this);

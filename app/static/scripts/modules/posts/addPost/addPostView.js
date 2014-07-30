@@ -153,7 +153,7 @@ define([
          * @name AddPostView#elements
          * @type {string}
          */
-        template: Soshace.hbs['posts/addPostView'],
+        template: Soshace.hbs['posts/addPost'],
 
         /**
          * @constructor

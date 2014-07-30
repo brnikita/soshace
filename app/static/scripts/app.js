@@ -14,7 +14,7 @@ define([
     var App = Backbone.Layout.extend({
 
         /**
-         * @property
+         * @field
          * @name App#router
          * @type {Router | null}
          */

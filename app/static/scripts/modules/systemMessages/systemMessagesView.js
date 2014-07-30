@@ -1,15 +1,16 @@
 'use strict';
 
 /**
- * Вид страницы регистрации
+ * Вид блока системных уведомлений
  *
- * @class RegistrationView
+ * @class SystemMessagesView
  */
 
 define([
     'jquery',
     'underscore',
-    'backbone'
+    'backbone',
+    'backbone.layoutmanager'
 ], function ($, _, Backbone) {
     return Backbone.Layout.extend({
 

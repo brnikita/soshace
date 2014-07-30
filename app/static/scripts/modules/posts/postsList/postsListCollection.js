@@ -10,15 +10,17 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    './postModel'
-], function ($, _, Backbone, PostModel) {
+    './postPreview/postPreviewModel'
+], function ($, _, Backbone, PostPreviewModel) {
     return Backbone.Collection.extend({
         /**
+         * Модель превью поста
+         *
          * @field
          * @name PostsListCollection.model
          * @type {PostModel}
          */
-        model: PostModel,
+        model: PostPreviewModel,
 
         /**
          * @method
@@ -34,6 +36,15 @@ define([
          */
         initialize: function () {
             _.bindAll(this, 'getPostsSuccess');
+        },
+
+        /**
+         * @method
+         * @name PostsListCollection.parse
+         * @returns {undefined}
+         */
+        parse: function(response){
+            return response.posts;
         },
 
         /**

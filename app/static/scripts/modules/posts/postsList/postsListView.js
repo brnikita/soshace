@@ -61,7 +61,7 @@ define([
          */
         serialize: function () {
             var data = {},
-                posts = this.model.get('posts');
+                posts = this.collection.get('posts');
 
             data.locale = Helpers.getLocale();
             data.posts = posts;

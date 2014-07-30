@@ -89,7 +89,7 @@ module.exports = Controller.extend({
 
         PostsModel.getPost(params).exec(function (error, post) {
             if (post) {
-                response.render('posts/postDetailView', _.extend(requestParams, {
+                response.render('posts/postDetail', _.extend(requestParams, {
                     post: post,
                     title: post.title,
                     id: post._id

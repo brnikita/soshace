@@ -66,7 +66,7 @@ define([
          * @name HeaderView.elements
          * @type {string}
          */
-        template: Soshace.hbs['partials/headerView'],
+        template: Soshace.hbs['partials/header'],
 
         /**
          * @constructor
@@ -124,7 +124,7 @@ define([
         serialize: function () {
             var app = Soshace.app,
                 data = {};
-
+            
             data = _.extend(data, this.tabsConfig);
             data.locale = Helpers.getLocale();
             data.isAuthenticated = app.isAuthenticated();
