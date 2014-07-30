@@ -1,28 +1,35 @@
 'use strict';
 
 /**
- * Модель списка статей
+ * Коллекция списка статей
  *
- * @class PostsListModel
+ * @class PostsListCollection
  */
 
 define([
     'jquery',
     'underscore',
-    'backbone'
-], function ($, _, Backbone) {
-    return Backbone.Model.extend({
+    'backbone',
+    './postModel'
+], function ($, _, Backbone, PostModel) {
+    return Backbone.Collection.extend({
+        /**
+         * @field
+         * @name PostsListCollection.model
+         * @type {PostModel}
+         */
+        model: PostModel,
 
         /**
          * @method
-         * @name PostsListModel.initialize
+         * @name PostsListCollection.initialize
          * @returns {string}
          */
         url: Soshace.urls.api.posts,
 
         /**
          * @constructor
-         * @name PostsListModel.initialize
+         * @name PostsListCollection.initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -31,7 +38,7 @@ define([
 
         /**
          * @method
-         * @name PostsListModel.getPosts
+         * @name PostsListCollection.getPosts
          * @param {Array} routeParams параметры запроса
          * @returns {undefined}
          */
@@ -49,7 +56,7 @@ define([
          * Метод обработчик удачного получения списка постов
          *
          * @method
-         * @name PostsListModel.getPostsSuccess
+         * @name PostsListCollection.getPostsSuccess
          * @param {Array} postsList список постов
          * @returns {undefined}
          */

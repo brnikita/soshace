@@ -15,6 +15,7 @@ var PostsShema = Mongoose.Schema({
         type: Boolean
     },
     locale: {
+        default: 'en',
         type: String
     },
     //Загловок поста
@@ -54,7 +55,8 @@ PostsShema.statics.getPosts = function (params) {
     }, {
         _id: 1,
         title: 1,
-        description: 1
+        description: 1,
+        locale: 1
     }).sort({_id: -1}).
         skip(Soshace.POSTS_PER_PAGE * page).
         limit(Soshace.POSTS_PER_PAGE);
@@ -72,7 +74,8 @@ PostsShema.statics.getPost = function (params) {
     return this.findOne(params, {
         _id: 1,
         title: 1,
-        body: 1
+        body: 1,
+        locale: 1
     });
 };
 

@@ -24,6 +24,8 @@ module.exports = function (request) {
         isAuthenticated: request.isAuthenticated(),
         paths: Soshace.PATHS,
         profile: profile,
-        profileUserName: profileUserName
+        profileUserName: profileUserName,
+        //для шаблонов
+        backend: true
     };
 };

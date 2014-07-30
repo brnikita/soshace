@@ -28,7 +28,7 @@ define([
          * @returns {string}
          */
         url: function () {
-            var url = Soshace.urls.api.postDetails,
+            var url = Soshace.urls.api.post,
                 _id = this.get('_id');
 
             return url.replace('0', _id);

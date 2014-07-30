@@ -15,13 +15,13 @@ define([
 ], function ($, _, Backbone, Widgets, Helpers) {
     return Backbone.Layout.extend({
         /**
-         * Модель списка статей
+         * Список статей
          *
          * @field
-         * @name PostsListView#model
+         * @name PostsListView#collection
          * @type {Backbone.Model | null}
          */
-        model: null,
+        collection: null,
 
         /**
          * @field

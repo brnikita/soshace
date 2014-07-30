@@ -1,127 +1,54 @@
 'use strict';
 
 /**
- * Модель страницы регистрации
+ * Модель системного сообщения
  *
- * @class RegistrationModel
+ * @class SystemMessagesModel
  */
 
 define([
     'jquery',
     'underscore',
-    'backbone',
-    'utils/helpers',
-    'backbone.validation',
-    'utils/backboneValidationExtension'
-], function ($, _, Backbone, Helpers) {
+    'backbone'
+], function ($, _, Backbone) {
     return Backbone.Model.extend({
         /**
          * @field
-         * @name RegistrationModel#defaults
+         * @name SystemMessagesModel#defaults
          * @type {Object}
          */
         defaults: {
-            locale: null,
-            email: null,
-            password: null,
-            userName: null
+            //сокращение для системного сообщения
+            alias: null,
+            //id пользователя, к которому относится сообщение
+            ownerId: null,
+            //путь до шаблона системного уведомления
+            templatePath: null,
+            //Параметры, которые передаются в шаблон
+            templateOptions: null,
+            //Сообщение закрывается пользователем
+            closedByUser: false,
+            //Сообщение показывается только один раз
+            showOnce: null,
+            //страницы на которых может быть показано сообщение
+            pages: null,
+            //true - сообщение не может быть удалено или измененно клиентским запросом
+            readOnly: false
         },
 
         /**
          * @field
-         * @name RegistrationModel#validation
-         * @type {Object}
-         */
-        validation: {
-            userName: [
-                {
-                    required: true,
-                    msg: 'Username can&#39;t be blank.'
-                },
-                {
-                    userName: 1
-                }
-            ],
-            email: [
-                {
-                    required: true,
-                    msg: 'Email can&#39;t be blank.'
-                },
-                {
-                    pattern: Soshace.patterns.email,
-                    msg: 'Email is invalid.'
-                }
-            ],
-            password: [
-                {
-                    required: true,
-                    msg: 'Password can&#39;t be blank.'
-                },
-                {
-                    minLength: 6,
-                    msg: 'Password length should&#39;t be less than 6 characters.'
-                }
-            ]
-        },
-
-        /**
-         * Список подсказок к полям
-         *
-         * @field
-         * @name RegistrationModel#helpers
-         * @type {Object}
-         */
-        helpers: {
-            userName: 'Use the Latin alphabet, numbers, &#34;.&#34;, &#34;_&#34;, &#34;-&#34;.',
-            email: 'Please enter your e-mail address.',
-            password: 'Use the numbers, upper-and lowercase letters, symbols'
-        },
-
-        /**
-         * Список подписей к успешным полям
-         *
-         * @field
-         * @name RegistrationModel#successMessages
-         * @type {Object}
-         */
-        successMessages: {
-            userName: 'Great username!',
-            email: 'Great email!',
-            password: 'Great password!'
-        },
-
-        /**
-         * @field
-         * @name RegistrationModel#url
+         * @name SystemMessagesModel#url
          * @type {string}
          */
         url: Soshace.urls.api.createUser,
 
         /**
          * @constructor
-         * @name RegistrationModel#initialize
+         * @name SystemMessagesModel#initialize
          * @returns {undefined}
          */
         initialize: function () {
-            var locale = Helpers.getLocale();
-            this.set({locale: locale}, {silent: true});
-        },
-
-        /**
-         * Метод делает запрос на валидацию поля на сервере
-         *
-         * @method
-         * @name RegistrationModel#validation
-         * @param {Object} serializedField
-         * @returns {jQuery.Deferred}
-         */
-        validateFieldByServer: function (serializedField) {
-            var params = {},
-                name = serializedField.name,
-                value = serializedField.value;
-
-            params[name] = value;
-            return $.get(Soshace.urls.api.registration.validateField, params);
         }
     });
 });

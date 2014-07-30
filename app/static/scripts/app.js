@@ -8,8 +8,9 @@ define([
     'utils/helpers',
     'utils/widgets',
     'modules/header/headerView',
+    'modules/systemMessages/systemMessagesView',
     'backbone.layoutmanager'
-], function ($, _, Backbone, Router, Helpers, Widgets, HeaderView) {
+], function ($, _, Backbone, Router, Helpers, Widgets, HeaderView, SystemMessagesView) {
     var App = Backbone.Layout.extend({
 
         /**
@@ -47,6 +48,7 @@ define([
             _.bindAll(this, 'routerLinkHandler', 'initializeCompleted');
             this.setElements();
             this.setView('.js-header', new HeaderView());
+            this.setView('.js-system-messages', new SystemMessagesView());
             this.getCommonData().done(this.initializeCompleted);
         },
 

@@ -1,0 +1,17 @@
+{{#if posts}}
+    <div class="js-posts-list">
+        {{#if backend}}
+            {{#each posts}}
+                {{> postPreview}}
+            {{/each}}
+        {{/if}}
+    </div>
+{{else}}
+    <div class="box-message box-message-warning">
+        <h3>
+            <a class="js-router-link" href="/{{locale}}/posts/new">
+                {{{i18n 'Here could be your posts'}}}
+            </a>
+        </h3>
+    </div>
+{{/if}}

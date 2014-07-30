@@ -5,8 +5,8 @@
  *
  * @class PostsListController
  */
-define(['underscore', 'utils/controller', './postsListModel', './postsListView'],
-    function (_, Controller, PostsListModel, PostsListView) {
+define(['underscore', 'utils/controller', './postsListCollection', './postsListView'],
+    function (_, Controller, PostsListCollection, PostsListView) {
         return Controller.extend({
             /**
              * Алиас страницы
@@ -19,10 +19,10 @@ define(['underscore', 'utils/controller', './postsListModel', './postsListView']
 
             /**
              * @field
-             * @name PostsListController#model
-             * @type {PostsListModel}
+             * @name PostsListController#collection
+             * @type {PostsListCollection}
              */
-            model: null,
+            collection: null,
 
             /**
              * @field
@@ -37,7 +37,7 @@ define(['underscore', 'utils/controller', './postsListModel', './postsListView']
              * @returns {undefined}
              */
             initialize: function () {
-                this.model = new PostsListModel();
+                this.collection = new PostsListCollection();
             },
 
 
@@ -67,15 +67,15 @@ define(['underscore', 'utils/controller', './postsListModel', './postsListView']
              */
             secondLoad: function () {
                 var view = new PostsListView({
-                        model: this.model
+                        collection: this.collection
                     }),
                     app = Soshace.app;
 
                 this.view = view;
-                this.model.on('postsReceived', _.bind(function () {
+                this.collection.on('postsReceived', _.bind(function () {
                     app.setView('.js-content', view).render();
                 }, this));
-                this.model.getPosts(this.routeParams);
+                this.collection.getPosts(this.routeParams);
                 app.$el.attr('class', 'bg-symbols bg-color-green');
             }
         });

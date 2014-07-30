@@ -118,7 +118,7 @@ module.exports = Controller.extend({
             };
 
         PostsModel.getPosts(params).exec(function (error, posts) {
-            response.render('posts/postsListView', _.extend(requestParams, {
+            response.render('posts/postsList', _.extend(requestParams, {
                 isPostsTab: true,
                 title: 'Soshace blog',
                 posts: posts

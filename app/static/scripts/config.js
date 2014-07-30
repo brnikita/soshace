@@ -79,7 +79,7 @@ define(function () {
             api: {
                 login: '/api/login',
                 logout: '/api/logout',
-                postDetails: '/api/posts/0',
+                post: '/api/posts/0',
                 posts: '/api/posts',
                 createUser: '/api/users',
                 user: '/api/users/0',

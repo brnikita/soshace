@@ -58,7 +58,7 @@ var Blog = Class.extend({
         App.engine('hbs', new Handlebars({
             layoutsDir: 'app/views/layouts',
             partialsDir: 'app/views/partials',
-            defaultLayout: 'layoutView',
+            defaultLayout: 'layout',
             extname: '.hbs'
         }));
 
