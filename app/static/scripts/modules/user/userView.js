@@ -9,9 +9,8 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
-    'utils/widgets'
-], function ($, _, Backbone, Widgets) {
+    'backbone'
+], function ($, _, Backbone) {
     return Backbone.Layout.extend({
         /**
          * Модель деталей статьи
@@ -86,8 +85,6 @@ define([
          */
         afterRender: function () {
             this.setElements();
-            Widgets.showSystemMessage();
-            this.save({method: 'systemMessageDelete', systemMessage: []});
         }
     });
 });

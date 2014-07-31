@@ -79,7 +79,7 @@ define([
             }
 
             Handlebars.registerPartial(
-                'loginView',
+                'login',
                 Soshace.hbs['partials/login']
             );
 

@@ -758,29 +758,6 @@ define([
         },
 
         /**
-         * Метод отображает уведомление о том,
-         * что нужно зарегстрироваться, чтобы добавить статью
-         *
-         * @method
-         * @name UserView#showSignInMessage
-         * @returns {undefined}
-         */
-        showSignInMessage: function () {
-            var app = Soshace.app,
-                $messages = this.elements.messages,
-                template;
-
-            if (app.isAuthenticated()) {
-                return;
-            }
-
-            template = Soshace.hbs['messages/enableEditor']({
-                locale: Helpers.getLocale()
-            });
-            $messages.append(template);
-        },
-
-        /**
          * Метод вызывается роутером перед выходом из вида
          *
          * @method
@@ -804,8 +781,6 @@ define([
             this.bindToolbar();
             this.makeEditorFieldContentEditable();
             this.elements.window.on('touchend', this.touchHandler).off('scroll', this.windowScrollHandler);
-            this.showSignInMessage();
-            Widgets.showSystemMessage();
         }
     });
 });

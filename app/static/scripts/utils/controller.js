@@ -70,6 +70,7 @@ define(['class'], function (Class) {
             }
 
             app.getView('.js-header').changeTab(pageAlias);
+            app.getView('.js-system-messages').changePage(pageAlias);
             if (Soshace.firstLoad) {
                 Soshace.firstLoad = false;
                 this.firstLoad();

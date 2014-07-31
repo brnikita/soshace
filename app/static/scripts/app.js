@@ -93,7 +93,8 @@ define([
         getCommonData: function () {
             return $.when(
                 this.getCurrentLocale(),
-                this.getProfileData()
+                this.getProfileData(),
+                this.getSystemMessages()
             );
         },
 
@@ -127,6 +128,17 @@ define([
                 event.preventDefault();
                 Backbone.history.navigate(link, {trigger: true});
             }
+        },
+
+        /**
+         * Метод получает системные сообщения
+         *
+         * @method
+         * @name App#getSystemMessages
+         * @returns {undefined}
+         */
+        getSystemMessages: function(){
+            return this.getView('.js-system-messages').collection.fetch();
         },
 
         /**

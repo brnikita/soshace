@@ -10,12 +10,20 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'backbone.layoutmanager'
-], function ($, _, Backbone) {
+    'backbone.layoutmanager',
+    './systemMessagesCollection'
+], function ($, _, Backbone, SystemMessagesCollection) {
     return Backbone.Layout.extend({
 
         /**
-         * Модель формы регистрации
+         * @field
+         * @name RegistrationView#collection
+         * @type {SystemMessagesCollection | null}
+         */
+        collection: null,
+
+        /**
+         * Модель подходящего системного сообщения
          *
          * @field
          * @name RegistrationView#model
@@ -56,7 +64,40 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
+            this.collection = new SystemMessagesCollection();
+        },
 
+        /**
+         * Метод возвращает модель первого доступного
+         * сообщения для показа на данной странице
+         *
+         * @method
+         * @name RegistrationView#getFirsAvailableMessage
+         * @param {String} pageAlias сокращенное название страницы
+         * @returns {undefined}
+         */
+        getFirsAvailableMessage: function(pageAlias){
+            var collection = this.collection.toJSON();
+
+            return _.find(collection, function(model){
+                return _.indexOf(model.pages, pageAlias) !== -1;
+            });
+        },
+
+        /**
+         * Метод обработчик смены страницы
+         *
+         * @method
+         * @name RegistrationView#changePage
+         * @param {String} pageAlias сокращенное название страницы
+         * @returns {undefined}
+         */
+        changePage: function(pageAlias){
+           this.model = this.getFirsAvailableMessage(pageAlias);
+
+            if(this.model){
+                
+            }
         },
 
         /**

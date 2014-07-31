@@ -78,7 +78,7 @@ define([
             }
 
             Handlebars.registerPartial(
-                'registrationView',
+                'registration',
                 Soshace.hbs['partials/registration']
             );
             Backbone.Validation.bind(this);

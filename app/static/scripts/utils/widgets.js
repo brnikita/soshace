@@ -39,44 +39,6 @@ define([
         },
 
         /**
-         * Метод отображает первое доступное для показа
-         * сообщение из пула системных сообщений Soshace.profile.systemMessages
-         *
-         * @method
-         * @name Widgets.showSystemMessage
-         * @returns {undefined}
-         */
-        showSystemMessage: function () {
-            var app = Soshace.app,
-                systemMessages = app.isAuthenticated() && Soshace.profile.systemMessages,
-                messagesExist = systemMessages instanceof Array && systemMessages.length > 0,
-                currentPage = Soshace.pageAlias,
-                firstAvailableMessage,
-                template,
-                templateOptions;
-
-            if (!messagesExist) {
-                return;
-            }
-
-            _.every(systemMessages, function (message) {
-                if (message.pages.indexOf(currentPage) !== -1) {
-                    firstAvailableMessage = message;
-                    return false;
-                }
-                return true;
-            });
-
-            if (!firstAvailableMessage) {
-                return;
-            }
-
-            template = Soshace.hbs[firstAvailableMessage.templatePath];
-            templateOptions = firstAvailableMessage.templateOptions;
-            $('.js-messages').append(template(templateOptions));
-        },
-
-        /**
          * TODO: переделать на плагин
          *
          * Форматирует блоки с классом .prettyprint
