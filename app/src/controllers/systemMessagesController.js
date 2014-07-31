@@ -50,7 +50,7 @@ module.exports = Controller.extend({
      * @param {String} alias
      * @returns {undefined}
      */
-    deleteMessage: function(alias){
+    deleteMessage: function(){
 
     },
 

@@ -10,9 +10,8 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'utils/widgets',
-    'utils/helpers'
-], function ($, _, Backbone, Widgets, Helpers) {
+    './postPreview/postPreviewView'
+], function ($, _, Backbone, PostPreviewView) {
     return Backbone.Layout.extend({
         /**
          * Список статей
@@ -38,7 +37,7 @@ define([
          * @name PostsListView#elements
          * @type {string}
          */
-        template: Soshace.hbs['posts/postsListView'],
+        template: Soshace.hbs['posts/postsList'],
 
         /**
          * @constructor
@@ -54,19 +53,54 @@ define([
             }
         },
 
+
+        /**
+         * Метод добавляет вид превью с списку статей
+         *
+         * @method
+         * @name PostsListView#addOneView
+         * @param {Backbone.Model} postModel модель статьи
+         * @returns {undefined}
+         */
+        addOneView: function (postModel) {
+            var view = new PostPreviewView({
+                model: postModel
+            });
+
+            this.insertView('.js-posts-list', view);
+        },
+
+        /**
+         * Метод заполняет список статей
+         *
+         * @method
+         * @name PostsListView#fillPostsList
+         * @returns {undefined}
+         */
+        fillPostsList: function () {
+            this.collection.each(_.bind(this.addOneView, this));
+        },
+
         /**
          * @method
          * @name PostsListView#serialize
          * @returns {Object}
          */
-        serialize: function () {
-            var data = {},
-                posts = this.collection.get('posts');
+        serialize: function(){
+            var posts = this.collection.toJSON();
 
-            data.locale = Helpers.getLocale();
-            data.posts = posts;
-            data.isAuthenticated = Soshace.app.isAuthenticated();
-            return data;
+            return {
+                posts: posts
+            };
+        },
+
+        /**
+         * @method
+         * @name PostsListView#beforeRender
+         * @returns {undefined}
+         */
+        beforeRender: function () {
+            this.fillPostsList();
         },
 
         /**
@@ -75,7 +109,6 @@ define([
          * @returns {undefined}
          */
         afterRender: function () {
-//            Widgets.prettify(this.$el, 'js');
         }
     });
 });

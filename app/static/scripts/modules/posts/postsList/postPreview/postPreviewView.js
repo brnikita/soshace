@@ -37,7 +37,7 @@ define([
          * @name PostPreviewView#elements
          * @type {string}
          */
-        template: Soshace.hbs['posts/postDetail'],
+        template: Soshace.hbs['partials/postPreview'],
 
         /**
          * @constructor
@@ -46,26 +46,11 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
-            var $el = params && params.$el;
+            var model = params && params.model;
 
-            if ($el) {
-                this.$el = $el;
+            if (model) {
+                this.model = model;
             }
-        },
-
-        /**
-         * @method
-         * @name PostPreviewView#serialize
-         * @returns {Object}
-         */
-        serialize: function () {
-            var app = Soshace.app,
-                data = {},
-                model = this.model.toJSON();
-
-            data.isAuthenticated = app.isAuthenticated();
-            data.post = model;
-            return data;
         },
 
         /**

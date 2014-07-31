@@ -18,7 +18,7 @@ define([
          *
          * @field
          * @name PostsListCollection.model
-         * @type {PostModel}
+         * @type {PostPreviewModel}
          */
         model: PostPreviewModel,
 
@@ -39,15 +39,9 @@ define([
         },
 
         /**
-         * @method
-         * @name PostsListCollection.parse
-         * @returns {undefined}
-         */
-        parse: function(response){
-            return response.posts;
-        },
-
-        /**
+         * Используется такой способ получения постов, чтобы сделать свой триггер
+         * Т.к. change не отрабатывает при полуении такой же модели
+         *
          * @method
          * @name PostsListCollection.getPosts
          * @param {Array} routeParams параметры запроса
@@ -75,7 +69,7 @@ define([
             if (postsList instanceof Array && postsList.length === 0) {
                 postsList = null;
             }
-            this.set({posts: postsList}, {silent: true});
+            this.set(postsList, {silent: true});
             this.trigger('postsReceived');
         }
     });

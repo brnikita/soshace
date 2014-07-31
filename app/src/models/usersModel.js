@@ -1,7 +1,6 @@
 'use strict';
 
-var _ = require('underscore'),
-    Mongoose = require('mongoose'),
+var Mongoose = require('mongoose'),
     Bcrypt = require('bcrypt'),
     Validators = require('../common/validators'),
     Helpers = require('../common/helpers'),
