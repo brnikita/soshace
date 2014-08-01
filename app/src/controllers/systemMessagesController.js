@@ -27,7 +27,8 @@ module.exports = Controller.extend({
             profile = requestParams.profile;
 
         if(!isAuthenticated){
-            this.sendError('User is not authorized.', 401);
+            //TODO: отослать сообщения для неавторизованных
+            response.send({results: []});
             return;
         }
 

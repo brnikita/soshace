@@ -80,7 +80,6 @@ define([
                     done(function(){
                         app.setView('.js-content', view).render();
                     });
-                app.$el.attr('class', 'bg-symbols bg-color-green');
             }
         });
     });

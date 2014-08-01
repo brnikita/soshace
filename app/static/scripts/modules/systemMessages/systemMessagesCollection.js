@@ -10,7 +10,7 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'utils/helpers'
+    './systemMessagesModel'
 ], function ($, _, Backbone, SystemMessagesModel) {
     return Backbone.Collection.extend({
         /**
@@ -25,7 +25,7 @@ define([
          * @name SystemMessagesCollection#url
          * @type {String}
          */
-        url: Soshace.api.systemMessages,
+        url: Soshace.urls.api.systemMessages,
 
         /**
          * @constructor

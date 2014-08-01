@@ -76,7 +76,6 @@ define(['underscore', 'utils/controller', './postsListCollection', './postsListV
                     app.setView('.js-content', view).render();
                 }, this));
                 this.collection.getPosts(this.routeParams);
-                app.$el.attr('class', 'bg-symbols bg-color-green');
             }
         });
     });
