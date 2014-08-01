@@ -73,7 +73,6 @@ define(['utils/controller', './addPostModel', './addPostView'],
 
                 this.view = view;
                 app.setView('.js-content', view).render();
-                app.$el.attr('class', 'bg-symbols bg-color-blue');
             }
         });
     });

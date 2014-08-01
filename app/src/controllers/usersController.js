@@ -112,8 +112,7 @@ module.exports = Controller.extend({
 
         response.render('user', _.extend(requestParams, {
             isUserTab: true,
-            title: 'User Profile',
-            bodyClass: 'bg-color-blue bg-symbols'
+            title: 'User Profile'
         }));
     }
 });
