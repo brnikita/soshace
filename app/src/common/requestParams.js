@@ -19,7 +19,7 @@ module.exports = function (request) {
         isProduction: Soshace.IS_PRODUCTION,
         version: Soshace.VERSION,
         helpers: helpers,
-        bodyClass: 'bg-color-green bg-symbols',
+//        bodyClass: 'bg-color-green bg-symbols',
         locale: request.i18n.getLocale(),
         isAuthenticated: request.isAuthenticated(),
         paths: Soshace.PATHS,
