@@ -41,7 +41,7 @@ define([
          * @name SystemMessagesModel#url
          * @type {string}
          */
-        url: Soshace.urls.api.createUser,
+        url: Soshace.urls.api.systemMessage,
 
         /**
          * @constructor

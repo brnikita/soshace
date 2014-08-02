@@ -17,7 +17,8 @@ var _ = require('underscore'),
     Handlebars = require('express3-handlebars'),
     Strategies = require('./app/src/common/strategies'),
     Class = require('./app/src/vendors/class'),
-    methodOverride = require('method-override');
+    methodOverride = require('method-override'),
+    SystemMessagesController = require('./app/src/controllers/systemMessagesController');
 
 var Blog = Class.extend({
     /**
@@ -38,8 +39,21 @@ var Blog = Class.extend({
             Strategies.localStrategy();
             new Router(App);
             App.listen(Soshace.PORT, Soshace.HOST);
+            this.initializeSystemMessages();
         }, this));
 
+    },
+
+    /**
+     * Метод устанавливает дефолтные системные сообщения
+     *
+     * @method
+     * @name Blog.initializeSystemMessages
+     * @returns {undefined}
+     */
+    initializeSystemMessages: function(){
+        var systemMessages = new SystemMessagesController();
+        systemMessages.setCommonMessages();
     },
 
     /**

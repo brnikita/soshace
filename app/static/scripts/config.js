@@ -29,6 +29,15 @@ define(function () {
         hbs: {},
 
         /**
+         * Список системных сообщений
+         *
+         * @field
+         * @name Soshace.systemMessages
+         * @type {Array | null}
+         */
+        systemMessages: null,
+
+        /**
          * Данные профиля пользователя
          *
          * @field
@@ -76,6 +85,7 @@ define(function () {
         urls: {
             locales: '/static/locales/',
             scripts: 'static/scripts/',
+            images: '/static/images/',
             api: {
                 login: '/api/login',
                 logout: '/api/logout',

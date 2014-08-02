@@ -1,6 +1,7 @@
 'use strict';
 
-var Controller = require('../common/controller'),
+var _ = require('underscore'),
+    Controller = require('../common/controller'),
     RequestParams = require('../common/requestParams'),
     SystemMessagesModel = require('../models/systemMessagesModel');
 
@@ -11,6 +12,57 @@ var Controller = require('../common/controller'),
  *
  */
 module.exports = Controller.extend({
+
+    /**
+     * Метод устанавливает сообщения для незарегистрированных
+     * пользователей
+     *
+     * @method
+     * @name SystemMessagesController#initialize
+     * 2returns {undefined}
+     */
+    setCommonMessages: function () {
+        SystemMessagesModel.getMessages({notAuthenticated: true}, function (error, messages) {
+            if (error) {
+                return;
+            }
+
+            if (messages.length) {
+                return;
+            }
+
+            var successConfirmEmail = new SystemMessagesModel({
+                alias: 'enableEditor',
+                ownerId: null,
+                templatePath: 'messages/enableEditor',
+                notAuthenticated: true,
+                pages: ['addPost']
+            });
+
+            successConfirmEmail.save();
+        });
+    },
+
+    /**
+     * Метод отправляет сообщения для незарегистрированных пользователей
+     *
+     * @method
+     * @name SystemMessagesController#sendCommonMessages
+     * @returns {undefined}
+     */
+    sendCommonMessages: function () {
+        var response = this.response;
+
+        SystemMessagesModel.getMessages({notAuthenticated: true}, _.bind(function (error, messages) {
+            if (error) {
+                this.sendError(error);
+                return;
+            }
+
+            response.send({results: messages});
+        }, this));
+    },
+
     /**
      * Метод возврвщает все системные сообщения для
      * профиля пользователя
@@ -19,26 +71,25 @@ module.exports = Controller.extend({
      * @name SystemMessagesController#getMessages
      * @returns {undefined}
      */
-    getMessages: function(){
+    getMessages: function () {
         var request = this.request,
             response = this.response,
             requestParams = new RequestParams(request),
             isAuthenticated = requestParams.isAuthenticated,
             profile = requestParams.profile;
 
-        if(!isAuthenticated){
-            //TODO: отослать сообщения для неавторизованных
-            response.send({results: []});
+        if (!isAuthenticated) {
+            this.sendCommonMessages();
             return;
         }
 
-        SystemMessagesModel.getMessages(profile._id, function(error, messssages){
-            if(error){
+        SystemMessagesModel.getMessages({owner: profile._id}, function (error, messages) {
+            if (error) {
                 response.sendError(error);
                 return;
             }
 
-            response.send({results: messssages});
+            response.send({results: messages});
         });
     },
 
@@ -51,7 +102,7 @@ module.exports = Controller.extend({
      * @param {String} alias
      * @returns {undefined}
      */
-    deleteMessage: function(){
+    deleteMessage: function () {
 
     },
 
@@ -60,7 +111,7 @@ module.exports = Controller.extend({
      * @name SystemMessagesController#updateMessage
      * @returns {undefined}
      */
-    updateMessage: function(){
+    updateMessage: function () {
 
     }
 });

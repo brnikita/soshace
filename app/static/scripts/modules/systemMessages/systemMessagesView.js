@@ -65,6 +65,19 @@ define([
          */
         initialize: function () {
             this.collection = new SystemMessagesCollection();
+            this.collection.on('sync', this.saveMessagesGlobal, this);
+        },
+
+        /**
+         * Метод сохраняет системные сообщения в глобальной переменной
+         * Soshace.systemMessages
+         *
+         * @method
+         * @name RegistrationView#saveMessagesGlobal
+         * @returns {undefined}
+         */
+        saveMessagesGlobal: function () {
+            Soshace.systemMessages = this.collection.toJSON();
         },
 
         /**
@@ -74,13 +87,11 @@ define([
          * @method
          * @name RegistrationView#getFirsAvailableMessage
          * @param {String} pageAlias сокращенное название страницы
-         * @returns {undefined}
+         * @returns {Backbone.Model}
          */
-        getFirsAvailableMessage: function(pageAlias){
-            var collection = this.collection.toJSON();
-
-            return _.find(collection, function(model){
-                return _.indexOf(model.pages, pageAlias) !== -1;
+        getFirsAvailableMessage: function (pageAlias) {
+            return this.collection.find(function (model) {
+                return _.indexOf(model.get('pages'), pageAlias) !== -1;
             });
         },
 
@@ -92,12 +103,18 @@ define([
          * @param {String} pageAlias сокращенное название страницы
          * @returns {undefined}
          */
-        changePage: function(pageAlias){
-           this.model = this.getFirsAvailableMessage(pageAlias);
+        changePage: function (pageAlias) {
+            var templatePath;
+            this.model = this.getFirsAvailableMessage(pageAlias);
 
-            if(this.model){
-                
+            if (this.model) {
+                templatePath = this.model.get('templatePath');
+                this.template = Soshace.hbs[templatePath];
+                this.render();
+                return;
             }
+
+            this.$el.empty();
         },
 
         /**

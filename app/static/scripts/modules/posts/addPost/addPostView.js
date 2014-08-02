@@ -677,7 +677,7 @@ define([
         addImageButtonListener: function () {
             var _this = this,
                 preLoader = $('<img>', {
-                    src: '/static/images/preloader.gif',
+                    src: Soshace.urls.images + 'preloader.gif',
                     class: 'img-responsive center'
                 });
 

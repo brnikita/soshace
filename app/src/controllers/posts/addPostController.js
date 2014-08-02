@@ -250,7 +250,8 @@ module.exports = Controller.extend({
         response.render('posts/addPost', _.extend(requestParams, {
             title: 'Add Post',
             isAddPostTab: true,
-            editorDisabled: this.isEditorDisabled()
+            editorDisabled: this.isEditorDisabled(),
+            bodyClass: 'bg-symbols bg-color-blue'
         }));
     }
 });

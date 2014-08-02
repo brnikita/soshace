@@ -71,6 +71,7 @@ define(['utils/controller', './loginModel', './loginView'],
                     app = Soshace.app;
 
                 this.view = view;
+                app.$el.attr('class', 'bg-symbols bg-color-yellow');
                 app.setView('.js-content', view).render();
             }
         });

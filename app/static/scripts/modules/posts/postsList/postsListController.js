@@ -73,6 +73,7 @@ define(['underscore', 'utils/controller', './postsListCollection', './postsListV
 
                 this.view = view;
                 this.collection.on('postsReceived', _.bind(function () {
+                    app.$el.attr('class', 'bg-color-grey');
                     app.setView('.js-content', view).render();
                 }, this));
                 this.collection.getPosts(this.routeParams);

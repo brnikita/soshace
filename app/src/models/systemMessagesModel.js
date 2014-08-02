@@ -50,6 +50,12 @@ var SystemMessagesShema = new Schema({
     readOnly: {
         type: Boolean,
         default: false
+    },
+
+    //Систеное для незарегистрированного пользователя
+    notAuthenticated: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -58,12 +64,12 @@ var SystemMessagesShema = new Schema({
  *
  * @method
  * @name SystemMessagesShema.getMessages
- * @param {ObjectId} userId пользователь, которому принадлежит сообщение
+ * @param {ObjectId} params параметры запроса
  * @param {Function} callback
  * @return {undefined}
  */
-SystemMessagesShema.statics.getMessages = function (userId, callback) {
-    this.find({owner: userId}, function (error, messages) {
+SystemMessagesShema.statics.getMessages = function (params, callback) {
+    this.find(params, function (error, messages) {
         if (error) {
             callback({error: {message: 'Server is too busy, try later', code: 503}});
             return;

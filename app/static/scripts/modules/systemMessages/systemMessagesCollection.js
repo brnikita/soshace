@@ -21,6 +21,15 @@ define([
         model: SystemMessagesModel,
 
         /**
+         * @method
+         * @name SystemMessagesCollection#parse
+         * @returns {undefined}
+         */
+        parse: function(response){
+            return response.results;
+        },
+
+        /**
          * @field
          * @name SystemMessagesCollection#url
          * @type {String}
