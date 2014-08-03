@@ -9,6 +9,7 @@
 @import 'modules/posts/addPost';
 @import 'modules/auth';
 @import 'modules/user';
+@import 'backgrounds';
 
 img.center {
   margin: 0 auto;
@@ -24,6 +25,22 @@ html, body {
   height: 100%;
 }
 
+body {
+  .bg-color-grey;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  .background-size(cover);
+}
+
+.intro {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 30px 30px 50px 30px;
+  margin: 20px 0;
+  color: #fff;
+  font-size: 16px;
+}
+
 .btn, .btn:focus {
   border-radius: 0;
   border: none;
@@ -32,14 +49,6 @@ html, body {
 
 .form-control {
   border-radius: 0;
-}
-
-.bg-symbols {
-  background-image: url(/static/images/bg-symbols.png);
-}
-
-.bg-symbols-light {
-  background-image: url(/static/images/bg-symbols-light.png);
 }
 
 .error {

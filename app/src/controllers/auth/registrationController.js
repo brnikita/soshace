@@ -47,8 +47,7 @@ module.exports = Controller.extend({
         response.render('auth/auth', _.extend(requestParams, {
             isAuthTab: true,
             isRegistrationTab: true,
-            title: 'Registration page',
-            bodyClass: 'bg-symbols bg-color-yellow'
+            title: 'Registration page'
         }));
     },
 

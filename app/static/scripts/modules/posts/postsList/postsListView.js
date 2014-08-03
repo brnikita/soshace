@@ -10,8 +10,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'handlebars',
     './postPreview/postPreviewView'
-], function ($, _, Backbone, PostPreviewView) {
+], function ($, _, Backbone, Handlebars, PostPreviewView) {
     return Backbone.Layout.extend({
         /**
          * Список статей
@@ -51,6 +52,11 @@ define([
             if ($el) {
                 this.$el = $el;
             }
+
+            Handlebars.registerPartial(
+                'intro',
+                Soshace.hbs['partials/intro']
+            );
         },
 
 

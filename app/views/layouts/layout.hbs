@@ -10,7 +10,9 @@
     <!--Откомпилированные compass файлы, версия берется из package.json-->
     <link href="{{paths.styles}}styles.css?v=0.0.3" rel="stylesheet">
 </head>
-<body class="bg-color-grey body-load">
+<body
+        style="background-image: url('{{paths.backgrounds}}{{bodyBg}}')"
+        class="body-load">
 <div class="loader js-loader-mask"></div>
 <div class="js-header header">
     {{> header}}

@@ -9,8 +9,9 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
-], function ($, _, Backbone) {
+    'backbone',
+    'handlebars'
+], function ($, _, Backbone, Handlebars) {
     return Backbone.Layout.extend({
 
         /**
@@ -51,6 +52,11 @@ define([
             if ($el) {
                 this.$el = $el;
             }
+
+            Handlebars.registerPartial(
+                'intro',
+                Soshace.hbs['partials/intro']
+            );
         },
 
         /**

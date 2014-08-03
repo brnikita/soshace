@@ -192,6 +192,22 @@ global.Soshace = {
         scripts: '/static/scripts/',
         styles: '/static/styles/',
         images: '/static/images/',
+        backgrounds: '/static/images/backgrounds/',
         views: '/static/views/'
-    }
+    },
+
+    /**
+     * Список дефолтных доступных фонов
+     *
+     * @constant
+     * @name Soshace.BACKGROUNDS
+     * @type {Array}
+     */
+    BACKGROUNDS: [
+       'funny-dog.jpg',
+       'lion.jpg',
+       'elephant.jpg',
+       'spring.jpg',
+       'sleeping-fox.jpg'
+    ]
 };
