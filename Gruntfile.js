@@ -197,7 +197,7 @@ module.exports = function (grunt) {
                         '<%= blog.app %>/views/messages/*.hbs',
                         '<%= blog.app %>/views/partials/*.hbs',
                         '<%= blog.app %>/views/posts/*.hbs',
-                        '<%= blog.app %>/views/userView.hbs'
+                        '<%= blog.app %>/views/user.hbs'
                     ]
                 }
             }

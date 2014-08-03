@@ -72,7 +72,6 @@ define(['utils/controller', './registrationModel', './registrationView'],
                     app = Soshace.app;
 
                 this.view = view;
-                app.$el.attr('class', 'bg-symbols bg-color-yellow');
                 app.setView('.js-content', view).render();
             }
         });

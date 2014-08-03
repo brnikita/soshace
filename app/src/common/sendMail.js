@@ -44,7 +44,7 @@ var SendMail = {
     sendConfirmMail: function (request, user) {
         var requestParams = new RequestParams(request),
             locale = request.i18n.getLocale(),
-            mailTemplatePath = Soshace.DIR_NAME + '/app/views/mails/confirmationMailView.hbs',
+            mailTemplatePath = Soshace.DIR_NAME + '/app/views/mails/confirmationMail.hbs',
             confirmationLink = this.getConfirmationLink(locale, user.code),
             mailSubject  = request.i18n.__('Confirmation message from Soshace blog');
 

@@ -63,18 +63,6 @@ define(function () {
         locales: {},
 
         /**
-         * Список путей
-         *
-         * @field
-         * @name Soshace.paths
-         * @type {Object}
-         */
-        paths: {
-            static: '/static/',
-            scripts: '/static/scripts/'
-        },
-
-        /**
          * Поле, содержащее относительнные пути
          * до статики и API
          *
@@ -83,6 +71,7 @@ define(function () {
          * @type {Object}
          */
         urls: {
+            static: '/static/',
             locales: '/static/locales/',
             scripts: 'static/scripts/',
             images: '/static/images/',

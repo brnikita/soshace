@@ -83,7 +83,7 @@ module.exports = Controller.extend({
             return;
         }
 
-        SystemMessagesModel.getMessages({owner: profile._id}, function (error, messages) {
+        SystemMessagesModel.getMessages({ownerId: profile._id}, function (error, messages) {
             if (error) {
                 response.sendError(error);
                 return;

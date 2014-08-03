@@ -56,7 +56,6 @@ define([
          * @type {Object}
          */
         events: {
-            'click .js-sign-out': 'signOut'
         },
 
         /**
@@ -99,24 +98,6 @@ define([
         },
 
         /**
-         * Метод обработчик влика на кнопке 'Выход'
-         *
-         * @method
-         * @name HeaderView.signOut
-         * @param {jQuery.Event} event
-         * @returns {undefined}
-         */
-        signOut: function (event) {
-            var locale = Helpers.getLocale();
-
-            event.preventDefault();
-            $.get(Soshace.urls.api.logout).done(function () {
-                Soshace.profile = null;
-                Backbone.history.navigate('/' + locale, {trigger: true});
-            });
-        },
-
-        /**
          * @method
          * @name HeaderView.serialize
          * @returns {Object}
@@ -128,7 +109,7 @@ define([
             data = _.extend(data, this.tabsConfig);
             data.locale = Helpers.getLocale();
             data.isAuthenticated = app.isAuthenticated();
-            data.paths = Soshace.paths;
+            data.paths = Soshace.urls;
             if (data.isAuthenticated) {
                 data.profileUserName = Soshace.profile.userName;
             }

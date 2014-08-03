@@ -121,10 +121,14 @@ define([
          * @returns {undefined}
          */
         userRegistrationSuccess: function (model, response) {
-            var redirectUrl = response.redirect;
+            var app = Soshace.app,
+                redirectUrl = response.redirect;
 
             Soshace.profile = response.profile;
-            Backbone.history.navigate(redirectUrl, {trigger: true});
+            app.getView('.js-system-messages').collection.fetch().
+                done(function(){
+                    Backbone.history.navigate(redirectUrl, {trigger: true});
+                });
         },
 
         /**

@@ -64,7 +64,7 @@ var SystemMessagesShema = new Schema({
  *
  * @method
  * @name SystemMessagesShema.getMessages
- * @param {ObjectId} params параметры запроса
+ * @param {Object} params параметры запроса
  * @param {Function} callback
  * @return {undefined}
  */
@@ -84,13 +84,12 @@ SystemMessagesShema.statics.getMessages = function (params, callback) {
  *
  * @method
  * @name SystemMessagesShema.removeMessage
- * @param {ObjectId} userId пользователь, которому принадлежит сообщение
- * @param {String} alias сокращенное название уведомления
+ * @param {Object} params параметры запроса
  * @param {Function} callback
  * @return {undefined}
  */
-SystemMessagesShema.statics.removeMessage = function (userId, alias, callback) {
-    this.findOne({owner: userId, alias: alias}, function (error, message) {
+SystemMessagesShema.statics.removeMessage = function (params, callback) {
+    this.findOne(params, function (error, message) {
         if (error) {
             callback({error: {message: 'Server is too busy, try later', code: 503}});
             return;

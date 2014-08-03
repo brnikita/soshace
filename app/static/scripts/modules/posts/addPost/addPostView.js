@@ -753,6 +753,7 @@ define([
 
             data.title = 'Add Post';
             data.editorDisabled = this.isEditorDisabled();
+            data.paths = Soshace.urls;
 
             return data;
         },

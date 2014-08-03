@@ -191,6 +191,7 @@ global.Soshace = {
         static: '/static/',
         scripts: '/static/scripts/',
         styles: '/static/styles/',
+        images: '/static/images/',
         views: '/static/views/'
     }
 };

@@ -41,6 +41,8 @@ define([
             ':locale/posts/:id/edit/': 'modules/posts/addPost/editPostController',
             ':locale/login': 'modules/login/loginController',
             ':locale/login/': 'modules/login/loginController',
+            ':locale/logout': 'modules/logout/logoutController',
+            ':locale/logout/': 'modules/logout/logoutController',
             ':locale/registration': 'modules/registration/registrationController',
             ':locale/registration/': 'modules/registration/registrationController',
             ':locale/users/:username': 'modules/user/userController',

@@ -29,7 +29,6 @@ define([
          * @type {Object}
          */
         elements: {
-            messages: null
         },
 
         /**
@@ -39,7 +38,7 @@ define([
          * @name UserView#elements
          * @type {string}
          */
-        template: Soshace.hbs.userView,
+        template: Soshace.hbs.user,
 
         /**
          * @constructor
@@ -63,7 +62,10 @@ define([
         serialize: function () {
             var app = Soshace.app,
                 data = this.model.toJSON();
+
             data.isAuthenticated = app.isAuthenticated();
+            data.paths = Soshace.urls;
+
             return data;
         },
 
@@ -75,7 +77,6 @@ define([
          * @returns {undefined}
          */
         setElements: function () {
-            this.elements.messages = this.$('.js-messages');
         },
 
         /**

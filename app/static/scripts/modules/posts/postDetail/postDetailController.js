@@ -78,7 +78,6 @@ define([
 
                 this.model.getPost(this.routeParams).
                     done(function(){
-                        app.$el.attr('class', 'bg-color-grey');
                         app.setView('.js-content', view).render();
                     });
             }

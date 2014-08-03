@@ -150,6 +150,7 @@ define([
                 error = response.error;
 
             if (error) {
+                //TODO: Переделать на другую ошибку
                 Widgets.showMessages(error);
             } else {
                 app.getProfileData().
@@ -166,12 +167,16 @@ define([
          * @returns {undefined}
          */
         authenticatedHandler: function () {
-            var profile = Soshace.profile,
+            var app = Soshace.app,
+                profile = Soshace.profile,
                 userName = profile.userName,
                 locale = profile.locale,
                 redirectUrl = '/' + locale + '/users/' + userName;
 
-            Backbone.history.navigate(redirectUrl, {trigger: true});
+            app.getView('.js-system-messages').collection.fetch().
+                done(function(){
+                    Backbone.history.navigate(redirectUrl, {trigger: true});
+                });
         },
 
         /**
@@ -224,6 +229,7 @@ define([
                 data = this.model.toJSON();
             data.isLoginTab = true;
             data.isAuthenticated = app.isAuthenticated();
+            data.paths = Soshace.urls;
             return data;
         },
 

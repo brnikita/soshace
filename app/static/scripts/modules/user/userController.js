@@ -83,7 +83,6 @@ define([
                 });
 
                 this.view = view;
-                app.$el.attr('class', 'bg-symbols bg-color-blue');
                 app.setView('.js-content', view);
                 this.model.getUser().done(_.bind(view.render, view));
             }

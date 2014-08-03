@@ -59,10 +59,11 @@ module.exports = Controller.extend({
      * @method
      * @name RegistrationController#updateUserMessagesAfterConfirmEmail
      * @param {UsersModel} user
+     * @param {Function} callback
      * @returns {undefined}
      */
     updateUserMessagesAfterConfirmEmail: function (user, callback) {
-        SystemMessagesModel.removeMessage(user._id, 'notConfirmedEmail', function (error) {
+        SystemMessagesModel.removeMessage({ownerId: user._id, alias: 'notConfirmedEmail'}, function (error) {
             var successConfirmEmail;
 
             if (error) {
@@ -123,7 +124,6 @@ module.exports = Controller.extend({
             this.sendError('Server is too busy, try later', 503);
             return;
         }
-
         this.updateUserMessagesAfterConfirmEmail(user, this.loginUser);
     },
 

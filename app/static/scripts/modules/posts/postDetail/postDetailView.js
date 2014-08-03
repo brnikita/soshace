@@ -65,6 +65,8 @@ define([
 
             data.isAuthenticated = app.isAuthenticated();
             data.post = model;
+            data.paths = Soshace.urls;
+
             return data;
         },
 

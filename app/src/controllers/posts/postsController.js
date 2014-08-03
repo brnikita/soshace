@@ -92,8 +92,7 @@ module.exports = Controller.extend({
                 response.render('posts/postDetail', _.extend(requestParams, {
                     post: post,
                     title: post.title,
-                    id: post._id,
-                    bodyClass: 'bg-color-grey'
+                    id: post._id
                 }));
                 return;
             }
@@ -122,8 +121,7 @@ module.exports = Controller.extend({
             response.render('posts/postsList', _.extend(requestParams, {
                 isPostsTab: true,
                 title: 'Soshace blog',
-                posts: posts,
-                bodyClass: 'bg-color-grey'
+                posts: posts
             }));
         });
     }

@@ -87,11 +87,12 @@ define([
          * @returns {Object}
          */
         serialize: function(){
-            var posts = this.collection.toJSON();
+            var data = {};
 
-            return {
-                posts: posts
-            };
+            data.posts = this.collection.toJSON();
+            data.paths = Soshace.urls;
+
+            return data;
         },
 
         /**
