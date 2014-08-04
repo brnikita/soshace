@@ -206,8 +206,9 @@ global.Soshace = {
     BACKGROUNDS: [
         'funny-dog.jpg',
         'lion.jpg',
-        'elephant.jpg',
+        '5579-road-1920x1080-artistic-wallpaper.jpg',
         'spring.jpg',
-        'sleeping-fox.jpg'
+        'sleeping-fox.jpg',
+        'new-york.jpg'
     ]
 };

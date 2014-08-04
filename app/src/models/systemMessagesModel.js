@@ -115,6 +115,7 @@ SystemMessagesShema.statics.removeMessage = function (params, callback) {
  * @return {undefined}
  */
 SystemMessagesShema.statics.safeRemoveMessage = function (params, callback) {
+    console.log(params);
     this.findOne(params, function (error, message) {
         if (error) {
             callback({error: {message: 'Server is too busy, try later.', code: 503}});
