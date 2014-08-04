@@ -52,7 +52,7 @@ var SystemMessagesShema = new Schema({
         default: false
     },
 
-    //Систеное для незарегистрированного пользователя
+    //Системное сообщение для незарегистрированного пользователя
     notAuthenticated: {
         type: Boolean,
         default: false
@@ -98,6 +98,40 @@ SystemMessagesShema.statics.removeMessage = function (params, callback) {
         if (message) {
             message.remove();
         }
+
+        callback(null);
+    });
+};
+
+/**
+ * Метод безопасно удаляет сообщение из коллекции
+ *
+ * Проверяет сообщение на наличие
+ *
+ * @method
+ * @name SystemMessagesShema.safeRemoveMessage
+ * @param {Object} params параметры запроса
+ * @param {Function} callback
+ * @return {undefined}
+ */
+SystemMessagesShema.statics.safeRemoveMessage = function (params, callback) {
+    this.findOne(params, function (error, message) {
+        if (error) {
+            callback({error: {message: 'Server is too busy, try later.', code: 503}});
+            return;
+        }
+
+        if(message === null){
+            callback({error: {message: 'System message not found.', code: 404}});
+            return;
+        }
+
+        if (message.readOnly) {
+            callback({error: {message: 'Action is not available.', code: 403}});
+            return;
+        }
+
+        message.remove();
 
         callback(null);
     });

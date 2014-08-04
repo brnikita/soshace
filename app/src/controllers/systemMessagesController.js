@@ -1,6 +1,8 @@
 'use strict';
 
 var _ = require('underscore'),
+    Mongoose = require('mongoose'),
+    ObjectId = Mongoose.Types.ObjectId,
     Controller = require('../common/controller'),
     RequestParams = require('../common/requestParams'),
     SystemMessagesModel = require('../models/systemMessagesModel');
@@ -98,12 +100,34 @@ module.exports = Controller.extend({
      * относящееся к профилю пользователя
      *
      * @method
-     * @name SystemMessagesController#deleteMessage
-     * @param {String} alias
+     * @name SystemMessagesController#removeMessage
+     * @param {String} _id
      * @returns {undefined}
      */
-    deleteMessage: function () {
+    removeMessage: function (_id) {
+        var request = this.request,
+            response = this.response,
+            requestParams = new RequestParams(request),
+            isAuthenticated = requestParams.isAuthenticated,
+            profile = requestParams.profile;
 
+        if (!isAuthenticated) {
+            this.sendError('User is not authorized', 401);
+            return;
+        }
+
+        SystemMessagesModel.safeRemoveMessage({
+            _id: new ObjectId(_id),
+            //нужно уточнение владельца сообщения
+            ownerId: new ObjectId(profile._id)
+        }, _.bind(function (error, messages) {
+            if (error) {
+                this.sendError(error);
+                return;
+            }
+
+            response.send({results: messages});
+        }, this));
     },
 
     /**

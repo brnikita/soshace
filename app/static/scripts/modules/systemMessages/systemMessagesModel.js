@@ -12,12 +12,21 @@ define([
     'backbone'
 ], function ($, _, Backbone) {
     return Backbone.Model.extend({
+
+        /**
+         * @field
+         * @name SystemMessagesModel#idAttribute
+         * @type {String}
+         */
+        idAttribute: '_id',
+
         /**
          * @field
          * @name SystemMessagesModel#defaults
          * @type {Object}
          */
         defaults: {
+            _id: null,
             //сокращение для системного сообщения
             alias: null,
             //id пользователя, к которому относится сообщение
@@ -37,11 +46,14 @@ define([
         },
 
         /**
-         * @field
+         * @method
          * @name SystemMessagesModel#url
-         * @type {string}
+         * @returns {String}
          */
-        url: Soshace.urls.api.systemMessage,
+        url: function(){
+            var id = this.get('_id');
+            return Soshace.urls.api.systemMessage.replace('0', id);
+        },
 
         /**
          * @constructor

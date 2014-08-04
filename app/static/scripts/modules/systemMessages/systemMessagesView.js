@@ -96,6 +96,20 @@ define([
         },
 
         /**
+         * Метод проверяет системное сообщение на наличие флага
+         * showOnce - показ только один раз
+         *
+         * @method
+         * @name RegistrationView#checkShowOnceFlag
+         * @returns {undefined}
+         */
+        checkShowOnceFlag: function () {
+            if (this.model.get('showOnce')) {
+                this.model.destroy();
+            }
+        },
+
+        /**
          * Метод обработчик смены страницы
          *
          * @method
@@ -123,6 +137,7 @@ define([
          * @returns {undefined}
          */
         afterRender: function () {
+            this.checkShowOnceFlag();
         }
     });
 });

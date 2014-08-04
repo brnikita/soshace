@@ -54,13 +54,14 @@ module.exports = Class.extend({
         'post /api/users': 'auth/registrationController createUser',
         'get /api/users/:username': 'usersController getUser',
         'patch /api/users/:username': 'usersController updateProfile',
+        'delete /api/users/:username': 'usersController removeProfile',
         'get /api/profile': 'usersController getProfile',
         'post /api/login': 'auth/loginController loginHandler',
         'get /api/logout': 'auth/loginController logoutHandler',
         'get /api/registration/validate_field': 'auth/registrationController validateField',
         'get /api/system_messages': 'systemMessagesController getMessages',
-        'delete /api/system_messages/:alias': 'systemMessagesController deleteMessage',
-        'patch /api/system_messages/:alias': 'systemMessagesController updateMessage',
+        'delete /api/system_messages/:_id': 'systemMessagesController removeMessage',
+        'patch /api/system_messages/:_id': 'systemMessagesController updateMessage',
         //-------------------API end--------------------
 
         'get /': 'posts/postsController redirectToPosts',
