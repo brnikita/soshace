@@ -204,10 +204,10 @@ global.Soshace = {
      * @type {Array}
      */
     BACKGROUNDS: [
-       'funny-dog.jpg',
-       'lion.jpg',
-       'elephant.jpg',
-       'spring.jpg',
-       'sleeping-fox.jpg'
+        'funny-dog.jpg',
+        'lion.jpg',
+        'elephant.jpg',
+        'spring.jpg',
+        'sleeping-fox.jpg'
     ]
 };
