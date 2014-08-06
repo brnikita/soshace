@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Модель страницы просмотра статьи
+ * Модель статьи
  *
- * @class PostDetailModel
+ * @class PostModel
  */
 
 define([
@@ -15,7 +15,7 @@ define([
 
         /**
          * @field
-         * @name PostDetailModel.default
+         * @name PostModel#default
          * @type {String | null}
          */
         default: {
@@ -31,7 +31,7 @@ define([
 
         /**
          * @method
-         * @name PostDetailModel.url
+         * @name PostModel#url
          * @returns {string}
          */
         url: function () {
@@ -43,7 +43,7 @@ define([
 
         /**
          * @constructor
-         * @name PostDetailModel.initialize
+         * @name PostModel#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -53,7 +53,7 @@ define([
          * Метод получает статью
          *
          * @method
-         * @name PostDetailModel.initialize
+         * @name PostModel#initialize
          * @param {Array} routeParams параметры зароса
          * @returns {jQuery.Deferred}
          */

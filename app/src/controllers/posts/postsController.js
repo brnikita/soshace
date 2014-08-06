@@ -1,9 +1,9 @@
 'use strict';
 
-var Controller = require('../../common/controller'),
+var Controller = srcRequire('common/controller'),
     _ = require('underscore'),
-    PostsModel = require('../../models/postsModel'),
-    RequestParams = require('../../common/requestParams');
+    PostsModel = srcRequire('models/postsModel'),
+    RequestParams = srcRequire('common/requestParams');
 
 
 /**
@@ -86,7 +86,7 @@ module.exports = Controller.extend({
 
         PostsModel.getPost(params).exec(function (error, post) {
             if (post) {
-                response.render('posts/postDetail', _.extend(requestParams, {
+                response.render('posts/post', _.extend(requestParams, {
                     post: post,
                     title: post.title,
                     id: post._id
@@ -115,7 +115,7 @@ module.exports = Controller.extend({
             };
 
         PostsModel.getPosts(params).exec(function (error, posts) {
-            response.render('posts/postsList', _.extend(requestParams, {
+            response.render('posts/posts', _.extend(requestParams, {
                 isPostsTab: true,
                 title: 'Soshace blog',
                 posts: posts

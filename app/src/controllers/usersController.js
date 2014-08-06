@@ -1,8 +1,8 @@
 'use strict';
-var Controller = require('../common/controller'),
+var Controller = srcRequire('common/controller'),
     _ = require('underscore'),
-    UsersModel = require('../models/usersModel'),
-    RequestParams = require('../common/requestParams');
+    UsersModel = srcRequire('models/usersModel'),
+    RequestParams = srcRequire('common/requestParams');
 /**
  * Контроллер страницы профиля пользователя
  *

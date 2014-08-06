@@ -1,6 +1,6 @@
 'use strict';
 
-var Controller = require('../common/controller'),
+var Controller = srcRequire('common/controller'),
     Fs = require('fs'),
     Crypto = require('crypto'),
     _ = require('underscore'),

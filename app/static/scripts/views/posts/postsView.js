@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Вид страницы списка постов
+ * Вид страницы списка статей
  *
- * @class PostsListView
+ * @class PostsView
  */
 
 define([
@@ -11,21 +11,21 @@ define([
     'underscore',
     'backbone',
     'handlebars',
-    './postPreview/postPreviewView'
+    './postPreviewView'
 ], function ($, _, Backbone, Handlebars, PostPreviewView) {
     return Backbone.Layout.extend({
         /**
          * Список статей
          *
          * @field
-         * @name PostsListView#collection
+         * @name PostsView#collection
          * @type {Backbone.Model | null}
          */
         collection: null,
 
         /**
          * @field
-         * @name PostsListView#elements
+         * @name PostsView#elements
          * @type {Object}
          */
         elements: {
@@ -35,14 +35,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name PostsListView#elements
+         * @name PostsView#elements
          * @type {string}
          */
-        template: Soshace.hbs['posts/postsList'],
+        template: Soshace.hbs['posts/posts'],
 
         /**
          * @constructor
-         * @name PostsListView#initialize
+         * @name PostsView#initialize
          * @param {Object} params
          * @returns {undefined}
          */
@@ -64,7 +64,7 @@ define([
          * Метод добавляет вид превью с списку статей
          *
          * @method
-         * @name PostsListView#addOneView
+         * @name PostsView#addOneView
          * @param {Backbone.Model} postModel модель статьи
          * @returns {undefined}
          */
@@ -80,7 +80,7 @@ define([
          * Метод заполняет список статей
          *
          * @method
-         * @name PostsListView#fillPostsList
+         * @name PostsView#fillPostsList
          * @returns {undefined}
          */
         fillPostsList: function () {
@@ -89,7 +89,7 @@ define([
 
         /**
          * @method
-         * @name PostsListView#serialize
+         * @name PostsView#serialize
          * @returns {Object}
          */
         serialize: function(){
@@ -103,7 +103,7 @@ define([
 
         /**
          * @method
-         * @name PostsListView#beforeRender
+         * @name PostsView#beforeRender
          * @returns {undefined}
          */
         beforeRender: function () {
@@ -112,7 +112,7 @@ define([
 
         /**
          * @method
-         * @name PostsListView#afterRender
+         * @name PostsView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {

@@ -1,43 +1,48 @@
 'use strict';
 
 /**
- * Контроллер страницы логина
+ * Контроллер страницы просмотра статьи
  *
- * @class LoginController
+ * @class PostController
  */
-define(['utils/controller', './loginModel', './loginView'],
-    function (Controller, LoginModel, LoginView) {
+define([
+        'underscore',
+        'utils/controller',
+        'models/postModel',
+        'views/posts/postView'
+    ],
+    function (_, Controller, PostModel, PostView) {
         return Controller.extend({
             /**
              * Алиас страницы
              *
              * @field
-             * @name LoginController#pageAlias
+             * @name PostController#pageAlias
              * @type {String}
              */
-            pageAlias: 'login',
+            pageAlias: 'postDetail',
 
             /**
              * @field
-             * @name LoginController#model
-             * @type {LoginModel}
+             * @name PostController#model
+             * @type {PostModel}
              */
             model: null,
 
             /**
              * @field
-             * @name LoginController#view
-             * @type {LoginView}
+             * @name PostController#view
+             * @type {PostView}
              */
             view: null,
 
             /**
              * @constructor
-             * @name LoginController#initialize
+             * @name
              * @returns {undefined}
              */
             initialize: function () {
-                this.model = new LoginModel();
+                this.model = new PostModel();
             },
 
 
@@ -45,14 +50,15 @@ define(['utils/controller', './loginModel', './loginView'],
              * Метод вызывает при рендере на сервере
              *
              * @method
-             * @name LoginController#firstLoad
+             * @name PostController#firstLoad
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = new LoginView({
+                var view = new PostView({
                     model: this.model,
                     $el: $('.js-content-first-load')
                 });
+
                 view.afterRender();
                 this.view = view;
             },
@@ -61,17 +67,19 @@ define(['utils/controller', './loginModel', './loginView'],
              * Метод вызывает при рендере на клиенте
              *
              * @method
-             * @name LoginController#firstLoad
+             * @name PostController#firstLoad
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = new LoginView({
+                var view = new PostView({
                         model: this.model
                     }),
                     app = Soshace.app;
 
-                this.view = view;
-                app.setView('.js-content', view).render();
+                this.model.getPost(this.routeParams).
+                    done(function(){
+                        app.setView('.js-content', view).render();
+                    });
             }
         });
     });

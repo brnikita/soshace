@@ -1,48 +1,43 @@
 'use strict';
 
 /**
- * Контроллер страницы пользователя
+ * Контроллер страницы логина
  *
- * @class UserController
+ * @class LoginController
  */
-define([
-        'underscore',
-        'utils/controller',
-        './userModel',
-        './userView'
-    ],
-    function (_, Controller, UserModel, UserView) {
+define(['utils/controller', 'models/loginModel', 'views/loginView'],
+    function (Controller, LoginModel, LoginView) {
         return Controller.extend({
             /**
              * Алиас страницы
              *
              * @field
-             * @name UserController#pageAlias
+             * @name LoginController#pageAlias
              * @type {String}
              */
-            pageAlias: 'user',
+            pageAlias: 'login',
 
             /**
              * @field
-             * @name UserController#model
-             * @type {UserModel}
+             * @name LoginController#model
+             * @type {LoginModel}
              */
             model: null,
 
             /**
              * @field
-             * @name UserController#view
-             * @type {UserView}
+             * @name LoginController#view
+             * @type {LoginView}
              */
             view: null,
 
             /**
              * @constructor
-             * @name UserController#initialize
+             * @name LoginController#initialize
              * @returns {undefined}
              */
             initialize: function () {
-                this.model = new UserModel();
+                this.model = new LoginModel();
             },
 
 
@@ -50,15 +45,14 @@ define([
              * Метод вызывает при рендере на сервере
              *
              * @method
-             * @name UserController#firstLoad
+             * @name LoginController#firstLoad
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = new UserView({
+                var view = new LoginView({
                     model: this.model,
                     $el: $('.js-content-first-load')
                 });
-
                 view.afterRender();
                 this.view = view;
             },
@@ -67,24 +61,17 @@ define([
              * Метод вызывает при рендере на клиенте
              *
              * @method
-             * @name UserController#firstLoad
+             * @name LoginController#firstLoad
              * @returns {undefined}
              */
             secondLoad: function () {
-                var params = this.routeParams,
-                    view = new UserView({
+                var view = new LoginView({
                         model: this.model
                     }),
                     app = Soshace.app;
 
-                this.model.set({
-                    locale: params[0],
-                    userName: params[1]
-                });
-
                 this.view = view;
-                app.setView('.js-content', view);
-                this.model.getUser().done(_.bind(view.render, view));
+                app.setView('.js-content', view).render();
             }
         });
     });

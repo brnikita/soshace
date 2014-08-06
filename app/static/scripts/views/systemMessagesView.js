@@ -10,7 +10,7 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    './systemMessagesCollection',
+    'models/systemMessagesCollection',
     'backbone.layoutmanager'
 ], function ($, _, Backbone, SystemMessagesCollection) {
     return Backbone.Layout.extend({

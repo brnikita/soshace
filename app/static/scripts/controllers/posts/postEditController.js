@@ -1,43 +1,47 @@
 'use strict';
 
 /**
- * Контроллер страницы добавления статьи
+ * Контроллер страницы редактирования/добавления статьи
  *
- * @class AddPostController
+ * @class PostEditController
  */
-define(['utils/controller', './addPostModel', './addPostView'],
-    function (Controller, AddPostModel, AddPostView) {
+define([
+        'utils/controller',
+        'models/postModel',
+        'views/posts/postEditView'
+    ],
+    function (Controller, PostModel, PostEditView) {
         return Controller.extend({
             /**
              * Алиас страницы
              *
              * @field
-             * @name AddPostController#pageAlias
+             * @name PostEditController#pageAlias
              * @type {String}
              */
             pageAlias: 'addPost',
 
             /**
              * @field
-             * @name AddPostController#model
-             * @type {AddPostModel}
+             * @name PostEditController#model
+             * @type {PostModel}
              */
             model: null,
 
             /**
              * @field
-             * @name AddPostController#view
-             * @type {AddPostView}
+             * @name PostEditController#view
+             * @type {PostEditView}
              */
             view: null,
 
             /**
              * @constructor
-             * @name AddPostController#initialize
+             * @name PostEditController#initialize
              * @returns {undefined}
              */
             initialize: function () {
-                this.model = new AddPostModel();
+                this.model = new PostModel();
             },
 
 
@@ -45,11 +49,11 @@ define(['utils/controller', './addPostModel', './addPostView'],
              * Метод вызывает при рендере на сервере
              *
              * @method
-             * @name AddPostController#firstLoad
+             * @name PostEditController#firstLoad
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = new AddPostView({
+                var view = new PostEditView({
                         model: this.model,
                         $el: $('.js-content-first-load')
                     });
@@ -62,11 +66,11 @@ define(['utils/controller', './addPostModel', './addPostView'],
              * Метод вызывает при рендере на клиенте
              *
              * @method
-             * @name AddPostController#firstLoad
+             * @name PostEditController#firstLoad
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = new AddPostView({
+                var view = new PostEditView({
                         model: this.model
                     }),
                     app = Soshace.app;

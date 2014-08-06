@@ -3,7 +3,7 @@
 /**
  * Вид страницы просмотра статьи
  *
- * @class PostDetailView
+ * @class PostView
  */
 
 define([
@@ -18,14 +18,14 @@ define([
          * Модель деталей статьи
          *
          * @field
-         * @name PostDetailView#model
+         * @name PostView#model
          * @type {Backbone.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name PostDetailView#elements
+         * @name PostView#elements
          * @type {Object}
          */
         elements: {
@@ -35,14 +35,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name PostDetailView#elements
+         * @name PostView#elements
          * @type {string}
          */
-        template: Soshace.hbs['posts/postDetail'],
+        template: Soshace.hbs['posts/post'],
 
         /**
          * @constructor
-         * @name PostDetailView#initialize
+         * @name PostView#initialize
          * @params {Object} params
          * @returns {undefined}
          */
@@ -61,7 +61,7 @@ define([
 
         /**
          * @method
-         * @name PostDetailView#serialize
+         * @name PostView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -78,7 +78,7 @@ define([
 
         /**
          * @method
-         * @name PostDetailView#afterRender
+         * @name PostView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {

@@ -1,6 +1,6 @@
 'use strict';
 
-var Class = require('../vendors/class');
+var Class = srcRequire('vendors/class');
 
 /**
  * Родительский класс для контороллеров

@@ -2,7 +2,6 @@ require.config(
     {
         baseUrl: '/static/scripts/',
         paths: {
-            'utils': 'utils',
             'jquery': 'vendors/jquery',
             'underscore': 'vendors/underscore',
             'underscore.string': 'vendors/underscore/underscore.string',
@@ -18,9 +17,7 @@ require.config(
             'jquery.ui.widget': 'vendors/jquery/jquery.ui.widget',
             'backbone': 'vendors/backbone',
             'backbone.layoutmanager': 'vendors/backbone/backbone.layoutmanager',
-            'backbone.validation': 'vendors/backbone/backbone.validation',
-            'config': 'config',
-            'templates': 'templates'
+            'backbone.validation': 'vendors/backbone/backbone.validation'
 
         },
         shim: {

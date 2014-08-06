@@ -3,6 +3,10 @@
 //Импортируем глобальный объект soshace
 require('./app/config');
 
+global.srcRequire = function (name) {
+    return require(__dirname + '/app/src/' + name);
+};
+
 var _ = require('underscore'),
     express = require('express'),
     Package = require('./package'),
@@ -10,15 +14,15 @@ var _ = require('underscore'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
     App = express(),
-    DbConnection = require('./app/src/common/dbConnection'),
+    DbConnection = srcRequire('common/dbConnection'),
     I18n = require('i18n-2'),
-    Router = require('./app/src/router'),
+    Router = srcRequire('router'),
     Passport = require('passport'),
     Handlebars = require('express3-handlebars'),
-    Strategies = require('./app/src/common/strategies'),
-    Class = require('./app/src/vendors/class'),
+    Strategies = srcRequire('common/strategies'),
+    Class = srcRequire('vendors/class'),
     methodOverride = require('method-override'),
-    SystemMessagesController = require('./app/src/controllers/systemMessagesController');
+    SystemMessagesController = srcRequire('controllers/systemMessagesController');
 
 var Blog = Class.extend({
     /**

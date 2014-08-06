@@ -3,35 +3,35 @@
 /**
  * Коллекция списка статей
  *
- * @class PostsListCollection
+ * @class PostsCollection
  */
 
 define([
     'jquery',
     'underscore',
     'backbone',
-    './postPreview/postPreviewModel'
+    'models/postModel'
 ], function ($, _, Backbone, PostPreviewModel) {
     return Backbone.Collection.extend({
         /**
          * Модель превью поста
          *
          * @field
-         * @name PostsListCollection.model
+         * @name PostsCollection#model
          * @type {PostPreviewModel}
          */
         model: PostPreviewModel,
 
         /**
          * @method
-         * @name PostsListCollection.initialize
+         * @name PostsCollection#initialize
          * @returns {string}
          */
         url: Soshace.urls.api.posts,
 
         /**
          * @constructor
-         * @name PostsListCollection.initialize
+         * @name PostsCollection#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -43,7 +43,7 @@ define([
          * Т.к. change не отрабатывает при полуении такой же модели
          *
          * @method
-         * @name PostsListCollection.getPosts
+         * @name PostsCollection#getPosts
          * @param {Array} routeParams параметры запроса
          * @returns {undefined}
          */
@@ -61,7 +61,7 @@ define([
          * Метод обработчик удачного получения списка постов
          *
          * @method
-         * @name PostsListCollection.getPostsSuccess
+         * @name PostsCollection#getPostsSuccess
          * @param {Array} postsList список постов
          * @returns {undefined}
          */

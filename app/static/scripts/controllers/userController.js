@@ -1,48 +1,48 @@
 'use strict';
 
 /**
- * Контроллер страницы деталей статьи
+ * Контроллер страницы пользователя
  *
- * @class PostDetailController
+ * @class UserController
  */
 define([
         'underscore',
         'utils/controller',
-        './postDetailModel',
-        './postDetailView'
+        'models/userModel',
+        'views/userView'
     ],
-    function (_, Controller, PostDetailModel, PostDetailView) {
+    function (_, Controller, UserModel, UserView) {
         return Controller.extend({
             /**
              * Алиас страницы
              *
              * @field
-             * @name PostDetailController#pageAlias
+             * @name UserController#pageAlias
              * @type {String}
              */
-            pageAlias: 'postDetail',
+            pageAlias: 'user',
 
             /**
              * @field
-             * @name PostDetailController#model
-             * @type {PostDetailModel}
+             * @name UserController#model
+             * @type {UserModel}
              */
             model: null,
 
             /**
              * @field
-             * @name PostDetailController#view
-             * @type {PostDetailView}
+             * @name UserController#view
+             * @type {UserView}
              */
             view: null,
 
             /**
              * @constructor
-             * @name
+             * @name UserController#initialize
              * @returns {undefined}
              */
             initialize: function () {
-                this.model = new PostDetailModel();
+                this.model = new UserModel();
             },
 
 
@@ -50,11 +50,11 @@ define([
              * Метод вызывает при рендере на сервере
              *
              * @method
-             * @name PostDetailController#firstLoad
+             * @name UserController#firstLoad
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = new PostDetailView({
+                var view = new UserView({
                     model: this.model,
                     $el: $('.js-content-first-load')
                 });
@@ -67,19 +67,24 @@ define([
              * Метод вызывает при рендере на клиенте
              *
              * @method
-             * @name PostDetailController#firstLoad
+             * @name UserController#firstLoad
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = new PostDetailView({
+                var params = this.routeParams,
+                    view = new UserView({
                         model: this.model
                     }),
                     app = Soshace.app;
 
-                this.model.getPost(this.routeParams).
-                    done(function(){
-                        app.setView('.js-content', view).render();
-                    });
+                this.model.set({
+                    locale: params[0],
+                    userName: params[1]
+                });
+
+                this.view = view;
+                app.setView('.js-content', view);
+                this.model.getUser().done(_.bind(view.render, view));
             }
         });
     });

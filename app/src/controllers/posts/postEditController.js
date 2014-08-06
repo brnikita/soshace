@@ -1,16 +1,16 @@
 'use strict';
-var Controller = require('../../common/controller'),
-    PostsModel = require('../../models/postsModel'),
+var Controller = srcRequire('common/controller'),
+    PostsModel = srcRequire('models/postsModel'),
     Unidecode = require('unidecode'),
-    Helper = require('../../common/helpers'),
+    Helper = srcRequire('common/helpers'),
     _ = require('underscore'),
     _s = require('underscore.string'),
-    RequestParams = require('../../common/requestParams');
+    RequestParams = srcRequire('common/requestParams');
 
 /**
- * Контроллер, отвечающий за добавление статьи
+ * Контроллер, отвечающий за редактирование/добавление статьи
  *
- * @class AddPostController
+ * @class PostEditController
  *
  */
 module.exports = Controller.extend({
@@ -23,7 +23,7 @@ module.exports = Controller.extend({
      *
      * @private
      * @method
-     * @name AddPostController#_formatPostUrl
+     * @name PostEditController#_formatPostUrl
      * @param {string} title заголовок поста
      * @returns {string}
      */
@@ -44,7 +44,7 @@ module.exports = Controller.extend({
      *
      * @private
      * @method
-     * @name AddPostController#_getPostDescription
+     * @name PostEditController#_getPostDescription
      * @param {string} postBody тело поста
      * @returns {*}
      */
@@ -68,7 +68,7 @@ module.exports = Controller.extend({
      *
      * @private
      * @method
-     * @name AddPostController#_getDate
+     * @name PostEditController#_getDate
      * @returns {Object}
      */
     _getDate: function () {
@@ -92,7 +92,7 @@ module.exports = Controller.extend({
      *
      * @private
      * @method
-     * @name AddPostController#_checkPostTitle
+     * @name PostEditController#_checkPostTitle
      * @param {string} title загловок поста
      * @returns {string|boolean}
      */
@@ -117,7 +117,7 @@ module.exports = Controller.extend({
      *
      * @private
      * @method
-     * @name AddPostController#_checkPostBody
+     * @name PostEditController#_checkPostBody
      * @param {string} body загловок поста
      * @returns {string|boolean}
      */
@@ -141,7 +141,7 @@ module.exports = Controller.extend({
      *
      * @public
      * @method
-     * @name AddPostController#addPost
+     * @name PostEditController#addPost
      * @return {undefined}
      */
     addPost: function () {
@@ -247,7 +247,7 @@ module.exports = Controller.extend({
             response = this.response,
             requestParams = new RequestParams(request);
 
-        response.render('posts/addPost', _.extend(requestParams, {
+        response.render('posts/postEdit', _.extend(requestParams, {
             title: 'Add Post',
             isAddPostTab: true,
             editorDisabled: this.isEditorDisabled()

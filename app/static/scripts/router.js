@@ -29,24 +29,24 @@ define([
          * @type {Object}
          */
         controllersRoutes: {
-            ':locale': 'modules/posts/postsList/postsListController',
-            ':locale/': 'modules/posts/postsList/postsListController',
-            ':locale/posts': 'modules/posts/postsList/postsListController',
-            ':locale/posts/': 'modules/posts/postsList/postsListController',
-            ':locale/posts/:id': 'modules/posts/postDetail/postDetailController',
-            ':locale/posts/:id/': 'modules/posts/postDetail/postDetailController',
-            ':locale/posts/new': 'modules/posts/addPost/addPostController',
-            ':locale/posts/new/': 'modules/posts/addPost/addPostController',
-            ':locale/posts/:id/edit': 'modules/posts/addPost/editPostController',
-            ':locale/posts/:id/edit/': 'modules/posts/addPost/editPostController',
-            ':locale/login': 'modules/login/loginController',
-            ':locale/login/': 'modules/login/loginController',
-            ':locale/logout': 'modules/logout/logoutController',
-            ':locale/logout/': 'modules/logout/logoutController',
-            ':locale/registration': 'modules/registration/registrationController',
-            ':locale/registration/': 'modules/registration/registrationController',
-            ':locale/users/:username': 'modules/user/userController',
-            ':locale/users/:username/': 'modules/user/userController'
+            ':locale': 'controllers/posts/postsController',
+            ':locale/': 'controllers/posts/postsController',
+            ':locale/posts': 'controllers/posts/postsController',
+            ':locale/posts/': 'controllers/posts/postsController',
+            ':locale/posts/:id': 'controllers/posts/postController',
+            ':locale/posts/:id/': 'controllers/posts/postController',
+            ':locale/posts/new': 'controllers/posts/postEditController',
+            ':locale/posts/new/': 'controllers/posts/postEditController',
+            ':locale/posts/:id/edit': 'controllers/posts/postEditController',
+            ':locale/posts/:id/edit/': 'controllers/posts/postEditController',
+            ':locale/login': 'controllers/loginController',
+            ':locale/login/': 'controllers/loginController',
+            ':locale/logout': 'controllers/logoutController',
+            ':locale/logout/': 'controllers/logoutController',
+            ':locale/registration': 'controllers/registrationController',
+            ':locale/registration/': 'controllers/registrationController',
+            ':locale/users/:username': 'controllers/userController',
+            ':locale/users/:username/': 'controllers/userController'
         },
 
         /**

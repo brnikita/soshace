@@ -1,43 +1,48 @@
 'use strict';
 
 /**
- * Контроллер страницы регистрации
+ * Контроллер страницы списка статей
  *
- * @class RegistrationController
+ * @class PostsController
  */
-define(['utils/controller', './registrationModel', './registrationView'],
-    function (Controller, RegistrationModel, RegistrationView) {
+define([
+        'underscore',
+        'utils/controller',
+        'collections/postsCollection',
+        'views/posts/postsView'
+    ],
+    function (_, Controller, PostsCollection, PostsView) {
         return Controller.extend({
             /**
              * Алиас страницы
              *
              * @field
-             * @name RegistrationController#pageAlias
+             * @name PostsController#pageAlias
              * @type {String}
              */
-            pageAlias: 'registration',
+            pageAlias: 'home',
 
             /**
              * @field
-             * @name RegistrationController#model
-             * @type {RegistrationModel}
+             * @name PostsController#collection
+             * @type {PostsCollection}
              */
-            model: null,
+            collection: null,
 
             /**
              * @field
-             * @name RegistrationController#view
-             * @type {RegistrationView}
+             * @name PostsController#view
+             * @type {PostsView}
              */
             view: null,
 
             /**
              * @constructor
-             * @name RegistrationController#initialize
+             * @name PostsController#initialize
              * @returns {undefined}
              */
             initialize: function () {
-                this.model = new RegistrationModel();
+                this.collection = new PostsCollection();
             },
 
 
@@ -45,11 +50,11 @@ define(['utils/controller', './registrationModel', './registrationView'],
              * Метод вызывает при рендере на сервере
              *
              * @method
-             * @name RegistrationController#firstLoad
+             * @name PostsController#firstLoad
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = new RegistrationView({
+                var view = new PostsView({
                     model: this.model,
                     $el: $('.js-content-first-load')
                 });
@@ -62,17 +67,20 @@ define(['utils/controller', './registrationModel', './registrationView'],
              * Метод вызывает при рендере на клиенте
              *
              * @method
-             * @name RegistrationController#firstLoad
+             * @name PostsController#firstLoad
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = new RegistrationView({
-                        model: this.model
+                var view = new PostsView({
+                        collection: this.collection
                     }),
                     app = Soshace.app;
 
                 this.view = view;
-                app.setView('.js-content', view).render();
+                this.collection.on('postsReceived', _.bind(function () {
+                    app.setView('.js-content', view).render();
+                }, this));
+                this.collection.getPosts(this.routeParams);
             }
         });
     });

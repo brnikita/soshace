@@ -6,9 +6,9 @@
 'use strict';
 
 /**
- * Вид страницы добавления поста
+ * Вид страницы редактирования статьи
  *
- * @class AddPostView
+ * @class PostEditView
  */
 
 define([
@@ -29,7 +29,7 @@ define([
          * Результат исполнения метода checkForm
          *
          * @field
-         * @name AddPostView#formErrors
+         * @name PostEditView#formErrors
          * @type {Array|null}
          */
         formErrors: null,
@@ -38,7 +38,7 @@ define([
          * Позиция панели редактирования при рендере
          *
          * @field
-         * @name AddPostView#toolbarInitOffeset
+         * @name PostEditView#toolbarInitOffeset
          * @type {Object}
          */
         toolbarInitOffset: null,
@@ -48,7 +48,7 @@ define([
          *
          * @private
          * @field
-         * @name AddPostView#defaultConfig
+         * @name PostEditView#defaultConfig
          * @type {Object}
          */
         defaultConfig: {
@@ -76,12 +76,12 @@ define([
          * Список обработчиков ошибок
          *
          * @field
-         * @name AddPostView#events
+         * @name PostEditView#events
          * @type {Object}
          */
         events: {
             'click .js-submit-post': 'submitForm',
-            'focus .js-post-title': 'focusField',
+            'focus .js-post-title': 'focusTitle',
             'blur .js-post-title': '_blurField',
             'focus .js-post-body': 'focusField',
             'blur .js--post-body': '_blurField'
@@ -89,7 +89,7 @@ define([
 
         /**
          * @field
-         * @name AddPostView#errorMessages
+         * @name PostEditView#errorMessages
          * @type {Object}
          */
         errorMessages: {
@@ -101,7 +101,7 @@ define([
          * Селектор кнопок редактора
          *
          * @field
-         * @name AddPostView#toolbarBtnSelector
+         * @name PostEditView#toolbarBtnSelector
          * @type {String|null}
          */
         toolbarBtnSelector: null,
@@ -110,7 +110,7 @@ define([
          * Настройки редактора
          *
          * @field
-         * @name AddPostView#options
+         * @name PostEditView#options
          * @type {Object|null}
          */
         options: null,
@@ -120,7 +120,7 @@ define([
          * повторного обращения к ним
          *
          * @field
-         * @name AddPostView#elements
+         * @name PostEditView#elements
          * @type {Object}
          */
         elements: {
@@ -141,7 +141,7 @@ define([
         /**
          *
          * @field
-         * @name AddPostView#selectedRange
+         * @name PostEditView#selectedRange
          * @type {Object | null}
          */
         selectedRange: null,
@@ -150,14 +150,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name AddPostView#elements
+         * @name PostEditView#elements
          * @type {string}
          */
-        template: Soshace.hbs['posts/addPost'],
+        template: Soshace.hbs['posts/postEdit'],
 
         /**
          * @constructor
-         * @name AddPostView#initialize
+         * @name PostEditView#initialize
          * @param {Object} params
          * @returns {undefined}
          */
@@ -187,7 +187,7 @@ define([
          * Метод делает основное поле ввода редактируемым
          *
          * @method
-         * @name AddPostView#focusField
+         * @name PostEditView#makeEditorFieldContentEditable
          * @returns {undefined}
          */
         makeEditorFieldContentEditable: function () {
@@ -204,7 +204,7 @@ define([
          * Метод обработчик события touched
          *
          * @method
-         * @name AddPostView#touchHandler
+         * @name PostEditView#touchHandler
          * @returns {undefined}
          */
         touchHandler: function (event) {
@@ -224,7 +224,7 @@ define([
          * Метод обработчик скрола окна
          *
          * @method
-         * @name AddPostView#windowScrollHandler
+         * @name PostEditView#windowScrollHandler
          * @returns {undefined}
          */
         windowScrollHandler: function () {
@@ -250,7 +250,7 @@ define([
          * Обработчик события получения фокуса полем формы
          *
          * @method
-         * @name AddPostView#focusField
+         * @name PostEditView#focusField
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
@@ -261,10 +261,24 @@ define([
         },
 
         /**
+         * Обработчик события получения фокуса полем заголовка
+         *
+         * @method
+         * @name PostEditView#focusTitle
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        focusTitle: function (event) {
+            var $field = $(event.target);
+            $field.attr('placeholder', '');
+            this.hideClientError($field);
+        },
+
+        /**
          * Метод убирает ошибку у заданного поля
          *
          * @method
-         * @name AddPostView#hideClientError
+         * @name PostEditView#hideClientError
          * @param {jQuery} hideField поле, у которого нужно убрать ошибку
          * @returns {undefined}
          */
@@ -293,7 +307,7 @@ define([
          * Показываем серверные ошибки для полей
          *
          * @method
-         * @name AddPostView#showServerErrors
+         * @name PostEditView#showServerErrors
          * @param {Object|Array} fields поля или поле с ошибками
          *                              Пример: {
          *                                        fieldName: 'title',
@@ -325,7 +339,7 @@ define([
          *
          * @method
          * @private
-         * @name AddPostView#checkForm
+         * @name PostEditView#checkForm
          * @param {jQuery} formFields список проверяемых полей
          * @returns {Array} возвращает список ошибок [{
          *                                                  message: message, - сообщение об ошибке
@@ -363,7 +377,7 @@ define([
          * Возвращает данные формы
          *
          * @method
-         * @name AddPostView#getFormData
+         * @name PostEditView#getFormData
          * @param {object} formFields
          * @returns {object}
          */
@@ -392,7 +406,7 @@ define([
          * Показ сообщений от сервера
          *
          * @method
-         * @name AddPostView#_showSuccessMessage
+         * @name PostEditView#_showSuccessMessage
          * @param {Object} response Ответ сервера
          * @returns {undefined}
          */
@@ -416,7 +430,7 @@ define([
          * Обработчик отправки формы
          *
          * @method
-         * @name AddPostView#submitForm
+         * @name PostEditView#submitForm
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
@@ -441,7 +455,7 @@ define([
          * Метод возвращает очищенное тело редактора
          *
          * @method
-         * @name AddPostView#cleanHtml
+         * @name PostEditView#cleanHtml
          * @returns {string}
          */
         cleanHtml: function () {
@@ -455,7 +469,7 @@ define([
          * Метод делает активной или неактивной панель
          *
          * @method
-         * @name AddPostView#updateToolbar
+         * @name PostEditView#updateToolbar
          * @returns {undefined}
          */
         updateToolbar: function () {
@@ -477,7 +491,7 @@ define([
          * Метод для работы с выделенным текстом
          *
          * @method
-         * @name AddPostView#execCommand
+         * @name PostEditView#execCommand
          * @param {string} commandWithArgs
          * @param {string} valueArg
          * @returns {undefined}
@@ -498,7 +512,7 @@ define([
          * Слушает нажатие горячих клавиш
          *
          * @method
-         * @name AddPostView#execCommand
+         * @name PostEditView#execCommand
          * @param {Object} hotKeys список горячих клавиш
          * @returns {undefined}
          */
@@ -527,7 +541,7 @@ define([
          * текста
          *
          * @method
-         * @name AddPostView#execCommand
+         * @name PostEditView#execCommand
          * @returns {Range|null}
          */
         getCurrentRange: function () {
@@ -545,7 +559,7 @@ define([
          * в приватной переменной selectedRange
          *
          * @method
-         * @name AddPostView#saveSelection
+         * @name PostEditView#saveSelection
          * @returns {undefined}
          */
         saveSelection: function () {
@@ -557,7 +571,7 @@ define([
          * и выдляет сохраненную область
          *
          * @method
-         * @name AddPostView#restoreSelection
+         * @name PostEditView#restoreSelection
          * @returns {undefined}
          */
         restoreSelection: function () {
@@ -578,7 +592,7 @@ define([
          * Выделяет цветом ранее сохраненную область выделения
          *
          * @method
-         * @name AddPostView#markSelection
+         * @name PostEditView#markSelection
          * @param {jQuery} input
          * @param {string} color цвет выделения
          * @returns {undefined}
@@ -595,7 +609,7 @@ define([
          * Навишивает слушатели на панель управления
          *
          * @method
-         * @name AddPostView#bindToolbar
+         * @name PostEditView#bindToolbar
          * @returns {undefined}
          */
         bindToolbar: function () {
@@ -642,7 +656,7 @@ define([
          * Метод показывает модальное окно
          *
          * @method
-         * @name AddPostView#showAddLinkModal
+         * @name PostEditView#showAddLinkModal
          * @returns {undefined}
          */
         showAddLinkModal: function () {
@@ -654,7 +668,7 @@ define([
          * 'Сохранить' в модальном окне добавления ссылки
          *
          * @method
-         * @name AddPostView#addSaveLinkBtnListener
+         * @name PostEditView#addSaveLinkBtnListener
          * @returns {undefined}
          */
         addSaveLinkBtnListener: function () {
@@ -671,7 +685,7 @@ define([
          * изображения
          *
          * @method
-         * @name AddPostView#addImageButtonListener
+         * @name PostEditView#addImageButtonListener
          * @returns {undefined}
          */
         addImageButtonListener: function () {
@@ -711,7 +725,7 @@ define([
          * Метод сохраняет ссылки на элементы DOM
          *
          * @method
-         * @name AddPostView#setElements
+         * @name PostEditView#setElements
          * @returns {undefined}
          */
         setElements: function () {
@@ -732,7 +746,7 @@ define([
          * Метод возвращает True, если редактор должен быть заблокирован
          *
          * @method
-         * @name AddPostView#isEditorDisabled
+         * @name PostEditView#isEditorDisabled
          * @returns {Boolean}
          */
         isEditorDisabled: function () {
@@ -745,7 +759,7 @@ define([
 
         /**
          * @method
-         * @name AddPostView#serialize
+         * @name PostEditView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -762,7 +776,7 @@ define([
          * Метод вызывается роутером перед выходом из вида
          *
          * @method
-         * @name AddPostView#viewExitHandler
+         * @name PostEditView#viewExitHandler
          * @returns {undefined}
          */
         viewExitHandler: function () {
@@ -772,7 +786,7 @@ define([
 
         /**
          * @method
-         * @name AddPostView#afterRender
+         * @name PostEditView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {

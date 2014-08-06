@@ -3,9 +3,9 @@
 var _ = require('underscore'),
     Mongoose = require('mongoose'),
     ObjectId = Mongoose.Types.ObjectId,
-    Controller = require('../common/controller'),
-    RequestParams = require('../common/requestParams'),
-    SystemMessagesModel = require('../models/systemMessagesModel');
+    Controller = srcRequire('common/controller'),
+    RequestParams = srcRequire('common/requestParams'),
+    SystemMessagesModel = srcRequire('models/systemMessagesModel');
 
 /**
  * Контроллер, отвечающий за работу с системными сообщениями

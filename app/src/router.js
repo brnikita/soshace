@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('underscore'),
-    Class = require('./vendors/class');
+    Class = srcRequire('vendors/class');
 
 module.exports = Class.extend({
     /**
@@ -67,7 +67,7 @@ module.exports = Class.extend({
         'get /': 'posts/postsController redirectToPosts',
         'get /:locale': 'posts/postsController renderPosts',
         'get /:locale/posts': 'posts/postsController renderPosts',
-        'get /:locale/posts/new': 'posts/addPostController renderAddPost',
+        'get /:locale/posts/new': 'posts/postEditController renderAddPost',
         'get /:locale/posts/:_id/edit': 'posts/postController renderEditPost',
         'get /:locale/posts/:_id': 'posts/postsController renderPost',
         'get /:locale/registration': 'auth/registrationController renderRegistration',

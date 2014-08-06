@@ -1,7 +1,7 @@
 'use strict';
 var _ = require('underscore'),
-    Controller = require('../../common/controller'),
-    RequestParams = require('../../common/requestParams'),
+    Controller = srcRequire('common/controller'),
+    RequestParams = srcRequire('common/requestParams'),
     Passport = require('passport');
 
 /**

@@ -2,8 +2,8 @@
 
 var Mongoose = require('mongoose'),
     Bcrypt = require('bcrypt'),
-    Validators = require('../common/validators'),
-    Helpers = require('../common/helpers'),
+    Validators = srcRequire('common/validators'),
+    Helpers = srcRequire('common/helpers'),
     SALT_WORK_FACTOR = 10;
 
 /**

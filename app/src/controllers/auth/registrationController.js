@@ -1,10 +1,10 @@
 'use strict';
 var _ = require('underscore'),
-    Controller = require('../../common/controller'),
-    UsersModel = require('../../models/usersModel'),
-    RequestParams = require('../../common/requestParams'),
-    SystemMessagesModel = require('../../models/systemMessagesModel'),
-    SendMail = require('../../common/sendMail');
+    Controller = srcRequire('common/controller'),
+    UsersModel = srcRequire('models/usersModel'),
+    RequestParams = srcRequire('common/requestParams'),
+    SystemMessagesModel = srcRequire('models/systemMessagesModel'),
+    SendMail = srcRequire('common/sendMail');
 
 
 /**

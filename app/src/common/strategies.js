@@ -5,7 +5,7 @@ var _ = require('underscore'),
     ObjectId = Mongoose.Types.ObjectId,
     Passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
-    UsersModel = require('../models/usersModel');
+    UsersModel = srcRequire('models/usersModel');
 
 /**
  * Методы конфигурации стратегий
