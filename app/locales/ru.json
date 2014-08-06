@@ -130,5 +130,8 @@
 		"type": "user defined",
 		"value": "b"
 	},
-	"Path `locale` is required.": "Path `locale` is required."
+	"Path `locale` is required.": "Path `locale` is required.",
+	"Post": "Post",
+	"Public": "Public",
+    "Publish": "Опубликовать"
 }
