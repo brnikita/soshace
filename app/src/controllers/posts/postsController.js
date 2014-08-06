@@ -37,12 +37,9 @@ module.exports = Controller.extend({
      */
     getPost: function () {
         var request = this.request,
-            response = this.response,
-            params = {
-                '_id': request.params._id
-            };
+            response = this.response;
 
-        PostsModel.getPost(params).exec(function (error, post) {
+        PostsModel.getPost(request.params).exec(function (error, post) {
             if (post) {
                 return response.send(post);
             }

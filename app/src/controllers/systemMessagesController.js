@@ -101,12 +101,13 @@ module.exports = Controller.extend({
      *
      * @method
      * @name SystemMessagesController#removeMessage
-     * @param {String} _id
      * @returns {undefined}
      */
-    removeMessage: function (_id) {
+    removeMessage: function () {
         var request = this.request,
             response = this.response,
+            params = request.params,
+            _id = params._id,
             requestParams = new RequestParams(request),
             isAuthenticated = requestParams.isAuthenticated,
             profile = requestParams.profile;
