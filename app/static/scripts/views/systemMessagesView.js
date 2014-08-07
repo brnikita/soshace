@@ -10,9 +10,8 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'models/systemMessagesCollection',
     'backbone.layoutmanager'
-], function ($, _, Backbone, SystemMessagesCollection) {
+], function ($, _, Backbone) {
     return Backbone.Layout.extend({
 
         /**
@@ -61,10 +60,11 @@ define([
         /**
          * @constructor
          * @name RegistrationView#initialize
+         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function () {
-            this.collection = new SystemMessagesCollection();
+        initialize: function (params) {
+            this.collection = params.collection;
             this.collection.on('sync', this.saveMessagesGlobal, this);
         },
 

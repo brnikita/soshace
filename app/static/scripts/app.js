@@ -7,10 +7,11 @@ define([
     'router',
     'utils/helpers',
     'utils/widgets',
-    'modules/header/headerView',
-    'modules/systemMessages/systemMessagesView',
+    'collections/systemMessagesCollection',
+    'views/headerView',
+    'views/systemMessagesView',
     'backbone.layoutmanager'
-], function ($, _, Backbone, Router, Helpers, Widgets, HeaderView, SystemMessagesView) {
+], function ($, _, Backbone, Router, Helpers, Widgets, SystemMessagesCollection, HeaderView, SystemMessagesView) {
     var App = Backbone.Layout.extend({
 
         /**
@@ -19,6 +20,15 @@ define([
          * @type {Router | null}
          */
         router: null,
+
+        /**
+         * Коллекция системных сообщений
+         *
+         * @field
+         * @name App#systemMessagesCollection
+         * @type {SystemMessagesCollection | null}
+         */
+        systemMessagesCollection: null,
 
         /**
          * @field
@@ -46,9 +56,7 @@ define([
          */
         initialize: function () {
             _.bindAll(this, 'routerLinkHandler', 'initializeCompleted');
-            this.setElements();
-            this.setView('.js-header', new HeaderView());
-            this.setView('.js-system-messages', new SystemMessagesView());
+            this.systemMessagesCollection = new SystemMessagesCollection();
             this.getCommonData().done(this.initializeCompleted);
         },
 
@@ -75,7 +83,13 @@ define([
          * @returns {undefined}
          */
         initializeCompleted: function () {
-            Widgets.hideLoader();
+            var _this = this;
+
+            this.setElements();
+            this.setView('.js-header', new HeaderView());
+            this.setView('.js-system-messages', new SystemMessagesView({
+                collection: _this.systemMessagesCollection
+            }));
             this.$el.on('click', '.js-router-link', this.routerLinkHandler);
             this.router = new Router();
         },
@@ -138,7 +152,7 @@ define([
          * @returns {undefined}
          */
         getSystemMessages: function(){
-            return this.getView('.js-system-messages').collection.fetch();
+            return this.systemMessagesCollection.fetch();
         },
 
         /**

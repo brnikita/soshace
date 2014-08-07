@@ -10,34 +10,7 @@ define([
     'underscore',
     'jquery'
 ], function (_, $) {
-    var $loader = $('.js-loader-mask');
-
     return {
-        /**
-         * Метод перекрывает страницу
-         * лоадером
-         *
-         * @method
-         * @name Widgets.showLoader
-         * @returns {undefined}
-         */
-        showLoader: function () {
-            Soshace.app.$el.addClass('body-load');
-            $loader.removeClass('hide');
-        },
-
-        /**
-         * Метод убирает со страницы лоадер
-         *
-         * @method
-         * @name Widgets.showLoader
-         * @returns {undefined}
-         */
-        hideLoader: function () {
-            Soshace.app.$el.removeClass('body-load');
-            $loader.addClass('hide');
-        },
-
         /**
          * TODO: переделать на плагин
          *
