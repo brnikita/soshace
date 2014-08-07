@@ -1,86 +1,84 @@
-<div class="content-center">
-    <div class="modal fade js-add-link-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 id="myModalLabel" class="modal-title">{{i18n 'Add Link'}}</h4>
+<!-- Модальное окно для вставки ссылки--- начало -->
+<div class="modal post-edit-modal-add-link fade js-add-link-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="myModalLabel" class="modal-title">{{i18n 'Add Link'}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input id="linkUrl" class="js-add-link-modal-link-url form-control" type="text"
+                           placeholder="{{i18n 'Link Address'}}"/>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="linkUrl">{{i18n 'Link Address'}}</label>
-                        <input id="linkUrl" class="js-add-link-modal-link-url form-control" type="text"
-                               placeholder="{{i18n 'Link Address'}}"/>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-default" type="button" data-dismiss="modal">{{i18n 'Cancel'}}</button>
-                    <button class="btn btn-primary js-add-link-save" type="button">{{i18n 'Save'}}</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">{{i18n 'Cancel'}}</button>
+                <button class="btn btn-primary js-add-link-save" type="button">{{i18n 'Save'}}</button>
             </div>
         </div>
     </div>
-    <div class="add-post">
-        <div class="add-post__toolbar js-editor-toolbar">
-            <div class="js-editor-toolbar-container">
-                <div class="js-editor-toolbar-row clearfix">
-                    <div class="btn-toolbar" data-role="editor-toolbar" data-target="#post-body">
-                        <div class="btn-group">
-                            <a class="btn btn-default" data-edit="bold" title="{{i18n 'Bold'}} (Ctrl/Cmd+B)">
-                                <i class="fa fa-bold"></i>
-                            </a>
-                            <a class="btn btn-default" data-edit="italic" title="{{i18n 'Italic'}} (Ctrl/Cmd+I)">
-                                <i class="fa fa-italic"></i>
-                            </a>
-                            <a class="btn btn-default" data-edit="strikethrough" title="{{i18n 'Strikethrough'}}">
-                                <i class="fa fa-strikethrough"></i>
-                            </a>
-                            <a class="btn btn-default" data-edit="underline"
-                               title="{{i18n 'Underline'}} (Ctrl/Cmd+U)">
-                                <i class="fa fa-underline"></i>
-                            </a>
-                        </div>
-                        <div class="btn-group">
-                            <a class="btn btn-default" data-edit="insertunorderedlist"
-                               title="{{i18n 'Bullet list'}}">
-                                <i class="fa fa-list-ul"></i>
-                            </a>
-                            <a class="btn btn-default" data-edit="insertorderedlist" title="{{i18n 'Number list'}}">
-                                <i class="fa fa-list-ol"></i>
-                            </a>
-                        </div>
-                        <div class="btn-group">
-                            <a class="btn btn-default add-post__toolbar__add_image" title="{{i18n 'Add image'}}">
-                                <i class="fa fa-picture-o"></i>
+</div>
+<!-- Модальное окно для вставки ссылки--- конец -->
 
-                                <form action="/upload_img" method="POST" enctype="multipart/form-data">
-                                    <input type="file" name="image" data-edit="insertImage"/>
-                                </form>
-                            </a>
-                        </div>
-                        <div class="btn-group">
-                            <a class="btn btn-default" data-edit="CreateLink" title="{{i18n 'Hyperlink'}}">
-                                <i class="fa fa-link"></i>
-                            </a>
-                            <a class="btn btn-default" data-edit="unlink" title="{{i18n 'Remove' Hyperlink}}">
-                                <i class="fa fa-cut"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="add-post__toolbar__send">
-                        <button class="btn btn-primary">{{i18n 'Save'}}</button>
-                        <button class="btn btn-success js-submit-post">{{i18n 'Publish'}}</button>
-                    </div>
+<div class="content-center">
+    <div class="post-edit">
+        <div class="post-edit__toolbar clearfix">
+            <div class="btn-toolbar js-editor-toolbar" data-role="editor-toolbar" data-target="#post-body">
+                <div class="btn-group">
+                    <a class="btn btn-default" data-edit="bold" title="{{i18n 'Bold'}} (Ctrl/Cmd+B)">
+                        <i class="fa fa-bold"></i>
+                    </a>
+                    <a class="btn btn-default" data-edit="italic" title="{{i18n 'Italic'}} (Ctrl/Cmd+I)">
+                        <i class="fa fa-italic"></i>
+                    </a>
+                    <a class="btn btn-default" data-edit="strikethrough" title="{{i18n 'Strikethrough'}}">
+                        <i class="fa fa-strikethrough"></i>
+                    </a>
+                    <a class="btn btn-default" data-edit="underline"
+                       title="{{i18n 'Underline'}} (Ctrl/Cmd+U)">
+                        <i class="fa fa-underline"></i>
+                    </a>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-default" data-edit="insertunorderedlist"
+                       title="{{i18n 'Bullet list'}}">
+                        <i class="fa fa-list-ul"></i>
+                    </a>
+                    <a class="btn btn-default" data-edit="insertorderedlist" title="{{i18n 'Number list'}}">
+                        <i class="fa fa-list-ol"></i>
+                    </a>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-default post-edit__toolbar__add_image" title="{{i18n 'Add image'}}">
+                        <i class="fa fa-picture-o"></i>
+
+                        <form action="/upload_img" method="POST" enctype="multipart/form-data">
+                            <input type="file" name="image" data-edit="insertImage"/>
+                        </form>
+                    </a>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-default" data-edit="CreateLink" title="{{i18n 'Hyperlink'}}">
+                        <i class="fa fa-link"></i>
+                    </a>
+                    <a class="btn btn-default" data-edit="unlink" title="{{i18n 'Remove' Hyperlink}}">
+                        <i class="fa fa-cut"></i>
+                    </a>
                 </div>
             </div>
-        </div>
-        <div class="add-post__content">
-            <div class="add-post__title">
-                <input id="post-title" class="js-post-title" type="text" name="post-title" placeholder="{{i18n 'Title'}}"/>
+            <div class="post-edit__toolbar__submit-buttons">
+                <button class="btn btn-primary">{{i18n 'Save'}}</button>
+                <button class="btn btn-success js-submit-post">{{i18n 'Publish'}}</button>
             </div>
-
-            <div id="post-body" class="js-post-body add-post__body" name="post-body"></div>
         </div>
+
+        <div class="post-edit__title">
+            <input id="post-title" class="js-post-title" type="text" name="post-title" placeholder="{{i18n 'Title'}}"/>
+        </div>
+
+        <div id="post-body" class="post-edit__body js-post-body" name="post-body"></div>
+
         {{#if editorDisabled}}
             <div class="disable-cover"></div>
         {{/if}}

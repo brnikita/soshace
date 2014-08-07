@@ -25,16 +25,6 @@ define([
     return Backbone.Layout.extend({
 
         /**
-         * Список ошибок: поля и тексты ошибок
-         * Результат исполнения метода checkForm
-         *
-         * @field
-         * @name PostEditView#formErrors
-         * @type {Array|null}
-         */
-        formErrors: null,
-
-        /**
          * Позиция панели редактирования при рендере
          *
          * @field
@@ -80,11 +70,6 @@ define([
          * @type {Object}
          */
         events: {
-            'click .js-submit-post': 'submitForm',
-            'focus .js-post-title': 'focusTitle',
-            'blur .js-post-title': '_blurField',
-            'focus .js-post-body': 'focusField',
-            'blur .js--post-body': '_blurField'
         },
 
         /**
@@ -166,7 +151,6 @@ define([
                 commandRole = this.defaultConfig.commandRole;
 
             _.bindAll(this,
-                'showServerMessages',
                 'windowScrollHandler',
                 'touchHandler'
             );
@@ -244,211 +228,6 @@ define([
                 this.elements.toolbarContainerElement.removeClass('container');
                 this.elements.toolbarRowElement.removeClass('container');
             }
-        },
-
-        /**
-         * Обработчик события получения фокуса полем формы
-         *
-         * @method
-         * @name PostEditView#focusField
-         * @param {jQuery.Event} event
-         * @returns {undefined}
-         */
-        focusField: function (event) {
-            var field = $(event.target);
-
-            this.hideClientError(field);
-        },
-
-        /**
-         * Обработчик события получения фокуса полем заголовка
-         *
-         * @method
-         * @name PostEditView#focusTitle
-         * @param {jQuery.Event} event
-         * @returns {undefined}
-         */
-        focusTitle: function (event) {
-            var $field = $(event.target);
-            $field.attr('placeholder', '');
-            this.hideClientError($field);
-        },
-
-        /**
-         * Метод убирает ошибку у заданного поля
-         *
-         * @method
-         * @name PostEditView#hideClientError
-         * @param {jQuery} hideField поле, у которого нужно убрать ошибку
-         * @returns {undefined}
-         */
-        hideClientError: function (hideField) {
-            var showErrors = [];
-
-            if (this.formErrors !== null && this.formErrors.length) {
-                Widgets.hideErrorMessages(this.formErrors);
-
-                //Исключаем поле, которое сейчас редактируем
-                _.each(this.formErrors, function (error) {
-                    var field = error.element.isEditor ?
-                        error.element.elements.postBody[0] : error.element[0];
-
-                    if (field !== hideField[0]) {
-                        showErrors.push(error);
-                    }
-                });
-
-                this.formErrors = showErrors;
-                Widgets.showErrorMessages(showErrors);
-            }
-        },
-
-        /**
-         * Показываем серверные ошибки для полей
-         *
-         * @method
-         * @name PostEditView#showServerErrors
-         * @param {Object|Array} fields поля или поле с ошибками
-         *                              Пример: {
-         *                                        fieldName: 'title',
-         *                                        message:   'Не указан загловок'
-         *                                      }
-         * @returns {undefined}
-         */
-        showServerErrors: function (fields) {
-            var showErrors = [],
-                formFields = this.elements.formFields,
-                isArray = fields instanceof Array,
-                isObject = typeof fields === 'object' && fields !== null;
-
-            if (isArray || isObject) {
-                _.each(fields, function (field) {
-                    showErrors.push({
-                        message: field.message,
-                        element: formFields[field.fieldName]
-                    });
-                });
-            }
-
-            Widgets.showErrorMessages(showErrors);
-        },
-
-        /**
-         * Метод для проверки формы
-         * Правильности заполнения полей
-         *
-         * @method
-         * @private
-         * @name PostEditView#checkForm
-         * @param {jQuery} formFields список проверяемых полей
-         * @returns {Array} возвращает список ошибок [{
-         *                                                  message: message, - сообщение об ошибке
-         *                                                  element: element - ссылка на DOM поля с ошибкой
-         *                                              }]
-         */
-        checkForm: function (formFields) {
-            var errors = [];
-
-            _.each(formFields, _.bind(function (element) {
-                var value,
-                    name;
-
-                if (element instanceof $) {
-                    name = element.attr('name');
-                    value = element.val();
-                } else if (element.isEditor) {
-                    value = element.cleanHtml();
-                    name = element.elements.postBody.attr('name');
-                }
-
-                if (!value) {
-                    errors.push({
-                        message: this.errorMessages[name],
-                        element: element
-                    });
-                }
-            }, this));
-
-            return errors;
-        },
-
-
-        /**
-         * Возвращает данные формы
-         *
-         * @method
-         * @name PostEditView#getFormData
-         * @param {object} formFields
-         * @returns {object}
-         */
-        getFormData: function (formFields) {
-            var formsData = {};
-
-            _.each(formFields, function (field) {
-                var value,
-                    name;
-
-                if (field instanceof $) {
-                    value = _s.trim(field.val());
-                    name = field.attr('name');
-                } else if (field.isEditor) {
-                    name = field.elements.postBody.attr('name');
-                    value = field.cleanHtml();
-                }
-
-                formsData[name] = value;
-            });
-
-            return formsData;
-        },
-
-        /**
-         * Показ сообщений от сервера
-         *
-         * @method
-         * @name PostEditView#_showSuccessMessage
-         * @param {Object} response Ответ сервера
-         * @returns {undefined}
-         */
-        showServerMessages: function (response) {
-            if (response.error) {
-                if (response.fields) {
-                    this.showServerErrors(response.fields);
-                } else if (response.message) {
-                    Widgets.showMessages(response.message, null, 'alert-danger');
-                }
-
-                return;
-            }
-
-            if (response.message) {
-                Widgets.showMessages(response.message, null, 'alert-success');
-            }
-        },
-
-        /**
-         * Обработчик отправки формы
-         *
-         * @method
-         * @name PostEditView#submitForm
-         * @param {jQuery.Event} event
-         * @returns {undefined}
-         */
-        submitForm: function (event) {
-            var formFields = this.elements.formFields;
-
-            this.formErrors = this.checkForm(formFields);
-
-            if (!this.formErrors.length) {
-                $.post('/api/post',
-                    this.getFormData(formFields),
-                    this.showServerMessages
-                );
-            } else {
-                Widgets.showErrorMessages(this.formErrors);
-            }
-
-            event.preventDefault();
         },
 
         /**
@@ -615,6 +394,7 @@ define([
         bindToolbar: function () {
             var _this = this;
 
+            //TODO: вынести в events
             this.elements.toolbar.find(this.toolbarBtnSelector).on('click', function () {
                 var button = $(this),
                     command = button.data(_this.defaultConfig.commandRole);
@@ -765,7 +545,7 @@ define([
         serialize: function () {
             var data = this.model.toJSON();
 
-            data.title = 'Add Post';
+            data.title = Helpers.i18n('Edit Post');
             data.editorDisabled = this.isEditorDisabled();
             data.paths = Soshace.urls;
 
@@ -773,6 +553,8 @@ define([
         },
 
         /**
+         * TODO: сейчас не вызывается!
+         *
          * Метод вызывается роутером перед выходом из вида
          *
          * @method

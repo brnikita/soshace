@@ -14,29 +14,6 @@ var Controller = srcRequire('common/controller'),
  *
  */
 module.exports = Controller.extend({
-
-    /**
-     * TODO: написать тест
-     *
-     * Формирует последнюю часть урла
-     * из заголовка поста
-     *
-     * @private
-     * @method
-     * @name PostEditController#_formatPostUrl
-     * @param {string} title заголовок поста
-     * @returns {string}
-     */
-    _formatPostUrl: function (title) {
-        var url;
-
-        //переводим в латиницу
-        url = new Unidecode(title.toLowerCase());
-
-        //заменяем все нелатинские символы на "-"
-        return url.replace(/\W+/g, '-');
-    },
-
     /**
      * TODO: написать тест
      *
@@ -56,31 +33,6 @@ module.exports = Controller.extend({
         }
 
         return postBody.substr(0, ReadMoreIndex);
-    },
-
-    /**
-     * TODO: написать тест
-     *
-     * Формирует список необходимых переменных, связанных с датой
-     * Время берется по гринвичу
-     * Переменные нужны для формирования адреса поста
-     * Так же дата нужна для сортировки в базе
-     *
-     * @private
-     * @method
-     * @name PostEditController#_getDate
-     * @returns {Object}
-     */
-    _getDate: function () {
-        var date = new Date(),
-            dateObject = {};
-
-        dateObject.date = date;
-        dateObject.UTCYear = date.getUTCFullYear();
-        dateObject.UTCMonth = Helper.zeroLeading(date.getUTCMonth() + 1);
-        dateObject.UTCDate = Helper.zeroLeading(date.getUTCDate());
-
-        return dateObject;
     },
 
     /**
@@ -194,14 +146,7 @@ module.exports = Controller.extend({
         dataToSave.body = _s.trim(postData.body);
         dataToSave.public = false;
 
-        _.extend(dataToSave, this._getDate());
-
         dataToSave.description = this._getPostDescription(postData.body);
-
-        dataToSave.titleUrl = this._formatPostUrl(dataToSave.title);
-
-        //TODO: убрать хардкод
-        dataToSave.locale = 'ru';
 
         PostsModel.addPost(dataToSave, function (error) {
             if (error) {

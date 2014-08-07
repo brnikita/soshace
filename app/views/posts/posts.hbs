@@ -1,11 +1,13 @@
 {{> intro}}
 {{#if posts}}
-    <div class="js-posts-list">
-        {{#if backend}}
-            {{#each posts}}
-                {{> postPreview}}
-            {{/each}}
-        {{/if}}
+    <div class="content-center">
+        <div class="js-posts-list posts clearfix">
+            {{#if backend}}
+                {{#each posts}}
+                    {{> postPreview}}
+                {{/each}}
+            {{/if}}
+        </div>
     </div>
 {{else}}
     <div class="content-center">
