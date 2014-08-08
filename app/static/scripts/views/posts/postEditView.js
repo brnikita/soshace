@@ -34,6 +34,13 @@ define([
         toolbarInitOffset: null,
 
         /**
+         * @field
+         * @name PostEditController#model
+         * @type {Backbone.Model}
+         */
+        model: null,
+
+        /**
          * Дефолтные настройки редактора
          *
          * @private
@@ -70,6 +77,10 @@ define([
          * @type {Object}
          */
         events: {
+            'click .js-post-save': 'postSave',
+            'click .js-post-publish': 'postPublish',
+            'keyup .js-post-title': 'saveTileToModel',
+            'keyup .js-post-body': 'saveBodyToModel'
         },
 
         /**
@@ -147,7 +158,8 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
-            var $el = params && params.$el,
+            var $el = params.$el,
+                model = params.model,
                 commandRole = this.defaultConfig.commandRole;
 
             _.bindAll(this,
@@ -158,13 +170,52 @@ define([
             if ($el) {
                 this.$el = $el;
             }
-
+            this.model = model;
             this.toolbarBtnSelector = 'a[data-' +
                 commandRole +
                 '],button[data-' +
                 commandRole +
                 '],input[type=button][data-' +
                 commandRole + ']';
+        },
+
+        /**
+         * Метод обработчик клика по кнопке 'Сохранить'
+         *
+         * @method
+         * @name PostEditView#postSave
+         * @returns {undefined}
+         */
+        postSave: function () {
+            this.model.save();
+        },
+
+        /**
+         * Метод сохраняет значение поля 'Загловок'  в модели
+         *
+         * @method
+         * @name PostEditView#saveTileToModel
+         * @returns {undefined}
+         */
+        saveTileToModel: function(){
+           var $title = this.elements.formFields.postTitle,
+               value = $title.val();
+
+            this.model.set('title', value);
+        },
+
+        /**
+         * Метод сохраняет тело стсатьи  в модели
+         *
+         * @method
+         * @name PostEditView#saveBodyToModel
+         * @returns {undefined}
+         */
+        saveBodyToModel: function(){
+            var $postBody = this.elements.formFields.postBody,
+                value = $postBody.html();
+
+            this.model.set('body', value);
         },
 
         /**

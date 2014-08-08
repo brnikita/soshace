@@ -1,6 +1,8 @@
+//TODO: доделать валидацию, добавить trim
 'use strict';
 
-var Mongoose = require('mongoose');
+var Mongoose = require('mongoose'),
+    Validators = srcRequire('common/validators');
 
 /**
  * Класс для работы с моделью постов
@@ -20,10 +22,26 @@ var PostsShema = Mongoose.Schema({
     },
     //Загловок поста
     title: {
-        type: String
+        type: String,
+        //Валидация идет с конца!
+        validate: [
+            {
+                validator: Validators.required,
+                msg: 'Title can&#39;t be blank.'
+            }
+        ]
     },
     //Категория, используется в урлах
     category: {
+        type: String
+    },
+    //Тэги для подбора
+    tags: {
+        type: Array,
+        default: null
+    },
+    //Опубликовано, отправлено и т.д.
+    status:{
         type: String
     },
     //Описание для выдачи
@@ -32,7 +50,14 @@ var PostsShema = Mongoose.Schema({
     },
     //Тело поста
     body: {
-        type: String
+        type: String,
+        //Валидация идет с конца!
+        validate: [
+            {
+                validator: Validators.required,
+                msg: 'Post body can&#39;t be blank.'
+            }
+        ]
     }
 });
 
@@ -77,21 +102,6 @@ PostsShema.statics.getPost = function (params) {
         body: 1,
         locale: 1
     });
-};
-
-/**
- * Получаем пост целиком
- *
- * @method
- * @name PostsShema.addPost
- * @param {Object} postData данные поста, для записи в базу
- * @param {Function} callback
- * @return {undefined}
- */
-PostsShema.statics.addPost = function (postData, callback) {
-    if (postData && typeof callback === 'function') {
-        this.create(postData, callback);
-    }
 };
 
 module.exports = Mongoose.model('posts', PostsShema);

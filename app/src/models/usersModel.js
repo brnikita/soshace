@@ -1,4 +1,5 @@
 'use strict';
+//TODO: добавить trim перед сохранением полей
 
 var Mongoose = require('mongoose'),
     Bcrypt = require('bcrypt'),
@@ -100,8 +101,7 @@ var UsersShema = Mongoose.Schema({
     },
     locale: {
         type: String,
-        required: true,
-        default: 'ru'
+        default: 'en'
     }
 });
 
