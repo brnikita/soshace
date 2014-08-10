@@ -41,32 +41,22 @@ define([
         model: null,
 
         /**
-         * Дефолтные настройки редактора
-         *
-         * @private
          * @field
-         * @name PostEditView#defaultConfig
+         * @name PostEditController#hotKeys
          * @type {Object}
          */
-        defaultConfig: {
-            hotKeys: {
-                'ctrl+b meta+b': 'bold',
-                'ctrl+i meta+i': 'italic',
-                'ctrl+u meta+u': 'underline',
-                'ctrl+z meta+z': 'undo',
-                'ctrl+y meta+y meta+shift+z': 'redo',
-                'ctrl+l meta+l': 'justifyleft',
-                'ctrl+r meta+r': 'justifyright',
-                'ctrl+e meta+e': 'justifycenter',
-                'ctrl+j meta+j': 'justifyfull',
-                'shift+tab': 'outdent',
-                'tab': 'indent'
-            },
-            toolbarSelector: '[data-role=editor-toolbar]',
-            commandRole: 'edit',
-            activeToolbarClass: 'btn-info',
-            selectionMarker: 'edit-focus-marker',
-            selectionColor: 'darkgrey'
+        hotKeys: {
+            'ctrl+b meta+b': 'bold',
+            'ctrl+i meta+i': 'italic',
+            'ctrl+u meta+u': 'underline',
+            'ctrl+z meta+z': 'undo',
+            'ctrl+y meta+y meta+shift+z': 'redo',
+            'ctrl+l meta+l': 'justifyleft',
+            'ctrl+r meta+r': 'justifyright',
+            'ctrl+e meta+e': 'justifycenter',
+            'ctrl+j meta+j': 'justifyfull',
+            'shift+tab': 'outdent',
+            'tab': 'indent'
         },
 
         /**
@@ -80,36 +70,10 @@ define([
             'click .js-post-save': 'postSave',
             'click .js-post-publish': 'postPublish',
             'keyup .js-post-title': 'saveTileToModel',
-            'keyup .js-post-body': 'saveBodyToModel'
+            'keyup .js-post-body': 'saveBodyToModel',
+            'click .js-simple-command': 'applyCommand',
+            'mouseup .js-post-body': 'saveSelection'
         },
-
-        /**
-         * @field
-         * @name PostEditView#errorMessages
-         * @type {Object}
-         */
-        errorMessages: {
-            title: 'Вы забыли указать загловок',
-            body: 'Вы забыли указать тело поста'
-        },
-
-        /**
-         * Селектор кнопок редактора
-         *
-         * @field
-         * @name PostEditView#toolbarBtnSelector
-         * @type {String|null}
-         */
-        toolbarBtnSelector: null,
-
-        /**
-         * Настройки редактора
-         *
-         * @field
-         * @name PostEditView#options
-         * @type {Object|null}
-         */
-        options: null,
 
         /**
          * Объект, содержащий элементы редактора для
@@ -120,18 +84,16 @@ define([
          * @type {Object}
          */
         elements: {
-            formFields: {
-                postBody: null,
-                title: null
-            },
+            postBody: null,
+            postTitle: null,
             toolbar: null,
             toolbarContainerElement: null,
-            toolbarRowElement: null,
             addLinkModal: null,
             linkSaveButton: null,
             linkNameInput: null,
             window: null,
-            messages: null
+            messages: null,
+            commandBtn: null
         },
 
         /**
@@ -159,24 +121,12 @@ define([
          */
         initialize: function (params) {
             var $el = params.$el,
-                model = params.model,
-                commandRole = this.defaultConfig.commandRole;
-
-            _.bindAll(this,
-                'windowScrollHandler',
-                'touchHandler'
-            );
+                model = params.model;
 
             if ($el) {
                 this.$el = $el;
             }
             this.model = model;
-            this.toolbarBtnSelector = 'a[data-' +
-                commandRole +
-                '],button[data-' +
-                commandRole +
-                '],input[type=button][data-' +
-                commandRole + ']';
         },
 
         /**
@@ -197,9 +147,9 @@ define([
          * @name PostEditView#saveTileToModel
          * @returns {undefined}
          */
-        saveTileToModel: function(){
-           var $title = this.elements.formFields.postTitle,
-               value = $title.val();
+        saveTileToModel: function () {
+            var $title = this.elements.postTitle,
+                value = $title.val();
 
             this.model.set('title', value);
         },
@@ -211,48 +161,52 @@ define([
          * @name PostEditView#saveBodyToModel
          * @returns {undefined}
          */
-        saveBodyToModel: function(){
-            var $postBody = this.elements.formFields.postBody,
+        saveBodyToModel: function () {
+            var $postBody = this.elements.postBody,
                 value = $postBody.html();
 
             this.model.set('body', value);
+            this.saveSelection();
         },
 
         /**
-         * Метод делает основное поле ввода редактируемым
+         * Метод обработчик клика по кнопке редактирования на тулбаре
+         *
          *
          * @method
-         * @name PostEditView#makeEditorFieldContentEditable
+         * @name PostEditView#applyCommand
+         * @param {jQuery.Event} event
          * @returns {undefined}
          */
-        makeEditorFieldContentEditable: function () {
-            var editorField = this.elements.formFields.postBody;
+        applyCommand: function (event) {
+            var $target = $(event.target),
+                $button = $target.closest('.js-command'),
+                command = $button.data('edit');
 
-            editorField.attr('contenteditable', true)
-                .on('mouseup keyup mouseout', _.bind(function () {
-                    this.saveSelection();
-                    this.updateToolbar();
-                }, this));
+            this.elements.postBody.focus();
+            this.restoreSelection();
+            this.execCommand(command, null);
         },
 
         /**
-         * Метод обработчик события touched
+         * Метод делает активной кнопку, если к выделенному
+         * тексту применена команада
          *
          * @method
-         * @name PostEditView#touchHandler
+         * @name PostEditView#updateToolbar
          * @returns {undefined}
          */
-        touchHandler: function (event) {
-            var editor = this.elements.formFields.postBody,
-                isInside = (editor.is(event.target) || editor.has(event.target).length > 0),
-                currentRange = this.getCurrentRange(),
-                clear = currentRange && (currentRange.startContainer === currentRange.endContainer &&
-                    currentRange.startOffset === currentRange.endOffset);
+        updateToolbar: function () {
+            this.elements.commandBtn.each(function () {
+                var $button = $(this),
+                    command = $button.data('edit');
 
-            if (!clear || isInside) {
-                this.saveSelection();
-                this.updateToolbar();
-            }
+                if (document.queryCommandState(command)) {
+                    $button.addClass('active');
+                } else {
+                    $button.removeClass('active');
+                }
+            });
         },
 
         /**
@@ -289,30 +243,8 @@ define([
          * @returns {string}
          */
         cleanHtml: function () {
-            var html = this.elements.formFields.postBody.html();
+            var html = this.elements.postBody.html();
             return html && html.replace(/(<br>|\s|<div>(<br>|\s|&nbsp;)*<\/div>|&nbsp;)*$/, '');
-        },
-
-        /**
-         * TODO: доработать комментарий
-         *
-         * Метод делает активной или неактивной панель
-         *
-         * @method
-         * @name PostEditView#updateToolbar
-         * @returns {undefined}
-         */
-        updateToolbar: function () {
-            if (this.defaultConfig.activeToolbarClass) {
-                this.elements.toolbar.find(this.toolbarBtnSelector).each(_.bind(function () {
-                    var command = this.elements.formFields.postBody.data(this.defaultConfig.commandRole);
-                    if (document.queryCommandState(command)) {
-                        this.elements.formFields.postBody.addClass(this.defaultConfig.activeToolbarClass);
-                    } else {
-                        this.elements.formFields.postBody.removeClass(this.defaultConfig.activeToolbarClass);
-                    }
-                }, this));
-            }
         },
 
         /**
@@ -332,7 +264,6 @@ define([
                 args = commandArr.join(' ') + (valueArg || '');
 
             document.execCommand(command, null, args);
-            this.updateToolbar();
         },
 
         /**
@@ -348,16 +279,12 @@ define([
          */
         bindHotKeys: function (hotKeys) {
             $.each(hotKeys, _.bind(function (hotKey, command) {
-                this.elements.formFields.postBody.keydown(hotKey, _.bind(function (event) {
-                    if (this.elements.formFields.postBody.attr('contenteditable') &&
-                        this.elements.formFields.postBody.is(':visible')) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        this.execCommand(command);
-                    }
+                this.elements.postBody.keydown(hotKey, _.bind(function () {
+                    this.execCommand(command, null);
+                    return false;
                 }, this)).keyup(hotKey, _.bind(function (event) {
-                    if (this.elements.formFields.postBody.attr('contenteditable') &&
-                        this.elements.formFields.postBody.is(':visible')) {
+                    if (this.elements.postBody.attr('contenteditable') &&
+                        this.elements.postBody.is(':visible')) {
                         event.preventDefault();
                         event.stopPropagation();
                     }
@@ -394,11 +321,11 @@ define([
          */
         saveSelection: function () {
             this.selectedRange = this.getCurrentRange();
+            this.updateToolbar();
         },
 
         /**
-         * Удаляет выделение текущей выделенной области
-         * и выдляет сохраненную область
+         * Метод восстанавливает выделение в редакторе
          *
          * @method
          * @name PostEditView#restoreSelection
@@ -406,31 +333,19 @@ define([
          */
         restoreSelection: function () {
             var selection = window.getSelection();
+
             if (this.selectedRange) {
                 try {
                     selection.removeAllRanges();
-                } catch (ex) {
+                } catch (exception) {
                     document.body.createTextRange().select();
                     document.selection.empty();
                 }
 
                 selection.addRange(this.selectedRange);
             }
-        },
 
-        /**
-         * Выделяет цветом ранее сохраненную область выделения
-         *
-         * @method
-         * @name PostEditView#markSelection
-         * @param {jQuery} input
-         * @param {string} color цвет выделения
-         * @returns {undefined}
-         */
-        markSelection: function (input, color) {
-            this.restoreSelection();
-            this.saveSelection();
-            input.data(this.defaultConfig.selectionMarker, color);
+            this.updateToolbar();
         },
 
         /**
@@ -451,7 +366,7 @@ define([
                     command = button.data(_this.defaultConfig.commandRole);
 
                 _this.restoreSelection();
-                _this.elements.formFields.postBody.focus();
+                _this.elements.postBody.focus();
                 _this.saveSelection();
 
                 if (command === 'CreateLink') {
@@ -462,24 +377,6 @@ define([
             });
 
             this.addSaveLinkBtnListener();
-
-            this.elements.toolbar.find('input[type=text][data-' + this.defaultConfig.commandRole + ']').
-                on('focus', function () {
-                    var input = $(this);
-
-                    if (!input.data(_this.defaultConfig.selectionMarker)) {
-                        _this.markSelection(input, _this.defaultConfig.selectionColor);
-                        input.focus();
-                    }
-                }).
-                on('blur', function () {
-                    var input = $(this);
-
-                    if (input.data(_this.defaultConfig.selectionMarker)) {
-                        _this.markSelection(input, false);
-                    }
-                });
-
             this.addImageButtonListener();
         },
 
@@ -542,14 +439,14 @@ define([
                             return;
                         }
 
-                        _this.elements.formFields.postBody.append($('<img>', {
+                        _this.elements.postBody.append($('<img>', {
                             src: result.path,
                             class: 'img-responsive'
                         }));
                     }
                 }).
                 on('change', function () {
-                    _this.elements.formFields.postBody.append(preLoader);
+                    _this.elements.postBody.append(preLoader);
                 });
         },
 
@@ -562,13 +459,12 @@ define([
          */
         setElements: function () {
             this.elements.window = $(window);
-            this.elements.formFields = {};
             this.elements.toolbar = this.$('.js-editor-toolbar');
-            this.elements.formFields.postBody = this.$('.js-post-body');
-            this.elements.formFields.postTitle = this.$('.js-post-title');
+            this.elements.commandBtn = this.$('.js-command');
+            this.elements.postBody = this.$('.js-post-body');
+            this.elements.postTitle = this.$('.js-post-title');
             this.elements.addLinkModal = this.$('.js-add-link-modal');
             this.elements.toolbarContainerElement = this.$('.js-editor-toolbar-container');
-            this.elements.toolbarRowElement = this.$('.js-editor-toolbar-row');
             this.elements.linkSaveButton = this.$('.js-add-link-save');
             this.elements.linkUrlInput = this.$('.js-add-link-modal-link-url');
             this.elements.messages = this.$('.js-messages');
@@ -614,8 +510,7 @@ define([
          * @returns {undefined}
          */
         viewExitHandler: function () {
-            this.elements.window.off('touchend', this.touchHandler).
-                off('scroll', this.windowScrollHandler);
+            this.elements.window.off('scroll', this.windowScrollHandler);
         },
 
         /**
@@ -626,10 +521,7 @@ define([
         afterRender: function () {
             this.setElements();
             this.toolbarInitOffset = this.elements.toolbar.position();
-            this.bindHotKeys(this.defaultConfig.hotKeys);
-            this.bindToolbar();
-            this.makeEditorFieldContentEditable();
-            this.elements.window.on('touchend', this.touchHandler).off('scroll', this.windowScrollHandler);
+            this.elements.window.on('scroll', _.bind(this.windowScrollHandler, this));
         }
     });
 });
