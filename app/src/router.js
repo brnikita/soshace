@@ -46,7 +46,7 @@ module.exports = Class.extend({
      */
     routes: {
         //-----------------API start------------------
-        'post /api/image': 'imageController createImage',
+        'post /api/images': 'imageController createImage',
         'get /api/posts': 'posts/postsController getPosts',
         'get /api/posts/:_id': 'posts/postsController getPost',
         'patch /api/posts/:_id': 'posts/postEditController updatePost',

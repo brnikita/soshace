@@ -530,6 +530,7 @@ define([
             //Загруженные картинки не удалять!!!
             this.elements.toolbar.find('input[type=file][data-' + _this.defaultConfig.commandRole + ']').
                 fileupload({
+                    url: Soshace.urls.api.images,
                     dataType: 'json',
                     done: function (event, data) {
                         var result = data.result;

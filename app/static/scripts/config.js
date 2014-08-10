@@ -81,6 +81,7 @@ define(function () {
                 post: '/api/posts/0',
                 posts: '/api/posts',
                 createUser: '/api/users',
+                images: '/api/images',
                 user: '/api/users/0',
                 profile: '/api/profile',
                 systemMessage: '/api/system_messages/0',
