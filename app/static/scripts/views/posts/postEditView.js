@@ -68,7 +68,9 @@ define([
             'keyup .js-post-title': 'saveTileToModel',
             'keyup .js-post-body': 'saveBodyToModel',
             'click .js-simple-command': 'applyCommand',
-            'mouseup .js-post-body': 'saveSelection'
+            'mouseup .js-post-body': 'saveSelection',
+            'click .js-add-link': 'showAddLinkModal',
+            'click .js-add-link-save': 'saveLinkHandler'
         },
 
         /**
@@ -83,12 +85,9 @@ define([
             postBody: null,
             postTitle: null,
             toolbar: null,
-            toolbarContainerElement: null,
             addLinkModal: null,
-            linkSaveButton: null,
             linkNameInput: null,
             window: null,
-            messages: null,
             commandBtn: null,
             imageUpload: null
         },
@@ -270,15 +269,15 @@ define([
         bindHotKeys: function (hotKeys) {
             $.each(hotKeys, _.bind(function (hotKey, command) {
                 this.elements.postBody.keydown(hotKey, _.bind(function () {
-                        this.execCommand(command, null);
-                        return false;
-                    }, this)).keyup(hotKey, _.bind(function (event) {
-                        if (this.elements.postBody.attr('contenteditable') &&
-                            this.elements.postBody.is(':visible')) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                    }, this));
+                    this.execCommand(command, null);
+                    return false;
+                }, this)).keyup(hotKey, _.bind(function (event) {
+                    if (this.elements.postBody.attr('contenteditable') &&
+                        this.elements.postBody.is(':visible')) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                }, this));
             }, this));
         },
 
@@ -350,20 +349,18 @@ define([
         },
 
         /**
-         * Метод навешивает слушатель на кнопку
+         * Метод обработчик клика по кнопке
          * 'Сохранить' в модальном окне добавления ссылки
          *
          * @method
-         * @name PostEditView#addSaveLinkBtnListener
+         * @name PostEditView#saveLinkHandler
          * @returns {undefined}
          */
-        addSaveLinkBtnListener: function () {
-            this.elements.linkSaveButton.on('click', _.bind(function () {
-                var url = this.elements.linkUrlInput.val();
-                this.restoreSelection();
-                this.execCommand('CreateLink', url);
-                this.elements.addLinkModal.modal('hide');
-            }, this));
+        saveLinkHandler: function () {
+            var url = this.elements.linkUrlInput.val();
+            this.restoreSelection();
+            this.execCommand('CreateLink', url);
+            this.elements.addLinkModal.modal('hide');
         },
 
         /**
@@ -402,8 +399,8 @@ define([
                     }));
                 }
             }).on('change', function () {
-                    _this.elements.postBody.append(preLoader);
-                });
+                _this.elements.postBody.append(preLoader);
+            });
         },
 
         /**
@@ -420,10 +417,7 @@ define([
             this.elements.postBody = this.$('.js-post-body');
             this.elements.postTitle = this.$('.js-post-title');
             this.elements.addLinkModal = this.$('.js-add-link-modal');
-            this.elements.toolbarContainerElement = this.$('.js-editor-toolbar-container');
-            this.elements.linkSaveButton = this.$('.js-add-link-save');
             this.elements.linkUrlInput = this.$('.js-add-link-modal-link-url');
-            this.elements.messages = this.$('.js-messages');
             this.elements.imageUpload = this.$('.js-upload-image input');
         },
 
