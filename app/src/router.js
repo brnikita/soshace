@@ -46,11 +46,11 @@ module.exports = Class.extend({
      */
     routes: {
         //-----------------API start------------------
-        'post /api/image': 'imageController createImage',
+        'post /api/images': 'imageController createImage',
         'get /api/posts': 'posts/postsController getPosts',
         'get /api/posts/:_id': 'posts/postsController getPost',
-        'patch /api/posts/:_id': 'posts/postsController updatePost',
-        'post /api/posts': 'posts/postsController createPost',
+        'patch /api/posts/:_id': 'posts/postEditController updatePost',
+        'post /api/posts': 'posts/postEditController createPost',
         'post /api/users': 'auth/registrationController createUser',
         'get /api/users/:username': 'usersController getUser',
         'patch /api/users/:username': 'usersController updateProfile',

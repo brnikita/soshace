@@ -122,15 +122,6 @@ global.Soshace = {
     ],
 
     /**
-     * Директория для медиа файлов
-     *
-     * @constant
-     * @name Soshace.MEDIA_DIRECTORY
-     * @type {string}
-     */
-    MEDIA_DIRECTORY: '/home/user/media/',
-
-    /**
      * Количество статей на страницу
      *
      * @constant
@@ -210,5 +201,16 @@ global.Soshace = {
         'spring.jpg',
         'sleeping-fox.jpg',
         'new-york.jpg'
-    ]
+    ],
+
+    /**
+     * Метод возвращает директорию для медиа файлов
+     *
+     * @method
+     * @name Soshace.MEDIA_DIRECTORY
+     * @returns {String}
+     */
+    MEDIA_DIRECTORY: function(){
+        return this.DIR_NAME + '/media/';
+    }
 };

@@ -38,7 +38,11 @@ define([
             var url = Soshace.urls.api.post,
                 _id = this.get('_id');
 
-            return url.replace('0', _id);
+            if(_id){
+                return url.replace('0', _id);
+            }
+
+            return url.replace('0', '');
         },
 
         /**

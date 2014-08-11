@@ -24,52 +24,49 @@
 <div class="content-center">
     <div class="post-edit">
         <div class="post-edit__toolbar clearfix">
-            <div class="btn-toolbar js-editor-toolbar" data-role="editor-toolbar" data-target="#post-body">
+            <div class="btn-toolbar js-editor-toolbar">
                 <div class="btn-group">
-                    <a class="btn btn-default" data-edit="bold" title="{{i18n 'Bold'}} (Ctrl/Cmd+B)">
+                    <a class="btn btn-default js-command js-simple-command" data-edit="bold" title="{{i18n 'Bold'}} (Ctrl/Cmd+B)">
                         <i class="fa fa-bold"></i>
                     </a>
-                    <a class="btn btn-default" data-edit="italic" title="{{i18n 'Italic'}} (Ctrl/Cmd+I)">
+                    <a class="btn btn-default js-command js-simple-command" data-edit="italic" title="{{i18n 'Italic'}} (Ctrl/Cmd+I)">
                         <i class="fa fa-italic"></i>
                     </a>
-                    <a class="btn btn-default" data-edit="strikethrough" title="{{i18n 'Strikethrough'}}">
+                    <a class="btn btn-default js-command js-simple-command" data-edit="strikethrough" title="{{i18n 'Strikethrough'}}">
                         <i class="fa fa-strikethrough"></i>
                     </a>
-                    <a class="btn btn-default" data-edit="underline"
+                    <a class="btn btn-default js-command js-simple-command" data-edit="underline"
                        title="{{i18n 'Underline'}} (Ctrl/Cmd+U)">
                         <i class="fa fa-underline"></i>
                     </a>
                 </div>
                 <div class="btn-group">
-                    <a class="btn btn-default" data-edit="insertunorderedlist"
+                    <a class="btn btn-default js-command js-simple-command" data-edit="insertunorderedlist"
                        title="{{i18n 'Bullet list'}}">
                         <i class="fa fa-list-ul"></i>
                     </a>
-                    <a class="btn btn-default" data-edit="insertorderedlist" title="{{i18n 'Number list'}}">
+                    <a class="btn btn-default js-command js-simple-command" data-edit="insertorderedlist" title="{{i18n 'Number list'}}">
                         <i class="fa fa-list-ol"></i>
                     </a>
                 </div>
                 <div class="btn-group">
-                    <a class="btn btn-default post-edit__toolbar__add_image" title="{{i18n 'Add image'}}">
+                    <a class="btn btn-default post-edit__toolbar__add_image js-command" title="{{i18n 'Add image'}}">
                         <i class="fa fa-picture-o"></i>
-
-                        <form action="/upload_img" method="POST" enctype="multipart/form-data">
-                            <input type="file" name="image" data-edit="insertImage"/>
-                        </form>
+                        <input type="file" name="image" data-edit="insertImage"/>
                     </a>
                 </div>
                 <div class="btn-group">
-                    <a class="btn btn-default" data-edit="CreateLink" title="{{i18n 'Hyperlink'}}">
+                    <a class="btn btn-default js-command" data-edit="CreateLink" title="{{i18n 'Hyperlink'}}">
                         <i class="fa fa-link"></i>
                     </a>
-                    <a class="btn btn-default" data-edit="unlink" title="{{i18n 'Remove' Hyperlink}}">
+                    <a class="btn btn-default js-command js-simple-command" data-edit="unlink" title="{{i18n 'Remove' Hyperlink}}">
                         <i class="fa fa-cut"></i>
                     </a>
                 </div>
             </div>
             <div class="post-edit__toolbar__submit-buttons">
-                <button class="btn btn-primary">{{i18n 'Save'}}</button>
-                <button class="btn btn-success js-submit-post">{{i18n 'Publish'}}</button>
+                <button class="btn btn-primary js-post-save">{{i18n 'Save'}}</button>
+                <button class="btn btn-success js-post-publish">{{i18n 'Publish'}}</button>
             </div>
         </div>
 
@@ -77,7 +74,7 @@
             <input id="post-title" class="js-post-title" type="text" name="post-title" placeholder="{{i18n 'Title'}}"/>
         </div>
 
-        <div id="post-body" class="post-edit__body js-post-body" name="post-body"></div>
+        <div id="post-body" class="post-edit__body js-post-body" contenteditable="true"></div>
 
         {{#if editorDisabled}}
             <div class="disable-cover"></div>
