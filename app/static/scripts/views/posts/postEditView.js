@@ -1,7 +1,4 @@
-//TODO: вынести редактирование, добавление поста в отдельныйц плагин jquery
-//TODO: ссылки могут быть только относительные внутри проекта
-//TODO: выпилить назад вперед
-//TODO: выпилить список рядом с излбражением
+//TODO: Убрать баги при редактировании поста
 //TODO: добавить подзаголовки
 'use strict';
 
@@ -17,11 +14,10 @@ define([
     'underscore.string',
     'backbone',
     'utils/helpers',
-    'utils/widgets',
     'prettify',
     'jquery.hotkeys',
     'jquery.fileupload'
-], function ($, _, _s, Backbone, Helpers, Widgets) {
+], function ($, _, _s, Backbone, Helpers) {
     return Backbone.Layout.extend({
 
         /**
@@ -93,7 +89,8 @@ define([
             linkNameInput: null,
             window: null,
             messages: null,
-            commandBtn: null
+            commandBtn: null,
+            imageUpload: null
         },
 
         /**
@@ -186,6 +183,7 @@ define([
             this.elements.postBody.focus();
             this.restoreSelection();
             this.execCommand(command, null);
+            $button.toggleClass('active');
         },
 
         /**
@@ -221,18 +219,10 @@ define([
                 toolbarPosition = this.toolbarInitOffset,
                 toolbarPositionTop = toolbarPosition.top,
                 $window = this.elements.window,
-                scrollTop = $window.scrollTop();
+                scrollTop = $window.scrollTop(),
+                toolbarIsOut = scrollTop >= toolbarPositionTop;
 
-            //Фиксируем тулбар на верху окна
-            if (scrollTop >= toolbarPositionTop) {
-                toolbar.addClass('add_post__toolbar-fixed');
-                this.elements.toolbarContainerElement.addClass('container');
-                this.elements.toolbarRowElement.addClass('container');
-            } else {
-                toolbar.removeClass('add_post__toolbar-fixed');
-                this.elements.toolbarContainerElement.removeClass('container');
-                this.elements.toolbarRowElement.removeClass('container');
-            }
+            toolbar.toggleClass('post-edit__toolbar-fixed', toolbarIsOut);
         },
 
         /**
@@ -280,15 +270,15 @@ define([
         bindHotKeys: function (hotKeys) {
             $.each(hotKeys, _.bind(function (hotKey, command) {
                 this.elements.postBody.keydown(hotKey, _.bind(function () {
-                    this.execCommand(command, null);
-                    return false;
-                }, this)).keyup(hotKey, _.bind(function (event) {
-                    if (this.elements.postBody.attr('contenteditable') &&
-                        this.elements.postBody.is(':visible')) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                }, this));
+                        this.execCommand(command, null);
+                        return false;
+                    }, this)).keyup(hotKey, _.bind(function (event) {
+                        if (this.elements.postBody.attr('contenteditable') &&
+                            this.elements.postBody.is(':visible')) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                    }, this));
             }, this));
         },
 
@@ -349,38 +339,6 @@ define([
         },
 
         /**
-         * TODO: доработать описание
-         *
-         * Навишивает слушатели на панель управления
-         *
-         * @method
-         * @name PostEditView#bindToolbar
-         * @returns {undefined}
-         */
-        bindToolbar: function () {
-            var _this = this;
-
-            //TODO: вынести в events
-            this.elements.toolbar.find(this.toolbarBtnSelector).on('click', function () {
-                var button = $(this),
-                    command = button.data(_this.defaultConfig.commandRole);
-
-                _this.restoreSelection();
-                _this.elements.postBody.focus();
-                _this.saveSelection();
-
-                if (command === 'CreateLink') {
-                    _this.showAddLinkModal();
-                } else {
-                    _this.execCommand(command);
-                }
-            });
-
-            this.addSaveLinkBtnListener();
-            this.addImageButtonListener();
-        },
-
-        /**
          * Метод показывает модальное окно
          *
          * @method
@@ -424,28 +382,26 @@ define([
                 });
 
             //TODO: блокировать панель до загрузки первого изображения
-            //Загруженные картинки не удалять!!!
-            this.elements.toolbar.find('input[type=file][data-' + _this.defaultConfig.commandRole + ']').
-                fileupload({
-                    url: Soshace.urls.api.images,
-                    dataType: 'json',
-                    done: function (event, data) {
-                        var result = data.result;
+            //TODO: добавить обработку ошибок
+            this.elements.imageUpload.fileupload({
+                url: Soshace.urls.api.images,
+                dataType: 'json',
+                done: function (event, data) {
+                    var result = data.result;
 
-                        preLoader.remove();
+                    preLoader.remove();
 
-                        if (result.error) {
-                            Widgets.showMessages(result.error, 'alert-danger');
-                            return;
-                        }
-
-                        _this.elements.postBody.append($('<img>', {
-                            src: result.path,
-                            class: 'img-responsive'
-                        }));
+                    if (result.error) {
+                        //TODO: добавить отображение ошибки
+                        return;
                     }
-                }).
-                on('change', function () {
+
+                    _this.elements.postBody.append($('<img>', {
+                        src: result.path,
+                        class: 'img-responsive'
+                    }));
+                }
+            }).on('change', function () {
                     _this.elements.postBody.append(preLoader);
                 });
         },
@@ -468,6 +424,7 @@ define([
             this.elements.linkSaveButton = this.$('.js-add-link-save');
             this.elements.linkUrlInput = this.$('.js-add-link-modal-link-url');
             this.elements.messages = this.$('.js-messages');
+            this.elements.imageUpload = this.$('.js-upload-image input');
         },
 
         /**
@@ -520,7 +477,8 @@ define([
          */
         afterRender: function () {
             this.setElements();
-            this.toolbarInitOffset = this.elements.toolbar.position();
+            this.addImageButtonListener();
+            this.toolbarInitOffset = this.elements.toolbar.offset();
             this.elements.window.on('scroll', _.bind(this.windowScrollHandler, this));
         }
     });
