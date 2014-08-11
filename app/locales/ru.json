@@ -133,5 +133,6 @@
 	"Path `locale` is required.": "Path `locale` is required.",
 	"Post": "Post",
 	"Public": "Public",
-    "Publish": "Опубликовать"
+    "Publish": "Опубликовать",
+    "Forgot your password?": "Забыли пароль?"
 }
