@@ -6,12 +6,19 @@ define([
     'backbone',
     'router',
     'utils/helpers',
-    'utils/widgets',
     'collections/systemMessagesCollection',
     'views/headerView',
     'views/systemMessagesView',
     'backbone.layoutmanager'
-], function ($, _, Backbone, Router, Helpers, Widgets, SystemMessagesCollection, HeaderView, SystemMessagesView) {
+], function (
+    $,
+    _,
+    Backbone,
+    Router,
+    Helpers,
+    SystemMessagesCollection,
+    HeaderView,
+    SystemMessagesView) {
     var App = Backbone.Layout.extend({
 
         /**
