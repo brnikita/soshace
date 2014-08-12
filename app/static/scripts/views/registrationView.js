@@ -36,6 +36,16 @@ define([
         },
 
         /**
+         * Поле содержит обернутый в debounce
+         * метод setStatus, который устанавливает статусы у полей
+         *
+         * @field
+         * @name RegistrationView#setStatusDebounce
+         * @type {Function | null}
+         */
+        setStatusDebounce: null,
+
+        /**
          * Список обработчиков событий
          *
          * @field
@@ -82,6 +92,10 @@ define([
                 Soshace.hbs['partials/registration']
             );
             Backbone.Validation.bind(this);
+
+            //Выбрано специально большой интервал,
+            //чтобы подсказка не мелькала слишком часто
+            this.setStatusDebounce =  _.debounce(_.bind(this.setStatus, this), 1500);
         },
 
         /**
@@ -213,10 +227,7 @@ define([
          * @returns {undefined}
          */
         changeFormFieldHandler: function (event) {
-            //Выбрано специально большой интервал,
-            //чтобы подсказка не мелькала слишком часто
-            var changeStatusInterval = 1500,
-                $target = $(event.target),
+            var $target = $(event.target),
                 model = this.model,
                 serializedField = Helpers.serializeField($target),
                 fieldName = serializedField.name,
@@ -233,14 +244,14 @@ define([
 
             model.set(fieldName, fieldValue);
             $target.controlStatus('helper');
-            _.debounce(_.bind(this.setStatus, this), changeStatusInterval)($target, serializedField);
+            this.setStatusDebounce($target, serializedField);
         },
 
         /**
          * Метод устанавливает статусы для полей success или error
          *
          * @method
-         * @name RegistrationView#changeFormFieldHandler
+         * @name RegistrationView#setStatus
          * @param {jQuery} $field ссылка на поле
          * @param serializedField сериализованное поле {name: '', value: ''}
          * @returns {undefined}

@@ -61,9 +61,10 @@ module.exports = Controller.extend({
      * @method
      * @name PostEditController#postSaveHandler
      * @param {Object} error объект ошибки
+     * @param {PostsModel} post модель статьи
      * @returns {undefined}
      */
-    postSaveHandler: function (error) {
+    postSaveHandler: function (error, post) {
         var response = this.response;
 
         if (error) {
@@ -76,8 +77,9 @@ module.exports = Controller.extend({
             return;
         }
 
-        //TODO: доработать ответ
-        response.send('Success');
+        response.send({
+            _id: post._id
+        });
     },
 
     /**

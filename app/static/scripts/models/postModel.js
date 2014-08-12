@@ -9,9 +9,16 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
-], function ($, _, Backbone) {
+    'backbone',
+    'utils/helpers'
+], function ($, _, Backbone, Helpers) {
     return Backbone.Model.extend({
+        /**
+         * @field
+         * @name PostModel#idAttribute
+         * @type {String}
+         */
+        idAttribute: '_id',
 
         /**
          * @field
@@ -42,6 +49,7 @@ define([
                 return url.replace('0', _id);
             }
 
+            this.set('locale', Helpers.getLocale());
             return url.replace('0', '');
         },
 
@@ -51,6 +59,64 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
+        },
+
+        /**
+         * Метод патчит модель, если модель уже создана.
+         * Содает новую, если модели нет.
+         * Удаляет модель, если приходят пустые значения на запись
+         *
+         * @method
+         * @name PostModel#patchModel
+         * @param {String} field название поля
+         * @param {String} value значение поля
+         * @returns {undefined}
+         */
+        patchModel: function(field, value){
+            var _this = this,
+                options = {
+                    success: _.bind(_this.modelSaveSuccess, _this),
+                    error: _.bind(_this.modelSaveFail, _this)
+                },
+                postId = this.get('_id');
+
+            if(postId){
+                options.patch = true;
+            }
+
+            this.save(field, value, options);
+        },
+
+        /**
+         * Метод обработчик успешного сохранения модели в базе
+         *
+         * @method
+         * @name PostModel#modelSaveSuccess
+         * @param {Backbone.Model} model текущая модель
+         * @param {Object} response ответ сервера
+         * @returns {undefined}
+         */
+        modelSaveSuccess: function(model, response){
+            var postId = response._id,
+                locale = this.get('locale'),
+                postUrl;
+
+            if(postId){
+                this.set('_id', postId);
+                postUrl = '/' + locale + '/posts/' + postId + '/edit';
+                Backbone.history.navigate(postUrl);
+            }
+        },
+
+        /**
+         * Метод неудачного сохранения модели в базе
+         *
+         * @method
+         * @name PostModel#modelSaveFail
+         * @returns {undefined}
+         */
+        modelSaveFail: function(){
+
         },
 
         /**

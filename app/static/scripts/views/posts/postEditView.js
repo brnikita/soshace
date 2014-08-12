@@ -93,12 +93,32 @@ define([
         },
 
         /**
+         * Интервал,
+         * с которым производится запись в модель
+         *
+         * @field
+         * @name PostEditView#setToModelTimeOut
+         * @type {Number}
+         */
+        setToModelTimeOut: 1500,
+
+        /**
          *
          * @field
          * @name PostEditView#selectedRange
          * @type {Object | null}
          */
         selectedRange: null,
+
+        /**
+         * Поле содержит метод модели для патча,
+         * обернутный в debounce
+         *
+         * @field
+         * @name PostEditView#patchModelDebounce
+         * @type {Function | null}
+         */
+        patchModelDebounce: null,
 
         /**
          * Путь до шаблона
@@ -123,6 +143,8 @@ define([
                 this.$el = $el;
             }
             this.model = model;
+            this.patchModelDebounce = _.debounce(_.bind(model.patchModel, model),
+                this.setToModelTimeOut);
         },
 
         /**
@@ -147,7 +169,7 @@ define([
             var $title = this.elements.postTitle,
                 value = $title.val();
 
-            this.model.set('title', value);
+            this.patchModelDebounce('title', value);
         },
 
         /**
@@ -161,7 +183,7 @@ define([
             var $postBody = this.elements.postBody,
                 value = $postBody.html();
 
-            this.model.set('body', value);
+            this.patchModelDebounce('body', value);
             this.saveSelection();
         },
 

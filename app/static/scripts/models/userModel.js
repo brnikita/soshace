@@ -13,10 +13,17 @@ define([
     'utils/helpers'
 ], function ($, _, Backbone, Helpers) {
     return Backbone.Model.extend({
-
+        
+        /**
+         * @field
+         * @name UserModel#idAttribute
+         * @type {String}
+         */
+        idAttribute: 'username',
+        
         /**
          * @method
-         * @name UserModel.initialize
+         * @name UserModel#initialize
          * @returns {string}
          */
         url: function(){
@@ -26,7 +33,7 @@ define([
 
         /**
          * @property
-         * @name UserModel.defaults
+         * @name UserModel#defaults
          * @type {Object}
          */
         defaults: {
@@ -42,7 +49,7 @@ define([
          * Метод загружает данные пользователя
          *
          * @method
-         * @name UserModel.getUser
+         * @name UserModel#getUser
          * @returns {jQuery.Deferred}
          */
         getUser: function () {
@@ -65,7 +72,7 @@ define([
 
         /**
          * @constructor
-         * @name UserModel.initialize
+         * @name UserModel#initialize
          * @returns {undefined}
          */
         initialize: function () {
