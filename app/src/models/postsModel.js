@@ -2,7 +2,8 @@
 'use strict';
 
 var Mongoose = require('mongoose'),
-    Validators = srcRequire('common/validators');
+    Validators = srcRequire('common/validators'),
+    ObjectId = Mongoose.Types.ObjectId;
 
 /**
  * Класс для работы с моделью постов
@@ -15,6 +16,11 @@ var PostsShema = Mongoose.Schema({
     //отображать ли пост в общем доступе
     public: {
         type: Boolean
+    },
+    //id пользователя, к которому относится сообщение
+    ownerId: {
+        default: null,
+        type: ObjectId
     },
     locale: {
         default: 'en',

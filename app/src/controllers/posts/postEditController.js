@@ -44,12 +44,20 @@ module.exports = Controller.extend({
     createPost: function () {
         var request = this.request,
             postData = request.body,
+            requestParams = new RequestParams(request),
             post;
 
         if (!postData) {
             this.sendError('Bad request');
             return;
         }
+
+        if(requestParams.isAuthenticated){
+            this.sendError('Unauthorized', 401);
+            return;
+        }
+
+        postData.ownerId
 
         post = new PostsModel(postData);
         post.save(_.bind(this.postSaveHandler, this));
