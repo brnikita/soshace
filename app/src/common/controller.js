@@ -55,16 +55,25 @@ module.exports = Class.extend({
      *
      * @method
      * @name ControllerInit#sendError
-     * @param {*} error
-     * @param {String} [status] 404, 500 по-умолчанию 400
+     * @param {Object | String} error  Пример: {error: 'Ошибка', code: 400} или 'Ошибка'
+     * @param {String} [code] код ошибки, 404, 500 по-умолчанию 400
      * @returns {undefined}
      */
-    sendError: function (error, status) {
-        var response = this.response;
+    sendError: function (error, code) {
+        var response = this.response,
+            errorCode = 400,
+            errorMessage = 'Bad request.';
 
-        status = status || 400;
-        response.status(status).send({
-            error: error
+        if (typeof error === 'object') {
+            errorMessage = error.error || errorMessage;
+            errorCode = error.code || errorCode;
+        } else {
+            errorMessage = error || errorMessage;
+            errorCode = code || errorCode;
+        }
+
+        response.status(errorCode).send({
+            error: errorMessage
         });
     },
 

@@ -52,15 +52,43 @@ module.exports = Controller.extend({
             return;
         }
 
-        if(requestParams.isAuthenticated){
+        if(!requestParams.isAuthenticated){
             this.sendError('Unauthorized', 401);
             return;
         }
 
-        postData.ownerId
-
+        postData.ownerId = requestParams.profile._id;
         post = new PostsModel(postData);
         post.save(_.bind(this.postSaveHandler, this));
+    },
+
+    /**
+     * Метод обновляет модель статьи
+     *
+     * @method
+     * @name PostEditController#updatePost
+     * @returns {undefined}
+     */
+    updatePost: function(){
+        var request = this.request,
+            response = this.response,
+            params = request.params,
+            postId = params._id,
+            update = request.query;
+
+        if(typeof postId === 'undefined'){
+            this.sendError('Bad request.');
+            return;
+        }
+
+        PostsModel.updatePost(postId, update, _.bind(function(error){
+            if(error){
+                this.sendError(error);
+                return;
+            }
+
+            response.send('Success');
+        }, this));
     },
 
     /**
@@ -77,6 +105,7 @@ module.exports = Controller.extend({
 
         if (error) {
             if (error.errors) {
+                //TODO: доработать отображение ошибок
                 this.sendError(error.errors);
                 return;
             }
@@ -94,7 +123,7 @@ module.exports = Controller.extend({
      * Метод возвращает True, если редактор должен быть заблокирован
      *
      * @method
-     * @name AddPostsController.isEditorDisabled
+     * @name PostEditController#isEditorDisabled
      * @returns {Boolean}
      */
     isEditorDisabled: function () {
@@ -106,14 +135,15 @@ module.exports = Controller.extend({
     },
 
     /**
-     * Рендерим страницу добавления поста
+     * TODO: доделать
      *
-     * @public
-     * @function
-     * @name AddPostsController.renderAddPost
-     * @return {undefined}
+     * Метод редерит страницу редактировиания/добавления статьи
+     *
+     * @method
+     * @name PostEditController#renderEditPost
+     * @returns {undefined}
      */
-    renderAddPost: function () {
+    renderEditPost: function(){
         var request = this.request,
             response = this.response,
             requestParams = new RequestParams(request);

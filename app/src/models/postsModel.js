@@ -1,26 +1,31 @@
 //TODO: доделать валидацию, добавить trim
 'use strict';
 
-var Mongoose = require('mongoose'),
-    Validators = srcRequire('common/validators'),
-    ObjectId = Mongoose.Types.ObjectId;
+var _ = require('underscore'),
+    Mongoose = require('mongoose'),
+    Schema = Mongoose.Schema,
+    ObjectId = Schema.ObjectId;
 
 /**
  * Класс для работы с моделью постов
  *
  * @class
  * @name PostsShema
- * @type {Mongoose.Schema}
+ * @type {Schema}
  */
-var PostsShema = Mongoose.Schema({
+var PostsShema = new Schema({
     //отображать ли пост в общем доступе
     public: {
-        type: Boolean
+        type: Boolean,
+        //поле не может быть изменено пользователем
+        readonly: true
     },
     //id пользователя, к которому относится сообщение
     ownerId: {
+        type: ObjectId,
         default: null,
-        type: ObjectId
+        //поле не может быть изменено пользователем
+        readonly: true
     },
     locale: {
         default: 'en',
@@ -28,14 +33,7 @@ var PostsShema = Mongoose.Schema({
     },
     //Загловок поста
     title: {
-        type: String,
-        //Валидация идет с конца!
-        validate: [
-            {
-                validator: Validators.required,
-                msg: 'Title can&#39;t be blank.'
-            }
-        ]
+        type: String
     },
     //Категория, используется в урлах
     category: {
@@ -47,7 +45,7 @@ var PostsShema = Mongoose.Schema({
         default: null
     },
     //Опубликовано, отправлено и т.д.
-    status:{
+    status: {
         type: String
     },
     //Описание для выдачи
@@ -56,14 +54,7 @@ var PostsShema = Mongoose.Schema({
     },
     //Тело поста
     body: {
-        type: String,
-        //Валидация идет с конца!
-        validate: [
-            {
-                validator: Validators.required,
-                msg: 'Post body can&#39;t be blank.'
-            }
-        ]
+        type: String
     }
 });
 
@@ -91,6 +82,87 @@ PostsShema.statics.getPosts = function (params) {
     }).sort({_id: -1}).
         skip(Soshace.POSTS_PER_PAGE * page).
         limit(Soshace.POSTS_PER_PAGE);
+};
+
+/**
+ * Метод проверяет обновляемые поля модели на соответствие типу
+ *
+ * @method
+ * @name PostsShema.isUpdateFieldsValid
+ * @param {Object} update обновляемые данные
+ * @returns {Boolean} false - ошибка
+ */
+PostsShema.statics.isUpdateFieldsValid = function (update) {
+    var isValid = true,
+        postPaths = PostsShema.paths;
+
+    _.every(update, function (value, field) {
+        var fieldSetting = postPaths[field];
+
+        if (fieldSetting.type === String) {
+            if (typeof value === 'string') {
+                return true;
+            }
+            isValid = false;
+            return false;
+        }
+
+        if (fieldSetting.type === Array) {
+            if (value instanceof Array) {
+                return true;
+            }
+            isValid = false;
+            return false;
+        }
+
+        return true;
+    });
+
+    return isValid;
+};
+
+/**
+ * Метод удляет все поля из запроса не соответствующие
+ *
+ * @method
+ * @name PostsShema.clearUpdate
+ * @param {Object} update обновляемые данные
+ * @returns {Object} очищенный объект обновления
+ */
+PostsShema.statics.clearUpdate = function (update) {
+    return _.pick(update, 'title', 'body', 'category', 'tags');
+};
+
+/**
+ * Метод обновляет статью
+ *
+ * @method
+ * @name PostsShema.updatePost
+ * @param {String} postId id статьи
+ * @param {Object} update обновляемые поля
+ * @param {Function} callback
+ * @return {undefined}
+ */
+PostsShema.statics.updatePost = function (postId, update, callback) {
+    if (typeof update !== 'object') {
+        callback({error: 'Bad Request', code: 400});
+        return;
+    }
+
+    update = this.clearUpdate(update);
+
+    if (!this.isUpdateFieldsValid(update)) {
+        callback({error: 'Bad Request', code: 400});
+    }
+
+    this.findByIdAndUpdate(postId, {$set: update}, function (error) {
+        if (error) {
+            callback({error: 'Server is too busy, try later.', code: 503});
+            return;
+        }
+
+        callback(null);
+    });
 };
 
 /**

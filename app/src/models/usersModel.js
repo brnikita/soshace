@@ -2,6 +2,7 @@
 //TODO: добавить trim перед сохранением полей
 
 var Mongoose = require('mongoose'),
+    Schema = Mongoose.Schema,
     Bcrypt = require('bcrypt'),
     Validators = srcRequire('common/validators'),
     Helpers = srcRequire('common/helpers'),
@@ -13,9 +14,9 @@ var Mongoose = require('mongoose'),
  *
  * @class
  * @name UsersShema
- * @type {Mongoose.Schema}
+ * @type {Schema}
  */
-var UsersShema = Mongoose.Schema({
+var UsersShema = new Schema({
     //код подтверждения email
     code: {
         type: String,
@@ -118,12 +119,12 @@ var UsersShema = Mongoose.Schema({
 UsersShema.methods.comparePassword = function (candidatePassword, callback) {
     Bcrypt.compare(candidatePassword, this.password, function (error, isMatch) {
         if (error) {
-            callback({error: {message: 'Password is not correct', code: 400}});
+            callback({error: 'Password is not correct', code: 400});
             return;
         }
 
         if (!isMatch) {
-            callback({error: {message: 'Password is not correct', code: 400}});
+            callback({error: 'Password is not correct', code: 400});
             return;
         }
 

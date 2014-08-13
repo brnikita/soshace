@@ -71,7 +71,7 @@ var SystemMessagesShema = new Schema({
 SystemMessagesShema.statics.getMessages = function (params, callback) {
     this.find(params, function (error, messages) {
         if (error) {
-            callback({error: {message: 'Server is too busy, try later', code: 503}});
+            callback({error: 'Server is too busy, try later', code: 503});
             return;
         }
 
@@ -91,7 +91,7 @@ SystemMessagesShema.statics.getMessages = function (params, callback) {
 SystemMessagesShema.statics.removeMessage = function (params, callback) {
     this.findOne(params, function (error, message) {
         if (error) {
-            callback({error: {message: 'Server is too busy, try later', code: 503}});
+            callback({error: 'Server is too busy, try later', code: 503});
             return;
         }
 
@@ -117,17 +117,17 @@ SystemMessagesShema.statics.removeMessage = function (params, callback) {
 SystemMessagesShema.statics.safeRemoveMessage = function (params, callback) {
     this.findOne(params, function (error, message) {
         if (error) {
-            callback({error: {message: 'Server is too busy, try later.', code: 503}});
+            callback({error: 'Server is too busy, try later.', code: 503});
             return;
         }
 
         if(message === null){
-            callback({error: {message: 'System message not found.', code: 404}});
+            callback({error: 'System message not found.', code: 404});
             return;
         }
 
         if (message.readOnly) {
-            callback({error: {message: 'Action is not available.', code: 403}});
+            callback({error: 'Action is not available.', code: 403});
             return;
         }
 
