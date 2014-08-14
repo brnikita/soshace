@@ -17,6 +17,7 @@ var PostsShema = new Schema({
     //отображать ли пост в общем доступе
     public: {
         type: Boolean,
+        default: false,
         //поле не может быть изменено пользователем
         readonly: true
     },
@@ -139,11 +140,14 @@ PostsShema.statics.clearUpdate = function (update) {
  * @method
  * @name PostsShema.updatePost
  * @param {String} postId id статьи
+ * @param {String} profileId id пользователя
  * @param {Object} update обновляемые поля
  * @param {Function} callback
  * @return {undefined}
  */
-PostsShema.statics.updatePost = function (postId, update, callback) {
+PostsShema.statics.updatePost = function (postId, profileId, update, callback) {
+    var updateRequest;
+
     if (typeof update !== 'object') {
         callback({error: 'Bad Request', code: 400});
         return;
@@ -155,9 +159,20 @@ PostsShema.statics.updatePost = function (postId, update, callback) {
         callback({error: 'Bad Request', code: 400});
     }
 
-    this.findByIdAndUpdate(postId, {$set: update}, function (error) {
+    updateRequest = {
+        _id: postId,
+        ownerId: profileId,
+        public: false
+    };
+
+    this.update(updateRequest, {$set: update}, function (error, post) {
         if (error) {
             callback({error: 'Server is too busy, try later.', code: 503});
+            return;
+        }
+
+        if (post === null) {
+            callback({error: 'Bad request.', code: 400});
             return;
         }
 

@@ -45,6 +45,7 @@ module.exports = Controller.extend({
         var request = this.request,
             postData = request.body,
             requestParams = new RequestParams(request),
+            profile,
             post;
 
         if (!postData) {
@@ -52,12 +53,14 @@ module.exports = Controller.extend({
             return;
         }
 
-        if(!requestParams.isAuthenticated){
+        if (!requestParams.isAuthenticated) {
             this.sendError('Unauthorized', 401);
             return;
         }
 
-        postData.ownerId = requestParams.profile._id;
+        profile = requestParams.profile;
+        postData.ownerId = profile._id;
+        postData.locale = profile.locale;
         post = new PostsModel(postData);
         post.save(_.bind(this.postSaveHandler, this));
     },
@@ -69,20 +72,32 @@ module.exports = Controller.extend({
      * @name PostEditController#updatePost
      * @returns {undefined}
      */
-    updatePost: function(){
+    updatePost: function () {
         var request = this.request,
             response = this.response,
             params = request.params,
             postId = params._id,
-            update = request.query;
+            update = request.body,
+            requestParams = new RequestParams(request),
+            profile,
+            profileId;
 
-        if(typeof postId === 'undefined'){
+        if (typeof postId === 'undefined') {
             this.sendError('Bad request.');
             return;
         }
 
-        PostsModel.updatePost(postId, update, _.bind(function(error){
-            if(error){
+        if (!requestParams.isAuthenticated) {
+            this.sendError('Unauthorized', 401);
+            return;
+        }
+        //TODO: проверить права пользователя на обновление поста
+
+        profile = requestParams.profile;
+        profileId = profile._id;
+
+        PostsModel.updatePost(postId, profileId, update, _.bind(function (error) {
+            if (error) {
                 this.sendError(error);
                 return;
             }
@@ -143,7 +158,7 @@ module.exports = Controller.extend({
      * @name PostEditController#renderEditPost
      * @returns {undefined}
      */
-    renderEditPost: function(){
+    renderEditPost: function () {
         var request = this.request,
             response = this.response,
             requestParams = new RequestParams(request);
