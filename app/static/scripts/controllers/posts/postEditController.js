@@ -59,7 +59,7 @@ define([
                     });
 
                 view.afterRender();
-                view.setDataToModelFromView();
+                view.setDataToModelFromView(this.routeParams);
                 this.view = view;
             },
 

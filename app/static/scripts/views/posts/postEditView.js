@@ -263,15 +263,15 @@ define([
         bindHotKeys: function (hotKeys) {
             $.each(hotKeys, _.bind(function (hotKey, command) {
                 this.elements.postBody.keydown(hotKey, _.bind(function () {
-                        this.execCommand(command, null);
-                        return false;
-                    }, this)).keyup(hotKey, _.bind(function (event) {
-                        if (this.elements.postBody.attr('contenteditable') &&
-                            this.elements.postBody.is(':visible')) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                    }, this));
+                    this.execCommand(command, null);
+                    return false;
+                }, this)).keyup(hotKey, _.bind(function (event) {
+                    if (this.elements.postBody.attr('contenteditable') &&
+                        this.elements.postBody.is(':visible')) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                }, this));
             }, this));
         },
 
@@ -393,8 +393,8 @@ define([
                     }));
                 }
             }).on('change', function () {
-                    _this.elements.postBody.append(preLoader);
-                });
+                _this.elements.postBody.append(preLoader);
+            });
         },
 
         /**
@@ -478,13 +478,24 @@ define([
          *
          * @method
          * @name PostEditView#setDataToModelFromView
+         * @param {Array} routeParams параментры запроса из url
          * @returns {undefined}
          */
-        setDataToModelFromView: function () {
-            var $title = this.elements.postTitle,
-                $body = this.elements.postBody,
-                title = $title.val(),
-                body = $body.html();
+        setDataToModelFromView: function (routeParams) {
+            var $title,
+                $body,
+                title,
+                body,
+                postId;
+
+            if (this.isEditorDisabled()) {
+                return;
+            }
+
+            $title = this.elements.postTitle;
+            $body = this.elements.postBody;
+            title = $title.val();
+            body = $body.html();
 
             if (title) {
                 this.model.set('title', title, {silent: true});
@@ -492,6 +503,11 @@ define([
 
             if (body) {
                 this.model.set('body', body, {silent: true});
+            }
+
+            if (routeParams.length >= 2) {
+                postId = routeParams[1];
+                this.model.set('_id', postId, {silent: true});
             }
         }
     });

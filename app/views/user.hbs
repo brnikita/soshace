@@ -51,16 +51,22 @@
         </div>
         <div class="user__profile__footer">
             <a href="/{{locale}}/posts/new"
-               class="btn btn-primary js-router-link">{{i18n 'Add post'}}</a>
+               class="btn btn-success js-router-link">{{i18n 'Add post'}}</a>
         </div>
     </div>
     <div>
-        <div class="box-message box-message-warning">
-            <h3>
-                <a class="js-router-link" href="/{{locale}}/posts/new">
-                    {{{i18n 'Here could be your posts'}}}
-                </a>
-            </h3>
-        </div>
+        {{#if posts}}
+            {{#each posts}}
+                {{> postPreview}}
+            {{/each}}
+        {{else}}
+            <div class="box-message box-message-warning">
+                <h3>
+                    <a class="js-router-link" href="/{{locale}}/posts/new">
+                        {{{i18n 'Here could be your posts'}}}
+                    </a>
+                </h3>
+            </div>
+        {{/if}}
     </div>
 </div>

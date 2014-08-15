@@ -2,6 +2,7 @@
 var Controller = srcRequire('common/controller'),
     _ = require('underscore'),
     UsersModel = srcRequire('models/usersModel'),
+    PostsModel = srcRequire('models/postsModel'),
     RequestParams = srcRequire('common/requestParams');
 /**
  * Контроллер страницы профиля пользователя
@@ -108,12 +109,48 @@ module.exports = Controller.extend({
     renderUserPage: function () {
         var request = this.request,
             response = this.response,
-            requestParams = new RequestParams(request);
+            requestParams = new RequestParams(request),
+            profileId;
+
+        if (requestParams.isAuthenticated) {
+            profileId = requestParams.profile._id;
+            this.renderUserPageAuthenticated(profileId);
+            return;
+        }
 
         response.render('user', _.extend(requestParams, {
             isUserTab: true,
             title: 'User Profile',
             bodyClass: 'bg-symbols bg-color-blue'
         }));
+    },
+
+    /**
+     * Метод рендерит авторизованного пользователя
+     * по id профиля
+     *
+     * @method
+     * @name UsersController#renderUserPageAuthenticated
+     * @param {String} profileId id профиля
+     * @returns {undefined}
+     */
+    renderUserPageAuthenticated: function (profileId) {
+        var request = this.request,
+            response = this.response,
+            requestParams = new RequestParams(request);
+
+        PostsModel.getProfilePosts(profileId, _.bind(function (error, posts) {
+            if (error) {
+                this.sendError(error);
+                return;
+            }
+
+            response.render('user', _.extend(requestParams, {
+                isUserTab: true,
+                posts: posts,
+                title: 'User Profile',
+                bodyClass: 'bg-symbols bg-color-blue'
+            }));
+        }, this));
     }
 });

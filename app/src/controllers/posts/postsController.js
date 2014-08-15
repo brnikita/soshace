@@ -70,6 +70,42 @@ module.exports = Controller.extend({
     },
 
     /**
+     * Получаем список статей профиля
+     *
+     * @method
+     * @name PostsController#getProfilePosts
+     * @return {undefined}
+     */
+    getProfilePosts: function () {
+        var request = this.request,
+            response = this.response,
+            requestParams = new RequestParams(request),
+            profileId;
+
+        if (requestParams.isAuthenticated) {
+            profileId = requestParams.profile._id;
+            PostsModel.getProfilePosts(profileId, function (error, posts) {
+                return response.send(posts);
+            });
+            return;
+        }
+
+        this.sendError('Unauthorized', 401);
+    },
+
+    /**
+     * TODO: дописать
+     * Метод удаляет статью
+     *
+     * @method
+     * @name PostsController#removePost
+     * @returns {undefined}
+     */
+    removePost: function(){
+
+    },
+
+    /**
      * Рендерим страницу поста
      *
      * @method
