@@ -29,7 +29,7 @@ define([
          * @type {Object}
          */
         tabsConfig: {
-            isAddPostTab: false,
+            isPostEditTab: false,
             isAuthTab: false,
             isUserTab: false
         },
@@ -44,7 +44,7 @@ define([
         pageAliasToTab: {
             login: 'isAuthTab',
             registration: 'isAuthTab',
-            addPost: 'isAddPostTab',
+            postEdit: 'isPostEditTab',
             user: 'isUserTab'
         },
 

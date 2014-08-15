@@ -181,6 +181,28 @@ PostsShema.statics.updatePost = function (postId, profileId, update, callback) {
 };
 
 /**
+ * Метод получает статью по id,
+ * которую может редактировать пользователь
+ *
+ * @method
+ * @name PostsShema.getProfilePost
+ * @param {String} postId id статьи
+ * @param {String} ownerId id пользователя
+ * @param {Function} callback
+ * @return {undefined}
+ */
+PostsShema.statics.getProfilePost = function (postId, ownerId, callback) {
+    this.findOne({_id: postId, ownerId: ownerId}).exec(function (error, model) {
+        if (error) {
+            callback({error: 'Server is too busy, try later.', code: 503});
+            return;
+        }
+
+        callback(null, model);
+    });
+};
+
+/**
  * Получаем пост целиком
  *
  * @method

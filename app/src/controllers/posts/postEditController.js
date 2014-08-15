@@ -161,11 +161,101 @@ module.exports = Controller.extend({
     renderEditPost: function () {
         var request = this.request,
             response = this.response,
+            requestParams = new RequestParams(request),
+            locale = requestParams.locale,
+            params = request.params,
+            postId = params && params._id,
+            notAuthenticated = !requestParams.isAuthenticated,
+            redirectUrl;
+
+        if (notAuthenticated) {
+            if (postId) {
+                redirectUrl = '/' + locale + '/posts/new';
+                response.redirect(redirectUrl);
+                return;
+            }
+
+            this.renderNewEditPost();
+            return;
+        }
+
+        this.renderEditPostForAuthenticated();
+    },
+
+    /**
+     * Метод рендерит страницу редактирования статьи для
+     * авторизованного пользователя
+     *
+     * @method
+     * @name PostEditController#renderEditPostForAuthenticated
+     * @returns {undefined}
+     */
+    renderEditPostForAuthenticated: function () {
+        var request = this.request,
+            requestParams = new RequestParams(request),
+            params = request.params,
+            postId = params && params._id,
+            profile = requestParams.profile,
+            profileId = profile && profile._id;
+
+        if (postId) {
+            PostsModel.getProfilePost(postId, profileId,
+                _.bind(this.renderEditPostForAuthenticatedHandler, this));
+            return;
+        }
+
+        this.renderNewEditPost();
+    },
+
+    /**
+     * Метод рендерит страницу редактирования статьи для
+     * авторизованного пользователя
+     *
+     * Callback получения статьи из базы
+     *
+     * @method
+     * @name PostEditController#renderEditPostForAuthenticatedHandler
+     * @param {String} error текст ошибки
+     * @param {Backbone.Model} post модель статьи
+     * @returns {undefined}
+     */
+    renderEditPostForAuthenticatedHandler: function (error, post) {
+        var response = this.response,
+            request = this.request,
+            requestParams = new RequestParams(request);
+
+        if (error) {
+            //TODO: отрендерить страницу с ошибкой
+            return;
+        }
+
+        if (post === null) {
+            this.renderNewEditPost();
+            return;
+        }
+
+        response.render('posts/postEdit', _.extend(requestParams, {
+            title: 'Edit Post',
+            post: post,
+            isPostEditTab: true
+        }));
+    },
+
+    /**
+     * Метод рендерит новую страницу редактора
+     *
+     * @method
+     * @name PostEditController#renderNewEditPost
+     * @returns {undefined}
+     */
+    renderNewEditPost: function () {
+        var request = this.request,
+            response = this.response,
             requestParams = new RequestParams(request);
 
         response.render('posts/postEdit', _.extend(requestParams, {
-            title: 'Add Post',
-            isAddPostTab: true,
+            title: 'Edit Post',
+            isPostEditTab: true,
             editorDisabled: this.isEditorDisabled()
         }));
     }

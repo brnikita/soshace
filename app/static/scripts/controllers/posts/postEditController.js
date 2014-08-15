@@ -19,7 +19,7 @@ define([
              * @name PostEditController#pageAlias
              * @type {String}
              */
-            pageAlias: 'addPost',
+            pageAlias: 'postEdit',
 
             /**
              * @field
@@ -59,6 +59,7 @@ define([
                     });
 
                 view.afterRender();
+                view.setDataToModelFromView();
                 this.view = view;
             },
 

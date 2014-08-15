@@ -62,17 +62,18 @@ define([
         },
 
         /**
+         * TODO: доделать patch, т.к. сейчас метод фигачит всю модель целиком
+         * TODO: или переделать на  put
+         *
          * Метод патчит модель, если модель уже создана.
          * Содает новую, если модели нет.
          * Удаляет модель, если приходят пустые значения на запись
          *
          * @method
          * @name PostModel#patchModel
-         * @param {String} field название поля
-         * @param {String} value значение поля
          * @returns {undefined}
          */
-        patchModel: function(field, value){
+        patchModel: function(){
             var _this = this,
                 options = {
                     success: _.bind(_this.modelSaveSuccess, _this),
@@ -84,7 +85,7 @@ define([
                 options.patch = true;
             }
 
-            this.save(field, value, options);
+            this.save(null, options);
         },
 
         /**

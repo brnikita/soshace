@@ -75,7 +75,7 @@ module.exports = Controller.extend({
                 ownerId: user._id,
                 templatePath: 'messages/successConfirmEmail',
                 showOnce: true,
-                pages: ['addPost']
+                pages: ['postEdit']
             });
             successConfirmEmail.save(function (error) {
                 if (error) {
@@ -242,7 +242,7 @@ module.exports = Controller.extend({
             alias: 'notConfirmedEmail',
             ownerId: user._id,
             templatePath: 'messages/notConfirmedEmail',
-            pages: ['user', 'addPost'],
+            pages: ['user', 'postEdit'],
             readOnly: true
         });
 

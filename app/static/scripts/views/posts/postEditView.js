@@ -63,7 +63,6 @@ define([
          * @type {Object}
          */
         events: {
-            'click .js-post-save': 'postSave',
             'click .js-post-publish': 'postPublish',
             'keyup .js-post-title': 'saveTileToModel',
             'keyup .js-post-body': 'saveBodyToModel',
@@ -111,16 +110,6 @@ define([
         selectedRange: null,
 
         /**
-         * Поле содержит метод модели для патча,
-         * обернутный в debounce
-         *
-         * @field
-         * @name PostEditView#patchModelDebounce
-         * @type {Function | null}
-         */
-        patchModelDebounce: null,
-
-        /**
          * Путь до шаблона
          *
          * @field
@@ -136,26 +125,17 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
-            var $el = params.$el,
+            var patchModelDebounce,
+                $el = params.$el,
                 model = params.model;
 
             if ($el) {
                 this.$el = $el;
             }
             this.model = model;
-            this.patchModelDebounce = _.debounce(_.bind(model.patchModel, model),
+            patchModelDebounce = _.debounce(_.bind(model.patchModel, model),
                 this.setToModelTimeOut);
-        },
-
-        /**
-         * Метод обработчик клика по кнопке 'Сохранить'
-         *
-         * @method
-         * @name PostEditView#postSave
-         * @returns {undefined}
-         */
-        postSave: function () {
-            this.model.save();
+            model.on('change', _.bind(patchModelDebounce, this));
         },
 
         /**
@@ -169,7 +149,7 @@ define([
             var $title = this.elements.postTitle,
                 value = $title.val();
 
-            this.patchModelDebounce('title', value);
+            this.model.set('title', value);
         },
 
         /**
@@ -183,7 +163,11 @@ define([
             var $postBody = this.elements.postBody,
                 value = $postBody.html();
 
-            this.patchModelDebounce('body', value);
+            //Прверка на то, что тело не пустое
+            if (!Soshace.patterns.isEmptyHtml.test(value)) {
+                this.model.set('body', value);
+            }
+
             this.saveSelection();
         },
 
@@ -247,18 +231,6 @@ define([
         },
 
         /**
-         * Метод возвращает очищенное тело редактора
-         *
-         * @method
-         * @name PostEditView#cleanHtml
-         * @returns {string}
-         */
-        cleanHtml: function () {
-            var html = this.elements.postBody.html();
-            return html && html.replace(/(<br>|\s|<div>(<br>|\s|&nbsp;)*<\/div>|&nbsp;)*$/, '');
-        },
-
-        /**
          * TODO: доработать описание параметров
          *
          * Метод для работы с выделенным текстом
@@ -291,15 +263,15 @@ define([
         bindHotKeys: function (hotKeys) {
             $.each(hotKeys, _.bind(function (hotKey, command) {
                 this.elements.postBody.keydown(hotKey, _.bind(function () {
-                    this.execCommand(command, null);
-                    return false;
-                }, this)).keyup(hotKey, _.bind(function (event) {
-                    if (this.elements.postBody.attr('contenteditable') &&
-                        this.elements.postBody.is(':visible')) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                }, this));
+                        this.execCommand(command, null);
+                        return false;
+                    }, this)).keyup(hotKey, _.bind(function (event) {
+                        if (this.elements.postBody.attr('contenteditable') &&
+                            this.elements.postBody.is(':visible')) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                    }, this));
             }, this));
         },
 
@@ -421,8 +393,8 @@ define([
                     }));
                 }
             }).on('change', function () {
-                _this.elements.postBody.append(preLoader);
-            });
+                    _this.elements.postBody.append(preLoader);
+                });
         },
 
         /**
@@ -496,6 +468,31 @@ define([
             this.addImageButtonListener();
             this.toolbarInitOffset = this.elements.toolbar.offset();
             this.elements.window.on('scroll', _.bind(this.windowScrollHandler, this));
+        },
+
+        /**
+         * Метод записывает в модель данные, пришедшие в
+         * шаблоне.
+         *
+         * Используется при первом рендере
+         *
+         * @method
+         * @name PostEditView#setDataToModelFromView
+         * @returns {undefined}
+         */
+        setDataToModelFromView: function () {
+            var $title = this.elements.postTitle,
+                $body = this.elements.postBody,
+                title = $title.val(),
+                body = $body.html();
+
+            if (title) {
+                this.model.set('title', title, {silent: true});
+            }
+
+            if (body) {
+                this.model.set('body', body, {silent: true});
+            }
         }
     });
 });

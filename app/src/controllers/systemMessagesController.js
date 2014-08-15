@@ -38,7 +38,7 @@ module.exports = Controller.extend({
                 ownerId: null,
                 templatePath: 'messages/enableEditor',
                 notAuthenticated: true,
-                pages: ['addPost']
+                pages: ['postEdit']
             });
 
             successConfirmEmail.save();

@@ -101,7 +101,8 @@ define(function () {
          */
         patterns: {
             email: /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
-            userName: /^[a-z\.\-_0-9]+$/
+            userName: /^[a-z\.\-_0-9]+$/,
+            isEmptyHtml: /^(<br>|\s|<div>(<br>|\s|&nbsp;)*<\/div>|&nbsp;)*$/
         },
 
         /**

@@ -81,10 +81,10 @@
         </div>
 
         <div class="post-edit__title">
-            <input id="post-title" class="js-post-title" type="text" name="post-title" placeholder="{{i18n 'Title'}}"/>
+            <input id="post-title" class="js-post-title" type="text" name="post-title" placeholder="{{i18n 'Title'}}" value="{{post.title}}"/>
         </div>
 
-        <div id="post-body" class="post-edit__body js-post-body" contenteditable="true"></div>
+        <div id="post-body" class="post-edit__body js-post-body" contenteditable="true">{{{post.body}}}</div>
 
         {{#if editorDisabled}}
             <div class="disable-cover"></div>

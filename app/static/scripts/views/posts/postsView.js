@@ -11,8 +11,9 @@ define([
     'underscore',
     'backbone',
     'handlebars',
+    'utils/helpers',
     './postPreviewView'
-], function ($, _, Backbone, Handlebars, PostPreviewView) {
+], function ($, _, Backbone, Handlebars, Helpers, PostPreviewView) {
     return Backbone.Layout.extend({
         /**
          * Список статей
@@ -97,6 +98,7 @@ define([
 
             data.posts = this.collection.toJSON();
             data.paths = Soshace.urls;
+            data.locale = Helpers.getLocale();
 
             return data;
         },
