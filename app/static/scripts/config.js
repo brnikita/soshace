@@ -80,6 +80,7 @@ define(function () {
                 logout: '/api/logout',
                 post: '/api/posts/0',
                 posts: '/api/posts',
+                profilePosts: '/api/profile_posts',
                 createUser: '/api/users',
                 images: '/api/images',
                 user: '/api/users/0',

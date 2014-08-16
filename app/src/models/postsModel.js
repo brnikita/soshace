@@ -70,8 +70,6 @@ var PostsShema = new Schema({
  * @return {Cursor}
  */
 PostsShema.statics.getPosts = function (params) {
-    var page = params.page || 0;
-
     return this.find({
         'locale': params.locale,
         'public': params.public
@@ -80,9 +78,7 @@ PostsShema.statics.getPosts = function (params) {
         title: 1,
         description: 1,
         locale: 1
-    }).sort({_id: -1}).
-        skip(Soshace.POSTS_PER_PAGE * page).
-        limit(Soshace.POSTS_PER_PAGE);
+    }).sort({_id: -1});
 };
 
 /**

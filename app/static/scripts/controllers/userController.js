@@ -1,3 +1,4 @@
+//TODO: выводить только опубликованные статьи для незарегистрированного
 'use strict';
 
 /**
@@ -9,9 +10,10 @@ define([
         'underscore',
         'utils/controller',
         'models/userModel',
+        'collections/postsCollection',
         'views/userView'
     ],
-    function (_, Controller, UserModel, UserView) {
+    function (_, Controller, UserModel, UserView, PostsCollection) {
         return Controller.extend({
             /**
              * Алиас страницы
@@ -31,6 +33,13 @@ define([
 
             /**
              * @field
+             * @name UserController#postsCollection
+             * @type {PostsCollection}
+             */
+            postsCollection: null,
+
+            /**
+             * @field
              * @name UserController#view
              * @type {UserView}
              */
@@ -43,6 +52,7 @@ define([
              */
             initialize: function () {
                 this.model = new UserModel();
+                this.postsCollection = new PostsCollection();
             },
 
 
@@ -56,6 +66,7 @@ define([
             firstLoad: function () {
                 var view = new UserView({
                     model: this.model,
+                    postsCollection: this.postsCollection,
                     $el: $('.js-content-first-load')
                 });
 

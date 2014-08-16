@@ -146,8 +146,7 @@ module.exports = Controller.extend({
             requestParams = new RequestParams(request),
             params = {
                 'public': true,
-                'locale': request.params.locale,
-                'page': request.params.page
+                'locale': request.params.locale
             };
 
         PostsModel.getPosts(params).exec(function (error, posts) {
