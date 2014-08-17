@@ -56,9 +56,13 @@
     </div>
     <div>
         {{#if posts}}
-            {{#each posts}}
-                {{> postPreview}}
-            {{/each}}
+            <div class="js-posts-list posts clearfix">
+                {{#if backend}}
+                    {{#each posts}}
+                        {{> postPreview}}
+                    {{/each}}
+                {{/if}}
+            </div>
         {{else}}
             <div class="box-message box-message-warning">
                 <h3>

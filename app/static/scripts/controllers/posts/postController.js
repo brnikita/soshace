@@ -71,12 +71,14 @@ define([
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = new PostView({
+                var params = this.routeParams,
+                    postId = params[1],
+                    view = new PostView({
                         model: this.model
                     }),
                     app = Soshace.app;
 
-                this.model.getPost(this.routeParams).
+                this.model.getPost(postId).
                     done(function(){
                         app.setView('.js-content', view).render();
                     });

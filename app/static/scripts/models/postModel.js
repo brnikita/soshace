@@ -125,11 +125,11 @@ define([
          *
          * @method
          * @name PostModel#initialize
-         * @param {Array} routeParams параметры зароса
+         * @param {String} postId id поста
          * @returns {jQuery.Deferred}
          */
-        getPost: function (routeParams) {
-            this.set('_id', routeParams[1]);
+        getPost: function (postId) {
+            this.set('_id', postId);
             return this.fetch();
         }
     });

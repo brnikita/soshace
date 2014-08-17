@@ -48,7 +48,6 @@ module.exports = Class.extend({
         //-----------------API start------------------
         'post /api/images': 'imageController createImage',
         'get /api/posts': 'posts/postsController getPosts',
-        'get /api/profile_posts': 'posts/postsController getProfilePosts',
         'get /api/posts/:_id': 'posts/postsController getPost',
         'patch /api/posts/:_id': 'posts/postEditController updatePost',
         'delete /api/posts/:_id': 'posts/postsController removePost',

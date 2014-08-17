@@ -52,11 +52,6 @@ define([
             if ($el) {
                 this.$el = $el;
             }
-
-            Handlebars.registerPartial(
-                'intro',
-                Soshace.hbs['partials/intro']
-            );
         },
 
         /**

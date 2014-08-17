@@ -12,28 +12,6 @@ var Controller = srcRequire('common/controller'),
  */
 module.exports = Controller.extend({
     /**
-     * TODO: написать тест
-     *
-     * Формируем описание поста из тела поста
-     *
-     * @private
-     * @method
-     * @name PostEditController#_getPostDescription
-     * @param {string} postBody тело поста
-     * @returns {*}
-     */
-    _getPostDescription: function (postBody) {
-        var ReadMoreIndex = postBody.indexOf('<readmore/>');
-
-        if (ReadMoreIndex === -1) {
-            return postBody;
-        }
-
-        return postBody.substr(0, ReadMoreIndex);
-    },
-
-
-    /**
      * Обрабатываем запрос на добавление поста
      *
      * @public

@@ -11,16 +11,16 @@ define([
     'underscore',
     'backbone',
     'models/postModel'
-], function ($, _, Backbone, PostPreviewModel) {
+], function ($, _, Backbone, PostModel) {
     return Backbone.Collection.extend({
         /**
          * Модель превью поста
          *
          * @field
          * @name PostsCollection#model
-         * @type {PostPreviewModel}
+         * @type {PostModel}
          */
-        model: PostPreviewModel,
+        model: PostModel,
 
         /**
          * @method
@@ -39,20 +39,19 @@ define([
         },
 
         /**
+         * TODO: добавить обработку ошибок
+         *
          * Используется такой способ получения постов, чтобы сделать свой триггер
          * Т.к. change не отрабатывает при полуении такой же модели
          *
          * @method
          * @name PostsCollection#getPosts
-         * @param {Array} routeParams параметры запроса
+         * @param {Object} params параметры запроса
          * @returns {undefined}
          */
-        getPosts: function (routeParams) {
+        getPosts: function (params) {
             this.fetch({
-                data: {
-                    locale: routeParams[0],
-                    page: routeParams[1]
-                },
+                data: params,
                 silent: true
             }).done(this.getPostsSuccess);
         },

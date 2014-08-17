@@ -20,7 +20,7 @@ module.exports = Controller.extend({
      * @name PostsController#redirectToPosts
      * @returns {undefined}
      */
-    redirectToPosts: function(){
+    redirectToPosts: function () {
         var request = this.request,
             response = this.response,
             locale = request.i18n.getLocale();
@@ -57,40 +57,62 @@ module.exports = Controller.extend({
     getPosts: function () {
         var request = this.request,
             response = this.response,
-            page = request.query.page || 0,
-            params = {
-                'public': true,
-                'locale': request.query.locale,
-                'page': page
-            };
+            query = request.query,
+            requestParams = new RequestParams(request),
+            locale = requestParams.locale,
+            ownerId = query.ownerId;
 
-        PostsModel.getPosts(params).exec(function (error, posts) {
+        if (ownerId) {
+            this.getUserPosts(ownerId);
+            return;
+        }
+
+        PostsModel.getPosts(locale, function (error, posts) {
+            if (error) {
+                this.sendError(error);
+                return;
+            }
+
             return response.send(posts);
         });
     },
 
     /**
-     * Получаем список статей профиля
+     * Получаем список статей пользователя
      *
      * @method
-     * @name PostsController#getProfilePosts
+     * @name PostsController#getUserPosts
+     * @param {String} userId id пользователя
      * @return {undefined}
      */
-    getProfilePosts: function () {
+    getUserPosts: function (userId) {
         var request = this.request,
             response = this.response,
             requestParams = new RequestParams(request),
+            isAuthenticated = requestParams.isAuthenticated,
             profileId;
 
-        if (requestParams.isAuthenticated) {
+        if (isAuthenticated) {
             profileId = requestParams.profile._id;
-            PostsModel.getProfilePosts(profileId, function (error, posts) {
-                return response.send(posts);
-            });
-            return;
+            if (String(userId) === String(profileId)) {
+                PostsModel.getProfilePosts(profileId, _.bind(function (error, posts) {
+                    if (error) {
+                        this.sendError(error);
+                        return;
+                    }
+                    response.send(posts);
+                }, this));
+                return;
+            }
         }
 
-        this.sendError('Unauthorized', 401);
+        PostsModel.getUserPosts(userId, _.bind(function (error, posts) {
+            if (error) {
+                this.sendError(error);
+                return;
+            }
+            response.send(posts);
+        }, this));
     },
 
     /**
@@ -101,7 +123,7 @@ module.exports = Controller.extend({
      * @name PostsController#removePost
      * @returns {undefined}
      */
-    removePost: function(){
+    removePost: function () {
 
     },
 
@@ -144,12 +166,9 @@ module.exports = Controller.extend({
         var request = this.request,
             response = this.response,
             requestParams = new RequestParams(request),
-            params = {
-                'public': true,
-                'locale': request.params.locale
-            };
+            locale = requestParams.locale;
 
-        PostsModel.getPosts(params).exec(function (error, posts) {
+        PostsModel.getPosts(locale, function (error, posts) {
             response.render('posts/posts', _.extend(requestParams, {
                 isPostsTab: true,
                 title: 'Soshace blog',

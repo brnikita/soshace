@@ -71,7 +71,9 @@ define([
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = new PostsView({
+                var params = this.routeParams,
+                    locale = params[0],
+                    view = new PostsView({
                         collection: this.collection
                     }),
                     app = Soshace.app;
@@ -80,7 +82,7 @@ define([
                 this.collection.on('postsReceived', _.bind(function () {
                     app.setView('.js-content', view).render();
                 }, this));
-                this.collection.getPosts(this.routeParams);
+                this.collection.getPosts({locale: locale});
             }
         });
     });

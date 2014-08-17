@@ -85,10 +85,10 @@ module.exports = Controller.extend({
 
         if (request.user && request.user[0]) {
             userProfile = _.pick(request.user[0],
+                '_id',
                 'fullName',
                 'userName',
                 'isMale',
-                'admin',
                 'emailConfirmed',
                 'systemMessages',
                 'locale');

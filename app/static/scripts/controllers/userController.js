@@ -13,7 +13,7 @@ define([
         'collections/postsCollection',
         'views/userView'
     ],
-    function (_, Controller, UserModel, UserView, PostsCollection) {
+    function (_, Controller, UserModel, PostsCollection, UserView) {
         return Controller.extend({
             /**
              * Алиас страницы
@@ -66,7 +66,6 @@ define([
             firstLoad: function () {
                 var view = new UserView({
                     model: this.model,
-                    postsCollection: this.postsCollection,
                     $el: $('.js-content-first-load')
                 });
 
@@ -75,6 +74,8 @@ define([
             },
 
             /**
+             * TODO: добавить обработку ошибок
+             *
              * Метод вызывает при рендере на клиенте
              *
              * @method
@@ -84,7 +85,8 @@ define([
             secondLoad: function () {
                 var params = this.routeParams,
                     view = new UserView({
-                        model: this.model
+                        model: this.model,
+                        postsCollection: this.postsCollection
                     }),
                     app = Soshace.app;
 
@@ -94,8 +96,13 @@ define([
                 });
 
                 this.view = view;
-                app.setView('.js-content', view);
-                this.model.getUser().done(_.bind(view.render, view));
+                this.postsCollection.on('postsReceived', _.bind(function () {
+                    app.setView('.js-content', view).render();
+                }, this));
+
+                this.model.getUser().done(_.bind(function(response){
+                    this.postsCollection.getPosts({ownerId: response._id});
+                }, this));
             }
         });
     });

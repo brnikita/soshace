@@ -14,6 +14,16 @@ var _ = require('underscore'),
  * @type {Schema}
  */
 var PostsShema = new Schema({
+    //Время последнего изменения
+    //timestamp
+    updated: {
+        type: String
+    },
+    //Время публикации
+    //timestamp
+    published: {
+        type: Boolean
+    },
     //отображать ли пост в общем доступе
     public: {
         type: Boolean,
@@ -60,25 +70,53 @@ var PostsShema = new Schema({
 });
 
 /**
- * TODO: проверить необходимость такой сортировки
+ * Формируем описание поста из тела поста
  *
+ * @method
+ * @name PostEditController#_getPostDescription
+ * @param {String} postBody тело поста
+ * @returns {*}
+ */
+function getPostDescription(postBody) {
+    return postBody.substr(0, 1400);
+}
+
+/**
+ * Добавляем описание
+ */
+PostsShema.pre('save', function (next) {
+    var post = this;
+
+    post.description = getPostDescription(post.body);
+    next();
+});
+
+/**
  * Получаем список постов
  *
  * @method
  * @name PostsShema.getPosts
- * @param {Object} params
+ * @param {String} locale
+ * @param {Function} callback
  * @return {Cursor}
  */
-PostsShema.statics.getPosts = function (params) {
+PostsShema.statics.getPosts = function (locale, callback) {
     return this.find({
-        'locale': params.locale,
-        'public': params.public
+        'locale': locale,
+        'public': true
     }, {
         _id: 1,
         title: 1,
         description: 1,
         locale: 1
-    }).sort({_id: -1});
+    }).exec(function (error, posts) {
+        if (error) {
+            callback({error: 'Server is too busy, try later.', code: 503});
+            return;
+        }
+
+        callback(null, posts);
+    });
 };
 
 /**
@@ -120,6 +158,7 @@ PostsShema.statics.isUpdateFieldsValid = function (update) {
 
 /**
  * Метод удляет все поля из запроса не соответствующие
+ * полям модели
  *
  * @method
  * @name PostsShema.clearUpdate
@@ -155,25 +194,43 @@ PostsShema.statics.updatePost = function (postId, profileId, update, callback) {
         callback({error: 'Bad Request', code: 400});
     }
 
+    if (update.body) {
+        update.description = getPostDescription(update.body);
+    }
+
     updateRequest = {
         _id: postId,
         ownerId: profileId,
         public: false
     };
 
-    this.update(updateRequest, {$set: update}, function (error, post) {
-        if (error) {
-            callback({error: 'Server is too busy, try later.', code: 503});
-            return;
-        }
+    this.update(updateRequest, {$set: update}, _.bind(function(error, post){
+        this.updatePostHandler(error, post, callback);
+    }, this));
+};
 
-        if (post === null) {
-            callback({error: 'Bad request.', code: 400});
-            return;
-        }
+/**
+ * Метод обработчик обновления статьи в базе
+ *
+ * @method
+ * @name PostsShema.updatePostHandler
+ * @param {Object} error ошибка
+ * @param {Mongoose.model} post модель статьи
+ * @param {Function} callback
+ * @returns {undefined}
+ */
+PostsShema.statics.updatePostHandler = function (error, post, callback) {
+    if (error) {
+        callback({error: 'Server is too busy, try later.', code: 503});
+        return;
+    }
 
-        callback(null);
-    });
+    if (post === null) {
+        callback({error: 'Bad request.', code: 400});
+        return;
+    }
+
+    callback(null);
 };
 
 /**
@@ -200,6 +257,7 @@ PostsShema.statics.getProfilePost = function (postId, ownerId, callback) {
 
 /**
  * Метод получает список статей для конретного пользователя
+ * Получает все статьи для зарегистрированного пользователя
  *
  * @method
  * @name PostsShema.getProfilePosts
@@ -209,8 +267,31 @@ PostsShema.statics.getProfilePost = function (postId, ownerId, callback) {
  */
 PostsShema.statics.getProfilePosts = function (ownerId, callback) {
     this.find({ownerId: ownerId}).
-        sort({_id: 1}).
         exec(function (error, posts) {
+            if (error) {
+                callback({error: 'Server is too busy, try later.', code: 503});
+                return;
+            }
+
+            callback(null, posts);
+        });
+};
+
+/**
+ * Метод получает список статей для конретного пользователя,
+ * доступные для всех (public: true)
+ *
+ * @method
+ * @name PostsShema.getUserPosts
+ * @param {String} ownerId id пользователя
+ * @param {Function} callback
+ * @return {undefined}
+ */
+PostsShema.statics.getUserPosts = function (ownerId, callback) {
+    this.find({
+        ownerId: ownerId,
+        public: true
+    }).exec(function (error, posts) {
             if (error) {
                 callback({error: 'Server is too busy, try later.', code: 503});
                 return;
