@@ -37,14 +37,22 @@ module.exports = Controller.extend({
      */
     getPost: function () {
         var request = this.request,
-            response = this.response;
+            response = this.response,
+            params = request.params,
+            postId = params._id;
 
-        PostsModel.getPost(request.params).exec(function (error, post) {
+        PostsModel.getPost(postId, _.bind(function (error, post) {
+            if(error){
+                this.sendError(error);
+                return;
+            }
+
             if (post) {
                 return response.send(post);
             }
+
             return response.send({noPost: true});
-        });
+        }, this));
     },
 
     /**
@@ -116,7 +124,6 @@ module.exports = Controller.extend({
     },
 
     /**
-     * TODO: дописать
      * Метод удаляет статью
      *
      * @method
@@ -124,7 +131,19 @@ module.exports = Controller.extend({
      * @returns {undefined}
      */
     removePost: function () {
+        var request = this.request,
+            response = this.response,
+            params = request.params,
+            postId = params._id;
 
+        PostsModel.removePost(postId, _.bind(function(error){
+            if(error){
+                this.sendError(error);
+                return;
+            }
+
+            response.send('success');
+        }, this));
     },
 
     /**

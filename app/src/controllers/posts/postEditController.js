@@ -215,6 +215,7 @@ module.exports = Controller.extend({
         response.render('posts/postEdit', _.extend(requestParams, {
             title: 'Edit Post',
             post: post,
+            isNew: false,
             isPostEditTab: true
         }));
     },
@@ -234,6 +235,7 @@ module.exports = Controller.extend({
         response.render('posts/postEdit', _.extend(requestParams, {
             title: 'Edit Post',
             isPostEditTab: true,
+            isNew: true,
             editorDisabled: this.isEditorDisabled()
         }));
     }

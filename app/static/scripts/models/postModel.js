@@ -106,6 +106,7 @@ define([
                 this.set('_id', postId);
                 postUrl = '/' + locale + '/posts/' + postId + '/edit';
                 Backbone.history.navigate(postUrl);
+                this.trigger('postCreated');
             }
         },
 

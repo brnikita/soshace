@@ -74,7 +74,7 @@
                     </div>
                     <div class="post-edit__toolbar__submit-buttons">
                         <button class="btn btn-success js-post-publish">{{i18n 'Publish'}}</button>
-                        <button class="btn btn-danger js-post-delete">{{i18n 'Delete'}}</button>
+                        <button class="btn btn-danger js-post-delete {{#if isNew}}hide{{/if}}">{{i18n 'Delete'}}</button>
                     </div>
                 </div>
             </div>

@@ -85,9 +85,11 @@ function getPostDescription(postBody) {
  * Добавляем описание
  */
 PostsShema.pre('save', function (next) {
-    var post = this;
+    var postBody = this.body;
 
-    post.description = getPostDescription(post.body);
+    if(postBody){
+        this.description = getPostDescription(postBody);
+    }
     next();
 });
 
@@ -302,19 +304,47 @@ PostsShema.statics.getUserPosts = function (ownerId, callback) {
 };
 
 /**
- * Получаем пост целиком
+ * Метод получает статью целиком
  *
  * @method
  * @name PostsShema.getPost
- * @param {Object} params
- * @return {Cursor}
+ * @param {String} postId id статьи
+ * @param {Function} callback
+ * @return {undefined}
  */
-PostsShema.statics.getPost = function (params) {
-    return this.findOne(params, {
+PostsShema.statics.getPost = function (postId, callback) {
+    this.findOne({_id: postId}, {
         _id: 1,
         title: 1,
         body: 1,
         locale: 1
+    }).exec(function(error, post){
+        if(error){
+            callback({error: 'Server is too busy, try later.', code: 503});
+            return;
+        }
+
+        callback(null, post);
+    });
+};
+
+/**
+ * Метод удаляет статью по id
+ *
+ * @method
+ * @name PostsShema.removePost
+ * @param {Object} postId id удаляемой статьи
+ * @param {Function} callback
+ * @return {undefined}
+ */
+PostsShema.statics.removePost = function (postId, callback) {
+    this.findOneAndRemove({_id: postId}, null, function(error){
+        if(error){
+            callback({error: 'Server is too busy, try later.', code: 503});
+            return;
+        }
+
+        callback(null);
     });
 };
 

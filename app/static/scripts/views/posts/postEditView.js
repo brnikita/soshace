@@ -69,7 +69,9 @@ define([
             'click .js-simple-command': 'applyCommand',
             'mouseup .js-post-body': 'saveSelection',
             'click .js-add-link': 'showAddLinkModal',
-            'click .js-add-link-save': 'saveLinkHandler'
+            'click .js-add-link-save': 'saveLinkHandler',
+            'click .js-post-delete': 'deletePost'
+
         },
 
         /**
@@ -88,7 +90,8 @@ define([
             linkNameInput: null,
             window: null,
             commandBtn: null,
-            imageUpload: null
+            imageUpload: null,
+            deleteButton: null
         },
 
         /**
@@ -136,6 +139,64 @@ define([
             patchModelDebounce = _.debounce(_.bind(model.patchModel, model),
                 this.setToModelTimeOut);
             model.on('change', _.bind(patchModelDebounce, this));
+            model.on('postCreated', _.bind(this.postCreatedHandler, this));
+        },
+
+        /**
+         * Метод обработчик создания статьи
+         *
+         * @method
+         * @name PostEditView#postCreatedHandler
+         * @returns {undefined}
+         */
+        postCreatedHandler: function(){
+            this.elements.deleteButton.removeClass('hide');
+        },
+
+        /**
+         * Метод обработчик
+         *
+         * @method
+         * @name PostEditView#deletePost
+         * @returns {undefined}
+         */
+        deletePost: function(){
+            var _this = this;
+
+            this.model.destroy({
+                contentType : 'application/json',
+                dataType : 'text',
+                success: _.bind(_this.destroySuccess, _this),
+                error: _.bind(_this.destroyFail, _this)
+            });
+        },
+
+        /**
+         * Метод обработчик удачного удаления статьи
+         *
+         * @method
+         * @name PostEditView#destroySuccess
+         * @returns {undefined}
+         */
+        destroySuccess: function(){
+            var model = this.model,
+                locale = Helpers.getLocale(),
+                postUrl = '/' + locale + '/posts/' + 'new';
+
+            model.set(model.default, {silent: true});
+            Backbone.history.navigate(postUrl, {trigger: true});
+        },
+
+        /**
+         * TODO: доделать
+         * Метод обработчик неудачного удаления статьи
+         *
+         * @method
+         * @name PostEditView#destroyFail
+         * @returns {undefined}
+         */
+        destroyFail: function(){
+
         },
 
         /**
@@ -413,6 +474,7 @@ define([
             this.elements.addLinkModal = this.$('.js-add-link-modal');
             this.elements.linkUrlInput = this.$('.js-add-link-modal-link-url');
             this.elements.imageUpload = this.$('.js-upload-image input');
+            this.elements.deleteButton = this.$('.js-post-delete');
         },
 
         /**
@@ -441,7 +503,8 @@ define([
             data.title = Helpers.i18n('Edit Post');
             data.editorDisabled = this.isEditorDisabled();
             data.paths = Soshace.urls;
-
+            data.post = this.model.toJSON();
+            data.isNew = this.model.isNew();
             return data;
         },
 
