@@ -10,7 +10,8 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'utils/helpers'
+    'utils/helpers',
+    'config'
 ], function ($, _, Backbone, Helpers) {
     return Backbone.Model.extend({
         /**

@@ -16,7 +16,9 @@ define([
     'utils/helpers',
     'prettify',
     'jquery.hotkeys',
-    'jquery.fileupload'
+    'jquery.fileupload',
+    'backbone.layoutmanager',
+    'templates'
 ], function ($, _, _s, Backbone, Helpers) {
     return Backbone.Layout.extend({
 

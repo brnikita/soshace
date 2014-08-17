@@ -10,7 +10,8 @@
 define([
     'jquery',
     'underscore',
-    'jquery.cookie'
+    'jquery.cookie',
+    'config'
 ], function ($, _) {
     return {
         /**

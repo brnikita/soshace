@@ -10,7 +10,8 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'models/systemMessagesModel'
+    'models/systemMessagesModel',
+    'config'
 ], function ($, _, Backbone, SystemMessagesModel) {
     return Backbone.Collection.extend({
         /**

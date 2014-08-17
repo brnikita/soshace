@@ -173,10 +173,9 @@ module.exports = function (grunt) {
             compile: {
                 options: {
                     baseUrl: '<%= blog.dist %>/scripts/',
-                    name: 'app',
                     mainConfigFile: 'require.conf.js',
                     out: '<%= blog.dist %>/scripts/scripts.min.js',
-                    include: ['vendors/require.js']
+                    include: ['vendors/require.js', 'templates.js']
                 }
             }
         },
@@ -225,7 +224,7 @@ module.exports = function (grunt) {
 
     //Верия для продакшена
     grunt.registerTask('prod', [
-        'newer:jshint:all',
+//        'newer:jshint:all',
         'clean',
         'copy:prod',
         'handlebars',

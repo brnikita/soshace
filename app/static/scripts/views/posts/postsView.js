@@ -12,7 +12,9 @@ define([
     'backbone',
     'handlebars',
     'utils/helpers',
-    './postPreviewView'
+    './postPreviewView',
+    'backbone.layoutmanager',
+    'templates'
 ], function ($, _, Backbone, Handlebars, Helpers, PostPreviewView) {
     return Backbone.Layout.extend({
         /**

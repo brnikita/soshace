@@ -80,8 +80,6 @@ require.config(
         },
         deps: [
             'config',
-            'handlebars',
-            'templates',
             'bootstrap',
             'utils/handlebarsHelpers',
             'google-analytics',

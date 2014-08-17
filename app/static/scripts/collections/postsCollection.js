@@ -10,7 +10,8 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'models/postModel'
+    'models/postModel',
+    'config'
 ], function ($, _, Backbone, PostModel) {
     return Backbone.Collection.extend({
         /**

@@ -10,7 +10,14 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
+    'backbone',
+    //Необходимо при сборке
+    'controllers/posts/postsController',
+    'controllers/posts/postEditController',
+    'controllers/loginController',
+    'controllers/logoutController',
+    'controllers/registrationController',
+    'controllers/userController'
 ], function ($, _, Backbone) {
     return Backbone.Router.extend({
         /**

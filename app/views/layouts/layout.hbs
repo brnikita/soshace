@@ -32,6 +32,9 @@
     <!-- /Yandex.Metrika counter-->
     <!--Минифицированные скрипты, версия берется из package.json-->
     <script src="{{paths.scripts}}scripts.min.js?v={{version}}"></script>
+    <script>
+        require(['app']);
+    </script>
 {{else}}
     <script data-main="{{paths.static}}require.conf" src="{{paths.scripts}}vendors/require.js"></script>
 {{/if}}

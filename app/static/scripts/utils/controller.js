@@ -5,7 +5,10 @@
  *
  * @class Controller
  */
-define(['class'], function (Class) {
+define([
+    'class',
+    'config'
+], function (Class) {
     return Class.extend({
         /**
          * Алиас страницы

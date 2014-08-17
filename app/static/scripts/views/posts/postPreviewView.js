@@ -9,7 +9,9 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
+    'backbone',
+    'backbone.layoutmanager',
+    'templates'
 ], function ($, _, Backbone) {
     return Backbone.Layout.extend({
 

@@ -5,7 +5,12 @@
  *
  * @class RegistrationController
  */
-define(['utils/controller', 'models/registrationModel', 'views/registrationView'],
+define([
+        'utils/controller',
+        'models/registrationModel',
+        'views/registrationView',
+        'config'
+    ],
     function (Controller, RegistrationModel, RegistrationView) {
         return Controller.extend({
             /**

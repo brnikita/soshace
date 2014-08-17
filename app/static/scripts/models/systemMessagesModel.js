@@ -9,7 +9,8 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
+    'backbone',
+    'config'
 ], function ($, _, Backbone) {
     return Backbone.Model.extend({
 

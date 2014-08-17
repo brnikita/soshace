@@ -14,7 +14,9 @@ define([
     'handlebars',
     'backbone.validation',
     'utils/backboneValidationExtension',
-    'utils/plugins/jquery.controlStatus'
+    'utils/plugins/jquery.controlStatus',
+    'backbone.layoutmanager',
+    'templates'
 ], function ($, _, Backbone, Helpers, Handlebars) {
     return Backbone.Layout.extend({
 

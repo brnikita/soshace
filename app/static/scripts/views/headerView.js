@@ -12,7 +12,8 @@ define([
     'backbone',
     'utils/helpers',
     'jquery.cookie',
-    'backbone.layoutmanager'
+    'backbone.layoutmanager',
+    'templates'
 ], function ($, _, Backbone, Helpers) {
     return Backbone.Layout.extend({
         /**

@@ -10,8 +10,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'handlebars'
-], function ($, _, Backbone, Handlebars) {
+    'backbone.layoutmanager',
+    'templates'
+], function ($, _, Backbone) {
     return Backbone.Layout.extend({
 
         /**

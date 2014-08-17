@@ -12,7 +12,8 @@ define([
     'backbone',
     'utils/helpers',
     'backbone.validation',
-    'utils/backboneValidationExtension'
+    'utils/backboneValidationExtension',
+    'config'
 ], function ($, _, Backbone, Helpers) {
     return Backbone.Model.extend({
         /**

@@ -5,10 +5,6 @@
  * Soshace
  */
 define(function () {
-    if (typeof window.Soshace !== 'undefined') {
-        return;
-    }
-
     window.Soshace = {
         /**
          * Ссылка на экземпляр приложения

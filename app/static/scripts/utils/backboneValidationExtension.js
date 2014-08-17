@@ -8,7 +8,8 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'backbone.validation'
+    'backbone.validation',
+    'config'
 ], function ($, _, Backbone) {
     _.extend(Backbone.Validation.validators, {
         /**
