@@ -121,7 +121,7 @@ define([
          * @name PostEditView#elements
          * @type {string}
          */
-        template: Soshace.hbs['posts/postEdit'],
+        template: Soshace.hbs['posts/edit/postEdit'],
 
         /**
          * @constructor

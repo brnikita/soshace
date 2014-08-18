@@ -212,7 +212,7 @@ module.exports = Controller.extend({
             return;
         }
 
-        response.render('posts/postEdit', _.extend(requestParams, {
+        response.render('posts/edit/postEdit', _.extend(requestParams, {
             title: 'Edit Post',
             post: post,
             isNew: false,
@@ -232,7 +232,7 @@ module.exports = Controller.extend({
             response = this.response,
             requestParams = new RequestParams(request);
 
-        response.render('posts/postEdit', _.extend(requestParams, {
+        response.render('posts/edit/postEdit', _.extend(requestParams, {
             title: 'Edit Post',
             isPostEditTab: true,
             isNew: true,
