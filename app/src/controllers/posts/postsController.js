@@ -157,11 +157,9 @@ module.exports = Controller.extend({
         var request = this.request,
             response = this.response,
             requestParams = new RequestParams(request),
-            params = {
-                '_id': request.params._id
-            };
+            postId = request.params._id;
 
-        PostsModel.getPost(params).exec(function (error, post) {
+        PostsModel.getPost(postId, function (error, post) {
             if (post) {
                 response.render('posts/post', _.extend(requestParams, {
                     post: post,

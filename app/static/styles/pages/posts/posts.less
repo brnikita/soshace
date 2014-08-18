@@ -1,15 +1,25 @@
 .posts {
-  &__item {
-    background: #fff;
-    padding: 0 15px;
-    h1 {
-      a {
-        color: #333;
-      }
+  padding-top: 15px;
+  h1 {
+    a {
+      color: #333;
     }
+  }
+  &__preview {
+    padding: 0 15px;
+    background: #fff;
     &__footer {
       border-bottom: 1px solid #D3D3D3;
       padding-bottom: 15px;
     }
+    &:last-child {
+      .posts__preview__footer {
+        border-bottom: none;
+      }
+    }
+  }
+  &__full {
+    padding: 0 15px 15px 15px;
+    background: #fff;
   }
 }

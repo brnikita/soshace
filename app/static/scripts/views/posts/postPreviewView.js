@@ -16,6 +16,13 @@ define([
     return Backbone.Layout.extend({
 
         /**
+         * @field
+         * @name PostPreviewView#el
+         * @type {Boolean}
+         */
+        el: false,
+
+        /**
          * Модель деталей статьи
          *
          * @field
