@@ -13,6 +13,7 @@ define([
     'backbone',
     //Необходимо при сборке
     'controllers/posts/postsController',
+    'controllers/posts/postController',
     'controllers/posts/postEditController',
     'controllers/loginController',
     'controllers/logoutController',
