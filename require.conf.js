@@ -79,11 +79,6 @@ require.config(
             }
         },
         deps: [
-            'config',
-            'bootstrap',
-            'utils/handlebarsHelpers',
-            'google-analytics',
-            'yandex-metrika',
             'app'
         ]
     }

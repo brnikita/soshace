@@ -9,6 +9,7 @@ define([
     'collections/systemMessagesCollection',
     'views/headerView',
     'views/systemMessagesView',
+    'bootstrap',
     'backbone.layoutmanager',
     'config'
 ], function (

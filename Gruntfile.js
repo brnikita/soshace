@@ -175,7 +175,7 @@ module.exports = function (grunt) {
                     baseUrl: '<%= blog.dist %>/scripts/',
                     mainConfigFile: 'require.conf.js',
                     out: '<%= blog.dist %>/scripts/scripts.min.js',
-                    include: ['vendors/require.js', 'templates.js']
+                    include: ['vendors/require', 'google-analytics', 'yandex-metrika']
                 }
             }
         },
@@ -184,7 +184,7 @@ module.exports = function (grunt) {
         handlebars: {
             compile: {
                 options: {
-                    amd: ['handlebars', 'config'],
+                    amd: ['handlebars', 'utils/handlebarsHelpers', 'config'],
                     namespace: 'Soshace.hbs',
                     processName: function(filePath) {
                         return filePath.replace(/app\/views\/|\.hbs/g, '');
