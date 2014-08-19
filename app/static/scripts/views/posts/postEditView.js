@@ -94,7 +94,8 @@ define([
             commandBtn: null,
             imageUpload: null,
             deleteButton: null,
-            deletePostModal: null
+            deletePostModal: null,
+            status: null
         },
 
         /**
@@ -146,6 +147,33 @@ define([
         },
 
         /**
+         * Метод меняет статусы у статьи
+         *
+         * @method
+         * @name PostEditView#postCreatedHandler
+         * @param {String} status имя статуса, список статусов можно посмотреть в модели
+         * @returns {undefined}
+         */
+        changeStatus: function (status) {
+            var statuses = this.model.statuses,
+                $status = this.elements.status,
+                statusSettings,
+                statusClass,
+                statusTitle;
+
+            if (status) {
+                statusSettings = statuses[status];
+                statusClass = statusSettings.class;
+                statusTitle = statusSettings.title;
+                $status.removeClass('hide');
+                $status.addClass(statusClass).html(statusTitle);
+                return;
+            }
+
+            $status.addClass('hide');
+        },
+
+        /**
          * Метод обработчик создания статьи
          *
          * @method
@@ -154,6 +182,7 @@ define([
          */
         postCreatedHandler: function () {
             this.elements.deleteButton.removeClass('hide');
+            this.changeStatus('created');
         },
 
         /**
@@ -338,15 +367,15 @@ define([
         bindHotKeys: function (hotKeys) {
             $.each(hotKeys, _.bind(function (hotKey, command) {
                 this.elements.postBody.keydown(hotKey, _.bind(function () {
-                        this.execCommand(command, null);
-                        return false;
-                    }, this)).keyup(hotKey, _.bind(function (event) {
-                        if (this.elements.postBody.attr('contenteditable') &&
-                            this.elements.postBody.is(':visible')) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                    }, this));
+                    this.execCommand(command, null);
+                    return false;
+                }, this)).keyup(hotKey, _.bind(function (event) {
+                    if (this.elements.postBody.attr('contenteditable') &&
+                        this.elements.postBody.is(':visible')) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                }, this));
             }, this));
         },
 
@@ -468,8 +497,8 @@ define([
                     }));
                 }
             }).on('change', function () {
-                    _this.elements.postBody.append(preLoader);
-                });
+                _this.elements.postBody.append(preLoader);
+            });
         },
 
         /**
@@ -490,6 +519,7 @@ define([
             this.elements.linkUrlInput = $('.js-add-link-modal-link-url', this.elements.addLinkModal);
             this.elements.imageUpload = this.$('.js-upload-image input');
             this.elements.deleteButton = this.$('.js-post-delete');
+            this.elements.status = this.$('.js-post-status');
         },
 
         /**
@@ -555,7 +585,7 @@ define([
          * @name PostEditView#addListenersToRemovePostModal
          * @returns {undefined}
          */
-        addListenersToRemovePostModal: function(){
+        addListenersToRemovePostModal: function () {
             this.elements.deletePostModal.on('click',
                 '.js-modal-post-delete', _.bind(this.reallyDeletePost, this));
         },

@@ -57,11 +57,15 @@
             </div>
         </div>
 
-        <div class="post-edit__title">
-            <input id="post-title" class="js-post-title" type="text" name="post-title" placeholder="{{i18n 'Title'}}" value="{{post.title}}"/>
+        <div class="post-edit__content">
+            <div class="js-post-status post-edit__status label {{post.statusClass}}">{{post.status}}</div>
+            <div class="post-edit__title">
+                <input id="post-title" class="js-post-title" type="text" name="post-title" placeholder="{{i18n 'Title'}}" value="{{post.title}}"/>
+            </div>
+
+            <div id="post-body" class="post-edit__body js-post-body" contenteditable="true">{{{post.body}}}</div>
         </div>
 
-        <div id="post-body" class="post-edit__body js-post-body" contenteditable="true">{{{post.body}}}</div>
 
         {{#if editorDisabled}}
             <div class="disable-cover"></div>

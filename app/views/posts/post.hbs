@@ -1,5 +1,9 @@
 <div class="posts content-center">
-    <div class="posts__full clearfix {{ownerId}}">
+    <div class="posts__full clearfix" data-owner-id="{{ownerId}}">
+        <div class="posts__full__toolbar">
+            <a class="posts__full__toolbar__edit js-router-link" href="/{{post.locale}}/posts/{{post._id}}/edit">{{i18n 'Edit'}}</a>
+            <div class="posts__full__toolbar__status">{{status}}</div>
+        </div>
         <div class="js-meta-information"></div>
         <h1>{{post.title}}</h1>
         <div>{{{post.body}}}</div>

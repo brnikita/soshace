@@ -1,4 +1,8 @@
 <div class="posts__preview clearfix" data-owner-id="{{ownerId}}">
+    <div class="posts__preview__toolbar">
+        <a class="posts__preview__toolbar__edit js-router-link" href="/{{locale}}/posts/{{_id}}/edit">{{i18n 'Edit'}}</a>
+        <div class="posts__preview__toolbar__status label {{statusClass}}">{{status}}</div>
+    </div>
     <h1>
         <a class="js-router-link"
            href="/{{locale}}/posts/{{_id}}">{{title}}</a>

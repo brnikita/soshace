@@ -38,6 +38,40 @@ define([
         },
 
         /**
+         * Список статусов статьи
+         *
+         * @field
+         * @name PostModel#statuses
+         * @type {Object}
+         */
+        statuses: {
+            created: {
+                title: 'Post Created',
+                class: 'label-success'
+            },
+            editing: {
+                title: 'Posts is editing',
+                class: 'label-default'
+            },
+            sent: {
+                title: 'Post sent',
+                class: 'label-primary'
+            },
+            published: {
+                title: 'Post published',
+                class: 'label-success'
+            },
+            denied: {
+                title: 'Publication denied',
+                class: 'label-danger'
+            },
+            comments: {
+                title: 'Some comments',
+                class: 'label-warning'
+            }
+        },
+
+        /**
          * @method
          * @name PostModel#url
          * @returns {string}
