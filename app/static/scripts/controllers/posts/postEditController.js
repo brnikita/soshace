@@ -42,6 +42,9 @@ define([
              */
             initialize: function () {
                 this.model = new PostModel();
+                this.view = new PostEditView({
+                    model: this.model
+                });
             },
 
 
@@ -53,14 +56,13 @@ define([
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = new PostEditView({
-                        model: this.model,
-                        $el: $('.js-content-first-load')
-                    });
+                var app = Soshace.app,
+                    view = this.view;
 
+                view.$el = app.elements.contentFirstLoad;
+                view.delegateEvents();
                 view.afterRender();
                 view.setDataToModelFromView(this.routeParams);
-                this.view = view;
             },
 
             /**
@@ -71,12 +73,9 @@ define([
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = new PostEditView({
-                        model: this.model
-                    }),
+                var view = this.view,
                     app = Soshace.app;
 
-                this.view = view;
                 app.setView('.js-content', view).render();
             }
         });

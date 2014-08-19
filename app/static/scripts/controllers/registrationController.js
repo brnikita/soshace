@@ -43,6 +43,9 @@ define([
              */
             initialize: function () {
                 this.model = new RegistrationModel();
+                this.view = new RegistrationView({
+                    model: this.model
+                });
             },
 
 
@@ -54,13 +57,12 @@ define([
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = new RegistrationView({
-                    model: this.model,
-                    $el: $('.js-content-first-load')
-                });
+                var app = Soshace.app,
+                    view = this.view;
 
+                view.$el = app.elements.contentFirstLoad;
+                view.delegateEvents();
                 view.afterRender();
-                this.view = view;
             },
 
             /**
@@ -71,9 +73,7 @@ define([
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = new RegistrationView({
-                        model: this.model
-                    }),
+                var view = this.view,
                     app = Soshace.app;
 
                 this.view = view;

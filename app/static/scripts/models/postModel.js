@@ -50,7 +50,6 @@ define([
                 return url.replace('0', _id);
             }
 
-            this.set('locale', Helpers.getLocale());
             return url.replace('0', '');
         },
 
@@ -60,6 +59,7 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
+            this.set('locale', Helpers.getLocale(), {silent: true});
         },
 
         /**
@@ -77,6 +77,7 @@ define([
         patchModel: function(){
             var _this = this,
                 options = {
+                    silent: true,
                     success: _.bind(_this.modelSaveSuccess, _this),
                     error: _.bind(_this.modelSaveFail, _this)
                 },
@@ -104,7 +105,7 @@ define([
                 postUrl;
 
             if(postId){
-                this.set('_id', postId);
+                this.set('_id', postId, {silent: true});
                 postUrl = '/' + locale + '/posts/' + postId + '/edit';
                 Backbone.history.navigate(postUrl);
                 this.trigger('postCreated');
@@ -131,7 +132,7 @@ define([
          * @returns {jQuery.Deferred}
          */
         getPost: function (postId) {
-            this.set('_id', postId);
+            this.set('_id', postId, {silent: true});
             return this.fetch();
         }
     });

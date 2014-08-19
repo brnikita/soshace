@@ -55,7 +55,7 @@ define([
          */
         elements: {
             title: null,
-            content: null
+            contentFirstLoad: null
         },
 
         /**
@@ -131,7 +131,7 @@ define([
          */
         setElements: function () {
             this.elements.title = $('title');
-            this.elements.content = $('.js-content');
+            this.elements.contentFirstLoad = $('.js-content-first-load');
         },
 
         /**

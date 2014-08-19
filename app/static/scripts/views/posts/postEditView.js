@@ -228,7 +228,7 @@ define([
         },
 
         /**
-         * Метод сохраняет тело стсатьи  в модели
+         * Метод сохраняет тело статьи  в модели
          *
          * @method
          * @name PostEditView#saveBodyToModel

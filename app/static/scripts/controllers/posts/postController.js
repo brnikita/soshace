@@ -43,6 +43,9 @@ define([
              */
             initialize: function () {
                 this.model = new PostModel();
+                this.view = new PostView({
+                    model: this.model
+                });
             },
 
 
@@ -54,13 +57,12 @@ define([
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = new PostView({
-                    model: this.model,
-                    $el: $('.js-content-first-load')
-                });
+                var app = Soshace.app,
+                    view = this.view;
 
+                view.$el = app.elements.contentFirstLoad;
+                view.delegateEvents();
                 view.afterRender();
-                this.view = view;
             },
 
             /**
@@ -73,9 +75,7 @@ define([
             secondLoad: function () {
                 var params = this.routeParams,
                     postId = params[1],
-                    view = new PostView({
-                        model: this.model
-                    }),
+                    view = this.view,
                     app = Soshace.app;
 
                 this.model.getPost(postId).

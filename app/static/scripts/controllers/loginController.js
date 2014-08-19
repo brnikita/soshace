@@ -38,6 +38,9 @@ define(['utils/controller', 'models/loginModel', 'views/loginView'],
              */
             initialize: function () {
                 this.model = new LoginModel();
+                this.view = new LoginView({
+                    model: this.model
+                });
             },
 
 
@@ -49,12 +52,12 @@ define(['utils/controller', 'models/loginModel', 'views/loginView'],
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = new LoginView({
-                    model: this.model,
-                    $el: $('.js-content-first-load')
-                });
+                var app = Soshace.app,
+                    view = this.view;
+
+                view.$el = app.elements.contentFirstLoad;
+                view.delegateEvents();
                 view.afterRender();
-                this.view = view;
             },
 
             /**
@@ -65,9 +68,7 @@ define(['utils/controller', 'models/loginModel', 'views/loginView'],
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = new LoginView({
-                        model: this.model
-                    }),
+                var view = this.view,
                     app = Soshace.app;
 
                 this.view = view;

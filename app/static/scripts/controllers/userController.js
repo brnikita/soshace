@@ -53,6 +53,10 @@ define([
             initialize: function () {
                 this.model = new UserModel();
                 this.postsCollection = new PostsCollection();
+                this.view = new UserView({
+                    model: this.model,
+                    postsCollection: this.postsCollection
+                });
             },
 
 
@@ -64,13 +68,12 @@ define([
              * @returns {undefined}
              */
             firstLoad: function () {
-                var view = new UserView({
-                    model: this.model,
-                    $el: $('.js-content-first-load')
-                });
+                var app = Soshace.app,
+                    view = this.view;
 
+                view.$el = app.elements.contentFirstLoad;
+                view.delegateEvents();
                 view.afterRender();
-                this.view = view;
             },
 
             /**
@@ -84,10 +87,7 @@ define([
              */
             secondLoad: function () {
                 var params = this.routeParams,
-                    view = new UserView({
-                        model: this.model,
-                        postsCollection: this.postsCollection
-                    }),
+                    view = this.view,
                     app = Soshace.app;
 
                 this.model.set({
