@@ -4,76 +4,83 @@
 var _ = require('underscore'),
     Mongoose = require('mongoose'),
     Schema = Mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+    ObjectId = Schema.ObjectId,
+//Поля, которые можно обновлять
+    fieldsCanBeUpdated = [
+        'title',
+        'body',
+        'category',
+        'tags'
+    ],
 
-/**
- * Класс для работы с моделью постов
- *
- * @class
- * @name PostsShema
- * @type {Schema}
- */
-var PostsShema = new Schema({
-    //Время последнего изменения
-    //timestamp
-    updated: {
-        type: String
-    },
-    //Время публикации
-    //timestamp
-    published: {
-        type: Boolean
-    },
-    //отображать ли пост в общем доступе
-    public: {
-        type: Boolean,
-        default: false,
-        //поле не может быть изменено пользователем
-        readonly: true
-    },
-    //id пользователя, к которому относится сообщение
-    ownerId: {
-        type: ObjectId,
-        default: null,
-        //поле не может быть изменено пользователем
-        readonly: true
-    },
-    locale: {
-        default: 'en',
-        type: String
-    },
-    //Загловок поста
-    title: {
-        type: String
-    },
-    //Категория, используется в урлах
-    category: {
-        type: String
-    },
-    //Тэги для подбора
-    tags: {
-        type: Array,
-        default: null
-    },
-    //Опубликовано, отправлено и т.д.
-    status: {
-        type: String
-    },
-    //Описание для выдачи
-    description: {
-        type: String
-    },
-    //Тело поста
-    body: {
-        type: String
-    }
-});
+    /**
+     * Класс для работы с моделью постов
+     *
+     * @class
+     * @name PostsShema
+     * @type {Schema}
+     */
+        PostsShema = new Schema({
+        //Время последнего изменения
+        //timestamp
+        updated: {
+            type: String
+        },
+        //Время публикации
+        //timestamp
+        published: {
+            type: Boolean
+        },
+        //отображать ли пост в общем доступе
+        public: {
+            type: Boolean,
+            default: false,
+            //поле не может быть изменено пользователем
+            readonly: true
+        },
+        //id пользователя, к которому относится сообщение
+        ownerId: {
+            type: ObjectId,
+            default: null,
+            //поле не может быть изменено пользователем
+            readonly: true
+        },
+        locale: {
+            default: 'en',
+            type: String
+        },
+        //Загловок поста
+        title: {
+            type: String
+        },
+        //Категория, используется в урлах
+        category: {
+            type: String
+        },
+        //Тэги для подбора
+        tags: {
+            type: Array,
+            default: null
+        },
+        //Опубликовано, отправлено и т.д.
+        status: {
+            type: String
+        },
+        //Описание для выдачи
+        description: {
+            type: String
+        },
+        //Тело поста
+        body: {
+            type: String
+        }
+    });
 
 /**
  * Формируем описание поста из тела поста
  *
  * @method
- * @name PostEditController#_getPostDescription
+ * @name getPostDescription
  * @param {String} postBody тело поста
  * @returns {*}
  */
@@ -82,12 +89,55 @@ function getPostDescription(postBody) {
 }
 
 /**
+ * Метод проверяет сооветствие пришедшего типа
+ * значения поля типу установленому в модели
+ *
+ * @method
+ * @name checkFieldType
+ * @param {String} field
+ * @param {*} value
+ * @returns {boolean} вовращает true, если поле соответствует типу в модели
+ */
+function checkFieldType(field, value) {
+    var postPaths = PostsShema.paths,
+        fieldSetting = postPaths[field];
+
+    if (fieldSetting.type === String) {
+        return typeof value === 'string';
+    }
+
+    if (fieldSetting.type === Array) {
+        return value instanceof Array;
+    }
+
+    return true;
+}
+
+/**
+ * Оставляем в модели только необходимые данные
+ */
+PostsShema.pre('save', function (next) {
+    var postPaths = PostsShema.paths;
+
+    _.each(this, _.bind(function (value, field) {
+        if (typeof postPaths[field] === 'undefined') {
+            return;
+        }
+
+        if (!checkFieldType(field, value)) {
+            this[field] = undefined;
+        }
+    }, this));
+    next();
+});
+
+/**
  * Добавляем описание
  */
 PostsShema.pre('save', function (next) {
     var postBody = this.body;
 
-    if(postBody){
+    if (postBody) {
         this.description = getPostDescription(postBody);
     }
     next();
@@ -112,13 +162,13 @@ PostsShema.statics.getPosts = function (locale, callback) {
         description: 1,
         locale: 1
     }).exec(function (error, posts) {
-        if (error) {
-            callback({error: 'Server is too busy, try later.', code: 503});
-            return;
-        }
+            if (error) {
+                callback({error: 'Server is too busy, try later.', code: 503});
+                return;
+            }
 
-        callback(null, posts);
-    });
+            callback(null, posts);
+        });
 };
 
 /**
@@ -130,29 +180,11 @@ PostsShema.statics.getPosts = function (locale, callback) {
  * @returns {Boolean} false - ошибка
  */
 PostsShema.statics.isUpdateFieldsValid = function (update) {
-    var isValid = true,
-        postPaths = PostsShema.paths;
+    var isValid = true;
 
     _.every(update, function (value, field) {
-        var fieldSetting = postPaths[field];
-
-        if (fieldSetting.type === String) {
-            if (typeof value === 'string') {
-                return true;
-            }
-            isValid = false;
-            return false;
-        }
-
-        if (fieldSetting.type === Array) {
-            if (value instanceof Array) {
-                return true;
-            }
-            isValid = false;
-            return false;
-        }
-
-        return true;
+        isValid = checkFieldType(field, value);
+        return isValid;
     });
 
     return isValid;
@@ -168,7 +200,8 @@ PostsShema.statics.isUpdateFieldsValid = function (update) {
  * @returns {Object} очищенный объект обновления
  */
 PostsShema.statics.clearUpdate = function (update) {
-    return _.pick(update, 'title', 'body', 'category', 'tags');
+    var pickArguments = [update].concat(fieldsCanBeUpdated);
+    return _.pick.apply(_, pickArguments);
 };
 
 /**
@@ -206,7 +239,7 @@ PostsShema.statics.updatePost = function (postId, profileId, update, callback) {
         public: false
     };
 
-    this.update(updateRequest, {$set: update}, _.bind(function(error, post){
+    this.update(updateRequest, {$set: update}, _.bind(function (error, post) {
         this.updatePostHandler(error, post, callback);
     }, this));
 };
@@ -318,14 +351,14 @@ PostsShema.statics.getPost = function (postId, callback) {
         title: 1,
         body: 1,
         locale: 1
-    }).exec(function(error, post){
-        if(error){
-            callback({error: 'Server is too busy, try later.', code: 503});
-            return;
-        }
+    }).exec(function (error, post) {
+            if (error) {
+                callback({error: 'Server is too busy, try later.', code: 503});
+                return;
+            }
 
-        callback(null, post);
-    });
+            callback(null, post);
+        });
 };
 
 /**
@@ -338,8 +371,8 @@ PostsShema.statics.getPost = function (postId, callback) {
  * @return {undefined}
  */
 PostsShema.statics.removePost = function (postId, callback) {
-    this.findOneAndRemove({_id: postId}, null, function(error){
-        if(error){
+    this.findOneAndRemove({_id: postId}, null, function (error) {
+        if (error) {
             callback({error: 'Server is too busy, try later.', code: 503});
             return;
         }

@@ -71,7 +71,6 @@ define([
             'click .js-simple-command': 'applyCommand',
             'mouseup .js-post-body': 'saveSelection',
             'click .js-add-link': 'showAddLinkModal',
-            'click .js-add-link-save': 'saveLinkHandler',
             'click .js-post-delete': 'deletePost'
 
         },
@@ -93,7 +92,8 @@ define([
             window: null,
             commandBtn: null,
             imageUpload: null,
-            deleteButton: null
+            deleteButton: null,
+            deletePostModal: null
         },
 
         /**
@@ -151,7 +151,7 @@ define([
          * @name PostEditView#postCreatedHandler
          * @returns {undefined}
          */
-        postCreatedHandler: function(){
+        postCreatedHandler: function () {
             this.elements.deleteButton.removeClass('hide');
         },
 
@@ -162,15 +162,26 @@ define([
          * @name PostEditView#deletePost
          * @returns {undefined}
          */
-        deletePost: function(){
-            var _this = this;
+        deletePost: function () {
+            this.elements.deletePostModal.modal({show: true});
+        },
 
+        /**
+         * Метод обработчик подтверждения удаления статьи в модальном окне
+         *
+         * @method
+         * @name PostEditView#reallyDeletePost
+         * @returns {undefined}
+         */
+        reallyDeletePost: function () {
+            var _this = this;
             this.model.destroy({
-                contentType : 'application/json',
-                dataType : 'text',
+                contentType: 'application/json',
+                dataType: 'text',
                 success: _.bind(_this.destroySuccess, _this),
                 error: _.bind(_this.destroyFail, _this)
             });
+            this.elements.deletePostModal.modal('hide');
         },
 
         /**
@@ -180,7 +191,7 @@ define([
          * @name PostEditView#destroySuccess
          * @returns {undefined}
          */
-        destroySuccess: function(){
+        destroySuccess: function () {
             var model = this.model,
                 locale = Helpers.getLocale(),
                 postUrl = '/' + locale + '/posts/' + 'new';
@@ -197,7 +208,7 @@ define([
          * @name PostEditView#destroyFail
          * @returns {undefined}
          */
-        destroyFail: function(){
+        destroyFail: function () {
 
         },
 
@@ -326,15 +337,15 @@ define([
         bindHotKeys: function (hotKeys) {
             $.each(hotKeys, _.bind(function (hotKey, command) {
                 this.elements.postBody.keydown(hotKey, _.bind(function () {
-                    this.execCommand(command, null);
-                    return false;
-                }, this)).keyup(hotKey, _.bind(function (event) {
-                    if (this.elements.postBody.attr('contenteditable') &&
-                        this.elements.postBody.is(':visible')) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                }, this));
+                        this.execCommand(command, null);
+                        return false;
+                    }, this)).keyup(hotKey, _.bind(function (event) {
+                        if (this.elements.postBody.attr('contenteditable') &&
+                            this.elements.postBody.is(':visible')) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                    }, this));
             }, this));
         },
 
@@ -456,8 +467,8 @@ define([
                     }));
                 }
             }).on('change', function () {
-                _this.elements.postBody.append(preLoader);
-            });
+                    _this.elements.postBody.append(preLoader);
+                });
         },
 
         /**
@@ -473,8 +484,9 @@ define([
             this.elements.commandBtn = this.$('.js-command');
             this.elements.postBody = this.$('.js-post-body');
             this.elements.postTitle = this.$('.js-post-title');
-            this.elements.addLinkModal = this.$('.js-add-link-modal');
-            this.elements.linkUrlInput = this.$('.js-add-link-modal-link-url');
+            this.elements.addLinkModal = $(Soshace.hbs['posts/edit/addLinkModal']());
+            this.elements.deletePostModal = $(Soshace.hbs['posts/edit/deletePostModal']());
+            this.elements.linkUrlInput = $('.js-add-link-modal-link-url', this.elements.addLinkModal);
             this.elements.imageUpload = this.$('.js-upload-image input');
             this.elements.deleteButton = this.$('.js-post-delete');
         },
@@ -524,6 +536,30 @@ define([
         },
 
         /**
+         * Метод добавляет слушатели на модальное окно добавлтения ссылки
+         *
+         * @method
+         * @name PostEditView#addListenersToLinkModal
+         * @returns {undefined}
+         */
+        addListenersToLinkModal: function () {
+            this.elements.addLinkModal.on('click', '.js-add-link-save',
+                _.bind(this.saveLinkHandler, this));
+        },
+
+        /**
+         * Метод навешивает слушатели на модальное окно подтверждения удаления статьи
+         *
+         * @method
+         * @name PostEditView#addListenersToRemovePostModal
+         * @returns {undefined}
+         */
+        addListenersToRemovePostModal: function(){
+            this.elements.deletePostModal.on('click',
+                '.js-modal-post-delete', _.bind(this.reallyDeletePost, this));
+        },
+
+        /**
          * @method
          * @name PostEditView#afterRender
          * @returns {undefined}
@@ -531,6 +567,8 @@ define([
         afterRender: function () {
             this.setElements();
             this.addImageButtonListener();
+            this.addListenersToLinkModal();
+            this.addListenersToRemovePostModal();
             this.toolbarInitOffset = this.elements.toolbar.offset();
             this.elements.window.on('scroll', _.bind(this.windowScrollHandler, this));
         },

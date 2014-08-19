@@ -192,10 +192,10 @@ module.exports = function (grunt) {
                 },
                 files: {
                     '<%= blog.dist %>/scripts/templates.js': [
-                        '<%= blog.app %>/views/auth/*.hbs',
-                        '<%= blog.app %>/views/messages/*.hbs',
-                        '<%= blog.app %>/views/partials/*.hbs',
-                        '<%= blog.app %>/views/posts/*.hbs',
+                        '<%= blog.app %>/views/auth/**/*.hbs',
+                        '<%= blog.app %>/views/messages/**/*.hbs',
+                        '<%= blog.app %>/views/partials/**/*.hbs',
+                        '<%= blog.app %>/views/posts/**/*.hbs',
                         '<%= blog.app %>/views/user.hbs'
                     ]
                 }

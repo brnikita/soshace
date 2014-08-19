@@ -135,5 +135,7 @@
 	"Public": "Public",
     "Publish": "Опубликовать",
     "Forgot your password?": "Забыли пароль?",
-    "Delete": "Удалить"
+    "Delete": "Удалить",
+    "Do you want to remove this post?": "Вы действительно хотите удалить эту статью?",
+    "Yes": "Да"
 }

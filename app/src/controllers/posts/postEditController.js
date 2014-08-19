@@ -12,6 +12,23 @@ var Controller = srcRequire('common/controller'),
  */
 module.exports = Controller.extend({
     /**
+     * Список полей, которые можно сохранить
+     *
+     * @field
+     * @name PostEditController#fieldsCanBeSaved
+     * @type {Array}
+     */
+    fieldsCanBeSaved: [
+        'ownerId',
+        'locale',
+        'title',
+        'category',
+        'tags',
+        'description',
+        'body'
+    ],
+
+    /**
      * Обрабатываем запрос на добавление поста
      *
      * @public
@@ -39,6 +56,7 @@ module.exports = Controller.extend({
         profile = requestParams.profile;
         postData.ownerId = profile._id;
         postData.locale = profile.locale;
+        postData = _.pick(postData, this.fieldsCanBeSaved);
         post = new PostsModel(postData);
         post.save(_.bind(this.postSaveHandler, this));
     },
