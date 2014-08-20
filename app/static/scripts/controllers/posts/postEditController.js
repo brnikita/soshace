@@ -6,10 +6,10 @@
  * @class PostEditController
  */
 define([
-        'utils/controller',
-        'models/postModel',
-        'views/posts/postEditView'
-    ],
+    'utils/controller',
+    'models/postModel',
+    'views/posts/postEditView'
+],
     function (Controller, PostModel, PostEditView) {
         return Controller.extend({
             /**
@@ -73,10 +73,15 @@ define([
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = this.view,
+                var params = this.routeParams,
+                    postId = params[1],
+                    view = this.view,
                     app = Soshace.app;
 
-                app.setView('.js-content', view).render();
+                this.model.getPost(postId).
+                    done(function () {
+                        app.setView('.js-content', view).render();
+                    });
             }
         });
     });

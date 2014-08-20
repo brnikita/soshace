@@ -49,6 +49,10 @@ define([
                 title: 'Post Created',
                 class: 'label-success'
             },
+            saved: {
+                title: 'Post Saved',
+                class: 'label-primary'
+            },
             editing: {
                 title: 'Posts is editing',
                 class: 'label-default'
@@ -80,7 +84,7 @@ define([
             var url = Soshace.urls.api.post,
                 _id = this.get('_id');
 
-            if(_id){
+            if (_id) {
                 return url.replace('0', _id);
             }
 
@@ -108,7 +112,7 @@ define([
          * @name PostModel#patchModel
          * @returns {undefined}
          */
-        patchModel: function(){
+        patchModel: function () {
             var _this = this,
                 options = {
                     silent: true,
@@ -117,7 +121,7 @@ define([
                 },
                 postId = this.get('_id');
 
-            if(postId){
+            if (postId) {
                 options.patch = true;
             }
 
@@ -133,17 +137,20 @@ define([
          * @param {Object} response ответ сервера
          * @returns {undefined}
          */
-        modelSaveSuccess: function(model, response){
+        modelSaveSuccess: function (model, response) {
             var postId = response._id,
                 locale = this.get('locale'),
                 postUrl;
 
-            if(postId){
+            if (postId) {
                 this.set('_id', postId, {silent: true});
                 postUrl = '/' + locale + '/posts/' + postId + '/edit';
                 Backbone.history.navigate(postUrl);
                 this.trigger('postCreated');
+                return;
             }
+
+            this.trigger('postPatched');
         },
 
         /**
@@ -153,7 +160,7 @@ define([
          * @name PostModel#modelSaveFail
          * @returns {undefined}
          */
-        modelSaveFail: function(){
+        modelSaveFail: function () {
 
         },
 
@@ -162,12 +169,17 @@ define([
          *
          * @method
          * @name PostModel#initialize
-         * @param {String} postId id поста
+         * @param {String} [postId] id поста
          * @returns {jQuery.Deferred}
          */
         getPost: function (postId) {
-            this.set('_id', postId, {silent: true});
-            return this.fetch();
+            if (typeof postId === 'string') {
+                this.set('_id', postId, {silent: true});
+                return this.fetch();
+            }
+
+            this.set(this.default, {silent: true});
+            return $.Deferred().resolve();
         }
     });
 });
