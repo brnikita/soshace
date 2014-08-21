@@ -198,7 +198,7 @@ define([
          */
         postCreatedHandler: function () {
             this.elements.deleteButton.removeClass('hide');
-            this.changeStatus('created');
+            this.changeStatus('saved');
         },
 
         /**

@@ -45,10 +45,6 @@ define([
          * @type {Object}
          */
         statuses: {
-            created: {
-                title: 'Post created',
-                class: 'label-success'
-            },
             saved: {
                 title: 'Post saved',
                 class: 'label-primary'
