@@ -143,6 +143,20 @@ define([
         },
 
         /**
+         * TODO: добавить валидацию
+         * TODO: кнопка 'опубликовать' должна быть доступна только для статьи в статусе 'сохранена'
+         *
+         * Метод обработчик клика по кнопке опубликовать
+         *
+         * @method
+         * @name PostEditView#postPublish
+         * @returns {undefined}
+         */
+        postPublish: function(){
+            this.model.set('status', 'sent');
+        },
+
+        /**
          * Метод добавляет слушатели на модель
          *
          * @method
@@ -157,6 +171,7 @@ define([
             model.on('change', _.bind(patchModelDebounce, model));
             model.on('postCreated', _.bind(this.postCreatedHandler, this));
             model.on('postPatched', _.bind(this.postPatchHandler, this));
+            model.on('statusAccepted', _.bind(this.statusAcceptedHandler, this));
         },
 
         /**
@@ -168,6 +183,22 @@ define([
          */
         postPatchHandler: function () {
             this.changeStatus('saved');
+        },
+
+        /**
+         * TODO: доделать
+         * TODO: после публикации должно выодиться уведомление об успешной отправке на пбликацию
+         * а статья должна быть задизейблена
+         *
+         * Метод обработчик изменения статуса статьи
+         * Когда статьия отправляет на публикацию
+         *
+         * @method
+         * @name PostEditView#statusAcceptedHandler
+         * @returns {undefined}
+         */
+        statusAcceptedHandler: function(){
+
         },
 
         /**

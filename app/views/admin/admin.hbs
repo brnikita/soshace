@@ -1,0 +1,18 @@
+<div class="content-center">
+    <h1>Админка</h1>
+    {{#if posts}}
+        <div class="js-posts-list posts clearfix">
+            {{#if backend}}
+                {{#each posts}}
+                    {{> postPreview}}
+                {{/each}}
+            {{/if}}
+        </div>
+    {{else}}
+        <div class="box-message box-message-warning">
+            <h3>
+                {{i18n 'No posts to check'}}
+            </h3>
+        </div>
+    {{/if}}
+</div>

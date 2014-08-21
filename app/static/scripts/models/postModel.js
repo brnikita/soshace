@@ -135,6 +135,7 @@ define([
          */
         modelSaveSuccess: function (model, response) {
             var postId = response._id,
+                statusAccepted = response.statusAcceped,
                 locale = this.get('locale'),
                 postUrl;
 
@@ -143,6 +144,11 @@ define([
                 postUrl = '/' + locale + '/posts/' + postId + '/edit';
                 Backbone.history.navigate(postUrl);
                 this.trigger('postCreated');
+                return;
+            }
+
+            if(statusAccepted) {
+                this.trigger('statusAccepted');
                 return;
             }
 
@@ -161,6 +167,18 @@ define([
         },
 
         /**
+         * Метод устанавливает значение в модели по умолчанию
+         *
+         * @method
+         * @name PostModel#setToDefault
+         * @returns {undefined}
+         */
+        setToDefault: function(){
+            this.set(this.default, {silent: true});
+            this.set('locale', Helpers.getLocale(), {silent: true});
+        },
+
+        /**
          * Метод получает статью
          *
          * @method
@@ -174,7 +192,7 @@ define([
                 return this.fetch({silent: true});
             }
 
-            this.set(this.default, {silent: true});
+            this.setToDefault();
             return $.Deferred().resolve();
         }
     });

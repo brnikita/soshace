@@ -10,7 +10,8 @@ var _ = require('underscore'),
         'title',
         'body',
         'category',
-        'tags'
+        'tags',
+        'status'
     ],
 
     /**
@@ -20,7 +21,7 @@ var _ = require('underscore'),
      * @name PostsShema
      * @type {Schema}
      */
-        PostsShema = new Schema({
+    PostsShema = new Schema({
         //Время последнего изменения
         //timestamp
         updated: {
@@ -77,6 +78,10 @@ var _ = require('underscore'),
     });
 
 /**
+ * TODO: у статьи могут быть картинки, тогда описание
+ * полуится слишком большм, поэтому надо по <readmore/>
+ * Который будет ставиться на клиенте
+ *
  * Формируем описание поста из тела поста
  *
  * @method
@@ -164,6 +169,38 @@ PostsShema.statics.getPosts = function (locale, callback) {
         description: 1,
         locale: 1
     }).exec(function (error, posts) {
+        if (error) {
+            callback({error: 'Server is too busy, try later.', code: 503});
+            return;
+        }
+
+        callback(null, posts);
+    });
+};
+
+/**
+ * Получаем список постов со статусом sent
+ * Статьи, которые были отправлены на публикацию
+ *
+ * @method
+ * @name PostsShema.getStatusSentPosts
+ * @param {String} locale локаль
+ * @param {Function} callback
+ * @return {Cursor}
+ */
+PostsShema.statics.getStatusSentPosts = function (locale, callback) {
+    return this.find({
+        'locale': locale,
+        'public': false,
+        'status': 'sent'
+    }, {
+        _id: 1,
+        title: 1,
+        description: 1,
+        locale: 1
+    }).
+        sort({updated: -1}).
+        exec(function (error, posts) {
             if (error) {
                 callback({error: 'Server is too busy, try later.', code: 503});
                 return;
@@ -218,7 +255,8 @@ PostsShema.statics.clearUpdate = function (update) {
  * @return {undefined}
  */
 PostsShema.statics.updatePost = function (postId, profileId, update, callback) {
-    var updateRequest;
+    var updateRequest,
+        status;
 
     if (typeof update !== 'object') {
         callback({error: 'Bad Request', code: 400});
@@ -226,6 +264,11 @@ PostsShema.statics.updatePost = function (postId, profileId, update, callback) {
     }
 
     update = this.clearUpdate(update);
+    status = update.status;
+    if (typeof status !== 'undefined') {
+        this.updateStatus(postId, profileId, status, callback);
+        return;
+    }
 
     if (!this.isUpdateFieldsValid(update)) {
         callback({error: 'Bad Request', code: 400});
@@ -268,6 +311,31 @@ PostsShema.statics.updatePostHandler = function (error, post, callback) {
     }
 
     callback(null);
+};
+
+/**
+ * TODO: добавить проверки на валидность статуса
+ *
+ * Метод обновляет статус статьи
+ *
+ * @method
+ * @name PostsShema.updateStatus
+ * @param {String} postId id статьи
+ * @param {String} profileId id пользователя
+ * @param {String} status пришедший статус статьи
+ * @param {Function} callback
+ * @return {undefined}
+ */
+PostsShema.statics.updateStatus = function (postId, profileId, status, callback) {
+    var updateRequest = {
+        _id: postId,
+        ownerId: profileId,
+        public: false
+    };
+
+    this.update(updateRequest, {$set: {status: status}}, _.bind(function (error, post) {
+        this.updatePostHandler(error, post, callback);
+    }, this));
 };
 
 /**
@@ -330,13 +398,13 @@ PostsShema.statics.getUserPosts = function (ownerId, callback) {
         ownerId: ownerId,
         public: true
     }).exec(function (error, posts) {
-            if (error) {
-                callback({error: 'Server is too busy, try later.', code: 503});
-                return;
-            }
+        if (error) {
+            callback({error: 'Server is too busy, try later.', code: 503});
+            return;
+        }
 
-            callback(null, posts);
-        });
+        callback(null, posts);
+    });
 };
 
 /**
@@ -355,13 +423,13 @@ PostsShema.statics.getPost = function (postId, callback) {
         body: 1,
         locale: 1
     }).exec(function (error, post) {
-            if (error) {
-                callback({error: 'Server is too busy, try later.', code: 503});
-                return;
-            }
+        if (error) {
+            callback({error: 'Server is too busy, try later.', code: 503});
+            return;
+        }
 
-            callback(null, post);
-        });
+        callback(null, post);
+    });
 };
 
 /**
