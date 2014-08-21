@@ -24,7 +24,7 @@ var _ = require('underscore'),
         //Время последнего изменения
         //timestamp
         updated: {
-            type: String
+            type: Date
         },
         //Время публикации
         //timestamp
@@ -132,7 +132,7 @@ PostsShema.pre('save', function (next) {
 });
 
 /**
- * Добавляем описание
+ * Добавляем описание и время обновления
  */
 PostsShema.pre('save', function (next) {
     var postBody = this.body;
@@ -140,6 +140,8 @@ PostsShema.pre('save', function (next) {
     if (postBody) {
         this.description = getPostDescription(postBody);
     }
+
+    this.updated = new Date();
     next();
 });
 
@@ -232,7 +234,7 @@ PostsShema.statics.updatePost = function (postId, profileId, update, callback) {
     if (update.body) {
         update.description = getPostDescription(update.body);
     }
-
+    update.updated = new Date();
     updateRequest = {
         _id: postId,
         ownerId: profileId,
@@ -302,6 +304,7 @@ PostsShema.statics.getProfilePost = function (postId, ownerId, callback) {
  */
 PostsShema.statics.getProfilePosts = function (ownerId, callback) {
     this.find({ownerId: ownerId}).
+        sort({updated: -1}).
         exec(function (error, posts) {
             if (error) {
                 callback({error: 'Server is too busy, try later.', code: 503});

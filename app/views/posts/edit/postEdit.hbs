@@ -40,7 +40,8 @@
                             </a>
                         </div>
                         <div class="btn-group">
-                            <a class="btn btn-default js-command js-add-link" data-edit="CreateLink" title="{{i18n 'Hyperlink'}}">
+                            <a class="btn btn-default js-command js-add-link" data-edit="CreateLink"
+                               title="{{i18n 'Hyperlink'}}">
                                 <i class="fa fa-link"></i>
                             </a>
                             <a class="btn btn-default js-command js-simple-command" data-edit="unlink"
@@ -50,6 +51,7 @@
                         </div>
                     </div>
                     <div class="post-edit__toolbar__submit-buttons">
+                        <div class="post-edit__status js-post-status"></div>
                         <button class="btn btn-success js-post-publish">{{i18n 'Publish'}}</button>
                         <button class="btn btn-danger js-post-delete {{#if isNew}}hide{{/if}}">{{i18n 'Delete'}}</button>
                     </div>
@@ -58,9 +60,9 @@
         </div>
 
         <div class="post-edit__content">
-            <div class="js-post-status post-edit__status label {{post.statusClass}}">{{post.status}}</div>
             <div class="post-edit__title">
-                <input id="post-title" class="js-post-title" type="text" name="post-title" placeholder="{{i18n 'Title'}}" value="{{post.title}}"/>
+                <input id="post-title" class="js-post-title" type="text" name="post-title"
+                       placeholder="{{i18n 'Title'}}" value="{{post.title}}"/>
             </div>
 
             <div id="post-body" class="post-edit__body js-post-body" contenteditable="true">{{{post.body}}}</div>

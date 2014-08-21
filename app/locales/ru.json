@@ -133,9 +133,14 @@
 	"Path `locale` is required.": "Path `locale` is required.",
 	"Post": "Post",
 	"Public": "Public",
-    "Publish": "Опубликовать",
-    "Forgot your password?": "Забыли пароль?",
-    "Delete": "Удалить",
-    "Do you want to remove this post?": "Вы действительно хотите удалить эту статью?",
-    "Yes": "Да"
+	"Publish": "Опубликовать",
+	"Forgot your password?": "Забыли пароль?",
+	"Delete": "Удалить",
+	"Do you want to remove this post?": "Вы действительно хотите удалить эту статью?",
+	"Yes": "Да",
+	"Post status:": "Post status:",
+	"Post created": "Статья создана",
+	"Post saved": "Статья сохранена",
+	"Post is editing...": "Статья редактируется...",
+	"Edit": "Edit"
 }

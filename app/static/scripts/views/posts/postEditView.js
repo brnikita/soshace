@@ -152,11 +152,9 @@ define([
         addModelListeners: function () {
             var patchModelDebounce,
                 model = this.model;
-            //TODO: поправить багу
-            patchModelDebounce = _.debounce(_.bind(model.patchModel, model),
-                this.setToModelTimeOut);
-            this.addModelListeners();
-            model.on('change', _.bind(patchModelDebounce, this));
+
+            patchModelDebounce = _.debounce(model.patchModel, this.setToModelTimeOut);
+            model.on('change', _.bind(patchModelDebounce, model));
             model.on('postCreated', _.bind(this.postCreatedHandler, this));
             model.on('postPatched', _.bind(this.postPatchHandler, this));
         },
@@ -177,26 +175,18 @@ define([
          *
          * @method
          * @name PostEditView#postCreatedHandler
-         * @param {String} status имя статуса, список статусов можно посмотреть в модели
+         * @param {String} status название статуса (редактируется, сохранена, создана)
          * @returns {undefined}
          */
         changeStatus: function (status) {
             var statuses = this.model.statuses,
                 $status = this.elements.status,
                 statusSettings,
-                statusClass,
                 statusTitle;
 
-            if (status) {
-                statusSettings = statuses[status];
-                statusClass = statusSettings.class;
-                statusTitle = statusSettings.title;
-                $status.removeClass('hide');
-                $status.addClass(statusClass).html(statusTitle);
-                return;
-            }
-
-            $status.addClass('hide');
+            statusSettings = statuses[status];
+            statusTitle = Helpers.i18n(statusSettings.title);
+            $status.html(statusTitle);
         },
 
         /**

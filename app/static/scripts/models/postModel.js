@@ -46,15 +46,15 @@ define([
          */
         statuses: {
             created: {
-                title: 'Post Created',
+                title: 'Post created',
                 class: 'label-success'
             },
             saved: {
-                title: 'Post Saved',
+                title: 'Post saved',
                 class: 'label-primary'
             },
             editing: {
-                title: 'Posts is editing',
+                title: 'Post is editing...',
                 class: 'label-default'
             },
             sent: {
@@ -175,7 +175,7 @@ define([
         getPost: function (postId) {
             if (typeof postId === 'string') {
                 this.set('_id', postId, {silent: true});
-                return this.fetch();
+                return this.fetch({silent: true});
             }
 
             this.set(this.default, {silent: true});
