@@ -155,7 +155,8 @@ module.exports = function (grunt) {
         less: {
             dev: {
                 files: {
-                    '<%= blog.dist %>/styles/styles.css': '<%= blog.app %>/static/styles/styles.less'
+                    '<%= blog.dist %>/styles/styles.css': '<%= blog.app %>/static/styles/styles.less',
+                    '<%= blog.dist %>/styles/admin.css': '<%= blog.app %>/static/styles/admin.less'
                 }
             },
             prod: {
@@ -163,7 +164,8 @@ module.exports = function (grunt) {
                     compress: true
                 },
                 files: {
-                    '<%= blog.dist %>/styles/styles.css': '<%= blog.app %>/static/styles/styles.less'
+                    '<%= blog.dist %>/styles/styles.css': '<%= blog.app %>/static/styles/styles.less',
+                    '<%= blog.dist %>/styles/admin.css': '<%= blog.app %>/static/styles/admin.less'
                 }
             }
         },

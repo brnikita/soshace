@@ -1,0 +1,23 @@
+<div class="posts content-center">
+    <form class="admin__post js-admin-post" role="form" novalidate="novalidate">
+        <h2>{{i18n 'Post administration'}}</h2>
+        <div class="form-group">
+            <label for="status" class="control-label">{{i18n 'Post status'}}</label>
+            <select class="form-control js-status" name="status" id="status">
+                <option value="">{{i18n 'Choose status'}}</option>
+                <option value="rework">{{i18n 'For rework'}}</option>
+                <option value="denied">{{i18n 'Denied'}}</option>
+                <option value="published">{{i18n 'Published'}}</option>
+            </select>
+        </div>
+        <div class="form-group js-comment-block hide">
+            <label for="review-message" class="control-label">{{i18n 'Comment'}}</label>
+            <textarea class="form-control js-comment" name="review-message" id="review-message"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">{{i18n 'Post reviwed'}}</button>
+    </form>
+    <div class="posts__full clearfix" data-owner-id="{{ownerId}}">
+        <h1>{{post.title}}</h1>
+        <div>{{{post.body}}}</div>
+    </div>
+</div>

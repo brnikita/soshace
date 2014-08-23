@@ -82,6 +82,7 @@ define(function () {
                 profile: '/api/profile',
                 systemMessage: '/api/system_messages/0',
                 systemMessages: '/api/system_messages',
+                reviewComments: '',
                 registration: {
                     validateField: '/api/registration/validate_field'
                 }

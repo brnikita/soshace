@@ -73,9 +73,11 @@ module.exports = Class.extend({
         'get /:locale/posts/:_id': 'posts/postsController renderPost',
         'get /:locale/registration': 'auth/registrationController renderRegistration',
         'get /:locale/login': 'auth/loginController renderLogin',
+        'get /:locale/logout': 'auth/loginController logout',
         'get /:locale/users/:username': 'usersController renderUserPage',
         'get /:locale/registration/confirm_email': 'auth/registrationController confirmEmail',
-        'get /:locale/admin': 'admin/adminController renderAdmin'
+        'get /:locale/admin': 'admin/adminController renderAdmin',
+        'get /:locale/posts/:_id/review': 'admin/adminController renderPostReview'
     },
 
 

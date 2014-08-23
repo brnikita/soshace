@@ -1,17 +1,26 @@
 <div class="content-center">
-    <h1>Админка</h1>
     {{#if posts}}
         <div class="js-posts-list posts clearfix">
-            {{#if backend}}
-                {{#each posts}}
-                    {{> postPreview}}
-                {{/each}}
-            {{/if}}
+            {{#each posts}}
+                <div class="posts__preview clearfix" data-owner-id="{{ownerId}}">
+                    <h1>
+                        <a class="js-router-link"
+                           href="/{{locale}}/posts/{{_id}}/review">{{title}}</a>
+                    </h1>
+
+                    <p>{{{body}}}</p>
+
+                    <div class="posts__preview__footer">
+                        <a class="btn btn-primary"
+                           href="/{{locale}}/posts/{{_id}}/review">{{i18n 'Review'}}</a>
+                    </div>
+                </div>
+            {{/each}}
         </div>
     {{else}}
         <div class="box-message box-message-warning">
             <h3>
-                {{i18n 'No posts to check'}}
+                {{i18n 'No posts to review'}}
             </h3>
         </div>
     {{/if}}

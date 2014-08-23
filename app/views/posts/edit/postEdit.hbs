@@ -1,4 +1,6 @@
-<div class="content-center">
+<div class="content-center"
+    {{#if post.ownerId}} data-owner-id="{{post.ownerId}}"{{/if}}
+    {{#if post.status}} data-status="{{post.status}}"{{/if}}>
     <div class="post-edit">
         <div class="post-edit__toolbar js-editor-toolbar">
             <div class="content-center">

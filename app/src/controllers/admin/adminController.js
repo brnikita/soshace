@@ -22,13 +22,13 @@ module.exports = Controller.extend({
             response = this.response,
             requestParams = new RequestParams(request),
             locale = requestParams.locale;
-        
-        if(!requestParams.isAuthenticated){
+
+        if (!requestParams.isAuthenticated) {
             response.render('404', requestParams);
             return;
         }
 
-        if(!requestParams.profile.admin){
+        if (!requestParams.profile.admin) {
             response.render('404', requestParams);
             return;
         }
@@ -46,20 +46,76 @@ module.exports = Controller.extend({
      * @param {Array} posts список стай для администрирования
      * @returns {undefined}
      */
-    renderAdminHandler: function(error, posts){
+    renderAdminHandler: function (error, posts) {
         var request = this.request,
             response = this.response,
             requestParams = new RequestParams(request);
 
-        if(error){
+        if (error) {
             //TODO: сделать рендер страниц ошибок
             this.render('');
             return;
         }
 
         response.render('admin/admin', _.extend(requestParams, {
+            layout: 'admin',
             posts: posts,
             title: 'Admin page'
+        }));
+    },
+
+    /**
+     * Метод рендерит страницу ревью статьи в вдминке
+     *
+     * @method
+     * @name AdminController#renderPostReview
+     * @returns {undefined}
+     */
+    renderPostReview: function () {
+        var request = this.request,
+            response = this.response,
+            requestParams = new RequestParams(request),
+            params = request.params,
+            postId = params._id;
+
+        if (!requestParams.isAuthenticated) {
+            response.render('404', requestParams);
+            return;
+        }
+
+        if (!requestParams.profile.admin) {
+            response.render('404', requestParams);
+            return;
+        }
+
+        PostsModel.getPost(postId, _.bind(this.renderPostReviewHandler, this));
+    },
+
+    /**
+     * Метод рендерит страницу ревью статьи после
+     * получения контента стать из базы
+     *
+     * @method
+     * @name AdminController#renderPostReviewHandler
+     * @param {Object} error
+     * @param {Object} post статья
+     * @returns {undefined}
+     */
+    renderPostReviewHandler: function (error, post) {
+        var request = this.request,
+            response = this.response,
+            requestParams = new RequestParams(request);
+
+        if (error) {
+            //TODO: сделать рендер страниц ошибок
+            this.render('');
+            return;
+        }
+
+        response.render('admin/postReview', _.extend(requestParams, {
+            layout: 'admin',
+            post: post,
+            title: post.title
         }));
     }
 });
