@@ -95,7 +95,9 @@ define([
             imageUpload: null,
             deleteButton: null,
             deletePostModal: null,
-            status: null
+            status: null,
+            statusMessages: null,
+            postEdit: null
         },
 
         /**
@@ -144,7 +146,6 @@ define([
 
         /**
          * TODO: добавить валидацию
-         * TODO: кнопка 'опубликовать' должна быть доступна только для статьи в статусе 'сохранена'
          *
          * Метод обработчик клика по кнопке опубликовать
          *
@@ -152,8 +153,10 @@ define([
          * @name PostEditView#postPublish
          * @returns {undefined}
          */
-        postPublish: function(){
+        postPublish: function () {
             this.model.set('status', 'sent');
+            this.render();
+            this.showStatusMessages();
         },
 
         /**
@@ -197,7 +200,7 @@ define([
          * @name PostEditView#statusAcceptedHandler
          * @returns {undefined}
          */
-        statusAcceptedHandler: function(){
+        statusAcceptedHandler: function () {
 
         },
 
@@ -412,15 +415,15 @@ define([
         bindHotKeys: function (hotKeys) {
             $.each(hotKeys, _.bind(function (hotKey, command) {
                 this.elements.postBody.keydown(hotKey, _.bind(function () {
-                        this.execCommand(command, null);
-                        return false;
-                    }, this)).keyup(hotKey, _.bind(function (event) {
-                        if (this.elements.postBody.attr('contenteditable') &&
-                            this.elements.postBody.is(':visible')) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                    }, this));
+                    this.execCommand(command, null);
+                    return false;
+                }, this)).keyup(hotKey, _.bind(function (event) {
+                    if (this.elements.postBody.attr('contenteditable') &&
+                        this.elements.postBody.is(':visible')) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                }, this));
             }, this));
         },
 
@@ -542,8 +545,8 @@ define([
                     }));
                 }
             }).on('change', function () {
-                    _this.elements.postBody.append(preLoader);
-                });
+                _this.elements.postBody.append(preLoader);
+            });
         },
 
         /**
@@ -556,6 +559,7 @@ define([
         setElements: function () {
             this.elements.window = $(window);
             this.elements.toolbar = this.$('.js-editor-toolbar');
+            this.elements.statusMessages = this.$('.js-status-messages');
             this.elements.commandBtn = this.$('.js-command');
             this.elements.postBody = this.$('.js-post-body');
             this.elements.postTitle = this.$('.js-post-title');
@@ -565,6 +569,7 @@ define([
             this.elements.imageUpload = this.$('.js-upload-image input');
             this.elements.deleteButton = this.$('.js-post-delete');
             this.elements.status = this.$('.js-post-status');
+            this.elements.postEdit = this.$('.js-post-edit');
         },
 
         /**
@@ -576,10 +581,25 @@ define([
          */
         isEditorDisabled: function () {
             var app = Soshace.app,
-                emailConfirmed = app.isAuthenticated() &&
-                    Soshace.profile.emailConfirmed;
+                status = this.model.get('status'),
+                profile = Soshace.profile;
 
-            return !emailConfirmed;
+            if (!app.isAuthenticated()) {
+                return true;
+            }
+
+            //Если не подтвержден email
+            if (!(profile && profile.emailConfirmed)) {
+                return true;
+            }
+
+            //Если в статусе 'отправлена'
+            if (status === 'sent') {
+                return true;
+            }
+
+            //Если статья в статусе 'Опубликовано'
+            return status === 'published';
         },
 
         /**
@@ -642,11 +662,23 @@ define([
          */
         afterRender: function () {
             this.setElements();
-            this.addImageButtonListener();
-            this.addListenersToLinkModal();
-            this.addListenersToRemovePostModal();
             this.toolbarInitOffset = this.elements.toolbar.offset();
-            this.elements.window.on('scroll', _.bind(this.windowScrollHandler, this));
+        },
+
+        /**
+         * Метод показывает сообщения в зависимости от статуса статьи
+         *
+         * @method
+         * @name PostEditView#showStatusMessages
+         * @returns {undefined}
+         */
+        showStatusMessages: function () {
+            var statusMessages = this.elements.statusMessages,
+                status = this.model.get('status');
+
+            if (status === 'sent') {
+                statusMessages.html(Soshace.hbs['messages/postSent']());
+            }
         },
 
         /**
@@ -661,20 +693,14 @@ define([
          * @returns {undefined}
          */
         setDataToModelFromView: function (routeParams) {
-            var $title,
-                $body,
-                title,
-                body,
+            var postEdit = this.elements.postEdit,
+                status = postEdit.data('status'),
+                ownerId = postEdit.data('ownerId'),
+                $title = this.elements.postTitle,
+                $body = this.elements.postBody,
+                title = $title.val(),
+                body = $body.html(),
                 postId;
-
-            if (this.isEditorDisabled()) {
-                return;
-            }
-
-            $title = this.elements.postTitle;
-            $body = this.elements.postBody;
-            title = $title.val();
-            body = $body.html();
 
             if (title) {
                 this.model.set('title', title, {silent: true});
@@ -682,6 +708,14 @@ define([
 
             if (body) {
                 this.model.set('body', body, {silent: true});
+            }
+
+            if (status) {
+                this.model.set('status', status, {silent: true});
+            }
+
+            if (ownerId) {
+                this.model.set('ownerId', ownerId, {silent: true});
             }
 
             if (routeParams.length >= 2) {

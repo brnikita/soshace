@@ -1,7 +1,8 @@
-<div class="content-center"
-    {{#if post.ownerId}} data-owner-id="{{post.ownerId}}"{{/if}}
-    {{#if post.status}} data-status="{{post.status}}"{{/if}}>
-    <div class="post-edit">
+<div class="content-center">
+    <div class="js-status-messages"></div>
+    <div class="post-edit js-post-edit"
+        {{#if post.ownerId}} data-owner-id="{{post.ownerId}}"{{/if}}
+        {{#if post.status}} data-status="{{post.status}}"{{/if}}>
         <div class="post-edit__toolbar js-editor-toolbar">
             <div class="content-center">
                 <div class="post-edit__toolbar__content clearfix">

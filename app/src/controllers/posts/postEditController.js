@@ -139,10 +139,14 @@ module.exports = Controller.extend({
      */
     isEditorDisabled: function () {
         var request = this.request,
-            emailConfirmed = request.isAuthenticated() &&
-                request.user[0].emailConfirmed;
+            profile;
 
-        return !emailConfirmed;
+        if(!request.isAuthenticated()){
+            return true;
+        }
+
+        profile = request.user[0];
+        return !profile.emailConfirmed;
     },
 
     /**
@@ -218,6 +222,8 @@ module.exports = Controller.extend({
     renderEditPostForAuthenticatedHandler: function (error, post) {
         var response = this.response,
             request = this.request,
+            editorDisabled = false,
+            status,
             requestParams = new RequestParams(request);
 
         if (error) {
@@ -230,10 +236,16 @@ module.exports = Controller.extend({
             return;
         }
 
+        status = post.status;
+        if(status === 'sent' || status === 'published'){
+            editorDisabled = true;
+        }
+
         response.render('posts/edit/postEdit', _.extend(requestParams, {
             title: 'Edit Post',
             post: post,
             isNew: false,
+            editorDisabled: editorDisabled,
             isPostEditTab: true
         }));
     },

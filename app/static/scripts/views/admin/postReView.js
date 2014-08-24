@@ -9,7 +9,7 @@
  *
  * Так же скрипты админки не участвуют в общей сборке
  *
- * @module AdminView
+ * @module PostReView
  */
 
 define([
@@ -25,7 +25,7 @@ define([
          * Модель статьи
          *
          * @field
-         * @name AdminView#postModel
+         * @name PostReView#postModel
          * @type {Backbone.Model | null}
          */
         postModel: null,
@@ -34,29 +34,32 @@ define([
          * Коллекция комментариев ревью статьи
          *
          * @field
-         * @name AdminView#reviewCommentsCollection
+         * @name PostReView#reviewCommentsCollection
          * @type {ReviewCommentsCollection}
          */
         reviewCommentsCollection: null,
 
         /**
          * @field
-         * @name AdminView#el
+         * @name PostReView#el
          * @type {String}
          */
-        el: '.js-admin-post',
+        el: '.js-post-review',
 
         /**
          * @field
-         * @name AdminView#elements
+         * @name PostReView#elements
          * @type {Object}
          */
         elements: {
+            post: null,
+            postTitle: null,
+            postBody: null
         },
 
         /**
          * @field
-         * @name AdminView#events
+         * @name PostReView#events
          * @type {Object}
          */
         events: {
@@ -64,7 +67,7 @@ define([
 
         /**
          * @constructor
-         * @name AdminView#initialize
+         * @name PostReView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -76,21 +79,35 @@ define([
          * Метод берет данные из шаблона и сетит модель статьи
          *
          * @method
-         * @name AdminView#setDataToModelFromView
+         * @name PostReView#setDataToModelFromView
          * @returns {undefined}
          */
         setDataToModelFromView: function(){
+            var body = this.elements.postBody.html(),
+                title = this.elements.postTitle.html(),
+                ownerId = this.elements.post.data('ownerId'),
+                postId = this.elements.post.data('postId');
 
+            debugger;
+            this.postModel.set({
+                _id: postId,
+                ownerId: ownerId,
+                title: title,
+                body: body
+            }, {silent: true});
         },
 
         /**
          * Метод сохраняет ссылки на элементы DOM
          *
          * @method
-         * @name AdminView#setElements
+         * @name PostReView#setElements
          * @returns {undefined}
          */
         setElements: function(){
+            this.elements.postTitle = this.$('.js-title');
+            this.elements.postBody = this.$('.js-body');
+            this.elements.post = this.$('.js-post');
         }
     });
 });

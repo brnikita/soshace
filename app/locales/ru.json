@@ -142,5 +142,7 @@
 	"Post created": "Статья создана",
 	"Post saved": "Статья сохранена",
 	"Post is editing...": "Статья редактируется...",
-	"Edit": "Edit"
+	"Edit": "Edit",
+	"Excellent! Your article has been submitted for publication.": "Отлично! Ваша статья была отправлена на публикацию.",
+    "During the day, our editors will check your article.": "В течении дня наши редакторы проверят вашу статью."
 }

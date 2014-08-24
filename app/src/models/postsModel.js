@@ -167,7 +167,8 @@ PostsShema.statics.getPosts = function (locale, callback) {
         _id: 1,
         title: 1,
         description: 1,
-        locale: 1
+        locale: 1,
+        status: 1
     }).exec(function (error, posts) {
         if (error) {
             callback({error: 'Server is too busy, try later.', code: 503});
@@ -197,7 +198,8 @@ PostsShema.statics.getStatusSentPosts = function (locale, callback) {
         _id: 1,
         title: 1,
         description: 1,
-        locale: 1
+        locale: 1,
+        status: 1
     }).
         sort({updated: -1}).
         exec(function (error, posts) {
@@ -350,14 +352,23 @@ PostsShema.statics.updateStatus = function (postId, profileId, status, callback)
  * @return {undefined}
  */
 PostsShema.statics.getProfilePost = function (postId, ownerId, callback) {
-    this.findOne({_id: postId, ownerId: ownerId}).exec(function (error, post) {
-        if (error) {
-            callback({error: 'Server is too busy, try later.', code: 503});
-            return;
-        }
+    this.findOne({
+            _id: postId,
+            ownerId: ownerId},
+        {
+            _id: 1,
+            title: 1,
+            body: 1,
+            locale: 1,
+            status: 1
+        }).exec(function (error, post) {
+            if (error) {
+                callback({error: 'Server is too busy, try later.', code: 503});
+                return;
+            }
 
-        callback(null, post);
-    });
+            callback(null, post);
+        });
 };
 
 /**
@@ -371,7 +382,13 @@ PostsShema.statics.getProfilePost = function (postId, ownerId, callback) {
  * @return {undefined}
  */
 PostsShema.statics.getProfilePosts = function (ownerId, callback) {
-    this.find({ownerId: ownerId}).
+    this.find({ownerId: ownerId}, {
+        _id: 1,
+        title: 1,
+        description: 1,
+        locale: 1,
+        status: 1
+    }).
         sort({updated: -1}).
         exec(function (error, posts) {
             if (error) {
@@ -397,6 +414,12 @@ PostsShema.statics.getUserPosts = function (ownerId, callback) {
     this.find({
         ownerId: ownerId,
         public: true
+    }, {
+        _id: 1,
+        title: 1,
+        description: 1,
+        locale: 1,
+        status: 1
     }).exec(function (error, posts) {
         if (error) {
             callback({error: 'Server is too busy, try later.', code: 503});
@@ -421,7 +444,8 @@ PostsShema.statics.getPost = function (postId, callback) {
         _id: 1,
         title: 1,
         body: 1,
-        locale: 1
+        locale: 1,
+        status: 1
     }).exec(function (error, post) {
         if (error) {
             callback({error: 'Server is too busy, try later.', code: 503});

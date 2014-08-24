@@ -6,11 +6,12 @@
  * @class PostEditController
  */
 define([
-    'utils/controller',
-    'models/postModel',
-    'views/posts/postEditView'
-],
-    function (Controller, PostModel, PostEditView) {
+        'underscore',
+        'utils/controller',
+        'models/postModel',
+        'views/posts/postEditView'
+    ],
+    function (_, Controller, PostModel, PostEditView) {
         return Controller.extend({
             /**
              * Алиас страницы
@@ -47,6 +48,24 @@ define([
                 });
             },
 
+            /**
+             * Метод добавляет слушатели на вид
+             *
+             * @method
+             * @name PostEditController#addViewListeners
+             * @returns {undefined}
+             */
+            addViewListeners: function () {
+                var view = this.view;
+
+                if (!view.isEditorDisabled()) {
+                    view.addImageButtonListener();
+                    view.addListenersToLinkModal();
+                    view.addListenersToRemovePostModal();
+                    view.elements.window.on('scroll', _.bind(view.windowScrollHandler, view));
+                }
+            },
+
 
             /**
              * Метод вызывает при рендере на сервере
@@ -63,6 +82,8 @@ define([
                 view.delegateEvents();
                 view.afterRender();
                 view.setDataToModelFromView(this.routeParams);
+                this.addViewListeners();
+                view.showStatusMessages();
             },
 
             /**
@@ -79,9 +100,11 @@ define([
                     app = Soshace.app;
 
                 this.model.getPost(postId).
-                    done(function () {
+                    done(_.bind(function () {
                         app.setView('.js-content', view).render();
-                    });
+                        this.addViewListeners();
+                        view.showStatusMessages();
+                    }, this));
             }
         });
     });

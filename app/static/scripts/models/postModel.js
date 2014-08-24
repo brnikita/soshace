@@ -31,6 +31,8 @@ define([
             locale: null,
             //Загловок поста
             title: null,
+            //Отправлена, опубликована
+            status: null,
             //Категория, используется в урлах
             category: null,
             //Тело поста
