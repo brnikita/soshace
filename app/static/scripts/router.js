@@ -39,6 +39,7 @@ define([
          * @type {Object}
          */
         controllersRoutes: {
+            ':locale/*notFound': 'controllers/notFoundController',
             ':locale': 'controllers/posts/postsController',
             ':locale/': 'controllers/posts/postsController',
             ':locale/posts': 'controllers/posts/postsController',

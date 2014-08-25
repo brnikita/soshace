@@ -17,7 +17,7 @@ define([
     'underscore',
     'backbone',
     'models/postModel',
-    'models/reviewCommentsCollection'
+    'collections/reviewCommentsCollection'
 ], function ($, _, Backbone, PostModel, ReviewCommentsCollection) {
     return Backbone.View.extend({
 
@@ -26,7 +26,7 @@ define([
          *
          * @field
          * @name PostReView#postModel
-         * @type {Backbone.Model | null}
+         * @type {PostModel | null}
          */
         postModel: null,
 
@@ -63,6 +63,8 @@ define([
          * @type {Object}
          */
         events: {
+            'change .js-select': 'selectChangeHandler',
+            'submit': 'submitHandler'
         },
 
         /**
@@ -71,8 +73,38 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
+            this.postModel = new PostModel();
             this.setElements();
             this.setDataToModelFromView();
+        },
+
+        /**
+         * Метод обработчик изменения выпадающих списоков
+         *
+         * @method
+         * @name PostReView#selectChangeHandler
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        selectChangeHandler: function(event){
+            var $target = $(event.target),
+                name = $target.attr('name'),
+                value = $target.val();
+
+            this.postModel.set(name, value);
+        },
+
+        /**
+         * Метод обработчик отправки формы
+         *
+         * @method
+         * @name PostReView#submitHandler
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        submitHandler: function(event){
+            event.preventDefault();
+            this.postModel.patchModel();
         },
 
         /**
@@ -88,7 +120,6 @@ define([
                 ownerId = this.elements.post.data('ownerId'),
                 postId = this.elements.post.data('postId');
 
-            debugger;
             this.postModel.set({
                 _id: postId,
                 ownerId: ownerId,

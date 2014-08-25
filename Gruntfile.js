@@ -48,7 +48,10 @@ module.exports = function (grunt) {
                 ]
             },
             requireConfig: {
-                files: 'require.conf.js',
+                files: [
+                    'require.conf.js',
+                    'require.admin.conf.js'
+                ],
                 tasks: [
                     'copy:requireConfig'
                 ]
@@ -83,6 +86,10 @@ module.exports = function (grunt) {
                     {
                         dest: '<%= blog.dist %>/require.conf.js',
                         src: 'require.conf.js'
+                    },
+                    {
+                        dest: '<%= blog.dist %>/require.admin.conf.js',
+                        src: 'require.admin.conf.js'
                     }
                 ]
             },
@@ -198,7 +205,8 @@ module.exports = function (grunt) {
                         '<%= blog.app %>/views/messages/**/*.hbs',
                         '<%= blog.app %>/views/partials/**/*.hbs',
                         '<%= blog.app %>/views/posts/**/*.hbs',
-                        '<%= blog.app %>/views/user.hbs'
+                        '<%= blog.app %>/views/user.hbs',
+                        '<%= blog.app %>/views/404.hbs'
                     ]
                 }
             }

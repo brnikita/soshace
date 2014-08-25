@@ -75,8 +75,7 @@ module.exports = Controller.extend({
             postId = params._id,
             update = request.body,
             requestParams = new RequestParams(request),
-            profile,
-            profileId;
+            profile;
 
         if (typeof postId === 'undefined') {
             this.sendError('Bad request.');
@@ -90,9 +89,8 @@ module.exports = Controller.extend({
         //TODO: проверить права пользователя на обновление поста
 
         profile = requestParams.profile;
-        profileId = profile._id;
 
-        PostsModel.updatePost(postId, profileId, update, _.bind(function (error) {
+        PostsModel.updatePost(postId, profile, update, _.bind(function (error) {
             if (error) {
                 this.sendError(error);
                 return;

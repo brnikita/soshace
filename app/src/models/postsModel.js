@@ -32,13 +32,6 @@ var _ = require('underscore'),
         published: {
             type: Boolean
         },
-        //отображать ли пост в общем доступе
-        public: {
-            type: Boolean,
-            default: false,
-            //поле не может быть изменено пользователем
-            readonly: true
-        },
         //id пользователя, к которому относится сообщение
         ownerId: {
             type: ObjectId,
@@ -64,6 +57,10 @@ var _ = require('underscore'),
             default: null
         },
         //Опубликовано, отправлено и т.д.
+//        sent,
+//        published,
+//        denied,
+//        comments
         status: {
             type: String
         },
@@ -162,13 +159,14 @@ PostsShema.pre('save', function (next) {
 PostsShema.statics.getPosts = function (locale, callback) {
     return this.find({
         'locale': locale,
-        'public': true
+        status: 'published'
     }, {
         _id: 1,
         title: 1,
         description: 1,
         locale: 1,
-        status: 1
+        status: 1,
+        ownerId: 1
     }).exec(function (error, posts) {
         if (error) {
             callback({error: 'Server is too busy, try later.', code: 503});
@@ -192,14 +190,14 @@ PostsShema.statics.getPosts = function (locale, callback) {
 PostsShema.statics.getStatusSentPosts = function (locale, callback) {
     return this.find({
         'locale': locale,
-        'public': false,
         'status': 'sent'
     }, {
         _id: 1,
         title: 1,
         description: 1,
         locale: 1,
-        status: 1
+        status: 1,
+        ownerId: 1
     }).
         sort({updated: -1}).
         exec(function (error, posts) {
@@ -251,13 +249,15 @@ PostsShema.statics.clearUpdate = function (update) {
  * @method
  * @name PostsShema.updatePost
  * @param {String} postId id статьи
- * @param {String} profileId id пользователя
+ * @param {Mongoose.model} profile профиль пользователя
  * @param {Object} update обновляемые поля
  * @param {Function} callback
  * @return {undefined}
  */
-PostsShema.statics.updatePost = function (postId, profileId, update, callback) {
-    var updateRequest,
+PostsShema.statics.updatePost = function (postId, profile, update, callback) {
+    var error,
+        updateRequest,
+        profileId,
         status;
 
     if (typeof update !== 'object') {
@@ -267,9 +267,13 @@ PostsShema.statics.updatePost = function (postId, profileId, update, callback) {
 
     update = this.clearUpdate(update);
     status = update.status;
+
     if (typeof status !== 'undefined') {
-        this.updateStatus(postId, profileId, status, callback);
-        return;
+        error = this.checkUpdateStatus(postId, profile, status, callback);
+        if (error) {
+            callback(error);
+            return;
+        }
     }
 
     if (!this.isUpdateFieldsValid(update)) {
@@ -279,11 +283,12 @@ PostsShema.statics.updatePost = function (postId, profileId, update, callback) {
     if (update.body) {
         update.description = getPostDescription(update.body);
     }
+
     update.updated = new Date();
+    profileId = profile._id;
     updateRequest = {
         _id: postId,
-        ownerId: profileId,
-        public: false
+        ownerId: profileId
     };
 
     this.update(updateRequest, {$set: update}, _.bind(function (error, post) {
@@ -316,28 +321,24 @@ PostsShema.statics.updatePostHandler = function (error, post, callback) {
 };
 
 /**
- * TODO: добавить проверки на валидность статуса
- *
  * Метод обновляет статус статьи
  *
  * @method
- * @name PostsShema.updateStatus
- * @param {String} postId id статьи
- * @param {String} profileId id пользователя
+ * @name PostsShema.checkUpdateStatus
+ * @param {Mongoose.model} profile профиль пользователя
  * @param {String} status пришедший статус статьи
- * @param {Function} callback
- * @return {undefined}
+ * @return {Object | null} ошибка доступа
  */
-PostsShema.statics.updateStatus = function (postId, profileId, status, callback) {
-    var updateRequest = {
-        _id: postId,
-        ownerId: profileId,
-        public: false
-    };
+PostsShema.statics.checkUpdateStatus = function (profile, status) {
+    var isAdmin = profile.admin,
+        adminStatuses = ['sent', 'published', 'denied', 'comments'],
+        isAdminStatus = adminStatuses.indexOf(status) !== -1;
 
-    this.update(updateRequest, {$set: {status: status}}, _.bind(function (error, post) {
-        this.updatePostHandler(error, post, callback);
-    }, this));
+    if (isAdminStatus && !isAdmin) {
+        return {error: 'Forbidden ', code: 403};
+    }
+
+    return null;
 };
 
 /**
@@ -354,13 +355,15 @@ PostsShema.statics.updateStatus = function (postId, profileId, status, callback)
 PostsShema.statics.getProfilePost = function (postId, ownerId, callback) {
     this.findOne({
             _id: postId,
-            ownerId: ownerId},
+            ownerId: ownerId
+        },
         {
             _id: 1,
             title: 1,
             body: 1,
             locale: 1,
-            status: 1
+            status: 1,
+            ownerId: 1
         }).exec(function (error, post) {
             if (error) {
                 callback({error: 'Server is too busy, try later.', code: 503});
@@ -387,7 +390,8 @@ PostsShema.statics.getProfilePosts = function (ownerId, callback) {
         title: 1,
         description: 1,
         locale: 1,
-        status: 1
+        status: 1,
+        ownerId: 1
     }).
         sort({updated: -1}).
         exec(function (error, posts) {
@@ -402,7 +406,7 @@ PostsShema.statics.getProfilePosts = function (ownerId, callback) {
 
 /**
  * Метод получает список статей для конретного пользователя,
- * доступные для всех (public: true)
+ * доступные для всех (status: 'published')
  *
  * @method
  * @name PostsShema.getUserPosts
@@ -413,13 +417,14 @@ PostsShema.statics.getProfilePosts = function (ownerId, callback) {
 PostsShema.statics.getUserPosts = function (ownerId, callback) {
     this.find({
         ownerId: ownerId,
-        public: true
+        status: 'published'
     }, {
         _id: 1,
         title: 1,
         description: 1,
         locale: 1,
-        status: 1
+        status: 1,
+        ownerId: 1
     }).exec(function (error, posts) {
         if (error) {
             callback({error: 'Server is too busy, try later.', code: 503});
@@ -445,7 +450,8 @@ PostsShema.statics.getPost = function (postId, callback) {
         title: 1,
         body: 1,
         locale: 1,
-        status: 1
+        status: 1,
+        ownerId: 1
     }).exec(function (error, post) {
         if (error) {
             callback({error: 'Server is too busy, try later.', code: 503});
