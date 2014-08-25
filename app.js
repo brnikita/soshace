@@ -22,7 +22,8 @@ var _ = require('underscore'),
     Strategies = srcRequire('common/strategies'),
     Class = srcRequire('vendors/class'),
     methodOverride = require('method-override'),
-    SystemMessagesController = srcRequire('controllers/systemMessagesController');
+    SystemMessagesController = srcRequire('controllers/systemMessagesController'),
+    MongoStore = require('connect-mongo')(session);
 
 var Blog = Class.extend({
     /**
@@ -91,7 +92,10 @@ var Blog = Class.extend({
         App.use(session({
             secret: Soshace.SESSION_KEY,
             saveUninitialized: true,
-            resave: true
+            resave: true,
+            store: new MongoStore({
+                db: 'soshace'
+            })
         }));
         App.use(Passport.initialize());
         App.use(Passport.session());
