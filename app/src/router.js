@@ -77,7 +77,8 @@ module.exports = Class.extend({
         'get /:locale/users/:username': 'usersController renderUserPage',
         'get /:locale/registration/confirm_email': 'auth/registrationController confirmEmail',
         'get /:locale/admin': 'admin/adminController renderAdmin',
-        'get /:locale/posts/:_id/review': 'admin/adminController renderPostReview'
+        'get /:locale/posts/:_id/review': 'admin/adminController renderPostReview',
+        'get /*': 'errorsController render404'
     },
 
 

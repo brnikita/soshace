@@ -24,7 +24,7 @@ define([
             /**
              * @field
              * @name NotFoundController#view
-             * @type {UserView}
+             * @type {NotFoundView | null}
              */
             view: null,
 
