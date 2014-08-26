@@ -32,6 +32,7 @@ define([
          * @type {Object}
          */
         elements: {
+            postsPreviews: null
         },
 
         /**
@@ -60,6 +61,22 @@ define([
                 'intro',
                 Soshace.hbs['partials/intro']
             );
+        },
+
+        /**
+         * Метод заполняет данными коллекцию, используя
+         * данные из шаблона
+         *
+         * @method
+         * @name PostsView#setCloocetionFromTemplate
+         * @returns {undefined}
+         */
+        setCloocetionFromTemplate: function(){
+            var postsPreviews = this.elements.postsPreviews;
+
+            postsPreviews.each(function(){
+
+            });
         },
 
 
@@ -115,11 +132,23 @@ define([
         },
 
         /**
+         * Метод сохраняет ссылки на DOM элементы
+         *
+         * @method
+         * @name PostsView#setElements
+         * @returns {undefined}
+         */
+        setElements: function(){
+            this.elements.postsPreviews = this.$('.js-post-preview');
+        },
+
+        /**
          * @method
          * @name PostsView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
+            this.setElements();
         }
     });
 });
