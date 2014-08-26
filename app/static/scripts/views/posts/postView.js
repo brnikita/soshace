@@ -80,7 +80,6 @@ define([
         afterRender: function () {
             var app = Soshace.app;
             app.elements.title.html(this.model.get('title'));
-//            Widgets.prettify(this.$el, 'js');
         }
     });
 });

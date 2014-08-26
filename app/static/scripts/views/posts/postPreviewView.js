@@ -37,6 +37,7 @@ define([
          * @type {Object}
          */
         elements: {
+            toolbar: null
         },
 
         /**
@@ -63,14 +64,63 @@ define([
         },
 
         /**
+         * Метод добавляет тулбар к превью статьи,
+         * если статья принадлежит пользователю
+         *
+         * @method
+         * @name PostPreviewView#addPostToolBar
+         * @returns {undefined}
+         */
+        addPostToolBar: function(){
+            var ownerId = this.model.get('ownerId'),
+                app = Soshace.app,
+                profile,
+                profileId,
+                toolbar,
+                toolbarParams,
+                status,
+                statusClass,
+                model = this.model.toJSON();
+
+            if(!app.isAuthenticated()){
+                return;
+            }
+
+            profile = Soshace.profile;
+            profileId = profile._id;
+
+            if(profileId !== ownerId){
+                return;
+            }
+
+            status = this.model.get('status');
+            statusClass = this.model.statuses[status].class;
+            toolbarParams = _.extend(model, {
+                statusClass: statusClass
+            });
+            toolbar = Soshace.hbs['posts/edit/postPreviewToolbar'](toolbarParams);
+            this.elements.toolbar.html(toolbar);
+        },
+
+        /**
+         * Метод сохраняет ссылки на элементы DOM
+         *
+         * @method
+         * @name PostPreviewView#setElements
+         * @returns {undefined}
+         */
+        setElements: function(){
+            this.elements.toolbar = this.$('.js-post-preview-toolbar');
+        },
+
+        /**
          * @method
          * @name PostPreviewView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
-            var app = Soshace.app;
-            app.elements.title.html(this.model.get('title'));
-//            Widgets.prettify(this.$el, 'js');
+            this.setElements();
+            this.addPostToolBar();
         }
     });
 });

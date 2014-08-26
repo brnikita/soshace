@@ -50,29 +50,43 @@ define([
             //Статусы редактирования начало
             saved: {
                 title: 'Post saved',
-                class: 'label-primary'
+                class: 'label-primary',
+                editorEnable: true
             },
             editing: {
                 title: 'Post is editing...',
-                class: 'label-default'
+                class: 'label-default',
+                editorEnable: true
             },
             //Статусы редактирования конец
             //Статусы в модели начало
             sent: {
                 title: 'Post sent',
-                class: 'label-primary'
+                class: 'label-primary',
+                //Статья недоступня для редактирования
+                editorEnable: false,
+                //Причина недоступности статьи
+                editorMessage: 'While our editors are checking the article you can&#39;t to edit it',
+                statusMessage: 'messages/postSent'
             },
             published: {
                 title: 'Post published',
-                class: 'label-success'
+                class: 'label-success',
+                editorEnable: false,
+                editorMessage: 'After publication you can&#39;t to edit or delete the article',
+                statusMessage: 'messages/postPublished'
             },
             denied: {
                 title: 'Publication denied',
-                class: 'label-danger'
+                class: 'label-danger',
+                editorEnable: true,
+                statusMessage: 'messages/postDenied'
             },
             comments: {
                 title: 'Some comments',
-                class: 'label-warning'
+                class: 'label-warning',
+                editorEnable: true,
+                statusMessage: 'messages/postHasComments'
             }
             //Статусы в модели конец
         },

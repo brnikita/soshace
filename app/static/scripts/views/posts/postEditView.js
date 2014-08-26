@@ -674,10 +674,12 @@ define([
          */
         showStatusMessages: function () {
             var statusMessages = this.elements.statusMessages,
-                status = this.model.get('status');
+                status = this.model.get('status'),
+                messagePath;
 
             if (status === 'sent') {
-                statusMessages.html(Soshace.hbs['messages/postSent']());
+                messagePath = this.model.status[status].statusMessage;
+                statusMessages.html(Soshace.hbs[messagePath]());
             }
         },
 
