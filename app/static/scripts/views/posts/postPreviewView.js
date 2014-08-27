@@ -85,24 +85,7 @@ define([
          * @returns {undefined}
          */
         addPostToolBar: function () {
-            var ownerId = this.model.get('ownerId'),
-                app = Soshace.app,
-                profile,
-                profileId,
-                toolbar;
-
-            if (!app.isAuthenticated()) {
-                return;
-            }
-
-            profile = Soshace.profile;
-            profileId = profile._id;
-
-            if (profileId !== ownerId) {
-                return;
-            }
-
-            toolbar = this.getToolBar();
+            var toolbar = this.getToolBar();
             this.elements.toolbar.html(toolbar);
         },
 
