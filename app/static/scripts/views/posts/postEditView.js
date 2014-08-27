@@ -678,7 +678,7 @@ define([
                 messagePath;
 
             if (status === 'sent') {
-                messagePath = this.model.status[status].statusMessage;
+                messagePath = this.model.statuses[status].statusMessage;
                 statusMessages.html(Soshace.hbs[messagePath]());
             }
         },

@@ -64,18 +64,42 @@ define([
         },
 
         /**
-         * Метод заполняет данными коллекцию, используя
+         * Метод заполняет данными коллекцию и устанавливает виды preview используя
          * данные из шаблона
          *
          * @method
-         * @name PostsView#setCloocetionFromTemplate
+         * @name PostsView#setViewsFromTemplate
          * @returns {undefined}
          */
-        setCloocetionFromTemplate: function(){
-            var postsPreviews = this.elements.postsPreviews;
+        setViewsFromTemplate: function(){
+            var _this = this,
+                collection = this.collection,
+                PostModel = collection.model,
+                postsPreviews = this.elements.postsPreviews;
 
             postsPreviews.each(function(){
+                var $this = $(this),
+                    model,
+                    view,
+                    data = $this.data(),
+                    $title= $('.js-title', $this),
+                    $description = $('.js-description', $this),
+                    title = $title.html(),
+                    description = $description.html();
 
+                model = new PostModel(_.extend(data, {
+                    title: title,
+                    description: description
+                }));
+
+                view = new PostPreviewView({
+                    model: model
+                });
+
+                view.$el = $this;
+                view.withoutRender();
+                _this.insertView('.js-posts-list', view);
+                collection.add(model);
             });
         },
 

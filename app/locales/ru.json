@@ -148,6 +148,15 @@
 	"Page not found": "Page not found",
 	"Congratulations! Your email address have been confirmed.": "Поздравляем! Ваш электронный адрес был подтвержден.",
 	"And now... You can write your first post and make our world a little bit better!": "А теперь ... Вы можете написать свою первую статью и сделать наш мир немного лучше!",
-    "Congratulations! Your article has been published.": "Поздравляем! Ваша статья была опубликована.",
-    "Now your article visible to all users.": "Теперь ваша статья видна всем пользователям."
+	"Congratulations! Your article has been published.": "Поздравляем! Ваша статья была опубликована.",
+	"Now your article visible to all users.": "Теперь ваша статья видна всем пользователям.",
+	"Review": "Review",
+	"Post administration": "Post administration",
+	"Post status": "Post status",
+	"Choose status": "Choose status",
+	"For rework": "For rework",
+	"Denied": "Denied",
+	"Published": "Published",
+	"Comment": "Comment",
+	"Post reviwed": "Post reviwed"
 }

@@ -1,11 +1,16 @@
-<div class="posts__preview clearfix js-post-preview" data-owner-id="{{ownerId}}" data-status="{{status}}">
+<div class="posts__preview clearfix js-post-preview"
+     data-owner-id="{{ownerId}}"
+     data-status="{{status}}"
+     data-_id="{{_id}}"
+     data-locale="{{locale}}"
+        >
     <div class="js-post-preview-toolbar"></div>
     <h1>
-        <a class="js-router-link"
+        <a class="js-router-link js-title"
            href="/{{locale}}/posts/{{_id}}">{{title}}</a>
     </h1>
 
-    <p>{{{body}}}</p>
+    <p class="js-description">{{{body}}}</p>
 
     <div class="posts__preview__footer">
         <a class="btn btn-primary js-router-link"

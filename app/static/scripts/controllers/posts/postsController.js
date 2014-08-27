@@ -6,11 +6,11 @@
  * @class PostsController
  */
 define([
-        'underscore',
-        'utils/controller',
-        'collections/postsCollection',
-        'views/posts/postsView'
-    ],
+    'underscore',
+    'utils/controller',
+    'collections/postsCollection',
+    'views/posts/postsView'
+],
     function (_, Controller, PostsCollection, PostsView) {
         return Controller.extend({
             /**
@@ -25,14 +25,14 @@ define([
             /**
              * @field
              * @name PostsController#collection
-             * @type {PostsCollection}
+             * @type {PostsCollection | null}
              */
             collection: null,
 
             /**
              * @field
              * @name PostsController#view
-             * @type {PostsView}
+             * @type {PostsView | null}
              */
             view: null,
 
@@ -42,10 +42,16 @@ define([
              * @returns {undefined}
              */
             initialize: function () {
+                var view;
+
                 this.collection = new PostsCollection();
-                this.view  = new PostsView({
+                view = new PostsView({
                     collection: this.collection
                 });
+                this.collection.on('postsReceived', _.bind(function () {
+                    view.render();
+                }, this));
+                this.view = view;
             },
 
 
@@ -63,6 +69,8 @@ define([
                 view.$el = app.elements.contentFirstLoad;
                 view.delegateEvents();
                 view.afterRender();
+                view.setViewsFromTemplate();
+                app.setView('.js-content', view);
             },
 
             /**
@@ -73,15 +81,12 @@ define([
              * @returns {undefined}
              */
             secondLoad: function () {
-                var params = this.routeParams,
-                    locale = params[0],
+                var app = Soshace.app,
                     view = this.view,
-                    app = Soshace.app;
+                    params = this.routeParams,
+                    locale = params[0];
 
-                this.view = view;
-                this.collection.on('postsReceived', _.bind(function () {
-                    app.setView('.js-content', view).render();
-                }, this));
+                app.setView('.js-content', view);
                 this.collection.getPosts({locale: locale});
             }
         });
