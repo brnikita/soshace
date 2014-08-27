@@ -71,7 +71,7 @@ define([
          * @name PostPreviewView#withoutRender
          * @returns {undefined}
          */
-        withoutRender: function(){
+        withoutRender: function () {
             this.delegateEvents();
             this.afterRender();
         },
@@ -84,35 +84,45 @@ define([
          * @name PostPreviewView#addPostToolBar
          * @returns {undefined}
          */
-        addPostToolBar: function(){
+        addPostToolBar: function () {
             var ownerId = this.model.get('ownerId'),
                 app = Soshace.app,
                 profile,
                 profileId,
-                toolbar,
-                toolbarParams,
-                status,
-                statusClass,
-                model = this.model.toJSON();
+                toolbar;
 
-            if(!app.isAuthenticated()){
+            if (!app.isAuthenticated()) {
                 return;
             }
 
             profile = Soshace.profile;
             profileId = profile._id;
 
-            if(profileId !== ownerId){
+            if (profileId !== ownerId) {
                 return;
             }
 
-            status = this.model.get('status');
-            statusClass = this.model.statuses[status].class;
-            toolbarParams = _.extend(model, {
-                statusClass: statusClass
-            });
-            toolbar = Soshace.hbs['posts/edit/postPreviewToolbar'](toolbarParams);
+            toolbar = this.getToolBar();
             this.elements.toolbar.html(toolbar);
+        },
+
+        /**
+         * Метод возвращает отрендеренный тулбар для превью статьи
+         *
+         * @method
+         * @name PostPreviewView#getToolBar
+         * @returns {undefined}
+         */
+        getToolBar: function () {
+            var model = this.model.toJSON(),
+                status = this.model.get('status'),
+                statusClass = this.model.statuses[status].class,
+                cantEdit = status === 'sent' || status === 'published';
+
+            return Soshace.hbs['posts/edit/postPreviewToolbar'](_.extend(model, {
+                canEdit: !cantEdit,
+                statusClass: statusClass
+            }));
         },
 
         /**
@@ -122,7 +132,7 @@ define([
          * @name PostPreviewView#setElements
          * @returns {undefined}
          */
-        setElements: function(){
+        setElements: function () {
             this.elements.toolbar = this.$('.js-post-preview-toolbar');
         },
 

@@ -1,15 +1,11 @@
 <div class="posts content-center">
-    <div class="posts__full clearfix"
+    <div class="posts__full js-post clearfix"
          data-owner-id="{{post.ownerId}}"
-        {{#if post.status}} data-status="{{status}}"{{/if}}>
-        <div class="posts__full__toolbar">
-            <a class="posts__full__toolbar__edit js-router-link"
-               href="/{{post.locale}}/posts/{{post._id}}/edit">{{i18n 'Edit'}}</a>
-
-            <div class="posts__full__toolbar__status">{{status}}</div>
-        </div>
-        <div class="js-meta-information"></div>
-        <h1>{{post.title}}</h1>
-        <div>{{{post.body}}}</div>
+         data-status="{{post.status}}"
+         data-_id="{{post._id}}"
+         data-locale="{{post.locale}}">
+        <div class="posts__full__toolbar js-post-toolbar"></div>
+        <h1 class="js-title">{{post.title}}</h1>
+        <div class="js-body">{{{post.body}}}</div>
     </div>
 </div>

@@ -60,9 +60,8 @@ define([
                 var app = Soshace.app,
                     view = this.view;
 
-                view.$el = app.elements.contentFirstLoad;
-                view.delegateEvents();
-                view.afterRender();
+                view.withoutRender();
+                app.setView('.js-content', view);
             },
 
             /**

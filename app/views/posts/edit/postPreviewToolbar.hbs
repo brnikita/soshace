@@ -1,4 +1,9 @@
 <div class="posts__preview__toolbar">
-    <a class="posts__preview__toolbar__edit js-router-link" href="/{{locale}}/posts/{{_id}}/edit">{{i18n 'Edit'}}</a>
-    <div class="posts__preview__toolbar__status label {{statusClass}}">{{status}}</div>
+    {{#if canEdit}}
+        <a class="posts__preview__toolbar__edit js-router-link"
+           href="/{{locale}}/posts/{{_id}}/edit">{{i18n 'Edit'}}</a>
+    {{/if}}
+    {{#if status}}
+        <div class="posts__preview__toolbar__status label {{statusClass}}">{{status}}</div>
+    {{/if}}
 </div>

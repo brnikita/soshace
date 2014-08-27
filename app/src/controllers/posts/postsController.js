@@ -163,8 +163,7 @@ module.exports = Controller.extend({
             if (post) {
                 response.render('posts/post', _.extend(requestParams, {
                     post: post,
-                    title: post.title,
-                    id: post._id
+                    title: post.title
                 }));
                 return;
             }
