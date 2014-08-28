@@ -47,16 +47,9 @@ define([
         /**
          * @constructor
          * @name PostsView#initialize
-         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function (params) {
-            var $el = params && params.$el;
-
-            if ($el) {
-                this.$el = $el;
-            }
-
+        initialize: function () {
             Handlebars.registerPartial(
                 'intro',
                 Soshace.hbs['partials/intro']

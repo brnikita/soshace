@@ -63,22 +63,15 @@ define([
         /**
          * @constructor
          * @name LoginView#initialize
-         * @params {Object} params
          * @returns {undefined}
          */
-        initialize: function (params) {
-            var $el = params && params.$el;
-
+        initialize: function () {
             _.bindAll(this,
                 'render',
                 'userLoginSuccess',
                 'userLoginFail',
                 'authenticatedHandler'
             );
-
-            if ($el) {
-                this.$el = $el;
-            }
 
             Handlebars.registerPartial(
                 'login',

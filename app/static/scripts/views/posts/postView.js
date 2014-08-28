@@ -48,15 +48,9 @@ define([
         /**
          * @constructor
          * @name PostView#initialize
-         * @params {Object} params
          * @returns {undefined}
          */
-        initialize: function (params) {
-            var $el = params && params.$el;
-
-            if ($el) {
-                this.$el = $el;
-            }
+        initialize: function () {
         },
 
         /**
@@ -121,7 +115,8 @@ define([
         getToolBar: function () {
             var model = this.model.toJSON(),
                 status = this.model.get('status'),
-                statusClass = this.model.statuses[status].class,
+                statusSettings = this.model.statuses[status],
+                statusClass = statusSettings && statusSettings.class,
                 cantEdit = status === 'sent' || status === 'published';
 
             return Soshace.hbs['posts/edit/postPreviewToolbar'](_.extend(model, {

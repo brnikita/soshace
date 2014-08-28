@@ -130,17 +130,9 @@ define([
         /**
          * @constructor
          * @name PostEditView#initialize
-         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function (params) {
-            var $el = params.$el,
-                model = params.model;
-
-            if ($el) {
-                this.$el = $el;
-            }
-            this.model = model;
+        initialize: function () {
             this.addModelListeners();
         },
 
@@ -221,6 +213,7 @@ define([
             statusSettings = statuses[status];
             statusTitle = Helpers.i18n(statusSettings.title);
             $status.html(statusTitle);
+            this.model.set('status', status);
         },
 
         /**
@@ -684,6 +677,40 @@ define([
         },
 
         /**
+         * Метод добавляет слушатели на вид
+         *
+         * @method
+         * @name PostEditController#addListeners
+         * @returns {undefined}
+         */
+        addListeners: function () {
+            if (!this.isEditorDisabled()) {
+                this.addImageButtonListener();
+                this.addListenersToLinkModal();
+                this.addListenersToRemovePostModal();
+                this.elements.window.on('scroll', _.bind(this.windowScrollHandler, this));
+            }
+        },
+
+        /**
+         * Метод вызывается, когда рендер шаблона осуществляется на сервере
+         *
+         * @method
+         * @name PostEditView#withoutRender
+         * @returns {undefined}
+         */
+        withoutRender: function(){
+            var app = Soshace.app;
+
+            this.$el = app.elements.contentFirstLoad;
+            this.delegateEvents();
+            this.afterRender();
+            this.setDataToModelFromView();
+            this.addListeners();
+            this.showStatusMessages();
+        },
+
+        /**
          * Метод записывает в модель данные, пришедшие в
          * шаблоне.
          *
@@ -691,39 +718,25 @@ define([
          *
          * @method
          * @name PostEditView#setDataToModelFromView
-         * @param {Array} routeParams параментры запроса из url
          * @returns {undefined}
          */
-        setDataToModelFromView: function (routeParams) {
+        setDataToModelFromView: function () {
             var postEdit = this.elements.postEdit,
-                status = postEdit.data('status'),
-                ownerId = postEdit.data('ownerId'),
+                data = postEdit.data(),
                 $title = this.elements.postTitle,
                 $body = this.elements.postBody,
                 title = $title.val(),
-                body = $body.html(),
-                postId;
+                body = $body.html();
 
             if (title) {
-                this.model.set('title', title, {silent: true});
+                data.title = title;
             }
 
             if (body) {
-                this.model.set('body', body, {silent: true});
+                data.body = body;
             }
 
-            if (status) {
-                this.model.set('status', status, {silent: true});
-            }
-
-            if (ownerId) {
-                this.model.set('ownerId', ownerId, {silent: true});
-            }
-
-            if (routeParams.length >= 2) {
-                postId = routeParams[1];
-                this.model.set('_id', postId, {silent: true});
-            }
+            this.model.set(data, {silent: true});
         }
     });
 });

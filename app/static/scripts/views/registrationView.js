@@ -77,17 +77,11 @@ define([
          * @returns {undefined}
          */
         initialize: function (params) {
-            var $el = params.$el;
-
             _.bindAll(this,
                 'render',
                 'userRegistrationSuccess',
                 'userRegistrationFail'
             );
-
-            if ($el) {
-                this.$el = $el;
-            }
 
             Handlebars.registerPartial(
                 'registration',

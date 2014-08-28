@@ -49,25 +49,6 @@ define([
             },
 
             /**
-             * Метод добавляет слушатели на вид
-             *
-             * @method
-             * @name PostEditController#addViewListeners
-             * @returns {undefined}
-             */
-            addViewListeners: function () {
-                var view = this.view;
-
-                if (!view.isEditorDisabled()) {
-                    view.addImageButtonListener();
-                    view.addListenersToLinkModal();
-                    view.addListenersToRemovePostModal();
-                    view.elements.window.on('scroll', _.bind(view.windowScrollHandler, view));
-                }
-            },
-
-
-            /**
              * Метод вызывает при рендере на сервере
              *
              * @method
@@ -78,12 +59,8 @@ define([
                 var app = Soshace.app,
                     view = this.view;
 
-                view.$el = app.elements.contentFirstLoad;
-                view.delegateEvents();
-                view.afterRender();
-                view.setDataToModelFromView(this.routeParams);
-                this.addViewListeners();
-                view.showStatusMessages();
+                view.withoutRender();
+                app.setView('.js-content', view);
             },
 
             /**
@@ -100,11 +77,11 @@ define([
                     app = Soshace.app;
 
                 this.model.getPost(postId).
-                    done(_.bind(function () {
+                    done(function () {
                         app.setView('.js-content', view).render();
-                        this.addViewListeners();
+                        view.addListeners();
                         view.showStatusMessages();
-                    }, this));
+                    });
             }
         });
     });

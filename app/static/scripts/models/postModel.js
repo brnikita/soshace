@@ -47,7 +47,6 @@ define([
          * @type {Object}
          */
         statuses: {
-            //Статусы редактирования начало
             saved: {
                 title: 'Post saved',
                 class: 'label-primary',
@@ -58,8 +57,6 @@ define([
                 class: 'label-default',
                 editorEnable: true
             },
-            //Статусы редактирования конец
-            //Статусы в модели начало
             sent: {
                 title: 'Post sent',
                 class: 'label-primary',
@@ -88,7 +85,6 @@ define([
                 editorEnable: true,
                 statusMessage: 'messages/postHasComments'
             }
-            //Статусы в модели конец
         },
 
         /**
