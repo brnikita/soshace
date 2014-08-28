@@ -10,10 +10,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    './posts/postPreviewView',
     'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone, PostPreviewView) {
+], function ($, _, Backbone) {
     return Backbone.Layout.extend({
         /**
          * Модель деталей статьи
@@ -23,13 +22,6 @@ define([
          * @type {Backbone.Model | null}
          */
         model: null,
-
-        /**
-         * @field
-         * @name UserView#postsCollection
-         * @type {PostsCollection}
-         */
-        postsCollection: null,
 
         /**
          * Ссылки на DOM элементы
@@ -65,11 +57,9 @@ define([
          */
         serialize: function () {
             var app = Soshace.app,
-                posts = this.postsCollection.toJSON(),
                 data = this.model.toJSON();
 
             data.isAuthenticated = app.isAuthenticated();
-            data.posts = posts;
             data.paths = Soshace.urls;
 
             return data;
@@ -86,39 +76,17 @@ define([
         },
 
         /**
-         * Метод добавляет вид превью с списку статей
+         * Метод запускается, когда рендеринг шаблона происходит на сервере
          *
          * @method
-         * @name UserView#addOneView
-         * @param {Backbone.Model} postModel модель статьи
+         * @name UserView#withoutRender
+         * @param {jQuery} $el корневой элемент
          * @returns {undefined}
          */
-        addOneView: function (postModel) {
-            var view = new PostPreviewView({
-                model: postModel
-            });
-
-            this.insertView('.js-posts-list', view);
-        },
-
-        /**
-         * Метод заполняет список статей
-         *
-         * @method
-         * @name UserView#fillPostsList
-         * @returns {undefined}
-         */
-        fillPostsList: function () {
-            this.postsCollection.each(_.bind(this.addOneView, this));
-        },
-
-        /**
-         * @method
-         * @name PostsView#beforeRender
-         * @returns {undefined}
-         */
-        beforeRender: function () {
-            this.fillPostsList();
+        withoutRender: function($el){
+            this.$el = $el;
+            this.delegateEvents();
+            this.afterRender();
         },
 
         /**

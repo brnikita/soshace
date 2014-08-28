@@ -7,13 +7,14 @@
  * @class UserController
  */
 define([
-        'underscore',
-        'utils/controller',
-        'models/userModel',
-        'collections/postsCollection',
-        'views/userView'
-    ],
-    function (_, Controller, UserModel, PostsCollection, UserView) {
+    'underscore',
+    'utils/controller',
+    'models/userModel',
+    'collections/postsCollection',
+    'views/userView',
+    'views/posts/postsView'
+],
+    function (_, Controller, UserModel, PostsCollection, UserView, PostsView) {
         return Controller.extend({
             /**
              * Алиас страницы
@@ -27,21 +28,28 @@ define([
             /**
              * @field
              * @name UserController#model
-             * @type {UserModel}
+             * @type {UserModel | null}
              */
             model: null,
 
             /**
              * @field
              * @name UserController#postsCollection
-             * @type {PostsCollection}
+             * @type {PostsCollection | null}
              */
             postsCollection: null,
 
             /**
              * @field
+             * @name UserController#postsView
+             * @type {PostsView | null}
+             */
+            postsView: null,
+
+            /**
+             * @field
              * @name UserController#view
-             * @type {UserView}
+             * @type {UserView | null}
              */
             view: null,
 
@@ -51,12 +59,28 @@ define([
              * @returns {undefined}
              */
             initialize: function () {
-                this.model = new UserModel();
-                this.postsCollection = new PostsCollection();
-                this.view = new UserView({
-                    model: this.model,
-                    postsCollection: this.postsCollection
+                var model,
+                    view,
+                    postsView,
+                    postsCollection;
+
+                model = new UserModel();
+                postsCollection = new PostsCollection();
+                postsView = new PostsView({
+                    collection: postsCollection
                 });
+                postsCollection.on('postsReceived', _.bind(function () {
+                    postsView.render();
+                }, this));
+
+                view = new UserView({
+                    model: model
+                });
+
+                this.model = model;
+                this.view = view;
+                this.postsView = postsView;
+                this.postsCollection = postsCollection;
             },
 
 
@@ -69,11 +93,16 @@ define([
              */
             firstLoad: function () {
                 var app = Soshace.app,
+                    $contentFirstLoad = app.elements.contentFirstLoad,
+                    $posts,
+                    postsView = this.postsView,
                     view = this.view;
 
-                view.$el = app.elements.contentFirstLoad;
-                view.delegateEvents();
-                view.afterRender();
+                app.setView('.js-content', view);
+                view.withoutRender($contentFirstLoad);
+                view.setView('.js-posts', postsView);
+                $posts = view.$('.js-posts');
+                postsView.withoutRender($posts);
             },
 
             /**
@@ -100,7 +129,7 @@ define([
                     app.setView('.js-content', view).render();
                 }, this));
 
-                this.model.getUser().done(_.bind(function(response){
+                this.model.getUser().done(_.bind(function (response) {
                     this.postsCollection.getPosts({ownerId: response._id});
                 }, this));
             }

@@ -64,18 +64,18 @@ define([
          * @name PostsView#setViewsFromTemplate
          * @returns {undefined}
          */
-        setViewsFromTemplate: function(){
+        setViewsFromTemplate: function () {
             var _this = this,
                 collection = this.collection,
                 PostModel = collection.model,
                 postsPreviews = this.elements.postsPreviews;
 
-            postsPreviews.each(function(){
+            postsPreviews.each(function () {
                 var $this = $(this),
                     model,
                     view,
                     data = $this.data(),
-                    $title= $('.js-title', $this),
+                    $title = $('.js-title', $this),
                     $description = $('.js-description', $this),
                     title = $title.html(),
                     description = $description.html();
@@ -129,7 +129,7 @@ define([
          * @name PostsView#serialize
          * @returns {Object}
          */
-        serialize: function(){
+        serialize: function () {
             var data = {};
 
             data.posts = this.collection.toJSON();
@@ -137,6 +137,21 @@ define([
             data.locale = Helpers.getLocale();
 
             return data;
+        },
+
+        /**
+         * Метод вызывается, когда рендер происходит на сервере
+         *
+         * @method
+         * @name PostsView#withoutRender
+         * @param {jQuery} $el корневой элемент вида
+         * @returns {undefined}
+         */
+        withoutRender: function ($el) {
+            this.$el = $el;
+            this.delegateEvents();
+            this.setElements();
+            this.setViewsFromTemplate();
         },
 
         /**
@@ -155,7 +170,7 @@ define([
          * @name PostsView#setElements
          * @returns {undefined}
          */
-        setElements: function(){
+        setElements: function () {
             this.elements.postsPreviews = this.$('.js-post-preview');
         },
 

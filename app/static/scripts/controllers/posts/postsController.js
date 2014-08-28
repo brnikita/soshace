@@ -64,13 +64,11 @@ define([
              */
             firstLoad: function () {
                 var app = Soshace.app,
+                    $el = app.elements.contentFirstLoad,
                     view = this.view;
 
-                view.$el = app.elements.contentFirstLoad;
-                view.delegateEvents();
-                view.afterRender();
-                view.setViewsFromTemplate();
                 app.setView('.js-content', view);
+                view.withoutRender($el);
             },
 
             /**

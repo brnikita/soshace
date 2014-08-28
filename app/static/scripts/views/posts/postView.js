@@ -149,7 +149,6 @@ define([
         withoutRender: function(){
             var app = Soshace.app;
 
-            this.$el = app.elements.contentFirstLoad;
             this.setElements();
             this.delegateEvents();
             this.setModelFromTemplate();
