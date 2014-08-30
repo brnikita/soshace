@@ -7,14 +7,13 @@
  * @class UserController
  */
 define([
-    'underscore',
-    'utils/controller',
-    'models/userModel',
-    'collections/postsCollection',
-    'views/userView',
-    'views/posts/postsView'
-],
-    function (_, Controller, UserModel, PostsCollection, UserView, PostsView) {
+        'underscore',
+        'utils/controller',
+        'models/userModel',
+        'collections/postsCollection',
+        'views/userView'
+    ],
+    function (_, Controller, UserModel, PostsCollection, UserView) {
         return Controller.extend({
             /**
              * Алиас страницы
@@ -41,13 +40,6 @@ define([
 
             /**
              * @field
-             * @name UserController#postsView
-             * @type {PostsView | null}
-             */
-            postsView: null,
-
-            /**
-             * @field
              * @name UserController#view
              * @type {UserView | null}
              */
@@ -59,27 +51,24 @@ define([
              * @returns {undefined}
              */
             initialize: function () {
-                var model,
+                var app = Soshace.app,
+                    model,
                     view,
-                    postsView,
                     postsCollection;
 
                 model = new UserModel();
                 postsCollection = new PostsCollection();
-                postsView = new PostsView({
-                    collection: postsCollection
-                });
                 postsCollection.on('postsReceived', _.bind(function () {
-                    postsView.render();
+                    app.setView('.js-content', view).render();
                 }, this));
 
                 view = new UserView({
+                    postsCollection: postsCollection,
                     model: model
                 });
 
                 this.model = model;
                 this.view = view;
-                this.postsView = postsView;
                 this.postsCollection = postsCollection;
             },
 
@@ -94,19 +83,14 @@ define([
             firstLoad: function () {
                 var app = Soshace.app,
                     $contentFirstLoad = app.elements.contentFirstLoad,
-                    $posts,
-                    postsView = this.postsView,
                     view = this.view;
 
                 app.setView('.js-content', view);
                 view.withoutRender($contentFirstLoad);
-                view.setView('.js-posts', postsView);
-                $posts = view.$('.js-posts');
-                postsView.withoutRender($posts);
             },
 
             /**
-             * TODO: добавить обработку ошибок
+             * TODO: добавить обработку ошибок при получении статей
              *
              * Метод вызывает при рендере на клиенте
              *
@@ -115,19 +99,12 @@ define([
              * @returns {undefined}
              */
             secondLoad: function () {
-                var params = this.routeParams,
-                    view = this.view,
-                    app = Soshace.app;
+                var params = this.routeParams;
 
                 this.model.set({
                     locale: params[0],
                     userName: params[1]
                 });
-
-                this.view = view;
-                this.postsCollection.on('postsReceived', _.bind(function () {
-                    app.setView('.js-content', view).render();
-                }, this));
 
                 this.model.getUser().done(_.bind(function (response) {
                     this.postsCollection.getPosts({ownerId: response._id});

@@ -10,9 +10,10 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    './posts/postPreviewView',
     'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone) {
+], function ($, _, Backbone, PostPreviewView) {
     return Backbone.Layout.extend({
         /**
          * Модель деталей статьи
@@ -24,6 +25,15 @@ define([
         model: null,
 
         /**
+         * Коллекция статей
+         *
+         * @field
+         * @name UserView#postsCollection
+         * @type {Backbone.Model | null}
+         */
+        postsCollection: null,
+
+        /**
          * Ссылки на DOM элементы
          *
          * @field
@@ -31,6 +41,7 @@ define([
          * @type {Object}
          */
         elements: {
+            postsPreviews: null
         },
 
         /**
@@ -51,6 +62,73 @@ define([
         },
 
         /**
+         * Метод заполняет данными коллекцию статей и устанавливает виды preview используя
+         * данные из шаблона
+         *
+         * @method
+         * @name UserView#setPreViewsFromTemplate
+         * @returns {undefined}
+         */
+        setPreViewsFromTemplate: function () {
+            var _this = this,
+                collection = this.postsCollection,
+                PostModel = collection.model,
+                postsPreviews = this.elements.postsPreviews;
+
+            postsPreviews.each(function () {
+                var $this = $(this),
+                    model,
+                    view,
+                    data = $this.data(),
+                    $title = $('.js-title', $this),
+                    $description = $('.js-description', $this),
+                    title = $title.html(),
+                    description = $description.html();
+
+                model = new PostModel(_.extend(data, {
+                    title: title,
+                    description: description
+                }));
+
+                view = new PostPreviewView({
+                    model: model
+                });
+
+                view.$el = $this;
+                view.withoutRender();
+                _this.insertView('.js-posts-list', view);
+                collection.add(model);
+            });
+        },
+
+        /**
+         * Метод добавляет вид превью с списку статей
+         *
+         * @method
+         * @name UserView#addOneView
+         * @param {Backbone.Model} postModel модель статьи
+         * @returns {undefined}
+         */
+        addOneView: function (postModel) {
+            var view = new PostPreviewView({
+                model: postModel
+            });
+
+            this.insertView('.js-posts-list', view);
+        },
+
+        /**
+         * Метод заполняет список статей
+         *
+         * @method
+         * @name UserView#fillPostsList
+         * @returns {undefined}
+         */
+        fillPostsList: function () {
+            this.postsCollection.each(_.bind(this.addOneView, this));
+        },
+
+        /**
          * @method
          * @name UserView#serialize
          * @returns {Object}
@@ -61,6 +139,7 @@ define([
 
             data.isAuthenticated = app.isAuthenticated();
             data.paths = Soshace.urls;
+            data.posts = this.postsCollection.toJSON();
 
             return data;
         },
@@ -73,6 +152,7 @@ define([
          * @returns {undefined}
          */
         setElements: function () {
+            this.elements.postsPreviews = this.$('.js-post-preview');
         },
 
         /**
@@ -86,7 +166,17 @@ define([
         withoutRender: function($el){
             this.$el = $el;
             this.delegateEvents();
-            this.afterRender();
+            this.setElements();
+            this.setPreViewsFromTemplate();
+        },
+
+        /**
+         * @method
+         * @name UserView#beforeRender
+         * @returns {undefined}
+         */
+        beforeRender: function () {
+            this.fillPostsList();
         },
 
         /**

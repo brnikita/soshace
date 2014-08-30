@@ -54,25 +54,23 @@
                class="btn btn-success js-router-link">{{i18n 'Add post'}}</a>
         </div>
     </div>
-    <div class="js-posts">
-        {{#if backend}}
-            {{#if posts}}
-                <div class="js-posts-list posts clearfix">
+    <div>
+        {{#if posts}}
+            <div class="js-posts-list posts clearfix">
+                {{#if backend}}
                     {{#each posts}}
                         {{> postPreview}}
                     {{/each}}
-                </div>
-            {{else}}
-                <div class="box-message box-message-warning">
-                    <h3>
-                        <a class="js-router-link" href="/{{locale}}/posts/new">
-                            {{{i18n 'Here could be your posts'}}}
-                        </a>
-                    </h3>
-                </div>
-            {{/if}}
+                {{/if}}
+            </div>
         {{else}}
-            <img src="{{imagesPath}}preloader.gif" class="img-responsive center"/>
+            <div class="box-message box-message-warning">
+                <h3>
+                    <a class="js-router-link" href="/{{locale}}/posts/new">
+                        {{{i18n 'Here could be your posts'}}}
+                    </a>
+                </h3>
+            </div>
         {{/if}}
     </div>
 </div>
