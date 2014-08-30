@@ -68,8 +68,16 @@ var UsersShema = new Schema({
             }
         ]
     },
-    isMale: {
-        type: Boolean,
+    sex: {
+        type: String,
+        default: null
+    },
+    aboutAuthor: {
+        type: String,
+        default: null
+    },
+    birthday: {
+        type: Date,
         default: null
     },
     password: {

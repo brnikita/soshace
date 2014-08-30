@@ -57,7 +57,9 @@ define([
             ':locale/registration': 'controllers/registrationController',
             ':locale/registration/': 'controllers/registrationController',
             ':locale/users/:username': 'controllers/userController',
-            ':locale/users/:username/': 'controllers/userController'
+            ':locale/users/:username/': 'controllers/userController',
+            ':locale/users/:username/edit': 'controllers/userController',
+            ':locale/users/:username/edit/': 'controllers/userController'
         },
 
         /**

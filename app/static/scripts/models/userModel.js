@@ -38,12 +38,13 @@ define([
          * @type {Object}
          */
         defaults: {
-            username: null,
+            userName: null,
             locale: null,
             fullName: null,
             profileImg: null,
-            posts: null,
-            isMale: null
+            sex: null,
+            birthday: null,
+            aboutAuthor: null
         },
 
         /**

@@ -8,45 +8,70 @@
                          style="width: 140px; height: 140px;">
                 </div>
             </div>
-            <div class="user__profile__info__description">
-                <div class="user__profile__block">
-                    <div>{{i18n 'First Name Last Name'}}:</div>
-                    <h3 class="font-color-blue">
-                        <input type="text" value="{{name}}"/>
-                        <input type="text" value="{{surname}}"/>
-                    </h3>
-                </div>
-                <div class="user__profile__block">
-                    <div>
-                        {{i18n 'Sex'}}:
-                    </div>
-                    <div>
-                        <input type="" value="{{sex}}"/>
-                    </div>
-                </div>
-                <div class="user__profile__block">
-                    <div>
-                        {{i18n 'Birthday'}}
-                    </div>
-                    <div>
+            {{#if isEdit}}
+                <form class="user__profile__info__description">
+                    <div class="user__profile__block form-group">
+                        <label for="fullName">{{i18n 'Full name'}}:</label>
 
+                        <h3>
+                            <input class="form-control" type="text" id="fullName" name="fullName" value="{{fullName}}"/>
+                        </h3>
                     </div>
-                </div>
-                <div class="user__profile__block">
-                    <div>
-                        {{i18n 'Inforfomation obout author'}}:
+                    <div class="user__profile__block form-group">
+                        <div class="">{{i18n 'Sex'}}:</div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="sex" id="sexMale" value="male">
+                                {{i18n 'Male'}}
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="sex" id="sexFemale" value="female">
+                                {{i18n 'Female'}}
+                            </label>
+                        </div>
                     </div>
-                    <div>
-                        <textarea>
+                    <div class="user__profile__block form-group">
+                        <label for="birthday">{{i18n 'Birthday'}}:</label>
 
+                            <input class="form-control" type="text" id="birthday" name="birthday" value="{{birthday}}"/>
+                    </div>
+                    <div class="user__profile__block form-group">
+                        <label for="aboutAuthor">{{i18n 'About author'}}:</label>
+                        <textarea id="aboutAuthor" name="aboutAuthor" class="form-control">
+                            {{aboutAuthor}}
                         </textarea>
                     </div>
-                </div>
-                <div class="user__profile__block">
-                    <div>
-                        {{i18n 'Hobbies'}}
+                    <div class="user__profile__block form-group">
+                        <button type="submit" class="btn btn-primary js-user-save">{{i18n 'Save'}}</button>
+                    </div>
+                </form>
+            {{else}}
+                <div class="user__profile__info__description">
+                    <div class="user__profile__block">
+                        <div>{{i18n 'Full name'}}:</div>
+                        <h3>
+                            {{fullName}}
+                        </h3>
+                    </div>
+                    <div class="user__profile__block">
+                        <div>{{i18n 'Sex'}}:</div>
+                        <div>{{sex}}</div>
+                    </div>
+                    <div class="user__profile__block">
+                        <div>{{i18n 'Birthday'}}:</div>
+                        <div>{{birthday}}</div>
+
+                    </div>
+                    <div class="user__profile__block">
+                        <div>{{i18n 'About author'}}:</div>
+                        <div>{{aboutAuthor}}</div>
                     </div>
                 </div>
+            {{/if}}
+            <div class="user__profile__info__edit">
+                <a href="/{{locale}}/users/{{userName}}"></a>
             </div>
         </div>
         <div class="user__profile__footer">

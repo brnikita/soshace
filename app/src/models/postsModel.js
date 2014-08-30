@@ -23,14 +23,12 @@ var _ = require('underscore'),
      */
     PostsShema = new Schema({
         //Время последнего изменения
-        //timestamp
         updated: {
             type: Date
         },
         //Время публикации
-        //timestamp
         published: {
-            type: Boolean
+            type: Date
         },
         //id пользователя, к которому относится сообщение
         ownerId: {
