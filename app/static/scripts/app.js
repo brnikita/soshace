@@ -9,18 +9,11 @@ define([
     'collections/systemMessagesCollection',
     'views/headerView',
     'views/systemMessagesView',
+    'jquery.cookie',
     'bootstrap',
     'backbone.layoutmanager',
     'config'
-], function (
-    $,
-    _,
-    Backbone,
-    Router,
-    Helpers,
-    SystemMessagesCollection,
-    HeaderView,
-    SystemMessagesView) {
+], function ($, _, Backbone, Router, Helpers, SystemMessagesCollection, HeaderView, SystemMessagesView) {
     var App = Backbone.Layout.extend({
 
         /**
@@ -78,9 +71,7 @@ define([
          * @returns {Boolean}
          */
         isAuthenticated: function () {
-            var profile = Soshace.profile;
-            return !!(profile && typeof profile.userName === 'string' &&
-                profile.userName.length > 0);
+            return $.cookie('isAuthenticated') === '1';
         },
 
         /**
@@ -160,7 +151,7 @@ define([
          * @name App#getSystemMessages
          * @returns {undefined}
          */
-        getSystemMessages: function(){
+        getSystemMessages: function () {
             return this.systemMessagesCollection.fetch();
         },
 
@@ -173,14 +164,26 @@ define([
          * @name App#getProfileData
          * @returns {jQuery.Deferred}
          */
-        getProfileData: function () {
-            var deferred = $.Deferred();
+        getProfileData: function (profileUserName) {
+            var profileUrl,
+                deferred = $.Deferred();
+
+            if (this.isAuthenticated) {
+                return deferred.resolve(null);
+            }
 
             if (Soshace.profile !== null) {
                 return deferred.resolve(Soshace.profile);
             }
 
-            $.get(Soshace.urls.api.profile, function (data) {
+            profileUserName = profileUserName || this.$el.data('profileUserName');
+
+            if(profileUserName){
+
+            }
+
+            profileUrl = Soshace.urls.api.user.replace('0', profileUserName);
+            $.get(profileUrl, function (data) {
                 var profileData = data.profile;
 
                 Soshace.profile = profileData;

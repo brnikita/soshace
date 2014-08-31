@@ -20,7 +20,37 @@ module.exports = Controller.extend({
      * @returns {undefined}
      */
     getUser: function () {
+        var response = this.response,
+            request = this.request,
+            params = request.params,
+            userName = params.username,
+            requestParams = new RequestParams(request),
+            profile;
 
+        if (requestParams.isAuthenticated) {
+            profile = requestParams.profile;
+            if (userName === profile.userName) {
+                profile = _.pick(profile,
+                    '_id',
+                    'fullName',
+                    'userName',
+                    'isMale',
+                    'emailConfirmed',
+                    'systemMessages',
+                    'locale');
+                response.send(profile);
+                return;
+            }
+        }
+
+        UsersModel.getUserByUserName(userName, _.bind(function (error, user) {
+            if (error) {
+                this.sendError(error);
+                return;
+            }
+
+            response.send(user);
+        }, this));
     },
 
     /**
@@ -71,35 +101,6 @@ module.exports = Controller.extend({
     },
 
     /**
-     * Метод отдает в ответе json с данными профиля
-     * текущего авторизованного пользователя
-     *
-     * @method
-     * @name UsersController#getProfile
-     * @returns {undefined}
-     */
-    getProfile: function () {
-        var request = this.request,
-            response = this.response,
-            userProfile = null;
-
-        if (request.user && request.user[0]) {
-            userProfile = _.pick(request.user[0],
-                '_id',
-                'fullName',
-                'userName',
-                'isMale',
-                'emailConfirmed',
-                'systemMessages',
-                'locale');
-        }
-
-        response.send({
-            profile: userProfile
-        });
-    },
-
-    /**
      * Метод рендерит страницу пользователя
      *
      * @method
@@ -108,48 +109,91 @@ module.exports = Controller.extend({
      */
     renderUserPage: function () {
         var request = this.request,
-            response = this.response,
+            params = request.params,
+            userName = params.username,
             requestParams = new RequestParams(request),
-            profileId;
+            profile;
 
         if (requestParams.isAuthenticated) {
-            profileId = requestParams.profile._id;
-            this.renderUserPageAuthenticated(profileId);
-            return;
+            profile = requestParams.profile;
+            if (userName === profile.userName) {
+                this.renderProfileForAuthenticatedUser(profile);
+                return;
+            }
         }
 
-        response.render('user', _.extend(requestParams, {
-            isUserTab: true,
-            title: 'User Profile',
-            bodyClass: 'bg-symbols bg-color-blue'
-        }));
+        UsersModel.getUserByUserName(userName, _.bind(function (error, user) {
+            if (error) {
+                this.renderError(error);
+                return;
+            }
+
+            if (user === null) {
+                this.renderError('User not found', 404);
+                return;
+            }
+
+            this.renderNotAuthenticatedUserPage(user);
+        }, this));
     },
 
     /**
-     * Метод рендерит авторизованного пользователя
-     * по id профиля
+     * Метод рендерит страницу пользователя
+     * Страница не принадлежит текущему пользователю
      *
      * @method
-     * @name UsersController#renderUserPageAuthenticated
-     * @param {String} profileId id профиля
+     * @name UsersController#renderAuthenticatedUserPage
+     * @param {Mongoose.Model} user
      * @returns {undefined}
      */
-    renderUserPageAuthenticated: function (profileId) {
+    renderNotAuthenticatedUserPage: function (user) {
         var request = this.request,
             response = this.response,
+            userId = user._id,
             requestParams = new RequestParams(request);
 
-        PostsModel.getProfilePosts(profileId, _.bind(function (error, posts) {
+        PostsModel.getUserPosts(userId, _.bind(function (error, posts) {
             if (error) {
-                this.sendError(error);
+                this.renderError(error);
                 return;
             }
 
             response.render('user', _.extend(requestParams, {
+                user: user,
                 isUserTab: true,
                 posts: posts,
-                title: 'User Profile',
-                bodyClass: 'bg-symbols bg-color-blue'
+                title: 'User Profile'
+            }));
+        }, this));
+    },
+
+    /**
+     * Метод рендерит страницу профиля
+     * авторизованного пользователя по id профиля
+     *
+     * @method
+     * @name UsersController#renderProfileForAuthenticatedUser
+     * @param {Mongoose.Model} profile профиль пользователя
+     * @returns {undefined}
+     */
+    renderProfileForAuthenticatedUser: function (profile) {
+        var request = this.request,
+            response = this.response,
+            profileId = profile._id,
+            requestParams = new RequestParams(request);
+
+        PostsModel.getProfilePosts(profileId, _.bind(function (error, posts) {
+            if (error) {
+                this.renderError(error);
+                return;
+            }
+
+            response.render('user', _.extend(requestParams, {
+                user: profile,
+                isUserTab: true,
+                isOwner: true,
+                posts: posts,
+                title: 'User Profile'
             }));
         }, this));
     }

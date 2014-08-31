@@ -140,7 +140,6 @@ define([
             data.isAuthenticated = app.isAuthenticated();
             data.paths = Soshace.urls;
             data.posts = this.postsCollection.toJSON();
-            data.isEdit = true;
             return data;
         },
 

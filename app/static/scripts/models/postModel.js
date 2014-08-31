@@ -70,6 +70,7 @@ define([
                 title: 'Post published',
                 class: 'label-success',
                 editorEnable: false,
+                //Причина недоступности статьи
                 editorMessage: 'After publication you can&#39;t to edit or delete the article',
                 statusMessage: 'messages/postPublished'
             },

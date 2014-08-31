@@ -1,6 +1,7 @@
 'use strict';
 
-var Class = srcRequire('vendors/class');
+var RequestParams = srcRequire('common/requestParams'),
+    Class = srcRequire('vendors/class');
 
 /**
  * Родительский класс для контороллеров
@@ -75,6 +76,21 @@ module.exports = Class.extend({
         response.status(errorCode).send({
             error: errorMessage
         });
+    },
+
+    /**
+     * TODO: Доделать
+     *
+     * @method
+     * @name ControllerInit#renderError
+     * @returns {undefined}
+     */
+    renderError: function () {
+        var response = this.response,
+            request = this.request,
+            requestParams = new RequestParams(request);
+
+        response.render('404', requestParams);
     },
 
     /**

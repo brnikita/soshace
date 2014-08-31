@@ -56,7 +56,7 @@ var Strategies = {
             return;
         }
 
-        UsersModel.getUserByEmail(userEmail).exec(_.bind(function(error, user){
+        UsersModel.getUserByEmail(userEmail, _.bind(function(error, user){
             this.getUserByEmailHandler(error, user, userEmail, userPassword, done);
         }, this));
     },

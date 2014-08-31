@@ -668,10 +668,10 @@ define([
         showStatusMessages: function () {
             var statusMessages = this.elements.statusMessages,
                 status = this.model.get('status'),
-                messagePath;
+                statusSettings = this.model.statuses[status],
+                messagePath = statusSettings && statusSettings.statusMessage;
 
-            if (status === 'sent') {
-                messagePath = this.model.statuses[status].statusMessage;
+            if (typeof messagePath !== 'undefined') {
                 statusMessages.html(Soshace.hbs[messagePath]());
             }
         },
@@ -699,7 +699,7 @@ define([
          * @name PostEditView#withoutRender
          * @returns {undefined}
          */
-        withoutRender: function(){
+        withoutRender: function () {
             var app = Soshace.app;
 
             this.$el = app.elements.contentFirstLoad;

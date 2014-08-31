@@ -2,10 +2,13 @@
     <div class="user__profile">
         <div class="user__profile__info clearfix">
             <div class="user__profile__info__avatar">
+                <div class="user__profile__info__avatar__img">
+                    {{#if user.profileImg}}
+                        <img src="{{user.profileImg}}" />
+                    {{/if}}
+                </div>
                 <div>
-                    <img data-src="holder.js/140x140" class="img-rounded" alt="140x140"
-                         src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjcwIiB5PSI3MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE0MHgxNDA8L3RleHQ+PC9zdmc+"
-                         style="width: 140px; height: 140px;">
+                    <a href="#" class="user__profile__info__avatar__change">Изменить</a>
                 </div>
             </div>
             {{#if isEdit}}
@@ -14,7 +17,7 @@
                         <label for="fullName">{{i18n 'Full name'}}:</label>
 
                         <h3>
-                            <input class="form-control" type="text" id="fullName" name="fullName" value="{{fullName}}"/>
+                            <input class="form-control" type="text" id="fullName" name="fullName" value="{{user.fullName}}"/>
                         </h3>
                     </div>
                     <div class="user__profile__block form-group">
@@ -35,12 +38,12 @@
                     <div class="user__profile__block form-group">
                         <label for="birthday">{{i18n 'Birthday'}}:</label>
 
-                            <input class="form-control" type="text" id="birthday" name="birthday" value="{{birthday}}"/>
+                        <input class="form-control" type="text" id="birthday" name="birthday" value="{{user.birthday}}"/>
                     </div>
                     <div class="user__profile__block form-group">
                         <label for="aboutAuthor">{{i18n 'About author'}}:</label>
                         <textarea id="aboutAuthor" name="aboutAuthor" class="form-control">
-                            {{aboutAuthor}}
+                            {{user.aboutAuthor}}
                         </textarea>
                     </div>
                     <div class="user__profile__block form-group">
@@ -50,34 +53,33 @@
             {{else}}
                 <div class="user__profile__info__description">
                     <div class="user__profile__block">
-                        <div>{{i18n 'Full name'}}:</div>
                         <h3>
-                            {{fullName}}
+                            {{user.fullName}}
                         </h3>
                     </div>
                     <div class="user__profile__block">
-                        <div>{{i18n 'Sex'}}:</div>
-                        <div>{{sex}}</div>
+                        {{i18n 'Sex'}}: {{user.sex}}
                     </div>
                     <div class="user__profile__block">
-                        <div>{{i18n 'Birthday'}}:</div>
-                        <div>{{birthday}}</div>
+                        {{i18n 'Birthday'}}: {{user.birthday}}
 
                     </div>
                     <div class="user__profile__block">
                         <div>{{i18n 'About author'}}:</div>
-                        <div>{{aboutAuthor}}</div>
+                        <div>{{user.aboutAuthor}}</div>
                     </div>
                 </div>
             {{/if}}
             <div class="user__profile__info__edit">
-                <a href="/{{locale}}/users/{{userName}}"></a>
+                <a href="/{{user.locale}}/users/{{user.userName}}"></a>
             </div>
         </div>
-        <div class="user__profile__footer">
-            <a href="/{{locale}}/posts/new"
-               class="btn btn-success js-router-link">{{i18n 'Add post'}}</a>
-        </div>
+        {{#if isOwner}}
+            <div class="user__profile__footer">
+                <a href="/{{locale}}/posts/new"
+                   class="btn btn-success js-router-link">{{i18n 'Add post'}}</a>
+            </div>
+        {{/if}}
     </div>
     <div>
         {{#if posts}}

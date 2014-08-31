@@ -10,7 +10,8 @@
     <!--Откомпилированные compass файлы, версия берется из package.json-->
     <link href="{{paths.styles}}styles.css?v={{version}}" rel="stylesheet">
 </head>
-<body style="background-image: url('{{paths.backgrounds}}{{bodyBg}}')">
+<body data-profile-user-name="{{profileUserName}}"
+      style="background-image: url('{{paths.backgrounds}}{{bodyBg}}')">
 <div class="js-header header">
     {{> header}}
 </div>

@@ -183,35 +183,25 @@ UsersShema.pre('save', function (next) {
  * Метод возвращает данные пользователя
  *
  * @method
- * @name UsersShema.getUser
- * @param {Object} params
+ * @name UsersShema.getUserByUserName
+ * @param {String} userName
+ * @param {Function} callback
  * @return {Cursor}
  */
-UsersShema.statics.getUser = function (params) {
-    return this.findOne(params, {
+UsersShema.statics.getUserByUserName = function (userName, callback) {
+    return this.findOne({userName: userName}, {
         fullName: 1,
         userName: 1,
-        isMale: 1
-    });
-};
-
-/**
- * Метод возвращает данные профиля пользователя
- *
- * @method
- * @name UsersShema.getProfile
- * @param {Object} params
- * @return {Cursor}
- */
-UsersShema.statics.getProfile = function (params) {
-    return this.findOne(params, {
-        fullName: 1,
-        userName: 1,
-        isMale: 1,
-        emailConfirmed: 1,
-        admin: 1,
-        locale: 1,
-        systemMessages: 1
+        sex: 1,
+        aboutAuthor: 1,
+        birthday: 1,
+        _id: 1
+    }).exec(function (error, user) {
+        if (error) {
+            callback({error: 'Server is too busy, try later', code: 503});
+            return;
+        }
+        callback(null, user);
     });
 };
 
@@ -221,10 +211,17 @@ UsersShema.statics.getProfile = function (params) {
  * @method
  * @name UsersShema.getUserByEmail
  * @param {String} email проверяемый email
+ * @param {Function} callback
  * @return {Cursor}
  */
-UsersShema.statics.getUserByEmail = function (email) {
-    return this.findOne({email: email});
+UsersShema.statics.getUserByEmail = function (email, callback) {
+    return this.findOne({email: email}).exec(function (error, user) {
+        if (error) {
+            callback({error: 'Server is too busy, try later', code: 503});
+            return;
+        }
+        callback(null, user);
+    });
 };
 
 /**

@@ -28,8 +28,8 @@ define([
          * @returns {string}
          */
         url: function(){
-            var username = this.get('username');
-            return Soshace.urls.api.user.replace('0', username);
+            var userName = this.get('userName');
+            return Soshace.urls.api.user.replace('0', userName);
         },
 
         /**
@@ -69,7 +69,7 @@ define([
                 }
             }
 
-            return $.get(Soshace.urls.api.user, {userName: userName});
+            return this.fetch();
         },
 
         /**

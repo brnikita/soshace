@@ -100,7 +100,6 @@ define([
              */
             secondLoad: function () {
                 var params = this.routeParams;
-
                 this.model.set({
                     locale: params[0],
                     userName: params[1]

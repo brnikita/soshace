@@ -90,6 +90,8 @@ module.exports = Controller.extend({
             locale = requestParams.locale;
 
         request.logout();
+        response.clearCookie('isAuthenticated');
+        response.clearCookie('profileUserName');
         response.redirect('/' + locale);
     },
 
@@ -117,6 +119,7 @@ module.exports = Controller.extend({
     /**
      * @method
      * @name LoginController.userLogin
+     * @param {Object} error
      * @returns {undefined}
      */
     userLogin: function (error) {
@@ -126,6 +129,8 @@ module.exports = Controller.extend({
             return this.sendError('Server is too busy, try later', 503);
         }
 
+        response.cookie('isAuthenticated', '1');
+        response.cookie('profileUserName', profile.userName);
         response.send({isAuthenticated: true});
     }
 });
