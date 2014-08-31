@@ -73,6 +73,8 @@ module.exports = Controller.extend({
             response = this.response;
 
         request.logout();
+        response.clearCookie('isAuthenticated');
+        response.clearCookie('profileUserName');
         response.send({isAuthenticated: false});
     },
 
@@ -99,12 +101,11 @@ module.exports = Controller.extend({
      * @method
      * @name LoginController#authenticateHandler
      * @param {*} error
-     * @param {String} userId
+     * @param {Mongoose.Model} user
      * @returns {undefined}
      */
-    authenticateHandler: function (error, userId) {
+    authenticateHandler: function (error, user) {
         var request = this.request;
-
         if (typeof error === 'string') {
             return this.sendError(error, 500);
         }
@@ -113,16 +114,19 @@ module.exports = Controller.extend({
             return this.sendError(error);
         }
 
-        request.login(userId, this.userLogin);
+        request.login(user, _.bind(function(error){
+            this.userLogin(error, user);
+        }, this));
     },
 
     /**
      * @method
      * @name LoginController.userLogin
      * @param {Object} error
+     * @param {Mongoose.Model} user
      * @returns {undefined}
      */
-    userLogin: function (error) {
+    userLogin: function (error, user) {
         var response = this.response;
 
         if (error) {
@@ -130,7 +134,7 @@ module.exports = Controller.extend({
         }
 
         response.cookie('isAuthenticated', '1');
-        response.cookie('profileUserName', profile.userName);
-        response.send({isAuthenticated: true});
+        response.cookie('profileUserName', user.userName);
+        response.send(user);
     }
 });

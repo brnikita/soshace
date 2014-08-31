@@ -69,8 +69,7 @@ define([
             _.bindAll(this,
                 'render',
                 'userLoginSuccess',
-                'userLoginFail',
-                'authenticatedHandler'
+                'userLoginFail'
             );
 
             Handlebars.registerPartial(
@@ -137,39 +136,18 @@ define([
          * @method
          * @name LoginView#userLoginSuccess
          * @param {Backbone.Model} model
-         * @param {Object} response
+         * @param {Object} response в ответе приходит профиль пользователя
          * @returns {undefined}
          */
         userLoginSuccess: function (model, response) {
             var app = Soshace.app,
-                error = response.error;
-
-            if (error) {
-                //TODO: Переделать на другую ошибку
-                Widgets.showMessages(error);
-            } else {
-                app.getProfileData().
-                    done(this.authenticatedHandler);
-            }
-        },
-
-        /**
-         * Метод обработчик события получения профиля
-         * авторизованного пользователя
-         *
-         * @method
-         * @name LoginView#authenticatedHandler
-         * @returns {undefined}
-         */
-        authenticatedHandler: function () {
-            var app = Soshace.app,
-                profile = Soshace.profile,
-                userName = profile.userName,
-                locale = profile.locale,
+                userName = response.userName,
+                locale = response.locale,
                 redirectUrl = '/' + locale + '/users/' + userName;
 
+            Soshace.profile = response;
             app.getView('.js-system-messages').collection.fetch().
-                done(function(){
+                done(function () {
                     Backbone.history.navigate(redirectUrl, {trigger: true});
                 });
         },
@@ -235,7 +213,7 @@ define([
          * @name LoginView#setElements
          * @returns {undefined}
          */
-        setElements: function(){
+        setElements: function () {
             this.elements.validateFields = this.$('.js-validate-input');
         },
 
@@ -247,7 +225,7 @@ define([
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
-        validateFieldFocusHandler: function(event){
+        validateFieldFocusHandler: function (event) {
             var $target = $(event.target);
 
             $target.controlStatus('base');

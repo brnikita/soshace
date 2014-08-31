@@ -29,15 +29,18 @@ module.exports = Controller.extend({
 
         if (requestParams.isAuthenticated) {
             profile = requestParams.profile;
+
             if (userName === profile.userName) {
                 profile = _.pick(profile,
                     '_id',
                     'fullName',
                     'userName',
-                    'isMale',
+                    'sex',
+                    'aboutAuthor',
+                    'birthday',
                     'emailConfirmed',
-                    'systemMessages',
                     'locale');
+
                 response.send(profile);
                 return;
             }

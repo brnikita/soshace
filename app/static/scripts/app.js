@@ -168,7 +168,7 @@ define([
             var profileUrl,
                 deferred = $.Deferred();
 
-            if (this.isAuthenticated) {
+            if (!this.isAuthenticated()) {
                 return deferred.resolve(null);
             }
 
@@ -176,18 +176,11 @@ define([
                 return deferred.resolve(Soshace.profile);
             }
 
-            profileUserName = profileUserName || this.$el.data('profileUserName');
-
-            if(profileUserName){
-
-            }
-
+            profileUserName = $.cookie('profileUserName');
             profileUrl = Soshace.urls.api.user.replace('0', profileUserName);
             $.get(profileUrl, function (data) {
-                var profileData = data.profile;
-
-                Soshace.profile = profileData;
-                deferred.resolve(profileData);
+                Soshace.profile = data;
+                deferred.resolve(data);
             }, 'json');
 
             return deferred;

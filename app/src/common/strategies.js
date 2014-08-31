@@ -16,12 +16,12 @@ var Strategies = {
      *
      * @function
      * @name Strategies.serializeUser
-     * @param userId
-     * @param done
+     * @param {Mongoose.Model} user
+     * @param {Function} done
      * @return {undefined}
      */
-    serializeUser: function (userId, done) {
-        done(null, userId);
+    serializeUser: function (user, done) {
+        done(null, user);
     },
 
     /**
@@ -29,11 +29,12 @@ var Strategies = {
      *
      * @function
      * @name Strategies.deSerializeUser
-     * @param userId
-     * @param done
+     * @param {Mongoose.Model} user
+     * @param {Function} done
      * @return {undefined}
      */
-    deSerializeUser: function (userId, done) {
+    deSerializeUser: function (user, done) {
+        var userId = user._id;
         UsersModel.find({_id: new ObjectId(userId)}, function (error, user) {
             done(error, user);
         });
@@ -97,8 +98,7 @@ var Strategies = {
             if (error) {
                 return done({password: error});
             }
-
-            return done(null, user.id);
+            return done(null, user);
         });
     },
 
