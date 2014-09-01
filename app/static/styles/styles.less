@@ -31,7 +31,7 @@ body {
   .background-size(cover);
 }
 
-h1,.h1,h2,.h2,h3,.h3 {
+h1, .h1, h2, .h2, h3, .h3 {
   margin-top: 15px;
   line-height: 1;
 }
@@ -62,8 +62,22 @@ h1,.h1,h2,.h2,h3,.h3 {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #fff;
-  .opacity(0.5);
+  &__bg {
+    background-color: #fff;
+    .opacity(0.5);
+    height: 100%;
+  }
+  &__comment {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    background-color: #fff;
+    width: 30%;
+    margin-left: -15%;
+    padding: 15px;
+    text-align: center;
+    .box-shadow(0 0 3px rgba(0, 0, 0, 0.3));
+  }
 }
 
 .header {

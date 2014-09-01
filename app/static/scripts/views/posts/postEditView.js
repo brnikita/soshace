@@ -97,7 +97,8 @@ define([
             deletePostModal: null,
             status: null,
             statusMessages: null,
-            postEdit: null
+            postEdit: null,
+            disableReason: null
         },
 
         /**
@@ -563,6 +564,7 @@ define([
             this.elements.deleteButton = this.$('.js-post-delete');
             this.elements.status = this.$('.js-post-status');
             this.elements.postEdit = this.$('.js-post-edit');
+            this.elements.disableReason = this.$('.js-disable-reason');
         },
 
         /**
@@ -669,11 +671,32 @@ define([
             var statusMessages = this.elements.statusMessages,
                 status = this.model.get('status'),
                 statusSettings = this.model.statuses[status],
-                messagePath = statusSettings && statusSettings.statusMessage;
+                messagePath = statusSettings.statusMessage,
+                editorMessage = statusSettings.editorMessage;
 
             if (typeof messagePath !== 'undefined') {
                 statusMessages.html(Soshace.hbs[messagePath]());
             }
+
+            if(typeof editorMessage !== 'undefined'){
+                this.showEditorDisableReason(editorMessage);
+            }
+        },
+
+        /**
+         * Метод отображает причину блокировки редактора
+         *
+         * @method
+         * @name PostEditView#showEditorDisableReason
+         * @param {String} editorMessage
+         * @returns {undefined}
+         */
+        showEditorDisableReason: function(editorMessage){
+            var $disableReason = this.elements.disableReason;
+
+            editorMessage = Helpers.i18n(editorMessage);
+            $disableReason.html(editorMessage);
+            $disableReason.removeClass('hide');
         },
 
         /**
@@ -697,12 +720,11 @@ define([
          *
          * @method
          * @name PostEditView#withoutRender
+         * @param {jQuery} $el
          * @returns {undefined}
          */
-        withoutRender: function () {
-            var app = Soshace.app;
-
-            this.$el = app.elements.contentFirstLoad;
+        withoutRender: function ($el) {
+            this.$el = $el;
             this.delegateEvents();
             this.afterRender();
             this.setDataToModelFromView();

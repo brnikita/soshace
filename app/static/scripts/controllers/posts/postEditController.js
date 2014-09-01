@@ -57,10 +57,11 @@ define([
              */
             firstLoad: function () {
                 var app = Soshace.app,
+                    $el = app.elements.contentFirstLoad,
                     view = this.view;
 
-                view.withoutRender();
                 app.setView('.js-content', view);
+                view.withoutRender($el);
             },
 
             /**

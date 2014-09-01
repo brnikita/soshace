@@ -63,7 +63,7 @@ define([
                 //Статья недоступня для редактирования
                 editorEnable: false,
                 //Причина недоступности статьи
-                editorMessage: 'While our editors are checking the article you can&#39;t to edit it',
+                editorMessage: 'While our editors are checking the article you can&#39;t to edit it.',
                 statusMessage: 'messages/postSent'
             },
             published: {
@@ -71,7 +71,7 @@ define([
                 class: 'label-success',
                 editorEnable: false,
                 //Причина недоступности статьи
-                editorMessage: 'After publication you can&#39;t to edit or delete the article',
+                editorMessage: 'After publication you can&#39;t to edit or delete the article.',
                 statusMessage: 'messages/postPublished'
             },
             denied: {

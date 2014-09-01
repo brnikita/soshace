@@ -146,11 +146,13 @@ define([
          *
          * @method
          * @name PostView#withoutRender
+         * @param {jQuery} $el
          * @returns {undefined}
          */
-        withoutRender: function(){
+        withoutRender: function($el){
             var app = Soshace.app;
 
+            this.$el = $el;
             this.setElements();
             this.delegateEvents();
             this.setModelFromTemplate();
