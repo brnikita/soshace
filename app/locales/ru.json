@@ -142,7 +142,7 @@
 	"Post created": "Статья создана",
 	"Post saved": "Статья сохранена",
 	"Post is editing...": "Статья редактируется...",
-	"Edit": "Edit",
+	"Edit": "Редактировать",
 	"Excellent! Your article has been submitted for publication.": "Отлично! Ваша статья была отправлена на публикацию.",
 	"During the day, our editors will check your article.": "В течении дня наши редакторы проверят вашу статью.",
 	"Page not found": "Page not found",
@@ -160,5 +160,9 @@
 	"Comment": "Comment",
 	"Post reviwed": "Post reviwed",
 	"No posts to review": "No posts to review",
-    "About author": "Об авторе"
+    "About author": "Об авторе",
+    "Post sent": "Статья отправлена",
+    "Post published": "Статья опубликована",
+    "Publication denied": "Статья отклонена",
+    "Some comments": "Есть замечания"
 }

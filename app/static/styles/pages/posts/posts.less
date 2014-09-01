@@ -2,6 +2,36 @@
   h1 {
     a {
       color: #333;
+      &:hover {
+        text-decoration: none;
+        border-bottom: 1px solid #333;
+      }
+    }
+  }
+  &-toolbar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px 15px 0 0;
+    &__status {
+      float: left;
+      font-weight: normal;
+      font-size: 13px;
+      border-radius: 0;
+      display: block;
+      padding: 4px 8px;
+    }
+    &__edit {
+      float: left;
+      margin-right: 10px;
+      padding: 0 2px;
+      line-height: 20px;
+      .font-color-grey;
+      &:hover {
+        text-decoration: none;
+        .font-color-grey;
+        border-bottom: 1px solid #6e6f6f;
+      }
     }
   }
   &__preview {
@@ -17,20 +47,10 @@
         border-bottom: none;
       }
     }
-    &__toolbar {
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
   }
   &__full {
     position: relative;
     padding: 0 15px 15px 15px;
     background: #fff;
-    &__toolbar {
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
   }
 }

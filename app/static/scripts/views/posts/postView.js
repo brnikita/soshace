@@ -116,12 +116,14 @@ define([
             var model = this.model.toJSON(),
                 status = this.model.get('status'),
                 statusSettings = this.model.statuses[status],
-                statusClass = statusSettings && statusSettings.class,
-                cantEdit = status === 'sent' || status === 'published';
+                statusClass = statusSettings.class,
+                statusTitle = statusSettings.title,
+                editorEnable = statusSettings.editorEnable;
 
             return Soshace.hbs['posts/edit/postPreviewToolbar'](_.extend(model, {
-                canEdit: !cantEdit,
-                statusClass: statusClass
+                editorEnable: editorEnable,
+                statusClass: statusClass,
+                statusTitle: statusTitle
             }));
         },
 

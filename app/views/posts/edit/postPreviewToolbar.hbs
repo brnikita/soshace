@@ -1,9 +1,9 @@
-<div class="posts__preview__toolbar">
-    {{#if canEdit}}
-        <a class="posts__preview__toolbar__edit js-router-link"
-           href="/{{locale}}/posts/{{_id}}/edit">{{i18n 'Edit'}}</a>
+<div class="posts-toolbar clearfix">
+    {{#if editorEnable}}
+        <a class="posts-toolbar__edit js-router-link"
+           href="/{{locale}}/posts/{{_id}}/edit"><span class="glyphicon glyphicon-pencil"></span> {{i18n 'Edit'}}</a>
     {{/if}}
     {{#if status}}
-        <div class="posts__preview__toolbar__status label {{statusClass}}">{{status}}</div>
+        <div class="posts-toolbar__status label {{statusClass}}">{{i18n statusTitle}}</div>
     {{/if}}
 </div>
