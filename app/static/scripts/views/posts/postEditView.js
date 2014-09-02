@@ -208,13 +208,19 @@ define([
         changeStatus: function (status) {
             var statuses = this.model.statuses,
                 $status = this.elements.status,
+                options = {},
                 statusSettings,
                 statusTitle;
 
             statusSettings = statuses[status];
             statusTitle = Helpers.i18n(statusSettings.title);
             $status.html(statusTitle);
-            this.model.set('status', status);
+
+            if (statusSettings.silent) {
+                options.silent = true;
+            }
+
+            this.model.set('status', status, options);
         },
 
         /**
@@ -409,15 +415,15 @@ define([
         bindHotKeys: function (hotKeys) {
             $.each(hotKeys, _.bind(function (hotKey, command) {
                 this.elements.postBody.keydown(hotKey, _.bind(function () {
-                    this.execCommand(command, null);
-                    return false;
-                }, this)).keyup(hotKey, _.bind(function (event) {
-                    if (this.elements.postBody.attr('contenteditable') &&
-                        this.elements.postBody.is(':visible')) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                }, this));
+                        this.execCommand(command, null);
+                        return false;
+                    }, this)).keyup(hotKey, _.bind(function (event) {
+                        if (this.elements.postBody.attr('contenteditable') &&
+                            this.elements.postBody.is(':visible')) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                    }, this));
             }, this));
         },
 
@@ -539,8 +545,8 @@ define([
                     }));
                 }
             }).on('change', function () {
-                _this.elements.postBody.append(preLoader);
-            });
+                    _this.elements.postBody.append(preLoader);
+                });
         },
 
         /**
@@ -678,7 +684,7 @@ define([
                 statusMessages.html(Soshace.hbs[messagePath]());
             }
 
-            if(typeof editorMessage !== 'undefined'){
+            if (typeof editorMessage !== 'undefined') {
                 this.showEditorDisableReason(editorMessage);
             }
         },
@@ -691,7 +697,7 @@ define([
          * @param {String} editorMessage
          * @returns {undefined}
          */
-        showEditorDisableReason: function(editorMessage){
+        showEditorDisableReason: function (editorMessage) {
             var $disableReason = this.elements.disableReason;
 
             editorMessage = Helpers.i18n(editorMessage);

@@ -50,12 +50,16 @@ define([
             saved: {
                 title: 'Post saved',
                 class: 'label-primary',
-                editorEnable: true
+                editorEnable: true,
+                //Изменение статусов не должно отправляться на сервер
+                silent: true
             },
             editing: {
                 title: 'Post is editing...',
                 class: 'label-default',
-                editorEnable: true
+                editorEnable: true,
+                //Изменение статусов не должно отправляться на сервер
+                silent: true
             },
             sent: {
                 title: 'Post sent',
@@ -127,6 +131,9 @@ define([
          */
         patchModel: function () {
             var _this = this,
+                model = this.toJSON(),
+                status = model.status,
+                statusSettings = this.statuses[status],
                 options = {
                     silent: true,
                     success: _.bind(_this.modelSaveSuccess, _this),
@@ -138,7 +145,13 @@ define([
                 options.patch = true;
             }
 
-            this.save(null, options);
+            //Статусы editing и saved сохраняем под saved
+            //В модели на сервере не будет статуса editing
+            if (statusSettings.silent) {
+                model.status = 'saved';
+            }
+
+            this.save(model, options);
         },
 
         /**
@@ -164,7 +177,7 @@ define([
                 return;
             }
 
-            if(statusAccepted) {
+            if (statusAccepted) {
                 this.trigger('statusAccepted');
                 return;
             }
@@ -190,7 +203,7 @@ define([
          * @name PostModel#setToDefault
          * @returns {undefined}
          */
-        setToDefault: function(){
+        setToDefault: function () {
             this.set(this.default, {silent: true});
             this.set('locale', Helpers.getLocale(), {silent: true});
         },

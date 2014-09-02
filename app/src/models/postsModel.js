@@ -21,7 +21,7 @@ var _ = require('underscore'),
      * @name PostsShema
      * @type {Schema}
      */
-    PostsShema = new Schema({
+        PostsShema = new Schema({
         //Время последнего изменения
         updated: {
             type: Date
@@ -166,13 +166,13 @@ PostsShema.statics.getPosts = function (locale, callback) {
         status: 1,
         ownerId: 1
     }).exec(function (error, posts) {
-        if (error) {
-            callback({error: 'Server is too busy, try later.', code: 503});
-            return;
-        }
+            if (error) {
+                callback({error: 'Server is too busy, try later.', code: 503});
+                return;
+            }
 
-        callback(null, posts);
-    });
+            callback(null, posts);
+        });
 };
 
 /**
@@ -183,10 +183,10 @@ PostsShema.statics.getPosts = function (locale, callback) {
  * @name PostsShema.getStatusSentPosts
  * @param {String} locale локаль
  * @param {Function} callback
- * @return {Cursor}
+ * @return {undefined}
  */
 PostsShema.statics.getStatusSentPosts = function (locale, callback) {
-    return this.find({
+    this.find({
         'locale': locale,
         'status': 'sent'
     }, {
@@ -242,6 +242,8 @@ PostsShema.statics.clearUpdate = function (update) {
 };
 
 /**
+ * TODO: статью в статусе published может патчить только админ
+ *
  * Метод обновляет статью
  *
  * @method
@@ -424,13 +426,13 @@ PostsShema.statics.getUserPosts = function (ownerId, callback) {
         status: 1,
         ownerId: 1
     }).exec(function (error, posts) {
-        if (error) {
-            callback({error: 'Server is too busy, try later.', code: 503});
-            return;
-        }
+            if (error) {
+                callback({error: 'Server is too busy, try later.', code: 503});
+                return;
+            }
 
-        callback(null, posts);
-    });
+            callback(null, posts);
+        });
 };
 
 /**
@@ -451,13 +453,13 @@ PostsShema.statics.getPost = function (postId, callback) {
         status: 1,
         ownerId: 1
     }).exec(function (error, post) {
-        if (error) {
-            callback({error: 'Server is too busy, try later.', code: 503});
-            return;
-        }
+            if (error) {
+                callback({error: 'Server is too busy, try later.', code: 503});
+                return;
+            }
 
-        callback(null, post);
-    });
+            callback(null, post);
+        });
 };
 
 /**
