@@ -1,75 +1,57 @@
-//TODO: выводить только опубликованные статьи для незарегистрированного
 'use strict';
 
 /**
- * Контроллер страницы пользователя
+ * Контроллер страницы редактирования пользователя
  *
- * @class UserController
+ * @class UserEditController
  */
 define([
         'underscore',
         'utils/controller',
         'models/userModel',
-        'collections/postsCollection',
-        'views/userView'
+        'views/user/userEditView'
     ],
-    function (_, Controller, UserModel, PostsCollection, UserView) {
+    function (_, Controller, UserModel, UserEditView) {
         return Controller.extend({
             /**
              * Алиас страницы
              *
              * @field
-             * @name UserController#pageAlias
+             * @name UserEditController#pageAlias
              * @type {String}
              */
             pageAlias: 'user',
 
             /**
              * @field
-             * @name UserController#model
+             * @name UserEditController#model
              * @type {UserModel | null}
              */
             model: null,
 
             /**
              * @field
-             * @name UserController#postsCollection
-             * @type {PostsCollection | null}
-             */
-            postsCollection: null,
-
-            /**
-             * @field
-             * @name UserController#view
-             * @type {UserView | null}
+             * @name UserEditController#view
+             * @type {UserEditView | null}
              */
             view: null,
 
             /**
              * @constructor
-             * @name UserController#initialize
+             * @name UserEditController#initialize
              * @returns {undefined}
              */
             initialize: function () {
-                var app = Soshace.app,
-                    model,
-                    view,
-                    postsCollection;
+                var model,
+                    view;
 
                 model = new UserModel();
-                postsCollection = new PostsCollection();
-                postsCollection.on('postsReceived', _.bind(function () {
-                    app.setView('.js-content', view).render();
-                }, this));
-
-                view = new UserView({
-                    postsCollection: postsCollection,
+                view = new UserEditView({
                     model: model
                 });
 
                 this.model = model;
                 this.view = view;
-                this.postsCollection = postsCollection;
             },
 
 
@@ -77,7 +59,7 @@ define([
              * Метод вызывает при рендере на сервере
              *
              * @method
-             * @name UserController#firstLoad
+             * @name UserEditController#firstLoad
              * @returns {undefined}
              */
             firstLoad: function () {
@@ -90,23 +72,26 @@ define([
             },
 
             /**
-             * TODO: добавить обработку ошибок при получении статей
+             * TODO: добавить обработку ошибок при получении пользователя
              *
              * Метод вызывает при рендере на клиенте
              *
              * @method
-             * @name UserController#firstLoad
+             * @name UserEditController#firstLoad
              * @returns {undefined}
              */
             secondLoad: function () {
-                var params = this.routeParams;
+                var view = this.view,
+                    app = Soshace.app,
+                    params = this.routeParams;
+                
                 this.model.set({
                     locale: params[0],
                     userName: params[1]
                 });
 
-                this.model.getUser().done(_.bind(function (response) {
-                    this.postsCollection.getPosts({ownerId: response._id});
+                this.model.getUser().done(_.bind(function () {
+                    app.setView('.js-content', view).render();
                 }, this));
             }
         });

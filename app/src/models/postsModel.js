@@ -141,6 +141,7 @@ PostsShema.pre('save', function (next) {
         this.description = getPostDescription(postBody);
     }
 
+    this.status = 'saved';
     this.updated = new Date();
     next();
 });

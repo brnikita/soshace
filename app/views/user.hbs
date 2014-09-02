@@ -71,7 +71,8 @@
                 </div>
             {{/if}}
             <div class="user__profile__info__edit">
-                <a href="/{{user.locale}}/users/{{user.userName}}"></a>
+                <a href="/{{user.locale}}/users/{{user.userName}}/edit">{{i18n 'Edit profile'}}</a>
+                <a href="/{{user.locale}}/users/{{user.userName}}/settings">{{i18n 'Settings'}}</a>
             </div>
         </div>
         {{#if isOwner}}

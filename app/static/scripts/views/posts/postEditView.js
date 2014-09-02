@@ -677,8 +677,8 @@ define([
             var statusMessages = this.elements.statusMessages,
                 status = this.model.get('status'),
                 statusSettings = this.model.statuses[status],
-                messagePath = statusSettings.statusMessage,
-                editorMessage = statusSettings.editorMessage;
+                messagePath = statusSettings && statusSettings.statusMessage,
+                editorMessage = statusSettings && statusSettings.editorMessage;
 
             if (typeof messagePath !== 'undefined') {
                 statusMessages.html(Soshace.hbs[messagePath]());

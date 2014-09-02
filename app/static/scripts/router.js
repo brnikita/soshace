@@ -56,10 +56,12 @@ define([
             ':locale/logout/': 'controllers/logoutController',
             ':locale/registration': 'controllers/registrationController',
             ':locale/registration/': 'controllers/registrationController',
-            ':locale/users/:username': 'controllers/userController',
-            ':locale/users/:username/': 'controllers/userController',
-            ':locale/users/:username/edit': 'controllers/userController',
-            ':locale/users/:username/edit/': 'controllers/userController'
+            ':locale/users/:username': 'controllers/user/userController',
+            ':locale/users/:username/': 'controllers/user/userController',
+            ':locale/users/:username/edit': 'controllers/user/userEditController',
+            ':locale/users/:username/edit/': 'controllers/user/userEditController',
+            ':locale/users/:username/settings': 'controllers/user/userSettingsController',
+            ':locale/users/:username/settings/': 'controllers/user/userSettingsController'
         },
 
         /**

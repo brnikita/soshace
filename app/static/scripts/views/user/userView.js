@@ -10,7 +10,7 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    './posts/postPreviewView',
+    './../posts/postPreviewView',
     'backbone.layoutmanager',
     'templates'
 ], function ($, _, Backbone, PostPreviewView) {
