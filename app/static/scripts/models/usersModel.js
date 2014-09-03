@@ -3,7 +3,7 @@
 /**
  * Модель страницы пользователя
  *
- * @class UserModel
+ * @class UsersModel
  */
 
 define([
@@ -17,14 +17,14 @@ define([
         
         /**
          * @field
-         * @name UserModel#idAttribute
+         * @name UsersModel#idAttribute
          * @type {String}
          */
         idAttribute: 'username',
         
         /**
          * @method
-         * @name UserModel#initialize
+         * @name UsersModel#initialize
          * @returns {string}
          */
         url: function(){
@@ -34,7 +34,7 @@ define([
 
         /**
          * @property
-         * @name UserModel#defaults
+         * @name UsersModel#defaults
          * @type {Object}
          */
         defaults: {
@@ -51,7 +51,7 @@ define([
          * Метод загружает данные пользователя
          *
          * @method
-         * @name UserModel#getUser
+         * @name UsersModel#getUser
          * @returns {jQuery.Deferred}
          */
         getUser: function () {
@@ -74,7 +74,7 @@ define([
 
         /**
          * @constructor
-         * @name UserModel#initialize
+         * @name UsersModel#initialize
          * @returns {undefined}
          */
         initialize: function () {

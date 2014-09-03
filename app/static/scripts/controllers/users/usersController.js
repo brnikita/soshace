@@ -8,7 +8,7 @@
 define([
         'underscore',
         'utils/controller',
-        'models/userModel',
+        'models/usersModel',
         'collections/postsCollection',
         'views/users/usersView'
     ],

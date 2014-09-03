@@ -25,7 +25,7 @@ define([
             /**
              * @field
              * @name UsersEditController#model
-             * @type {UserModel | null}
+             * @type {UsersModel | null}
              */
             model: null,
 
