@@ -3,50 +3,50 @@
 /**
  * Контроллер страницы редактирования пользователя
  *
- * @class UserEditController
+ * @class UsersEditController
  */
 define([
         'underscore',
         'utils/controller',
-        'models/userModel',
-        'views/user/userEditView'
+        'models/usersModel',
+        'views/users/usersEditView'
     ],
-    function (_, Controller, UserModel, UserEditView) {
+    function (_, Controller, UsersModel, UsersEditView) {
         return Controller.extend({
             /**
              * Алиас страницы
              *
              * @field
-             * @name UserEditController#pageAlias
+             * @name UsersEditController#pageAlias
              * @type {String}
              */
             pageAlias: 'user',
 
             /**
              * @field
-             * @name UserEditController#model
+             * @name UsersEditController#model
              * @type {UserModel | null}
              */
             model: null,
 
             /**
              * @field
-             * @name UserEditController#view
-             * @type {UserEditView | null}
+             * @name UsersEditController#view
+             * @type {UsersEditView | null}
              */
             view: null,
 
             /**
              * @constructor
-             * @name UserEditController#initialize
+             * @name UsersEditController#initialize
              * @returns {undefined}
              */
             initialize: function () {
                 var model,
                     view;
 
-                model = new UserModel();
-                view = new UserEditView({
+                model = new UsersModel();
+                view = new UsersEditView({
                     model: model
                 });
 
@@ -59,7 +59,7 @@ define([
              * Метод вызывает при рендере на сервере
              *
              * @method
-             * @name UserEditController#firstLoad
+             * @name UsersEditController#firstLoad
              * @returns {undefined}
              */
             firstLoad: function () {
@@ -77,7 +77,7 @@ define([
              * Метод вызывает при рендере на клиенте
              *
              * @method
-             * @name UserEditController#firstLoad
+             * @name UsersEditController#firstLoad
              * @returns {undefined}
              */
             secondLoad: function () {

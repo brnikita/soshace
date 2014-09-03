@@ -3,7 +3,7 @@
 /**
  * Вид страницы редактирования пользователя
  *
- * @class UserEditView
+ * @class UsersEditView
  */
 
 define([
@@ -18,7 +18,7 @@ define([
          * Модель деталей статьи
          *
          * @field
-         * @name UserEditView#model
+         * @name UsersEditView#model
          * @type {Backbone.Model | null}
          */
         model: null,
@@ -27,7 +27,7 @@ define([
          * Ссылки на DOM элементы
          *
          * @field
-         * @name UserEditView#elements
+         * @name UsersEditView#elements
          * @type {Object}
          */
         elements: {
@@ -37,14 +37,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name UserEditView#elements
+         * @name UsersEditView#elements
          * @type {string}
          */
         template: Soshace.hbs.user,
 
         /**
          * @constructor
-         * @name UserEditView#initialize
+         * @name UsersEditView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -52,7 +52,7 @@ define([
 
         /**
          * @method
-         * @name UserEditView#serialize
+         * @name UsersEditView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -62,7 +62,7 @@ define([
          * Метод сохраняет DOM элементы
          *
          * @method
-         * @name UserEditView#setElements
+         * @name UsersEditView#setElements
          * @returns {undefined}
          */
         setElements: function () {
@@ -72,7 +72,7 @@ define([
          * Метод запускается, когда рендеринг шаблона происходит на сервере
          *
          * @method
-         * @name UserEditView#withoutRender
+         * @name UsersEditView#withoutRender
          * @param {jQuery} $el корневой элемент
          * @returns {undefined}
          */
@@ -84,7 +84,7 @@ define([
 
         /**
          * @method
-         * @name UserEditView#afterRender
+         * @name UsersEditView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {

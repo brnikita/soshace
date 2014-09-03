@@ -1,57 +1,74 @@
 'use strict';
 
 /**
- * Контроллер страницы настроек пользователя
+ * Контроллер страницы пользователя
  *
- * @class UserSettingsController
+ * @class UsersController
  */
 define([
         'underscore',
         'utils/controller',
         'models/userModel',
-        'views/user/UserSettingsView'
+        'collections/postsCollection',
+        'views/users/usersView'
     ],
-    function (_, Controller, UserModel, UserSettingsView) {
+    function (_, Controller, UsersModel, PostsCollection, UsersView) {
         return Controller.extend({
             /**
              * Алиас страницы
              *
              * @field
-             * @name UserSettingsController#pageAlias
+             * @name UsersController#pageAlias
              * @type {String}
              */
             pageAlias: 'user',
 
             /**
              * @field
-             * @name UserSettingsController#model
-             * @type {UserModel | null}
+             * @name UsersController#model
+             * @type {UsersModel | null}
              */
             model: null,
 
             /**
              * @field
-             * @name UserSettingsController#view
-             * @type {UserSettingsView | null}
+             * @name UsersController#postsCollection
+             * @type {PostsCollection | null}
+             */
+            postsCollection: null,
+
+            /**
+             * @field
+             * @name UsersController#view
+             * @type {UsersView | null}
              */
             view: null,
 
             /**
              * @constructor
-             * @name UserSettingsController#initialize
+             * @name UsersController#initialize
              * @returns {undefined}
              */
             initialize: function () {
-                var model,
-                    view;
+                var app = Soshace.app,
+                    model,
+                    view,
+                    postsCollection;
 
-                model = new UserModel();
-                view = new UserSettingsView({
+                model = new UsersModel();
+                postsCollection = new PostsCollection();
+                postsCollection.on('postsReceived', _.bind(function () {
+                    app.setView('.js-content', view).render();
+                }, this));
+
+                view = new UsersView({
+                    postsCollection: postsCollection,
                     model: model
                 });
 
                 this.model = model;
                 this.view = view;
+                this.postsCollection = postsCollection;
             },
 
 
@@ -59,7 +76,7 @@ define([
              * Метод вызывает при рендере на сервере
              *
              * @method
-             * @name UserSettingsController#firstLoad
+             * @name UsersController#firstLoad
              * @returns {undefined}
              */
             firstLoad: function () {
@@ -72,26 +89,23 @@ define([
             },
 
             /**
-             * TODO: добавить обработку ошибок при получении пользователя
+             * TODO: добавить обработку ошибок при получении статей
              *
              * Метод вызывает при рендере на клиенте
              *
              * @method
-             * @name UserSettingsController#firstLoad
+             * @name UsersController#firstLoad
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = this.view,
-                    app = Soshace.app,
-                    params = this.routeParams;
-
+                var params = this.routeParams;
                 this.model.set({
                     locale: params[0],
                     userName: params[1]
                 });
 
-                this.model.getUser().done(_.bind(function () {
-                    app.setView('.js-content', view).render();
+                this.model.getUser().done(_.bind(function (response) {
+                    this.postsCollection.getPosts({ownerId: response._id});
                 }, this));
             }
         });

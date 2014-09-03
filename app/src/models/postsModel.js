@@ -21,7 +21,7 @@ var _ = require('underscore'),
      * @name PostsShema
      * @type {Schema}
      */
-        PostsShema = new Schema({
+    PostsShema = new Schema({
         //Время последнего изменения
         updated: {
             type: Date
@@ -85,7 +85,13 @@ var _ = require('underscore'),
  * @returns {*}
  */
 function getPostDescription(postBody) {
-    return postBody.substr(0, 1400);
+    var readMorePosition = postBody.indexOf('<readmore/>');
+
+    if (readMorePosition === -1) {
+        return postBody;
+    }
+
+    return postBody.substr(0, readMorePosition);
 }
 
 /**
@@ -167,13 +173,13 @@ PostsShema.statics.getPosts = function (locale, callback) {
         status: 1,
         ownerId: 1
     }).exec(function (error, posts) {
-            if (error) {
-                callback({error: 'Server is too busy, try later.', code: 503});
-                return;
-            }
+        if (error) {
+            callback({error: 'Server is too busy, try later.', code: 503});
+            return;
+        }
 
-            callback(null, posts);
-        });
+        callback(null, posts);
+    });
 };
 
 /**
@@ -427,13 +433,13 @@ PostsShema.statics.getUserPosts = function (ownerId, callback) {
         status: 1,
         ownerId: 1
     }).exec(function (error, posts) {
-            if (error) {
-                callback({error: 'Server is too busy, try later.', code: 503});
-                return;
-            }
+        if (error) {
+            callback({error: 'Server is too busy, try later.', code: 503});
+            return;
+        }
 
-            callback(null, posts);
-        });
+        callback(null, posts);
+    });
 };
 
 /**
@@ -454,13 +460,13 @@ PostsShema.statics.getPost = function (postId, callback) {
         status: 1,
         ownerId: 1
     }).exec(function (error, post) {
-            if (error) {
-                callback({error: 'Server is too busy, try later.', code: 503});
-                return;
-            }
+        if (error) {
+            callback({error: 'Server is too busy, try later.', code: 503});
+            return;
+        }
 
-            callback(null, post);
-        });
+        callback(null, post);
+    });
 };
 
 /**

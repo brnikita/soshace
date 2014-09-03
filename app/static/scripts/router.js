@@ -18,7 +18,9 @@ define([
     'controllers/loginController',
     'controllers/logoutController',
     'controllers/registrationController',
-    'controllers/userController'
+    'controllers/users/usersController',
+    'controllers/users/usersEditController',
+    'controllers/users/usersSettingsController'
 ], function ($, _, Backbone) {
     return Backbone.Router.extend({
         /**
@@ -56,12 +58,12 @@ define([
             ':locale/logout/': 'controllers/logoutController',
             ':locale/registration': 'controllers/registrationController',
             ':locale/registration/': 'controllers/registrationController',
-            ':locale/users/:username': 'controllers/user/userController',
-            ':locale/users/:username/': 'controllers/user/userController',
-            ':locale/users/:username/edit': 'controllers/user/userEditController',
-            ':locale/users/:username/edit/': 'controllers/user/userEditController',
-            ':locale/users/:username/settings': 'controllers/user/userSettingsController',
-            ':locale/users/:username/settings/': 'controllers/user/userSettingsController'
+            ':locale/users/:username': 'controllers/users/usersController',
+            ':locale/users/:username/': 'controllers/users/usersController',
+            ':locale/users/:username/edit': 'controllers/users/usersEditController',
+            ':locale/users/:username/edit/': 'controllers/users/usersEditController',
+            ':locale/users/:username/settings': 'controllers/users/usersSettingsController',
+            ':locale/users/:username/settings/': 'controllers/users/usersSettingsController'
         },
 
         /**

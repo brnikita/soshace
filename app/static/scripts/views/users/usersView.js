@@ -3,7 +3,7 @@
 /**
  * Вид страницы пользователя
  *
- * @class UserView
+ * @class UsersEditView
  */
 
 define([
@@ -19,7 +19,7 @@ define([
          * Модель деталей статьи
          *
          * @field
-         * @name UserView#model
+         * @name UsersEditView#model
          * @type {Backbone.Model | null}
          */
         model: null,
@@ -28,7 +28,7 @@ define([
          * Коллекция статей
          *
          * @field
-         * @name UserView#postsCollection
+         * @name UsersEditView#postsCollection
          * @type {Backbone.Model | null}
          */
         postsCollection: null,
@@ -37,7 +37,7 @@ define([
          * Ссылки на DOM элементы
          *
          * @field
-         * @name UserView#elements
+         * @name UsersEditView#elements
          * @type {Object}
          */
         elements: {
@@ -48,14 +48,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name UserView#elements
+         * @name UsersEditView#elements
          * @type {string}
          */
         template: Soshace.hbs.user,
 
         /**
          * @constructor
-         * @name UserView#initialize
+         * @name UsersEditView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -66,7 +66,7 @@ define([
          * данные из шаблона
          *
          * @method
-         * @name UserView#setPreViewsFromTemplate
+         * @name UsersEditView#setPreViewsFromTemplate
          * @returns {undefined}
          */
         setPreViewsFromTemplate: function () {
@@ -105,7 +105,7 @@ define([
          * Метод добавляет вид превью с списку статей
          *
          * @method
-         * @name UserView#addOneView
+         * @name UsersEditView#addOneView
          * @param {Backbone.Model} postModel модель статьи
          * @returns {undefined}
          */
@@ -121,7 +121,7 @@ define([
          * Метод заполняет список статей
          *
          * @method
-         * @name UserView#fillPostsList
+         * @name UsersEditView#fillPostsList
          * @returns {undefined}
          */
         fillPostsList: function () {
@@ -130,7 +130,7 @@ define([
 
         /**
          * @method
-         * @name UserView#serialize
+         * @name UsersEditView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -151,7 +151,7 @@ define([
          * Метод сохраняет DOM элементы
          *
          * @method
-         * @name UserView#setElements
+         * @name UsersEditView#setElements
          * @returns {undefined}
          */
         setElements: function () {
@@ -162,7 +162,7 @@ define([
          * Метод запускается, когда рендеринг шаблона происходит на сервере
          *
          * @method
-         * @name UserView#withoutRender
+         * @name UsersEditView#withoutRender
          * @param {jQuery} $el корневой элемент
          * @returns {undefined}
          */
@@ -175,7 +175,7 @@ define([
 
         /**
          * @method
-         * @name UserView#beforeRender
+         * @name UsersEditView#beforeRender
          * @returns {undefined}
          */
         beforeRender: function () {
@@ -184,7 +184,7 @@ define([
 
         /**
          * @method
-         * @name UserView#afterRender
+         * @name UsersEditView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
