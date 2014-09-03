@@ -28,9 +28,7 @@ html, body {
 }
 
 body {
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  .background-size(cover);
+  background-color: #F7F7F7;
 }
 
 h1, .h1, h2, .h2, h3, .h3 {
@@ -56,30 +54,6 @@ h1, .h1, h2, .h2, h3, .h3 {
 
 .error {
   background-color: #f2dede;
-}
-
-.disable-cover {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  &__bg {
-    background-color: #fff;
-    .opacity(0.5);
-    height: 100%;
-  }
-  &__comment {
-    position: absolute;
-    top: 50px;
-    left: 50%;
-    background-color: #fff;
-    width: 30%;
-    margin-left: -15%;
-    padding: 15px;
-    text-align: center;
-    .box-shadow(0 0 3px rgba(0, 0, 0, 0.3));
-  }
 }
 
 .ya-metrika {
