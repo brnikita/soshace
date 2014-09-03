@@ -1,4 +1,12 @@
 .auth {
+  .nav-tabs {
+    &__login {
+      width: 30%;
+    }
+    &__registration {
+      width: 70%;
+    }
+  }
   .font-color-grey;
   &__title {
     text-align: center;
@@ -10,50 +18,13 @@
     }
   }
   &-form {
-    background-color: #A5A5A5;
+    background-color: #fff;
     .box-shadow(0 0 2px 0 rgba(0, 0, 0, 0.5));
     h2 {
       margin-top: 0;
     }
-    &__tabs {
-      margin: 0;
-      padding: 0;
-      li {
-        font-size: 22px;
-        width: 80%;
-        text-align: center;
-        list-style: none;
-        float: left;
-      }
-      li:first-child {
-        width: 20%;
-      }
-      .active a {
-        .font-color-grey;
-        background-color: #fff;
-        text-decoration: none;
-        text-shadow: none;
-      }
-      .active a:hover {
-        .font-color-grey;
-        background-color: #fff;
-      }
-      li a {
-        color: #fff;
-        text-shadow: 0 1px 1px rgba(150, 150, 150, 0.5);
-        text-decoration: underline;
-        padding: 6px 0;
-        width: 100%;
-        display: block;
-      }
-      li a:hover {
-        text-decoration: none;
-      }
-    }
     &__content {
-      background-color: #fff;
       padding: 15px;
-      .box-shadow(0 -2px 2px 0 rgba(50, 50, 50, 0.2));
     }
   }
 }

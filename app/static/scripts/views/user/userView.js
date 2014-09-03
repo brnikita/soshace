@@ -135,12 +135,16 @@ define([
          */
         serialize: function () {
             var app = Soshace.app,
-                data = this.model.toJSON();
+                isAuthenticated = app.isAuthenticated(),
+                model = this.model.toJSON(),
+                profile = Soshace.profile,
+                isOwner = isAuthenticated && model._id === profile._id;
 
-            data.isAuthenticated = app.isAuthenticated();
-            data.paths = Soshace.urls;
-            data.posts = this.postsCollection.toJSON();
-            return data;
+            model.isAuthenticated = isAuthenticated;
+            model.paths = Soshace.urls;
+            model.posts = this.postsCollection.toJSON();
+            model.isOwner = isOwner;
+            return model;
         },
 
         /**
@@ -162,7 +166,7 @@ define([
          * @param {jQuery} $el корневой элемент
          * @returns {undefined}
          */
-        withoutRender: function($el){
+        withoutRender: function ($el) {
             this.$el = $el;
             this.delegateEvents();
             this.setElements();

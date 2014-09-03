@@ -3,11 +3,11 @@
     <div class="row">
         <div class="col-md-7 col-md-offset-2">
             <div class="auth-form">
-                <ul class="auth-form__tabs clearfix">
-                    <li class="{{#if isLoginTab}}active{{/if}}">
+                <ul class="nav-tabs clearfix">
+                    <li class="nav-tabs__login {{#if isLoginTab}}active{{/if}}">
                         <a href="/{{locale}}/login"
                            class="js-router-link">{{i18n 'Login'}}</a></li>
-                    <li class="{{#if isRegistrationTab}}active{{/if}}">
+                    <li class="nav-tabs__registration {{#if isRegistrationTab}}active{{/if}}">
                         <a class="js-router-link"
                            href="/{{locale}}/registration">{{i18n 'Registration'}}</a>
                     </li>

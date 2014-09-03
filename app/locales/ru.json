@@ -160,11 +160,14 @@
 	"Comment": "Comment",
 	"Post reviwed": "Post reviwed",
 	"No posts to review": "No posts to review",
-    "About author": "Об авторе",
-    "Post sent": "Статья отправлена",
-    "Post published": "Статья опубликована",
-    "Publication denied": "Статья отклонена",
-    "Some comments": "Есть замечания",
-    "While our editors are checking the article you can&#39;t to edit it.": "Пока наши редакторы проверяют статью, вы не можете её редактировать.",
-    "After publication you can&#39;t to edit or delete the article.": "После публикации вы не можете редактировать или удалить статью."
+	"About author": "Об авторе",
+	"Post sent": "Статья отправлена",
+	"Post published": "Статья опубликована",
+	"Publication denied": "Статья отклонена",
+	"Some comments": "Есть замечания",
+	"While our editors are checking the article you can&#39;t to edit it.": "Пока наши редакторы проверяют статью, вы не можете её редактировать.",
+	"After publication you can&#39;t to edit or delete the article.": "После публикации вы не можете редактировать или удалить статью.",
+	"Edit profile": "Редактировать профиль",
+	"Settings": "Настройки",
+	"Profile information": "Информация о пользователе"
 }

@@ -1,14 +1,30 @@
 <div class="user content-center">
+    <ul class="nav-tabs clearfix">
+        <li class="active nav-tabs__profile-info">
+            <a href="/{{user.locale}}/users/{{user.userName}}">
+                <span class="glyphicon glyphicon-user"></span>
+                {{i18n 'Profile information'}}
+            </a>
+        <li class="nav-tabs__edit-profile">
+            <a href="/{{user.locale}}/users/{{user.userName}}/edit">
+                <span class="glyphicon glyphicon-edit"></span>
+                {{i18n 'Edit profile'}}
+            </a>
+        </li>
+        <li class="nav-tabs__profile-settings">
+            <a href="/{{user.locale}}/users/{{user.userName}}/settings">
+                <span class="glyphicon glyphicon-cog"></span>
+                {{i18n 'Settings'}}
+            </a>
+        </li>
+    </ul>
     <div class="user__profile">
         <div class="user__profile__info clearfix">
             <div class="user__profile__info__avatar">
                 <div class="user__profile__info__avatar__img">
                     {{#if user.profileImg}}
-                        <img src="{{user.profileImg}}" />
+                        <img src="{{user.profileImg}}"/>
                     {{/if}}
-                </div>
-                <div>
-                    <a href="#" class="user__profile__info__avatar__change">Изменить</a>
                 </div>
             </div>
             {{#if isEdit}}
@@ -17,7 +33,8 @@
                         <label for="fullName">{{i18n 'Full name'}}:</label>
 
                         <h3>
-                            <input class="form-control" type="text" id="fullName" name="fullName" value="{{user.fullName}}"/>
+                            <input class="form-control" type="text" id="fullName" name="fullName"
+                                   value="{{user.fullName}}"/>
                         </h3>
                     </div>
                     <div class="user__profile__block form-group">
@@ -38,7 +55,8 @@
                     <div class="user__profile__block form-group">
                         <label for="birthday">{{i18n 'Birthday'}}:</label>
 
-                        <input class="form-control" type="text" id="birthday" name="birthday" value="{{user.birthday}}"/>
+                        <input class="form-control" type="text" id="birthday" name="birthday"
+                               value="{{user.birthday}}"/>
                     </div>
                     <div class="user__profile__block form-group">
                         <label for="aboutAuthor">{{i18n 'About author'}}:</label>
@@ -70,10 +88,6 @@
                     </div>
                 </div>
             {{/if}}
-            <div class="user__profile__info__edit">
-                <a href="/{{user.locale}}/users/{{user.userName}}/edit">{{i18n 'Edit profile'}}</a>
-                <a href="/{{user.locale}}/users/{{user.userName}}/settings">{{i18n 'Settings'}}</a>
-            </div>
         </div>
         {{#if isOwner}}
             <div class="user__profile__footer">

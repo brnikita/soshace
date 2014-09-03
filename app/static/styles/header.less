@@ -1,0 +1,53 @@
+.header {
+  font-size: 18px;
+  width: 100%;
+  z-index: 2;
+  color: #fff;
+  .bg-color-grey;
+  &-content {
+    max-width: 1200px;
+    padding: 0 15px;
+    margin: 0 auto;
+  }
+  &__logo {
+    display: block;
+    padding: 11px 0 8px 0;
+    float: left;
+    a {
+      display: block;
+    }
+    img {
+      width: 200px;
+    }
+  }
+  &__tabs {
+    float: right;
+  }
+  &__tab {
+    text-align: center;
+    height: 50px;
+    border-right: #3e3d3d 1px solid;
+    border-left: #3e3d3d 1px solid;
+    float: left;
+    padding: 24px 15px 51px 15px;
+    &-link {
+      color: #fff;
+      text-decoration: none;
+      line-height: 29px;
+    }
+    &-link:hover {
+      color: #fff;
+      background: #282727;
+      text-decoration: none;
+    }
+    &-active {
+      line-height: 29px;
+      background: #282727;
+    }
+    .glyphicon {
+      vertical-align: top;
+      line-height: 25px;
+      margin-right: 3px;
+    }
+  }
+}
