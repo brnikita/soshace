@@ -10,9 +10,10 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'handlebars',
     'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone) {
+], function ($, _, Backbone, Handlebars) {
     return Backbone.Layout.extend({
         /**
          * Модель деталей статьи
@@ -40,7 +41,7 @@ define([
          * @name UsersEditView#elements
          * @type {string}
          */
-        template: Soshace.hbs.user,
+        template: Soshace.hbs['users/usersSettings'],
 
         /**
          * @constructor
@@ -48,6 +49,10 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
+            Handlebars.registerPartial(
+                'usersTabs',
+                Soshace.hbs['partials/usersTabs']
+            );
         },
 
         /**

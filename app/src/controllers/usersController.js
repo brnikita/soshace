@@ -161,7 +161,7 @@ module.exports = Controller.extend({
                 return;
             }
 
-            response.render('user', _.extend(requestParams, {
+            response.render('users/users', _.extend(requestParams, {
                 user: user,
                 isUserTab: true,
                 posts: posts,
@@ -191,7 +191,7 @@ module.exports = Controller.extend({
                 return;
             }
 
-            response.render('user', _.extend(requestParams, {
+            response.render('users/users', _.extend(requestParams, {
                 user: profile,
                 isUserTab: true,
                 isOwner: true,

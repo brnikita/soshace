@@ -1,0 +1,54 @@
+<div class="user content-center">
+    {{> usersTabs}}
+    <div class="user__profile">
+        <div class="user__profile__info clearfix">
+            <div class="user__profile__info__avatar">
+                <div class="user__profile__info__avatar__img">
+                    {{#if user.profileImg}}
+                        <img src="{{user.profileImg}}"/>
+                    {{/if}}
+                </div>
+            </div>
+            <form class="user__profile__info__description">
+                <div class="user__profile__block form-group">
+                    <label for="fullName">{{i18n 'Full name'}}:</label>
+
+                    <h3>
+                        <input class="form-control" type="text" id="fullName" name="fullName"
+                               value="{{user.fullName}}"/>
+                    </h3>
+                </div>
+                <div class="user__profile__block form-group">
+                    <div class="">{{i18n 'Sex'}}:</div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="sex" id="sexMale" value="male">
+                            {{i18n 'Male'}}
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="sex" id="sexFemale" value="female">
+                            {{i18n 'Female'}}
+                        </label>
+                    </div>
+                </div>
+                <div class="user__profile__block form-group">
+                    <label for="birthday">{{i18n 'Birthday'}}:</label>
+
+                    <input class="form-control" type="text" id="birthday" name="birthday"
+                           value="{{user.birthday}}"/>
+                </div>
+                <div class="user__profile__block form-group">
+                    <label for="aboutAuthor">{{i18n 'About author'}}:</label>
+                    <textarea id="aboutAuthor" name="aboutAuthor" class="form-control">
+                        {{user.aboutAuthor}}
+                    </textarea>
+                </div>
+                <div class="user__profile__block form-group">
+                    <button type="submit" class="btn btn-primary js-user-save">{{i18n 'Save'}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<ul class="nav-tabs clearfix">
+    <li class="active nav-tabs__profile-info">
+        <a class="js-router-link" href="/{{user.locale}}/users/{{user.userName}}">
+            <span class="glyphicon glyphicon-user"></span>
+            {{i18n 'Profile information'}}
+        </a>
+    <li class="nav-tabs__edit-profile">
+        <a class="js-router-link" href="/{{user.locale}}/users/{{user.userName}}/edit">
+            <span class="glyphicon glyphicon-edit"></span>
+            {{i18n 'Edit profile'}}
+        </a>
+    </li>
+    <li class="nav-tabs__profile-settings">
+        <a class="js-router-link" href="/{{user.locale}}/users/{{user.userName}}/settings">
+            <span class="glyphicon glyphicon-cog"></span>
+            {{i18n 'Settings'}}
+        </a>
+    </li>
+</ul>

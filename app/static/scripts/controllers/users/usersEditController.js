@@ -20,7 +20,7 @@ define([
              * @name UsersEditController#pageAlias
              * @type {String}
              */
-            pageAlias: 'user',
+            pageAlias: 'userEdit',
 
             /**
              * @field

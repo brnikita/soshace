@@ -10,10 +10,11 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'handlebars',
     './../posts/postPreviewView',
     'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone, PostPreviewView) {
+], function ($, _, Backbone, Handlebars, PostPreviewView) {
     return Backbone.Layout.extend({
         /**
          * Модель деталей статьи
@@ -51,7 +52,7 @@ define([
          * @name UsersEditView#elements
          * @type {string}
          */
-        template: Soshace.hbs.user,
+        template: Soshace.hbs['users/users'],
 
         /**
          * @constructor
@@ -59,6 +60,10 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
+            Handlebars.registerPartial(
+                'usersTabs',
+                Soshace.hbs['partials/usersTabs']
+            );
         },
 
         /**
@@ -136,15 +141,17 @@ define([
         serialize: function () {
             var app = Soshace.app,
                 isAuthenticated = app.isAuthenticated(),
+                data = {},
                 model = this.model.toJSON(),
                 profile = Soshace.profile,
                 isOwner = isAuthenticated && model._id === profile._id;
 
-            model.isAuthenticated = isAuthenticated;
-            model.paths = Soshace.urls;
-            model.posts = this.postsCollection.toJSON();
-            model.isOwner = isOwner;
-            return model;
+            data.user = model;
+            data.isAuthenticated = isAuthenticated;
+            data.paths = Soshace.urls;
+            data.posts = this.postsCollection.toJSON();
+            data.isOwner = isOwner;
+            return data;
         },
 
         /**
