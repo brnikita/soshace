@@ -4,11 +4,35 @@
   &__toolbar {
     background-color: #D1D1D1;
     &__content {
-      padding: 10px 15px;
+      padding: 7px 10px;
+      .btn-toolbar {
+        .btn-group {
+          border-left: 1px solid #AAA9A9;
+          &:first-child {
+            border-left: none;
+          }
+        }
+        .btn {
+          color: #333;
+          background-color: inherit;
+          border: none;
+          &:hover {
+            background-color: #dddddd;;
+            .box-shadow(0 0 3px rgba(0, 0, 0, 0.3));
+          }
+          &.active {
+            background-color: #C7C6C6;
+            .box-shadow(inset 0 0 3px rgba(0, 0, 0, 0.3));
+            &:hover {
+              background-color: #C7C6C6;
+            }
+          }
+        }
+      }
     }
     &__disable {
       .font-color-grey;
-      padding: 10px 15px;
+      padding: 10px;
       text-align: center;
       height: 54px;
       font-weight: bold;
@@ -47,9 +71,6 @@
       .box-shadow(0 3px 3px 0 rgba(50, 50, 50, 0.3));
       z-index: 1;
     }
-    .fa {
-      .font-color-grey;
-    }
   }
 
   &__content {
@@ -66,7 +87,7 @@
   }
 
   &__title {
-    margin: 0 15px;
+    margin: 0 10px;
     padding: 5px 0;
     border-bottom: 1px solid #D1D1D1;
     h1 {
@@ -93,7 +114,7 @@
   }
 
   &__body {
-    padding: 10px 15px 15px 15px;
+    padding: 10px;
     min-height: 400px;
     &:focus {
       outline: 0;
@@ -107,11 +128,11 @@
         border-bottom: none;
       }
       .modal-body {
-        padding: 0 15px;
+        padding: 0 10px;
       }
       .modal-footer {
         border-top: none;
-        padding: 0 15px 15px 15px;
+        padding: 0 10px 10px 10px;
         margin: 0;
       }
     }
