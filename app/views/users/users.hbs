@@ -1,5 +1,7 @@
 <div class="user content-center">
-    {{> usersTabs}}
+    {{#if isOwner}}
+        {{> usersTabs}}
+    {{/if}}
     <div class="user__profile">
         <div class="user__profile__info clearfix">
             <div class="user__profile__info__avatar">

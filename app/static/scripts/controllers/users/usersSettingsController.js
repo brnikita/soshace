@@ -20,7 +20,7 @@ define([
              * @name UsersSettingsController#pageAlias
              * @type {String}
              */
-            pageAlias: 'user',
+            pageAlias: 'userSettings',
 
             /**
              * @field
@@ -58,17 +58,15 @@ define([
             /**
              * Метод вызывает при рендере на сервере
              *
+             * В случае страницы настроек рендер на сервере не нужен, т.к.
+             * поисковый паук не увидит эти страницы
+             *
              * @method
              * @name UsersSettingsController#firstLoad
              * @returns {undefined}
              */
             firstLoad: function () {
-                var app = Soshace.app,
-                    $contentFirstLoad = app.elements.contentFirstLoad,
-                    view = this.view;
-
-                app.setView('.js-content', view);
-                view.withoutRender($contentFirstLoad);
+                this.secondLoad();
             },
 
             /**

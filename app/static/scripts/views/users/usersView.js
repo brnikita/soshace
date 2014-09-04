@@ -11,10 +11,11 @@ define([
     'underscore',
     'backbone',
     'handlebars',
+    'utils/helpers',
     './../posts/postPreviewView',
     'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone, Handlebars, PostPreviewView) {
+], function ($, _, Backbone, Handlebars, Helpers, PostPreviewView) {
     return Backbone.Layout.extend({
         /**
          * Модель деталей статьи
@@ -147,10 +148,10 @@ define([
                 isOwner = isAuthenticated && model._id === profile._id;
 
             data.user = model;
-            data.isAuthenticated = isAuthenticated;
-            data.paths = Soshace.urls;
             data.posts = this.postsCollection.toJSON();
             data.isOwner = isOwner;
+            data.isUserMainTab = true;
+            data.locale = Helpers.getLocale();
             return data;
         },
 

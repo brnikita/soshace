@@ -11,9 +11,10 @@ define([
     'underscore',
     'backbone',
     'handlebars',
+    'utils/helpers',
     'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone, Handlebars) {
+], function ($, _, Backbone, Handlebars, Helpers) {
     return Backbone.Layout.extend({
         /**
          * Модель деталей статьи
@@ -61,6 +62,18 @@ define([
          * @returns {Object}
          */
         serialize: function () {
+            var app = Soshace.app,
+                isAuthenticated = app.isAuthenticated(),
+                data = {},
+                model = this.model.toJSON(),
+                profile = Soshace.profile,
+                isOwner = isAuthenticated && model._id === profile._id;
+
+            data.user = model;
+            data.isOwner = isOwner;
+            data.isUserEditTab = true;
+            data.locale = Helpers.getLocale();
+            return data;
         },
 
         /**
@@ -71,20 +84,6 @@ define([
          * @returns {undefined}
          */
         setElements: function () {
-        },
-
-        /**
-         * Метод запускается, когда рендеринг шаблона происходит на сервере
-         *
-         * @method
-         * @name UsersEditView#withoutRender
-         * @param {jQuery} $el корневой элемент
-         * @returns {undefined}
-         */
-        withoutRender: function($el){
-            this.$el = $el;
-            this.delegateEvents();
-            this.setElements();
         },
 
         /**

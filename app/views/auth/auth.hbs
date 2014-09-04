@@ -4,15 +4,23 @@
         <div class="col-md-7 col-md-offset-2">
             <div class="auth-form">
                 <ul class="nav-tabs clearfix">
-                    <li class="nav-tabs__login {{#if isLoginTab}}active{{/if}}">
-                        <a href="/{{locale}}/login"
-                           class="js-router-link">{{i18n 'Login'}}</a></li>
-                    <li class="nav-tabs__registration {{#if isRegistrationTab}}active{{/if}}">
-                        <a class="js-router-link"
-                           href="/{{locale}}/registration">{{i18n 'Registration'}}</a>
+                    <li class="nav-tabs__login">
+                        {{#if isLoginTab}}
+                            <span class="active">{{i18n 'Login'}}</span>
+                        {{else}}
+                            <a href="/{{locale}}/login"
+                               class="js-router-link">{{i18n 'Login'}}</a>
+                        {{/if}}
+                    </li>
+                    <li class="nav-tabs__registration">
+                        {{#if isRegistrationTab}}
+                            <span class="active">{{i18n 'Registration'}}</span>
+                        {{else}}
+                            <a class="js-router-link"
+                               href="/{{locale}}/registration">{{i18n 'Registration'}}</a>
+                        {{/if}}
                     </li>
                 </ul>
-
                 <div class="auth-form__content">
                     {{#if isLoginTab}}
                         {{> login}}

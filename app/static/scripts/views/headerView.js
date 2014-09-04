@@ -46,7 +46,9 @@ define([
             login: 'isAuthTab',
             registration: 'isAuthTab',
             postEdit: 'isPostEditTab',
-            user: 'isUserTab'
+            user: 'isUserTab',
+            userEdit: 'isUserTab',
+            userSettings: 'isUserTab'
         },
 
         /**

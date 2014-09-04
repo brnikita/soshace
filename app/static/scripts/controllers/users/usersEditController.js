@@ -58,17 +58,15 @@ define([
             /**
              * Метод вызывает при рендере на сервере
              *
+             * В случае страницы редактирования пользовательских данных
+             * рендер на сервере не нужен, т.к. поисковый паук не увидит эти страницы
+             *
              * @method
              * @name UsersEditController#firstLoad
              * @returns {undefined}
              */
             firstLoad: function () {
-                var app = Soshace.app,
-                    $contentFirstLoad = app.elements.contentFirstLoad,
-                    view = this.view;
-
-                app.setView('.js-content', view);
-                view.withoutRender($contentFirstLoad);
+                this.secondLoad();
             },
 
             /**

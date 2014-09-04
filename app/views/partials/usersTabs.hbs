@@ -1,19 +1,41 @@
 <ul class="nav-tabs clearfix">
-    <li class="active nav-tabs__profile-info">
-        <a class="js-router-link" href="/{{user.locale}}/users/{{user.userName}}">
-            <span class="glyphicon glyphicon-user"></span>
-            {{i18n 'Profile information'}}
-        </a>
+    <li class="nav-tabs__profile-info">
+        {{#if isUserMainTab}}
+            <span class="active">
+                <span class="glyphicon glyphicon-user"></span>
+                {{i18n 'Profile information'}}
+            </span>
+        {{else}}
+            <a class="js-router-link" href="/{{locale}}/users/{{user.userName}}">
+                <span class="glyphicon glyphicon-user"></span>
+                {{i18n 'Profile information'}}
+            </a>
+        {{/if}}
+    </li>
     <li class="nav-tabs__edit-profile">
-        <a class="js-router-link" href="/{{user.locale}}/users/{{user.userName}}/edit">
-            <span class="glyphicon glyphicon-edit"></span>
-            {{i18n 'Edit profile'}}
-        </a>
+        {{#if isUserEditTab}}
+            <span class="active">
+                <span class="glyphicon glyphicon-edit"></span>
+                {{i18n 'Edit profile'}}
+            </span>
+        {{else}}
+            <a class="js-router-link" href="/{{locale}}/users/{{user.userName}}/edit">
+                <span class="glyphicon glyphicon-edit"></span>
+                {{i18n 'Edit profile'}}
+            </a>
+        {{/if}}
     </li>
     <li class="nav-tabs__profile-settings">
-        <a class="js-router-link" href="/{{user.locale}}/users/{{user.userName}}/settings">
-            <span class="glyphicon glyphicon-cog"></span>
-            {{i18n 'Settings'}}
-        </a>
+        {{#if isUserSettingsTab}}
+            <span class="active">
+                <span class="glyphicon glyphicon-cog"></span>
+                {{i18n 'Settings'}}
+            </span>
+        {{else}}
+            <a class="js-router-link" href="/{{locale}}/users/{{user.userName}}/settings">
+                <span class="glyphicon glyphicon-cog"></span>
+                {{i18n 'Settings'}}
+            </a>
+        {{/if}}
     </li>
 </ul>
