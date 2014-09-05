@@ -10,9 +10,10 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'utils/helpers',
     'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone) {
+], function ($, _, Backbone, Helpers) {
     return Backbone.Layout.extend({
 
         /**
@@ -66,7 +67,7 @@ define([
             data.isAuthenticated = app.isAuthenticated();
             data.post = model;
             data.paths = Soshace.urls;
-
+            data.locale = Helpers.getLocale();
             return data;
         },
 
