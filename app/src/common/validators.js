@@ -46,7 +46,7 @@ module.exports = {
      * @returns {undefined}
      */
     userNameUnique: function (value, respond) {
-        this.model('users').getUser({userName: value}).exec(function (error, user) {
+        this.model('users').getUserByUserName(value, function (error, user) {
             if (error || user) {
                 respond(false);
                 return;
