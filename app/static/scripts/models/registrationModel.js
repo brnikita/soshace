@@ -122,6 +122,7 @@ define([
                 value = serializedField.value;
 
             params[name] = value;
+            //TODO: переделать на POST
             return $.get(Soshace.urls.api.registration.validateField, params);
         }
     });

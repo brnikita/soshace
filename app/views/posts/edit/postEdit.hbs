@@ -6,7 +6,7 @@
         {{#if post._id}} data-_id="{{post._id}}"{{/if}}>
         <div class="post-edit__toolbar js-editor-toolbar">
             <div class="content-center">
-                {{#if editorDisabled}}
+                {{#if onlyRead}}
                     <div class="post-edit__toolbar__disable js-disable-reason"></div>
                 {{else}}
                     <div class="post-edit__toolbar__content clearfix">
@@ -69,18 +69,30 @@
 
         <div class="post-edit__content">
             <div class="post-edit__title">
-                {{#if editorDisabled}}
+                {{#if onlyRead}}
                     <h1>{{post.title}}</h1>
                 {{else}}
                     <input id="post-title" class="js-post-title" type="text" name="post-title"
                            placeholder="{{i18n 'Title'}}" value="{{post.title}}"/>
                 {{/if}}
             </div>
-
-            <div id="post-body" class="post-edit__body js-post-body"
-                 {{#unless editorDisabled}}contenteditable="true"{{/unless}}>
-                {{{post.body}}}
-            </div>
+            {{#if onlyRead}}
+                <div id="post-body" class="post-edit__body">
+                    {{{post.body}}}
+                </div>
+            {{else}}
+                <div id="post-body" class="post-edit__body js-post-body" contenteditable="true">
+                    {{{post.body}}}
+                </div>
+            {{/if}}
         </div>
+        {{#if editorDisabled}}
+            <div class="disable-cover">
+                <div class="disable-cover__bg"></div>
+                <div class="disable-cover__ban">
+                    <span class="glyphicon glyphicon-ban-circle"></span>
+                </div>
+            </div>
+        {{/if}}
     </div>
 </div>

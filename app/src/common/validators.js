@@ -65,7 +65,7 @@ module.exports = {
      * @returns {undefined}
      */
     emailUnique: function (value, respond) {
-        this.model('users').getUser({email: value}).exec(function (error, user) {
+        this.model('users').getUserByEmail(value, function (error, user) {
             if (error || user) {
                 respond(false);
                 return;

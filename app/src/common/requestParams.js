@@ -15,6 +15,7 @@ module.exports = function (request) {
         profile = request.user && request.user[0],
         profileUserName = profile && profile.userName;
 
+    console.log('request.user',request);
     return {
         isProduction: Soshace.IS_PRODUCTION,
         version: Soshace.VERSION,
