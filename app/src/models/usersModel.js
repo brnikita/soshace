@@ -1,7 +1,8 @@
 'use strict';
 //TODO: добавить trim перед сохранением полей
 
-var Mongoose = require('mongoose'),
+var _ = require('underscore'),
+    Mongoose = require('mongoose'),
     Schema = Mongoose.Schema,
     Bcrypt = require('bcrypt'),
     Validators = srcRequire('common/validators'),
@@ -27,6 +28,8 @@ var UsersShema = new Schema({
         type: String
     },
     userName: {
+        //поле доступно для отправки на клиент
+        public: true,
         type: String,
         unique: true,
         //TODO: разобраться почему mongoose прогоняет все валидаторы
@@ -69,14 +72,20 @@ var UsersShema = new Schema({
         ]
     },
     sex: {
+        //поле доступно для отправки на клиент
+        public: true,
         type: String,
         default: null
     },
     aboutAuthor: {
+        //поле доступно для отправки на клиент
+        public: true,
         type: String,
         default: null
     },
     birthday: {
+        //поле доступно для отправки на клиент
+        public: true,
         type: Date,
         default: null
     },
@@ -109,6 +118,8 @@ var UsersShema = new Schema({
         default: false
     },
     locale: {
+        //поле доступно для отправки на клиент
+        public: true,
         type: String,
         default: 'en'
     }
@@ -138,6 +149,42 @@ UsersShema.methods.comparePassword = function (candidatePassword, callback) {
 
         callback(null);
     });
+};
+
+/**
+ * Метод возвращает доступные на клиенте для профиля (владельца)
+ *
+ * @method
+ * @name UsersShema#getProfileFields
+ * @returns {Object}
+ */
+UsersShema.methods.getProfileFields = function () {
+    var profileFields = this.getPublicFields();
+
+    profileFields.emailConfirmed = this.emailConfirmed;
+    return profileFields;
+};
+
+/**
+ * Метод возвращает публичные поля пользователя (общедоступные)
+ *
+ * @method
+ * @name UsersShema#getPublicFields
+ * @returns {Object}
+ */
+UsersShema.methods.getPublicFields = function () {
+    var publicFields = {},
+        userPaths = UsersShema.paths;
+
+    _.each(userPaths, _.bind(function (pathSettings, path) {
+        if (pathSettings.public) {
+            publicFields[path] = this[path];
+        }
+    }, this));
+
+    publicFields._id = this._id;
+
+    return publicFields;
 };
 
 /**

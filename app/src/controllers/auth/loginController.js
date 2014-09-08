@@ -135,6 +135,7 @@ module.exports = Controller.extend({
 
         response.cookie('isAuthenticated', '1');
         response.cookie('profileUserName', user.userName);
+        user = user.getProfileFields();
         response.send(user);
     }
 });

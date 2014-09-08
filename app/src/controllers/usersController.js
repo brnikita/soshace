@@ -31,16 +31,7 @@ module.exports = Controller.extend({
             profile = requestParams.profile;
 
             if (userName === profile.userName) {
-                profile = _.pick(profile,
-                    '_id',
-                    'fullName',
-                    'userName',
-                    'sex',
-                    'aboutAuthor',
-                    'birthday',
-                    'emailConfirmed',
-                    'locale');
-
+                profile = profile.getProfileFields();
                 response.send(profile);
                 return;
             }
@@ -51,7 +42,7 @@ module.exports = Controller.extend({
                 this.sendError(error);
                 return;
             }
-
+            user = user.getPublicFields();
             response.send(user);
         }, this));
     },

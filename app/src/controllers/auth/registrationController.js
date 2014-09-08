@@ -267,15 +267,7 @@ module.exports = Controller.extend({
                 return;
             }
 
-            profile = _.pick(user,
-                'fullName',
-                'userName',
-                'sex',
-                'locale',
-                'aboutAuthor',
-                'birthday'
-            );
-
+            profile = user.getProfileFields();
             redirectUrl = '/' + locale + '/users/' + userName;
             SendMail.sendConfirmMail(request, user);
             response.cookie('isAuthenticated', '1');
