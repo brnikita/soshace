@@ -1,6 +1,7 @@
 'use strict';
 
-var RequestParams = srcRequire('common/requestParams'),
+var _ = require('underscore'),
+    RequestParams = srcRequire('common/requestParams'),
     Class = srcRequire('vendors/class');
 
 /**
@@ -79,18 +80,31 @@ module.exports = Class.extend({
     },
 
     /**
-     * TODO: Доделать
-     *
      * @method
      * @name ControllerInit#renderError
+     * @param {Object | String} error  Пример: {error: 'Ошибка', code: 400} или 'Ошибка'
+     * @param {String} [code] код ошибки, 404, 500 по-умолчанию 400
      * @returns {undefined}
      */
-    renderError: function () {
+    renderError: function (error, code) {
         var response = this.response,
             request = this.request,
-            requestParams = new RequestParams(request);
+            requestParams = new RequestParams(request),
+            errorCode = 400,
+            errorMessage = 'Bad request.';
 
-        response.render('404', requestParams);
+        if (typeof error === 'object') {
+            errorMessage = error.error || errorMessage;
+            errorCode = error.code || errorCode;
+        } else {
+            errorMessage = error || errorMessage;
+            errorCode = code || errorCode;
+        }
+
+        response.status(errorCode).render(error, _.extend(requestParams, {
+            error: errorMessage,
+            code: errorCode
+        }));
     },
 
     /**

@@ -119,16 +119,13 @@ module.exports = Controller.extend({
      */
     confirmEmailHandler: function (error, user) {
         if (error) {
-            //TODO: поменять на render
-            this.sendError('Server is too busy, try later', 503);
+            this.renderError('Server is too busy, try later', 503);
             return;
         }
         this.updateUserMessagesAfterConfirmEmail(user, this.loginUser);
     },
 
     /**
-     * TODO: добавить обработку ошибок
-     *
      * Метод обработчик положительного
      * подтверждения кода пользователя
      *
@@ -144,15 +141,13 @@ module.exports = Controller.extend({
             locale = request.i18n.getLocale();
 
         if (error) {
-            //TODO: поменять на render
-            this.sendError('Server is too busy, try later', 503);
+            this.renderError('Server is too busy, try later', 503);
             return;
         }
 
-        request.login(user._id, _.bind(function (error) {
+        request.login(user, _.bind(function (error) {
             if (error) {
-                //TODO: поменять на render
-                this.sendError('Server is too busy, try later', 503);
+                this.renderError('Server is too busy, try later', 503);
                 return;
             }
             response.redirect('/' + locale + '/posts/new/');
@@ -261,11 +256,12 @@ module.exports = Controller.extend({
         var request = this.request,
             response = this.response,
             locale = request.i18n.getLocale(),
+            userName = user.userName,
             profile,
             redirectUrl;
 
         this.addNotConfirmedEmailMessage(user);
-        request.login(user._id, _.bind(function (error) {
+        request.login(user, _.bind(function (error) {
             if (error) {
                 this.sendError('Server is too busy, try later', 503);
                 return;
@@ -274,14 +270,16 @@ module.exports = Controller.extend({
             profile = _.pick(user,
                 'fullName',
                 'userName',
-                'isMale',
-                'admin',
+                'sex',
                 'locale',
-                'systemMessages'
+                'aboutAuthor',
+                'birthday'
             );
 
-            redirectUrl = '/' + locale + '/users/' + user.userName;
+            redirectUrl = '/' + locale + '/users/' + userName;
             SendMail.sendConfirmMail(request, user);
+            response.cookie('isAuthenticated', '1');
+            response.cookie('profileUserName', userName);
             response.send({
                 profile: profile,
                 redirect: redirectUrl

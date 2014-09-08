@@ -137,13 +137,13 @@ module.exports = Controller.extend({
      */
     isEditorDisabled: function () {
         var request = this.request,
-            profile;
+            requestParams = new RequestParams(request),
+            profile = requestParams.profile;
 
         if(!request.isAuthenticated()){
             return true;
         }
 
-        profile = request.user[0];
         return !profile.emailConfirmed;
     },
 

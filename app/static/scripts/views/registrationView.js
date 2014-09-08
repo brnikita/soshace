@@ -73,10 +73,9 @@ define([
         /**
          * @constructor
          * @name RegistrationView#initialize
-         * @param {Object} params
          * @returns {undefined}
          */
-        initialize: function (params) {
+        initialize: function () {
             _.bindAll(this,
                 'render',
                 'userRegistrationSuccess',
@@ -91,6 +90,7 @@ define([
 
             //Выбрано специально большой интервал,
             //чтобы подсказка не мелькала слишком часто
+            //TODO: у каждого поля должен быть свой debouce метод, чтобы ошибки показывались при быстрой смене фокуса
             this.setStatusDebounce =  _.debounce(_.bind(this.setStatus, this), 1500);
         },
 
