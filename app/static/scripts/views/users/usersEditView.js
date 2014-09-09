@@ -13,7 +13,8 @@ define([
     'handlebars',
     'utils/helpers',
     'backbone.layoutmanager',
-    'templates'
+    'templates',
+    'bootstrap.datepicker'
 ], function ($, _, Backbone, Handlebars, Helpers) {
     return Backbone.Layout.extend({
         /**
@@ -33,6 +34,19 @@ define([
          * @type {Object}
          */
         elements: {
+            form: null,
+            dates: null
+        },
+
+        /**
+         * Список обработчиков событий
+         *
+         * @field
+         * @name UsersEditView#events
+         * @type {Object}
+         */
+        events: {
+            'submit': 'submitHandler'
         },
 
         /**
@@ -56,6 +70,62 @@ define([
             );
         },
 
+        /**
+         * Метод устанавливает данные в модель взятые из шаблона
+         *
+         * @method
+         * @name UsersEditView#setModelFromTemplate
+         * @returns {undefined}
+         */
+        setModelFromTemplate: function(){
+
+        },
+
+        /**
+         * Метод обработчик отправки формы
+         *
+         * @method
+         * @name UsersEditView#submitHandler
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        submitHandler: function(event){
+            event.preventDefault();
+
+            var $form = this.elements.form,
+                serializedForm = $form.serializeArray(),
+                formData = _.object(_.map(serializedForm, function(field){
+                    return [field.name, field.value];
+                }));
+
+            this.model.save(formData, {
+                patch: true,
+                success: _.bind(this.submitSuccessHandler, this),
+                error: _.bind(this.submitErrorHandler, this)
+            });
+        },
+
+        /**
+         * Метод обработчик успешного сохранения данных пользователя
+         *
+         * @method
+         * @name UsersEditView#submitSuccessHandler
+         * @returns {undefined}
+         */
+        submitSuccessHandler: function(){
+
+        },
+
+        /**
+         * Метод обработчик неудачного сохранения данных пользователя
+         *
+         * @method
+         * @name UsersEditView#submitErrorHandler
+         * @returns {undefined}
+         */
+        submitErrorHandler: function(){
+
+        },
 
         /**
          * Метод используется в тех случаях, когда шаблон уже отрендерен
@@ -63,9 +133,11 @@ define([
          *
          * @method
          * @name UsersEditView#withoutRender
+         * @param {jQuery} $el родительский элемент вида
          * @returns {undefined}
          */
-        withoutRender: function () {
+        withoutRender: function ($el) {
+            this.$el = $el;
             this.delegateEvents();
             this.afterRender();
         },
@@ -98,6 +170,19 @@ define([
          * @returns {undefined}
          */
         setElements: function () {
+            this.elements.form = this.$('.js-form');
+            this.elements.dates = this.$('.js-date');
+        },
+
+        /**
+         * Метод применяет плагин календаря к полям
+         *
+         * @method
+         * @name UsersEditView#setDatesControls
+         * @returns {undefined}
+         */
+        setDatesControls: function(){
+            this.elements.dates.datepicker({});
         },
 
         /**
@@ -107,6 +192,7 @@ define([
          */
         afterRender: function () {
             this.setElements();
+            this.setDatesControls();
         }
     });
 });

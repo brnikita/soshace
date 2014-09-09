@@ -17,7 +17,8 @@ require.config(
             'jquery.ui.widget': 'vendors/jquery/jquery.ui.widget',
             'backbone': 'vendors/backbone',
             'backbone.layoutmanager': 'vendors/backbone/backbone.layoutmanager',
-            'backbone.validation': 'vendors/backbone/backbone.validation'
+            'backbone.validation': 'vendors/backbone/backbone.validation',
+            'bootstrap.datepicker': 'vendors/bootstrap/datepicker/bootstrap.datepicker'
 
         },
         shim: {
@@ -76,6 +77,11 @@ require.config(
             },
             'class': {
                 exports: 'Class'
+            },
+            'bootstrap.datepicker': {
+                deps: [
+                    'bootstrap'
+                ]
             }
         },
         deps: [
