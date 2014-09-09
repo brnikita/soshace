@@ -88,10 +88,8 @@ define([
             );
             Backbone.Validation.bind(this);
 
-            //Выбрано специально большой интервал,
-            //чтобы подсказка не мелькала слишком часто
             //TODO: у каждого поля должен быть свой debouce метод, чтобы ошибки показывались при быстрой смене фокуса
-            this.setStatusDebounce =  _.debounce(_.bind(this.setStatus, this), 1500);
+            this.setStatusDebounce =  _.debounce(_.bind(this.setStatus, this), 500);
         },
 
         /**

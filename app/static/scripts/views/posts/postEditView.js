@@ -98,7 +98,7 @@ define([
             status: null,
             statusMessages: null,
             postEdit: null,
-            disableReason: null
+            readOnlyReason: null
         },
 
         /**
@@ -570,12 +570,13 @@ define([
             this.elements.deleteButton = this.$('.js-post-delete');
             this.elements.status = this.$('.js-post-status');
             this.elements.postEdit = this.$('.js-post-edit');
-            this.elements.disableReason = this.$('.js-disable-reason');
+            this.elements.readOnlyReason = this.$('.js-read-only-reason');
         },
 
         /**
          * Метод возвращает True, если редактор должен быть заблокирован
-         * Если пользователь неавторизован, если
+         * Если пользователь неавторизован, если у пользователя не подтвержден email
+         * см. Wiki
          *
          * @method
          * @name PostEditView#isEditorDisabled
@@ -584,25 +585,14 @@ define([
         isEditorDisabled: function () {
             var app = Soshace.app,
                 isAuthenticated = app.isAuthenticated(),
-                ownerId,
-                isOwner,
-                profile,
-                profileId;
+                profile;
 
             if (!isAuthenticated) {
                 return true;
             }
+
             profile = Soshace.profile;
-
-            if (!profile.emailConfirmed) {
-                return true;
-            }
-
-            profileId = profile._id;
-            ownerId = this.model.get('ownerId');
-            isOwner = ownerId === profileId;
-
-            return !isOwner;
+            return !profile.emailConfirmed;
         },
 
         /**
@@ -729,24 +719,24 @@ define([
             }
 
             if (typeof editorMessage !== 'undefined') {
-                this.showEditorDisableReason(editorMessage);
+                this.showEditorReadOnlyReason(editorMessage);
             }
         },
 
         /**
-         * Метод отображает причину блокировки редактора
+         * Метод отображает причину статуса 'Только для чтения'
          *
          * @method
-         * @name PostEditView#showEditorDisableReason
+         * @name PostEditView#showEditorReadOnlyReason
          * @param {String} editorMessage
          * @returns {undefined}
          */
-        showEditorDisableReason: function (editorMessage) {
-            var $disableReason = this.elements.disableReason;
+        showEditorReadOnlyReason: function (editorMessage) {
+            var $readOnlyReason = this.elements.readOnlyReason;
 
             editorMessage = Helpers.i18n(editorMessage);
-            $disableReason.html(editorMessage);
-            $disableReason.removeClass('hide');
+            $readOnlyReason.html(editorMessage);
+            $readOnlyReason.removeClass('hide');
         },
 
         /**

@@ -177,7 +177,9 @@ UsersShema.methods.getPublicFields = function () {
         userPaths = UsersShema.paths;
 
     _.each(userPaths, _.bind(function (pathSettings, path) {
-        if (pathSettings.public) {
+        var pathOptions = pathSettings.options;
+
+        if (pathOptions.public) {
             publicFields[path] = this[path];
         }
     }, this));
@@ -244,12 +246,12 @@ UsersShema.statics.getUserByUserName = function (userName, callback) {
         birthday: 1,
         _id: 1
     }).exec(function (error, user) {
-        if (error) {
-            callback({error: 'Server is too busy, try later', code: 503});
-            return;
-        }
-        callback(null, user);
-    });
+            if (error) {
+                callback({error: 'Server is too busy, try later', code: 503});
+                return;
+            }
+            callback(null, user);
+        });
 };
 
 /**

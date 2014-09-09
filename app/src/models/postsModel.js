@@ -106,7 +106,7 @@ function getPostDescription(postBody) {
  */
 function checkFieldType(field, value) {
     var postPaths = PostsShema.paths,
-        fieldSetting = postPaths[field];
+        fieldSetting = postPaths[field].options;
 
     if (fieldSetting.type === String) {
         return typeof value === 'string';

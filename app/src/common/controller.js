@@ -101,7 +101,7 @@ module.exports = Class.extend({
             errorCode = code || errorCode;
         }
 
-        response.status(errorCode).render(error, _.extend(requestParams, {
+        response.status(errorCode).render('error', _.extend(requestParams, {
             error: errorMessage,
             code: errorCode
         }));
