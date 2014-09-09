@@ -3,10 +3,15 @@
     <div class="user__profile">
         <div class="user__profile__info clearfix">
             <div class="user__profile__info__avatar">
-                <div class="user__profile__info__avatar__img">
+                <div class="user__profile__info__avatar__img clearfix">
                     {{#if user.profileImg}}
                         <img src="{{user.profileImg}}"/>
+                    {{else}}
+                        <span class="glyphicon glyphicon-user"></span>
                     {{/if}}
+                </div>
+                <div class="user__profile__info__avatar__update">
+                    <a href="#" class="js-change-img">{{i18n 'Update pthoto'}}</a>
                 </div>
             </div>
             <form class="user__profile__info__description">
@@ -18,19 +23,22 @@
                                value="{{user.fullName}}"/>
                     </h3>
                 </div>
-                <div class="user__profile__block user__profile__sex form-group">
+                <div class="user__profile__block user__profile__sex form-group clearfix">
                     <label>{{i18n 'Sex'}}:</label>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="sex" id="sexMale" value="male">
-                            {{i18n 'Male'}}
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="sex" id="sexFemale" value="female">
-                            {{i18n 'Female'}}
-                        </label>
+
+                    <div class="radio-group">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="sex" id="sexMale" value="male">
+                                {{i18n 'Male'}}
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="sex" id="sexFemale" value="female">
+                                {{i18n 'Female'}}
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="user__profile__block form-group">

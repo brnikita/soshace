@@ -5,9 +5,11 @@
     <div class="user__profile">
         <div class="user__profile__info clearfix">
             <div class="user__profile__info__avatar">
-                <div class="user__profile__info__avatar__img">
+                <div class="user__profile__info__avatar__img clearfix">
                     {{#if user.profileImg}}
                         <img src="{{user.profileImg}}"/>
+                    {{else}}
+                        <span class="glyphicon glyphicon-user"></span>
                     {{/if}}
                 </div>
             </div>

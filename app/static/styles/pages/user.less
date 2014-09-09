@@ -2,13 +2,13 @@
   .nav-tabs {
     margin-bottom: 10px;
     &__profile-info {
-      width: 40%;
+      width: 34%;
     }
     &__edit-profile {
-      width: 40%;
+      width: 33%;
     }
     &__profile-settings {
-      width: 20%;
+      width: 33%;
     }
   }
   &__profile {
@@ -18,13 +18,26 @@
       padding-bottom: 10px;
       &__avatar {
         float: left;
-        width: 200px;
-        min-height: 200px;
-        background: #dcdcdc;
+        text-align: center;
+        &__img {
+          width: 200px;
+          min-height: 200px;
+          background: #dcdcdc;
+          color: #fff;
+          .glyphicon {
+            display: block;
+            font-size: 160px;
+            margin-top: 40px;
+          }
+        }
+        &__update {
+          padding-top: 10px;
+        }
       }
       &__description {
         float: left;
         width: 60%;
+        padding-top: 6px;
       }
     }
     &__block {
@@ -35,7 +48,14 @@
     }
     &__sex {
       label {
-        margin-bottom: 0;
+        margin-right: 10px;
+        float: left;
+      }
+      .radio-group {
+        float: left;
+        .radio:first-child {
+          margin-top: 0;
+        }
       }
     }
     &__about-author {
