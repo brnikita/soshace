@@ -95,6 +95,98 @@ module.exports = Controller.extend({
     },
 
     /**
+     * Метод рендерит страницу редактирования профиля
+     *
+     * @method
+     * @name UsersController#renderUserEditPage
+     * @returns {undefined}
+     */
+    renderUserEditPage: function () {
+        var request = this.request,
+            params = request.params,
+            userName = params.username,
+            requestParams = new RequestParams(request),
+            profile;
+
+        if (requestParams.isAuthenticated) {
+            profile = requestParams.profile;
+            if (userName === profile.userName) {
+                this.renderProfileEditForAuthenticatedUser(profile);
+                return;
+            }
+        }
+
+        this.renderError('Page not found', 404);
+    },
+
+    /**
+     * Метод рендерит страницу редактирования профиля
+     *
+     * @method
+     * @name UsersController#renderProfileEditForAuthenticatedUser
+     * @param {Mongoose.Model} profile профиль пользователя
+     * @returns {undefined}
+     */
+    renderProfileEditForAuthenticatedUser: function (profile) {
+        var request = this.request,
+            response = this.response,
+            requestParams = new RequestParams(request);
+
+        response.render('users/usersEdit', _.extend(requestParams, {
+            user: profile,
+            isUserEditTab: true,
+            isOwner: true,
+            title: 'Edit profile'
+        }));
+    },
+
+    /**
+     * Метод рендерит страницу настроек профиля
+     *
+     * @method
+     * @name UsersController#renderUserSettingsPage
+     * @returns {undefined}
+     */
+    renderUserSettingsPage: function () {
+        var request = this.request,
+            params = request.params,
+            userName = params.username,
+            requestParams = new RequestParams(request),
+            profile;
+
+        if (requestParams.isAuthenticated) {
+            profile = requestParams.profile;
+            if (userName === profile.userName) {
+                this.renderProfileSettingsForAuthenticatedUser(profile);
+                return;
+            }
+        }
+
+        this.renderError('Page not found', 404);
+    },
+
+    /**
+     * Метод рендерит страницу настроек профиля
+     *
+     * @method
+     * @name UsersController#renderProfileSettingsForAuthenticatedUser
+     * @param {Mongoose.Model} profile профиль пользователя
+     * @returns {undefined}
+     */
+    renderProfileSettingsForAuthenticatedUser: function (profile) {
+        var request = this.request,
+            response = this.response,
+            requestParams = new RequestParams(request);
+
+        response.render('users/usersSettings', _.extend(requestParams, {
+            user: profile,
+            isUserSettingsTab: true,
+            isOwner: true,
+            title: 'Settings'
+        }));
+    },
+
+    /**
      * Метод рендерит страницу пользователя
      *
      * @method
@@ -184,10 +276,10 @@ module.exports = Controller.extend({
 
             response.render('users/users', _.extend(requestParams, {
                 user: profile,
-                isUserTab: true,
+                isUserMainTab: true,
                 isOwner: true,
                 posts: posts,
-                title: 'User Profile'
+                title: 'Profile information'
             }));
         }, this));
     }

@@ -3,7 +3,7 @@
 /**
  * Вид страницы настроек пользователя
  *
- * @class UsersEditView
+ * @class UsersSettingsView
  */
 
 define([
@@ -20,7 +20,7 @@ define([
          * Модель деталей статьи
          *
          * @field
-         * @name UsersEditView#model
+         * @name UsersSettingsView#model
          * @type {Backbone.Model | null}
          */
         model: null,
@@ -29,7 +29,7 @@ define([
          * Ссылки на DOM элементы
          *
          * @field
-         * @name UsersEditView#elements
+         * @name UsersSettingsView#elements
          * @type {Object}
          */
         elements: {
@@ -39,14 +39,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name UsersEditView#elements
+         * @name UsersSettingsView#elements
          * @type {string}
          */
         template: Soshace.hbs['users/usersSettings'],
 
         /**
          * @constructor
-         * @name UsersEditView#initialize
+         * @name UsersSettingsView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -58,7 +58,7 @@ define([
 
         /**
          * @method
-         * @name UsersEditView#serialize
+         * @name UsersSettingsView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -77,10 +77,23 @@ define([
         },
 
         /**
+         * Метод используется в тех случаях, когда шаблон уже отрендерен
+         * Но надо навесить слушатели и выполнить afterRender и т.д.
+         *
+         * @method
+         * @name UsersSettingsView#withoutRender
+         * @returns {undefined}
+         */
+        withoutRender: function () {
+            this.delegateEvents();
+            this.afterRender();
+        },
+
+        /**
          * Метод сохраняет DOM элементы
          *
          * @method
-         * @name UsersEditView#setElements
+         * @name UsersSettingsView#setElements
          * @returns {undefined}
          */
         setElements: function () {
@@ -88,7 +101,7 @@ define([
 
         /**
          * @method
-         * @name UsersEditView#afterRender
+         * @name UsersSettingsView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {

@@ -1,7 +1,5 @@
 'use strict';
-var _ = require('underscore'),
-    Controller = srcRequire('common/controller'),
-    RequestParams = srcRequire('common/requestParams');
+var Controller = srcRequire('common/controller');
 
 /**
  * Контроллер страниц ошибок
@@ -17,10 +15,6 @@ module.exports = Controller.extend({
      * @returns {undefined}
      */
     render404: function () {
-        var request = this.request,
-            response = this.response,
-            requestParams = new RequestParams(request);
-
-        response.render(404, _.extend(requestParams, {status: 404}));
+        this.renderError('Page not found', 404);
     }
 });

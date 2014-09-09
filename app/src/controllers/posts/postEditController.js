@@ -140,7 +140,7 @@ module.exports = Controller.extend({
             requestParams = new RequestParams(request),
             profile = requestParams.profile;
 
-        if(!request.isAuthenticated()){
+        if (!request.isAuthenticated()) {
             return true;
         }
 
@@ -221,7 +221,7 @@ module.exports = Controller.extend({
         var response = this.response,
             request = this.request,
             editorDisabled = false,
-            status,
+            isReadOnly = this.isReadOnly(post),
             requestParams = new RequestParams(request);
 
         if (error) {
@@ -234,18 +234,30 @@ module.exports = Controller.extend({
             return;
         }
 
-        status = post.status;
-        if(status === 'sent' || status === 'published'){
-            editorDisabled = true;
-        }
-
         response.render('posts/edit/postEdit', _.extend(requestParams, {
             title: 'Edit Post',
             post: post,
+            onlyRead: isReadOnly,
             isNew: false,
             editorDisabled: editorDisabled,
             isPostEditTab: true
         }));
+    },
+
+    /**
+     * Метод возвращает true, если статья только для чтения
+     * Для статусов лпубликована и отправлена
+     * См. wiki
+     *
+     * @method
+     * @name PostEditController#isReadOnly
+     * @param {PostsModel} post
+     * @returns {boolean}
+     */
+    isReadOnly: function (post) {
+        var status = post.status;
+
+        return status === 'sent' || status === 'published';
     },
 
     /**

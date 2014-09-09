@@ -56,6 +56,20 @@ define([
             );
         },
 
+
+        /**
+         * Метод используется в тех случаях, когда шаблон уже отрендерен
+         * Но надо навесить слушатели и выполнить afterRender и т.д.
+         *
+         * @method
+         * @name UsersEditView#withoutRender
+         * @returns {undefined}
+         */
+        withoutRender: function () {
+            this.delegateEvents();
+            this.afterRender();
+        },
+
         /**
          * @method
          * @name UsersEditView#serialize

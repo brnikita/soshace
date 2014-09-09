@@ -10,10 +10,11 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'handlebars',
     'utils/helpers',
     'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone, Helpers) {
+], function ($, _, Backbone, Handlebars, Helpers) {
     return Backbone.Layout.extend({
 
         /**
@@ -52,6 +53,10 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
+            Handlebars.registerPartial(
+                'intro',
+                Soshace.hbs['partials/intro']
+            );
         },
 
         /**

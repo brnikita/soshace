@@ -58,15 +58,17 @@ define([
             /**
              * Метод вызывает при рендере на сервере
              *
-             * В случае страницы настроек рендер на сервере не нужен, т.к.
-             * поисковый паук не увидит эти страницы
-             *
              * @method
              * @name UsersSettingsController#firstLoad
              * @returns {undefined}
              */
             firstLoad: function () {
-                this.secondLoad();
+                var app = Soshace.app,
+                    $el = app.elements.contentFirstLoad,
+                    view = this.view;
+
+                app.setView('.js-content', view);
+                view.withoutRender($el);
             },
 
             /**
