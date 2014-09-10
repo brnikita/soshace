@@ -1,7 +1,11 @@
 .posts {
-  h1 {
+  @media (min-width: @screen-xs-max) {
+    margin-top: 10px;
+  }
+  h2 {
     overflow: hidden;
     text-overflow: ellipsis;
+    margin: 7px 0 5px 0;
     a {
       color: #333;
       &:hover {
@@ -43,7 +47,7 @@
     position: relative;
     padding: 0 10px;
     background: #fff;
-    &__description{
+    &__description {
       padding-bottom: 10px;
     }
     &__footer {

@@ -1,7 +1,11 @@
 .user {
-  padding-top: 10px;
+  @media (min-width: @screen-xs-max) {
+    padding-top: 10px;
+  }
   .nav-tabs {
-    margin-bottom: 10px;
+    @media (min-width: @screen-xs-max) {
+      margin-bottom: 10px;
+    }
     &__profile-info {
       width: 34%;
     }
@@ -23,12 +27,13 @@
         &__img {
           width: 200px;
           min-height: 200px;
-          background: #dcdcdc;
+          .bg-color-grey;
           color: #fff;
           .glyphicon {
             display: block;
             font-size: 160px;
             margin-top: 40px;
+            text-shadow: 0px -1px 1px rgba(150, 150, 150, 0.5);
           }
         }
         &__update {
@@ -71,8 +76,5 @@
       border-top: 1px solid #D3D3D3;
       padding-top: 10px;
     }
-  }
-  .posts {
-    margin-top: 10px;
   }
 }

@@ -1,11 +1,14 @@
 .post-edit {
-  margin-top: 10px;
+  @media (min-width: @screen-xs-max) {
+    margin-top: 10px;
+  }
   position: relative;
   background: #fff;
   &__toolbar {
-    background-color: #dcdcdc;
+    .bg-color-grey;
+    height: 50px;
     &__content {
-      padding: 7px 10px;
+      padding: 8px 10px 0 10px;
       .btn-toolbar {
         .btn-group {
           border-left: 1px solid #b4b3b3;

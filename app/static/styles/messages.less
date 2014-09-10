@@ -1,7 +1,12 @@
 .box-message {
-  margin-top: 10px;
+  @media (min-width: @screen-xs-max) {
+    margin-top: 10px;
+  }
   padding: 10px;
   text-align: center;
+  h3 {
+    margin: 3px 0 5px 0;
+  }
   a {
     text-decoration: underline;
   }

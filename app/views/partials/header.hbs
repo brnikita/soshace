@@ -1,8 +1,10 @@
 <div class="header-content clearfix">
-    <a href="/{{locale}}" class="js-router-link header__logo">
+    <a href="/{{locale}}" class="js-router-link header__logo hidden-xs">
         <img src="{{paths.static}}images/logo.png" alt="Soshace" class="img-responsive"/>
     </a>
-
+    <a href="/{{locale}}" class="js-router-link header__logo header__logo-small visible-xs">
+        <img src="{{paths.static}}images/logo_small.png" alt="Soshace" class="img-responsive"/>
+    </a>
     <div class="header__tabs">
         {{#if isAuthenticated}}
             {{#if isUserTab}}
@@ -23,16 +25,16 @@
             {{/if}}
         {{/if}}
         {{#if isPostEditTab}}
-            <span class="header__tab header__tab-active">
+            <span class="header__tab header__tab-active hidden-xs">
                 <span class="glyphicon glyphicon-pencil"></span>
-                <span class="hidden-xs">
+                <span>
                     {{i18n 'Add Post'}}
                 </span>
             </span>
         {{else}}
-            <a href="/{{locale}}/posts/new" class="js-router-link header__tab header__tab-link">
+            <a href="/{{locale}}/posts/new" class="js-router-link header__tab header__tab-link hidden-xs">
                 <span class="glyphicon glyphicon-pencil"></span>
-                <span class="hidden-xs">
+                <span>
                     {{i18n 'Add Post'}}
                 </span>
             </a>

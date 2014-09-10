@@ -1,5 +1,8 @@
 .auth {
-  margin-top: 10px;
+  @media (min-width: @screen-xs-max) {
+    width: 650px;
+    margin: 10px auto 0 auto;
+  }
   .nav-tabs {
     &__login {
       width: 30%;
@@ -9,22 +12,13 @@
     }
   }
   .font-color-grey;
-  &__title {
-    text-align: center;
-    h1 {
-      color: #fff;
-      background: rgba(0, 0, 0, 0.5);
-      display: inline-block;
-      padding: 5px 10px;
-    }
-  }
   &-form {
     background-color: #fff;
-    h2 {
-      margin-top: 0;
-    }
     &__content {
       padding: 10px;
+    }
+    label {
+      font-weight: normal;
     }
   }
 }
