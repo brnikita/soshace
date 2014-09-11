@@ -160,7 +160,6 @@ define([
          */
         modelSaveSuccess: function (model, response) {
             var postId = response._id,
-                statusAccepted = response.statusAcceped,
                 locale = this.get('locale'),
                 postUrl;
 
@@ -169,11 +168,6 @@ define([
                 postUrl = '/' + locale + '/posts/' + postId + '/edit';
                 Backbone.history.navigate(postUrl);
                 this.trigger('postCreated');
-                return;
-            }
-
-            if (statusAccepted) {
-                this.trigger('statusAccepted');
                 return;
             }
 

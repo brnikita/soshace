@@ -81,7 +81,6 @@ define([
                     done(function () {
                         app.setView('.js-content', view).render();
                         view.addListeners();
-                        view.showStatusMessages();
                     });
             }
         });

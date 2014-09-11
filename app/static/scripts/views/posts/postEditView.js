@@ -140,6 +140,8 @@ define([
         /**
          * TODO: добавить валидацию, показать лоадер
          *
+         * TODO: статус должен обновляться только после сохранения на серевере
+         *
          * Метод обработчик клика по кнопке опубликовать
          *
          * @method
@@ -189,7 +191,7 @@ define([
          * @returns {undefined}
          */
         statusAcceptedHandler: function () {
-            this.showStatusMessages();
+
         },
 
         /**
@@ -725,6 +727,7 @@ define([
         afterRender: function () {
             this.setElements();
             this.showPostStatus();
+            this.showStatusMessages();
             this.toolbarInitOffset = this.elements.toolbar.offset();
         },
 
@@ -736,6 +739,7 @@ define([
          * @returns {undefined}
          */
         showStatusMessages: function () {
+            debugger;
             var statusMessages = this.elements.statusMessages,
                 status = this.model.get('status'),
                 statusSettings = this.model.statuses[status],
