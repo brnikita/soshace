@@ -20,7 +20,9 @@
     background-color: #fff;
     padding: 10px;
     &__info {
-      padding-bottom: 10px;
+      @media (min-width: @screen-xs-max) {
+        padding-bottom: 10px;
+      }
       &__avatar {
         float: left;
         text-align: center;
@@ -72,8 +74,6 @@
       }
     }
     &__footer {
-      border-top: 1px solid #D3D3D3;
-      padding-top: 10px;
     }
   }
 }

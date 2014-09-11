@@ -50,11 +50,12 @@
             </div>
         {{else}}
             <div class="box-message box-message-warning">
-                <h3>
-                    <a class="js-router-link" href="/{{locale}}/posts/new">
-                        {{{i18n 'Here could be your posts'}}}
+                <h4>
+                    <a class="js-router-link hidden-xs" href="/{{locale}}/posts/new">
+                        {{i18n 'Here could be your posts'}}
                     </a>
-                </h3>
+                    <span class="hide visible-xs">{{i18n 'You have no articles'}}</span>
+                </h4>
             </div>
         {{/if}}
     </div>

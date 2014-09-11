@@ -26,7 +26,12 @@ html, body {
 }
 
 body {
-  .bg-color-grey-light;
+  @media (min-width: @screen-xs-max) {
+    .bg-color-grey-light;
+  }
+  @media (max-width: @screen-xs-max) {
+    background-color: #fff;
+  }
 }
 
 .intro {

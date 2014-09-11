@@ -167,5 +167,7 @@
 	"User not found": "Пользователь не найден",
 	"Male": "Мужской",
 	"Female": "Женский",
-	"Update pthoto": "Обновить фотографию"
+	"Update photo": "Обновить фотографию",
+	"There is no articles": "Здесь пока нет статей",
+	"You have no articles": "У вас нет статей"
 }
