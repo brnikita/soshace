@@ -138,7 +138,7 @@ define([
         },
 
         /**
-         * TODO: добавить валидацию
+         * TODO: добавить валидацию, показать лоадер
          *
          * Метод обработчик клика по кнопке опубликовать
          *
@@ -149,7 +149,6 @@ define([
         postPublish: function () {
             this.model.set('status', 'sent');
             this.render();
-            this.showStatusMessages();
         },
 
         /**
@@ -182,10 +181,6 @@ define([
         },
 
         /**
-         * TODO: доделать
-         * TODO: после публикации должно выодиться уведомление об успешной отправке на пбликацию
-         * а статья должна быть задизейблена
-         *
          * Метод обработчик изменения статуса статьи
          * Когда статьия отправляет на публикацию
          *
@@ -194,11 +189,11 @@ define([
          * @returns {undefined}
          */
         statusAcceptedHandler: function () {
-
+            this.showStatusMessages();
         },
 
         /**
-         * Метод меняет статусы у статьи
+         * Метод меняет статусы у статьи (сохраняет в модель)
          *
          * @method
          * @name PostEditView#postCreatedHandler
@@ -207,20 +202,33 @@ define([
          */
         changeStatus: function (status) {
             var statuses = this.model.statuses,
-                $status = this.elements.status,
-                options = {},
-                statusSettings,
-                statusTitle;
+                statusSettings = statuses[status];
 
-            statusSettings = statuses[status];
-            statusTitle = Helpers.i18n(statusSettings.title);
-            $status.html(statusTitle);
+            this.showPostStatus(status);
 
             if (statusSettings.silent) {
-                options.silent = true;
+                return;
             }
 
-            this.model.set('status', status, options);
+            this.model.set('status', status);
+        },
+
+        /**
+         * Метод отображает статус у статьи
+         *
+         * @method
+         * @name PostEditView#showPostStatus
+         *  @param {String} [status] название статуса (редактируется, сохранена, создана)
+         * @returns {undefined}
+         */
+        showPostStatus: function(status){
+            var postStatus = status || this.model.get('status'),
+                statuses = this.model.statuses,
+                $status = this.elements.status,
+                statusSettings = statuses[postStatus],
+                statusTitle = Helpers.i18n(statusSettings.title);
+
+            $status.html(statusTitle);
         },
 
         /**
@@ -301,7 +309,12 @@ define([
          */
         saveTileToModel: function () {
             var $title = this.elements.postTitle,
+                currentValue = this.model.get('title'),
                 value = $title.val();
+
+            if (currentValue === value) {
+                return;
+            }
 
             this.changeStatus('editing');
             this.model.set('title', value);
@@ -316,7 +329,12 @@ define([
          */
         saveBodyToModel: function () {
             var $postBody = this.elements.postBody,
+                currentValue = this.model.get('body'),
                 value = $postBody.html();
+
+            if (currentValue === value) {
+                return;
+            }
 
             this.model.set('body', value);
             this.changeStatus('editing');
@@ -697,6 +715,7 @@ define([
          */
         afterRender: function () {
             this.setElements();
+            this.showPostStatus();
             this.toolbarInitOffset = this.elements.toolbar.offset();
         },
 
@@ -766,10 +785,12 @@ define([
         withoutRender: function ($el) {
             this.$el = $el;
             this.delegateEvents();
-            this.afterRender();
+            this.setElements();
+            this.toolbarInitOffset = this.elements.toolbar.offset();
             this.setDataToModelFromView();
             this.addListeners();
             this.showStatusMessages();
+            this.showPostStatus();
         },
 
         /**

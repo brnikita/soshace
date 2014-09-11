@@ -51,14 +51,19 @@ define([
                 title: 'Post saved',
                 class: 'label-primary',
                 editorEnable: true,
-                //Изменение статусов не должно отправляться на сервер
+                //Статус не может быть изменен из вида
+                //Т.к. отлавливаются изменения статьи, а не статусов редактирования
+                //Так же, если засетить с этим статусом, то поле не будет видно в changed
                 silent: true
             },
+            //Данный статус есть только на клиенте
             editing: {
                 title: 'Post is editing...',
                 class: 'label-default',
                 editorEnable: true,
-                //Изменение статусов не должно отправляться на сервер
+                //Статус не может быть изменен из вида
+                //Т.к. отлавливаются изменения статьи, а не статусов редактирования
+                //Так же, если засетить с этим статусом, то поле не будет видно в changed
                 silent: true
             },
             sent: {
@@ -118,9 +123,6 @@ define([
         },
 
         /**
-         * TODO: доделать patch, т.к. сейчас метод фигачит всю модель целиком
-         * TODO: или переделать на  put
-         *
          * Метод патчит модель, если модель уже создана.
          * Содает новую, если модели нет.
          * Удаляет модель, если приходят пустые значения на запись
@@ -131,27 +133,20 @@ define([
          */
         patchModel: function () {
             var _this = this,
-                model = this.toJSON(),
-                status = model.status,
-                statusSettings = this.statuses[status],
+                data = this.changed,
                 options = {
                     silent: true,
                     success: _.bind(_this.modelSaveSuccess, _this),
                     error: _.bind(_this.modelSaveFail, _this)
-                },
-                postId = this.get('_id');
+                };
 
-            if (postId) {
+            if (this.isNew()) {
+                data.status = 'saved';
+            } else {
                 options.patch = true;
             }
 
-            //Статусы editing и saved сохраняем под saved
-            //В модели на сервере не будет статуса editing
-            if (statusSettings.silent) {
-                model.status = 'saved';
-            }
-
-            this.save(model, options);
+            this.save(data, options);
         },
 
         /**

@@ -86,10 +86,8 @@ module.exports = Controller.extend({
             this.sendError('Unauthorized', 401);
             return;
         }
-        //TODO: проверить права пользователя на обновление поста
 
         profile = requestParams.profile;
-
         PostsModel.updatePost(postId, profile, update, _.bind(function (error) {
             if (error) {
                 this.sendError(error);

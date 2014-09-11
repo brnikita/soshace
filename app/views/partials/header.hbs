@@ -1,10 +1,19 @@
 <div class="header-content clearfix">
-    <a href="/{{locale}}" class="js-router-link header__logo hidden-xs">
-        <img src="{{paths.static}}images/logo.png" alt="Soshace" class="img-responsive"/>
-    </a>
-    <a href="/{{locale}}" class="js-router-link header__logo header__logo-small visible-xs">
-        <img src="{{paths.static}}images/logo_small.png" alt="Soshace" class="img-responsive"/>
-    </a>
+    {{#if isHomeTab}}
+        <span class="header__logo hidden-xs">
+            <img src="{{paths.static}}images/logo.png" alt="Soshace" class="img-responsive"/>
+        </span>
+        <span class="visible-xs header__logo header__logo-small">
+            <img src="{{paths.static}}images/logo_small.png" alt="Soshace" class="img-responsive"/>
+        </span>
+    {{else}}
+        <a href="/{{locale}}" class="js-router-link header__logo hidden-xs">
+            <img src="{{paths.static}}images/logo.png" alt="Soshace" class="img-responsive"/>
+        </a>
+        <a href="/{{locale}}" class="js-router-link header__logo header__logo-small visible-xs">
+            <img src="{{paths.static}}images/logo_small.png" alt="Soshace" class="img-responsive"/>
+        </a>
+    {{/if}}
     <div class="header__tabs">
         {{#if isAuthenticated}}
             {{#if isUserTab}}

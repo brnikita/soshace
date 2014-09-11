@@ -21,14 +21,16 @@ var _ = require('underscore'),
      * @name PostsShema
      * @type {Schema}
      */
-    PostsShema = new Schema({
+        PostsShema = new Schema({
         //Время последнего изменения
         updated: {
-            type: Date
+            type: Date,
+            default: null
         },
         //Время публикации
         published: {
-            type: Date
+            type: Date,
+            default: null
         },
         //id пользователя, к которому относится сообщение
         ownerId: {
@@ -43,11 +45,12 @@ var _ = require('underscore'),
         },
         //Загловок поста
         title: {
-            type: String
+            type: String,
+            default: null
         },
-        //Категория, используется в урлах
         category: {
-            type: String
+            type: String,
+            default: null
         },
         //Тэги для подбора
         tags: {
@@ -60,15 +63,18 @@ var _ = require('underscore'),
 //        denied,
 //        comments
         status: {
-            type: String
+            type: String,
+            default: null
         },
         //Описание для выдачи
         description: {
-            type: String
+            type: String,
+            default: null
         },
         //Тело поста
         body: {
-            type: String
+            type: String,
+            default: null
         }
     });
 
@@ -107,6 +113,10 @@ function getPostDescription(postBody) {
 function checkFieldType(field, value) {
     var postPaths = PostsShema.paths,
         fieldSetting = postPaths[field].options;
+
+    if (value === null) {
+        return true;
+    }
 
     if (fieldSetting.type === String) {
         return typeof value === 'string';
@@ -173,13 +183,13 @@ PostsShema.statics.getPosts = function (locale, callback) {
         status: 1,
         ownerId: 1
     }).exec(function (error, posts) {
-        if (error) {
-            callback({error: 'Server is too busy, try later.', code: 503});
-            return;
-        }
+            if (error) {
+                callback({error: 'Server is too busy, try later.', code: 503});
+                return;
+            }
 
-        callback(null, posts);
-    });
+            callback(null, posts);
+        });
 };
 
 /**
@@ -272,9 +282,11 @@ PostsShema.statics.updatePost = function (postId, profile, update, callback) {
         return;
     }
 
+    //Очиска объекта обновления от полей, не входящих в модель
     update = this.clearUpdate(update);
     status = update.status;
 
+    //Проверка на права пользователя обновлять статьи с данным статусом
     if (typeof status !== 'undefined') {
         error = this.checkUpdateStatus(postId, profile, status, callback);
         if (error) {
@@ -283,10 +295,13 @@ PostsShema.statics.updatePost = function (postId, profile, update, callback) {
         }
     }
 
+    //Проверка соответствия типам полей
     if (!this.isUpdateFieldsValid(update)) {
         callback({error: 'Bad Request', code: 400});
+        return;
     }
 
+    //Получение описания
     if (update.body) {
         update.description = getPostDescription(update.body);
     }
@@ -433,13 +448,13 @@ PostsShema.statics.getUserPosts = function (ownerId, callback) {
         status: 1,
         ownerId: 1
     }).exec(function (error, posts) {
-        if (error) {
-            callback({error: 'Server is too busy, try later.', code: 503});
-            return;
-        }
+            if (error) {
+                callback({error: 'Server is too busy, try later.', code: 503});
+                return;
+            }
 
-        callback(null, posts);
-    });
+            callback(null, posts);
+        });
 };
 
 /**
@@ -460,13 +475,13 @@ PostsShema.statics.getPost = function (postId, callback) {
         status: 1,
         ownerId: 1
     }).exec(function (error, post) {
-        if (error) {
-            callback({error: 'Server is too busy, try later.', code: 503});
-            return;
-        }
+            if (error) {
+                callback({error: 'Server is too busy, try later.', code: 503});
+                return;
+            }
 
-        callback(null, post);
-    });
+            callback(null, post);
+        });
 };
 
 /**

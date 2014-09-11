@@ -186,7 +186,7 @@ module.exports = Controller.extend({
 
         PostsModel.getPosts(locale, function (error, posts) {
             response.render('posts/posts', _.extend(requestParams, {
-                isPostsTab: true,
+                isHomeTab: true,
                 title: 'Soshace blog',
                 posts: posts
             }));
