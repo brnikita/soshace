@@ -19,17 +19,16 @@ module.exports = Controller.extend({
      */
     renderAdmin: function () {
         var request = this.request,
-            response = this.response,
             requestParams = new RequestParams(request),
             locale = requestParams.locale;
 
         if (!requestParams.isAuthenticated) {
-            response.render('404', requestParams);
+            this.renderError('Page not found', 404);
             return;
         }
 
         if (!requestParams.profile.admin) {
-            response.render('404', requestParams);
+            this.renderError('Page not found', 404);
             return;
         }
 

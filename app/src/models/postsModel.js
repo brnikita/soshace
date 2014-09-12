@@ -313,8 +313,8 @@ PostsShema.statics.updatePost = function (postId, profile, update, callback) {
         ownerId: profileId
     };
 
-    this.update(updateRequest, {$set: update}, _.bind(function (error, post) {
-        this.updatePostHandler(error, post, callback);
+    this.update(updateRequest, {$set: update}, _.bind(function (error, updated) {
+        this.updatePostHandler(error, updated, callback);
     }, this));
 };
 
@@ -324,17 +324,17 @@ PostsShema.statics.updatePost = function (postId, profile, update, callback) {
  * @method
  * @name PostsShema.updatePostHandler
  * @param {Object} error ошибка
- * @param {Mongoose.model} post модель статьи
+ * @param {Number} updated флаг, означающий, что статья была обновлена
  * @param {Function} callback
  * @returns {undefined}
  */
-PostsShema.statics.updatePostHandler = function (error, post, callback) {
+PostsShema.statics.updatePostHandler = function (error, updated, callback) {
     if (error) {
         callback({error: 'Server is too busy, try later.', code: 503});
         return;
     }
 
-    if (post === null) {
+    if (updated !== 1) {
         callback({error: 'Bad request.', code: 400});
         return;
     }

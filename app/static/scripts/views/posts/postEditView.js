@@ -138,9 +138,7 @@ define([
         },
 
         /**
-         * TODO: добавить валидацию, показать лоадер
-         *
-         * TODO: статус должен обновляться только после сохранения на серевере
+         * TODO: добавить валидацию
          *
          * Метод обработчик клика по кнопке опубликовать
          *
@@ -150,7 +148,41 @@ define([
          */
         postPublish: function () {
             this.model.set('status', 'sent');
-            this.render();
+            this.blockToolbar();
+            this.showPublishButtonLoader();
+        },
+
+        /**
+         * Метод показывает лоадер на кнопке 'Опубликовать' и блокирует интерфейс
+         *
+         * @method
+         * @name PostEditView#showPublishButtonLoader
+         * @returns {undefined}
+         */
+        showPublishButtonLoader: function(){
+
+        },
+
+        /**
+         * Метод блокирует панель инструментов
+         *
+         * @method
+         * @name PostEditView#blockToolbar
+         * @returns {undefined}
+         */
+        blockToolbar: function(){
+
+        },
+
+        /**
+         * Метод разблокирует панель инструментов
+         *
+         * @method
+         * @name PostEditView#unBlockToolbar
+         * @returns {undefined}
+         */
+        unBlockToolbar: function(){
+
         },
 
         /**
@@ -168,7 +200,6 @@ define([
             model.on('change', _.bind(patchModelDebounce, model));
             model.on('postCreated', _.bind(this.postCreatedHandler, this));
             model.on('postPatched', _.bind(this.postPatchHandler, this));
-            model.on('statusAccepted', _.bind(this.statusAcceptedHandler, this));
         },
 
         /**
@@ -179,40 +210,14 @@ define([
          * @returns {undefined}
          */
         postPatchHandler: function () {
-            this.changeStatus('saved');
-        },
+            var status = this.model.get('status');
 
-        /**
-         * Метод обработчик изменения статуса статьи
-         * Когда статьия отправляет на публикацию
-         *
-         * @method
-         * @name PostEditView#statusAcceptedHandler
-         * @returns {undefined}
-         */
-        statusAcceptedHandler: function () {
-
-        },
-
-        /**
-         * Метод меняет статусы у статьи (сохраняет в модель)
-         *
-         * @method
-         * @name PostEditView#postCreatedHandler
-         * @param {String} status название статуса (редактируется, сохранена, создана)
-         * @returns {undefined}
-         */
-        changeStatus: function (status) {
-            var statuses = this.model.statuses,
-                statusSettings = statuses[status];
-
-            this.showPostStatus(status);
-
-            if (statusSettings.silent) {
+            if (status === 'sent') {
+                this.render();
                 return;
             }
 
-            this.model.set('status', status);
+            this.showPostStatus();
         },
 
         /**
@@ -230,11 +235,12 @@ define([
                 statusSettings,
                 statusTitle;
 
-            if (this.model.isNew()) {
+            postStatus = status || this.model.get('status');
+
+            if (typeof postStatus !== 'string') {
                 return;
             }
 
-            postStatus = status || this.model.get('status');
             statuses = this.model.statuses;
             $status = this.elements.status;
             statusSettings = statuses[postStatus];
@@ -251,7 +257,7 @@ define([
          */
         postCreatedHandler: function () {
             this.elements.deleteButton.removeClass('hide');
-            this.changeStatus('saved');
+            this.showPostStatus();
         },
 
         /**
@@ -327,7 +333,7 @@ define([
                 return;
             }
 
-            this.changeStatus('editing');
+            this.showPostStatus('editing');
             this.model.set('title', value);
         },
 
@@ -348,7 +354,7 @@ define([
             }
 
             this.model.set('body', value);
-            this.changeStatus('editing');
+            this.showPostStatus('editing');
             this.saveSelection();
         },
 
@@ -604,7 +610,7 @@ define([
 
         /**
          * Метод возвращает True, если редактор должен быть заблокирован
-         * Если пользователь неавторизован, если у пользователя не подтвержден email
+         * Если пользователь не авторизован или у пользователя не подтвержден email
          * см. Wiki
          *
          * @method
@@ -739,7 +745,6 @@ define([
          * @returns {undefined}
          */
         showStatusMessages: function () {
-            debugger;
             var statusMessages = this.elements.statusMessages,
                 status = this.model.get('status'),
                 statusSettings = this.model.statuses[status],

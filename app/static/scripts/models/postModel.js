@@ -50,21 +50,13 @@ define([
             saved: {
                 title: 'Post saved',
                 class: 'label-primary',
-                editorEnable: true,
-                //Статус не может быть изменен из вида
-                //Т.к. отлавливаются изменения статьи, а не статусов редактирования
-                //Так же, если засетить с этим статусом, то поле не будет видно в changed
-                silent: true
+                editorEnable: true
             },
             //Данный статус есть только на клиенте
             editing: {
                 title: 'Post is editing...',
                 class: 'label-default',
-                editorEnable: true,
-                //Статус не может быть изменен из вида
-                //Т.к. отлавливаются изменения статьи, а не статусов редактирования
-                //Так же, если засетить с этим статусом, то поле не будет видно в changed
-                silent: true
+                editorEnable: true
             },
             sent: {
                 title: 'Post sent',

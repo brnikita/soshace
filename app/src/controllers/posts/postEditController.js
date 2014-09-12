@@ -94,7 +94,7 @@ module.exports = Controller.extend({
                 return;
             }
 
-            response.send({success: 'success'});
+            response.send({updated: true});
         }, this));
     },
 
