@@ -1,62 +1,58 @@
 <div class="user content-center">
     {{> usersTabs}}
-    <div class="user__profile">
-        <div class="user__profile__info clearfix">
-            <div class="user__profile__info__avatar">
-                <div class="user__profile__info__avatar__img clearfix">
-                    {{#if user.profileImg}}
-                        <img src="{{user.profileImg}}"/>
-                    {{else}}
-                        <span class="glyphicon glyphicon-user"></span>
-                    {{/if}}
+    <form class="user__profile js-form">
+        <div class="user__profile__block form-group">
+            <div class="user__profile__info__avatar__img clearfix">
+                {{#if user.profileImg}}
+                    <img src="{{user.profileImg}}"/>
+                {{else}}
+                    <span class="glyphicon glyphicon-user"></span>
+                {{/if}}
+            </div>
+            <div class="user__profile__info__avatar__update">
+                <a href="#" class="js-change-img">{{i18n 'Update photo'}}</a>
+            </div>
+        </div>
+        <div class="user__profile__block form-group">
+            <label for="fullName">{{i18n 'Full name'}}:</label>
+
+            <h3>
+                <input class="form-control" type="text" id="fullName" name="fullName"
+                       value="{{user.fullName}}"/>
+            </h3>
+        </div>
+        <div class="user__profile__block user__profile__sex form-group clearfix">
+            <label>{{i18n 'Sex'}}:</label>
+
+            <div class="radio-group">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="sex" id="sexMale" value="male">
+                        {{i18n 'Male'}}
+                    </label>
                 </div>
-                <div class="user__profile__info__avatar__update">
-                    <a href="#" class="js-change-img">{{i18n 'Update photo'}}</a>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="sex" id="sexFemale" value="female">
+                        {{i18n 'Female'}}
+                    </label>
                 </div>
             </div>
-            <form class="user__profile__info__description js-form">
-                <div class="user__profile__block form-group">
-                    <label for="fullName">{{i18n 'Full name'}}:</label>
-
-                    <h3>
-                        <input class="form-control" type="text" id="fullName" name="fullName"
-                               value="{{user.fullName}}"/>
-                    </h3>
-                </div>
-                <div class="user__profile__block user__profile__sex form-group clearfix">
-                    <label>{{i18n 'Sex'}}:</label>
-
-                    <div class="radio-group">
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="sex" id="sexMale" value="male">
-                                {{i18n 'Male'}}
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="sex" id="sexFemale" value="female">
-                                {{i18n 'Female'}}
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="user__profile__block form-group">
-                    <label for="birthday">{{i18n 'Birthday'}}:</label>
-
-                    <input class="form-control js-date" type="text" id="birthday" name="birthday"
-                           value="{{user.birthday}}"/>
-                </div>
-                <div class="user__profile__block user__profile__about-author form-group">
-                    <label for="aboutAuthor">{{i18n 'About author'}}:</label>
-                    <textarea id="aboutAuthor" name="aboutAuthor" class="form-control">
-                        {{user.aboutAuthor}}
-                    </textarea>
-                </div>
-                <div class="user__profile__block form-group">
-                    <button type="submit" class="btn btn-primary js-user-save">{{i18n 'Save'}}</button>
-                </div>
-            </form>
         </div>
-    </div>
+        <div class="user__profile__block form-group">
+            <label for="birthday">{{i18n 'Birthday'}}:</label>
+
+            <input class="form-control js-date" type="text" id="birthday" name="birthday"
+                   value="{{user.birthday}}"/>
+        </div>
+        <div class="user__profile__block user__profile__about-author form-group">
+            <label for="aboutAuthor">{{i18n 'About author'}}:</label>
+            <textarea id="aboutAuthor" name="aboutAuthor" class="form-control">
+                {{user.aboutAuthor}}
+            </textarea>
+        </div>
+        <div class="user__profile__block form-group">
+            <button type="submit" class="btn btn-primary js-user-save">{{i18n 'Save'}}</button>
+        </div>
+    </form>
 </div>
