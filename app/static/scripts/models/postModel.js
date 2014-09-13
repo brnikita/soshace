@@ -151,12 +151,16 @@ define([
          * @returns {undefined}
          */
         modelSaveSuccess: function (model, response) {
-            var postId = response._id,
+            var created = response.created,
+                post,
+                postId,
                 locale = this.get('locale'),
                 postUrl;
 
-            if (postId) {
-                this.set('_id', postId, {silent: true});
+            if (created) {
+                post = response.post;
+                postId = post._id;
+                this.set(post, {silent: true});
                 postUrl = '/' + locale + '/posts/' + postId + '/edit';
                 Backbone.history.navigate(postUrl);
                 this.trigger('postCreated');

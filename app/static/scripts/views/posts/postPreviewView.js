@@ -55,6 +55,10 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
+            Handlebars.registerPartial(
+                'postMetadata',
+                Soshace.hbs['partials/postMetadata']
+            );
         },
 
         /**
@@ -88,21 +92,20 @@ define([
          *
          * @method
          * @name PostPreviewView#getToolBar
-         * @returns {undefined}
+         * @returns {Object}
          */
-        getToolBar: function () {
-            var model = this.model.toJSON(),
-                status = this.model.get('status'),
+        getStatusData: function () {
+            var status = this.model.get('status'),
                 statusSettings = this.model.statuses[status],
                 statusClass = statusSettings.class,
                 statusTitle = statusSettings.title,
                 editorEnable = statusSettings.editorEnable;
 
-            return Soshace.hbs['posts/edit/postPreviewToolbar'](_.extend(model, {
+            return  {
                 editorEnable: editorEnable,
                 statusClass: statusClass,
                 statusTitle: statusTitle
-            }));
+            };
         },
 
         /**

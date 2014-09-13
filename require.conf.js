@@ -18,7 +18,8 @@ require.config(
             'backbone': 'vendors/backbone',
             'backbone.layoutmanager': 'vendors/backbone/backbone.layoutmanager',
             'backbone.validation': 'vendors/backbone/backbone.validation',
-            'bootstrap.datepicker': 'vendors/bootstrap/datepicker/bootstrap.datepicker'
+            'bootstrap.datepicker': 'vendors/bootstrap/datepicker/bootstrap.datepicker',
+            'bootstrap.datepicker.ru': 'vendors/bootstrap/datepicker/locales/bootstrap-datepicker.ru'
 
         },
         shim: {

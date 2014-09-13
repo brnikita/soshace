@@ -6,7 +6,7 @@
         {{#if post._id}} data-_id="{{post._id}}"{{/if}}>
         <div class="post-edit__toolbar js-editor-toolbar">
             <div class="content-center">
-                {{#if onlyRead}}
+                {{#if readOnly}}
                     <div class="post-edit__toolbar__disable js-read-only-reason"></div>
                 {{else}}
                     <div class="post-edit__toolbar__content clearfix">
@@ -69,14 +69,14 @@
 
         <div class="post-edit__content">
             <div class="post-edit__title">
-                {{#if onlyRead}}
+                {{#if readOnly}}
                     <h1>{{post.title}}</h1>
                 {{else}}
                     <input id="post-title" class="js-post-title" type="text" name="post-title"
                            placeholder="{{i18n 'Title'}}" value="{{post.title}}"/>
                 {{/if}}
             </div>
-            {{#if onlyRead}}
+            {{#if readOnly}}
                 <div id="post-body" class="post-edit__body">
                     {{{post.body}}}
                 </div>

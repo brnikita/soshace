@@ -14,20 +14,20 @@ define([
     'config'
 ], function ($, _, Backbone, Helpers) {
     return Backbone.Model.extend({
-        
+
         /**
          * @field
          * @name UsersModel#idAttribute
          * @type {String}
          */
-        idAttribute: 'username',
-        
+        idAttribute: 'userName',
+
         /**
          * @method
          * @name UsersModel#initialize
          * @returns {string}
          */
-        url: function(){
+        url: function () {
             var userName = this.get('userName');
             return Soshace.urls.api.user.replace('0', userName);
         },
@@ -40,12 +40,33 @@ define([
         defaults: {
             userName: null,
             locale: null,
-            fullName: null,
+            firstName: null,
+            lastName: null,
             profileImg: null,
             sex: null,
             birthday: null,
             aboutAuthor: null
         },
+
+        /**
+         * Список полов
+         *
+         * @field
+         * @name UsersModel#sexList
+         * @type {Array}
+         */
+        sexList: [
+            {
+                title: 'Male',
+                value: 'male',
+                selected: true
+            },
+            {
+                title: 'Female',
+                value: 'female',
+                selected: false
+            }
+        ],
 
         /**
          * Метод загружает данные пользователя
@@ -70,6 +91,28 @@ define([
             }
 
             return this.fetch();
+        },
+
+        /**
+         * Метод возвращает список полов с выбранным в модели полом
+         *
+         * @method
+         * @name UsersModel#getSexList
+         * @returns {Array}
+         */
+        getSexList: function () {
+            var currentSex = this.get('sex');
+
+            if (currentSex === null) {
+                return this.sexList;
+            }
+
+            _.each(this.sexList, function (sex) {
+                var isCurrentSex = sex.value === currentSex;
+                sex.selected = isCurrentSex;
+            });
+
+            return this.sexList;
         },
 
         /**

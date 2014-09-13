@@ -164,10 +164,17 @@
 	"Edit profile": "Редактировать профиль",
 	"Settings": "Настройки",
 	"Profile information": "Информация о пользователе",
+	"Your photo": "Ваша фотография",
 	"User not found": "Пользователь не найден",
 	"Male": "Мужской",
 	"Female": "Женский",
+	"female": "женский",
+	"male": "мужской",
 	"Update photo": "Обновить фотографию",
 	"There is no articles": "Здесь пока нет статей",
-	"You have no articles": "У вас нет статей"
+	"You have no articles": "У вас нет статей",
+	"First name": "Имя",
+	"Last name": "Фамилия",
+	"About myself": "О себе",
+    "The author has not published any articles yet": "Автор не опубликовал ещё ни одной статьи"
 }

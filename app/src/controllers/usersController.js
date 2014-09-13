@@ -62,36 +62,28 @@ module.exports = Controller.extend({
             request = this.request,
             requestParams = new RequestParams(request),
             params = request.params,
-            query = request.query,
-            userId,
-            method;
+            update = request.body,
+            userId;
 
         if (!requestParams.isAuthenticated) {
             this.sendError('User is not authorized.');
             return;
         }
 
-        if (params.username !== requestParams.profile.username) {
-            this.sendError('User is not authorized.');
+        if (params.username !== requestParams.profile.userName) {
+            this.sendError('Forbidden.', 403);
             return;
         }
 
         userId = requestParams.profile._id;
-        method = query.method;
+        UsersModel.updatePersonalData(userId, update, _.bind(function (error, user) {
+            if (error) {
+                this.sendError(error);
+                return;
+            }
 
-        if (typeof UsersModel[method] === 'function') {
-            UsersModel[method](userId, query, _.bind(function (error, user) {
-                if (error) {
-                    this.sendError(error);
-                    return;
-                }
-
-                response.send({user: user});
-            }, this));
-            return;
-        }
-
-        this.sendError('The Method {{' + method + '}} is not supported.', 405);
+            response.send({updated: true});
+        }, this));
     },
 
     /**
@@ -130,9 +122,11 @@ module.exports = Controller.extend({
     renderProfileEditForAuthenticatedUser: function (profile) {
         var request = this.request,
             response = this.response,
+            sexList = profile.getSexList(),
             requestParams = new RequestParams(request);
 
         response.render('users/usersEdit', _.extend(requestParams, {
+            sexList: sexList,
             user: profile,
             isUserEditTab: true,
             isOwner: true,

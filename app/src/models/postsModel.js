@@ -5,14 +5,6 @@ var _ = require('underscore'),
     Mongoose = require('mongoose'),
     Schema = Mongoose.Schema,
     ObjectId = Schema.ObjectId,
-//Поля, которые можно обновлять
-    fieldsCanBeUpdated = [
-        'title',
-        'body',
-        'category',
-        'tags',
-        'status'
-    ],
 
     /**
      * Класс для работы с моделью постов
@@ -25,19 +17,21 @@ var _ = require('underscore'),
         //Время последнего изменения
         updated: {
             type: Date,
-            default: null
+            default: null,
+            readOnly: true
         },
         //Время публикации
         published: {
             type: Date,
-            default: null
+            default: null,
+            readOnly: true
         },
         //id пользователя, к которому относится сообщение
         ownerId: {
             type: ObjectId,
             default: null,
             //поле не может быть изменено пользователем
-            readonly: true
+            readOnly: true
         },
         locale: {
             default: 'en',
@@ -246,7 +240,7 @@ PostsShema.statics.isUpdateFieldsValid = function (update) {
 
 /**
  * Метод удляет все поля из запроса не соответствующие
- * полям модели
+ * полям модели и имеющие флаг readOnly
  *
  * @method
  * @name PostsShema.clearUpdate
@@ -254,8 +248,27 @@ PostsShema.statics.isUpdateFieldsValid = function (update) {
  * @returns {Object} очищенный объект обновления
  */
 PostsShema.statics.clearUpdate = function (update) {
-    var pickArguments = [update].concat(fieldsCanBeUpdated);
-    return _.pick.apply(_, pickArguments);
+    var clearUpdate = {},
+        userPaths = PostsShema.paths;
+
+    _.each(update, function (value, fieldName) {
+        var modelField = userPaths[fieldName],
+            fieldSettings;
+
+        if (_.isUndefined(modelField)) {
+            return;
+        }
+
+        fieldSettings = modelField.options;
+
+        if (fieldSettings.readOnly) {
+            return;
+        }
+
+        clearUpdate[fieldName] = value;
+    });
+
+    return clearUpdate;
 };
 
 /**

@@ -636,10 +636,10 @@ define([
          * см. Wiki
          *
          * @method
-         * @name PostEditView#onlyRead
+         * @name PostEditView#readOnly
          * @returns {Boolean}
          */
-        onlyRead: function () {
+        readOnly: function () {
             var app = Soshace.app,
                 isAuthenticated = app.isAuthenticated(),
                 ownerId,
@@ -684,7 +684,7 @@ define([
             data.paths = Soshace.urls;
             data.post = this.model.toJSON();
             data.isNew = this.model.isNew();
-            data.onlyRead = this.onlyRead();
+            data.readOnly = this.readOnly();
             return data;
         },
 

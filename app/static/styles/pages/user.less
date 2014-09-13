@@ -20,15 +20,15 @@
     background-color: #fff;
     padding: 10px;
     &__info {
-      @media (min-width: @screen-xs-max) {
-        padding-bottom: 10px;
-      }
       &__avatar {
         float: left;
-        text-align: center;
+        @media (min-width: @screen-xs-max) {
+          padding-right: 10px;
+        }
         &__img {
           width: 200px;
           min-height: 200px;
+          text-align: center;
           .bg-color-grey;
           color: #fff;
           .glyphicon {
@@ -38,7 +38,7 @@
           }
         }
         &__update {
-          padding-top: 10px;
+          padding-top: 3px;
           a {
             text-decoration: underline;
           }
@@ -50,21 +50,35 @@
         padding-top: 6px;
       }
     }
+    &__footer {
+      padding-top: 10px;
+    }
     &__block {
-      padding: 0 10px;
+      padding-bottom: 10px;
+      &:last-child {
+        padding-bottom: 0;
+      }
       h3 {
         margin: 0;
       }
-    }
-    &__sex {
-      label {
-        margin-right: 10px;
-        float: left;
+      &__description {
+        @media (min-width: @screen-xs-max) {
+          line-height: 32px;
+          float: left;
+          width: 34%;
+          text-align: right;
+          padding-right: 10px;
+        }
       }
-      .radio-group {
-        float: left;
-        .radio:first-child {
-          margin-top: 0;
+      &__control {
+        @media (min-width: @screen-xs-max) {
+          float: left;
+          width: 60%;
+        }
+      }
+      &__save {
+        @media (min-width: @screen-xs-max) {
+          padding-left: 34%;
         }
       }
     }

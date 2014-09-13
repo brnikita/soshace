@@ -7,124 +7,194 @@ var _ = require('underscore'),
     Bcrypt = require('bcrypt'),
     Validators = srcRequire('common/validators'),
     Helpers = srcRequire('common/helpers'),
-    SALT_WORK_FACTOR = 10;
+    SALT_WORK_FACTOR = 10,
+    SEX_LIST = [
+        {
+            title: 'Male',
+            value: 'male',
+            selected: true
+        },
+        {
+            title: 'Female',
+            value: 'female',
+            selected: false
+        }
+    ],
+
+    /**
+     * Класс для работы с моделью пользователей
+     * Пользователи, которые имеют подтвержденные email
+     *
+     * @class
+     * @name UsersShema
+     * @type {Schema}
+     */
+    UsersShema = new Schema({
+        //код подтверждения email
+        code: {
+            type: String,
+            //поле не может быть изменено пользователем
+            readonly: true
+        },
+        firstName: {
+            type: String,
+            default: null,
+            public: true
+        },
+        lastName: {
+            type: String,
+            default: null,
+            public: true
+        },
+        userName: {
+            //поле доступно для отправки на клиент
+            public: true,
+            type: String,
+            unique: true,
+            //TODO: разобраться почему mongoose прогоняет все валидаторы
+            //Валидация идет с конца!
+            validate: [
+                {
+                    validator: Validators.userNameUnique,
+                    msg: 'User with same username already exists.'
+                },
+                {
+                    validator: Soshace.PATTERNS.userName,
+                    msg: 'Use the Latin alphabet, numbers, &#34;.&#34;, &#34;_&#34;, &#34;-&#34;.'
+                },
+                {
+                    validator: Validators.required,
+                    msg: 'Username can&#39;t be blank.'
+                }
+            ]
+        },
+        email: {
+            type: String,
+            //поле не может быть изменено пользователем
+            readonly: true,
+            unique: true,
+            //TODO: разобраться почему mongoose прогоняет все валидаторы
+            //Валидация идет с конца!
+            validate: [
+                {
+                    validator: Validators.emailUnique,
+                    msg: 'User with same email already exists.'
+                },
+                {
+                    validator: Soshace.PATTERNS.email,
+                    msg: 'Email is invalid.'
+                },
+                {
+                    validator: Validators.required,
+                    msg: 'Email can&#39;t be blank.'
+                }
+            ]
+        },
+        sex: {
+            //поле доступно для отправки на клиент
+            public: true,
+            type: String,
+            default: null
+        },
+        aboutAuthor: {
+            //поле доступно для отправки на клиент
+            public: true,
+            type: String,
+            default: null
+        },
+        birthday: {
+            //поле доступно для отправки на клиент
+            public: true,
+            type: Date,
+            default: null
+        },
+        password: {
+            type: String,
+            //TODO: разобраться почему mongoose прогоняет все валидаторы
+            //Валидация идет с конца!
+            validate: [
+                {
+                    validator: Validators.passwordMinLength,
+                    msg: 'Password length should&#39;t be less than 6 characters.'
+                },
+                {
+                    validator: Validators.required,
+                    msg: 'Password can&#39;t be blank.'
+                }
+            ]
+        },
+        emailConfirmed: {
+            type: Boolean,
+            default: false,
+            //поле не может быть изменено пользователем
+            readonly: true
+        },
+        //Является ли пользователь админом
+        admin: {
+            //поле не может быть изменено пользователем
+            readonly: true,
+            type: Boolean,
+            default: false
+        },
+        locale: {
+            //поле доступно для отправки на клиент
+            public: true,
+            type: String,
+            default: 'en'
+        }
+    });
 
 /**
- * Класс для работы с моделью пользователей
- * Пользователи, которые имеют подтвержденные email
+ * Метод проверяет сооветствие пришедшего типа
+ * значения поля типу установленому в модели
  *
- * @class
- * @name UsersShema
- * @type {Schema}
+ * @method
+ * @name checkFieldType
+ * @param {String} field
+ * @param {*} value
+ * @returns {boolean} вовращает true, если поле соответствует типу в модели
  */
-var UsersShema = new Schema({
-    //код подтверждения email
-    code: {
-        type: String,
-        //поле не может быть изменено пользователем
-        readonly: true
-    },
-    fullName: {
-        type: String
-    },
-    userName: {
-        //поле доступно для отправки на клиент
-        public: true,
-        type: String,
-        unique: true,
-        //TODO: разобраться почему mongoose прогоняет все валидаторы
-        //Валидация идет с конца!
-        validate: [
-            {
-                validator: Validators.userNameUnique,
-                msg: 'User with same username already exists.'
-            },
-            {
-                validator: Soshace.PATTERNS.userName,
-                msg: 'Use the Latin alphabet, numbers, &#34;.&#34;, &#34;_&#34;, &#34;-&#34;.'
-            },
-            {
-                validator: Validators.required,
-                msg: 'Username can&#39;t be blank.'
-            }
-        ]
-    },
-    email: {
-        type: String,
-        //поле не может быть изменено пользователем
-        readonly: true,
-        unique: true,
-        //TODO: разобраться почему mongoose прогоняет все валидаторы
-        //Валидация идет с конца!
-        validate: [
-            {
-                validator: Validators.emailUnique,
-                msg: 'User with same email already exists.'
-            },
-            {
-                validator: Soshace.PATTERNS.email,
-                msg: 'Email is invalid.'
-            },
-            {
-                validator: Validators.required,
-                msg: 'Email can&#39;t be blank.'
-            }
-        ]
-    },
-    sex: {
-        //поле доступно для отправки на клиент
-        public: true,
-        type: String,
-        default: null
-    },
-    aboutAuthor: {
-        //поле доступно для отправки на клиент
-        public: true,
-        type: String,
-        default: null
-    },
-    birthday: {
-        //поле доступно для отправки на клиент
-        public: true,
-        type: Date,
-        default: null
-    },
-    password: {
-        type: String,
-        //TODO: разобраться почему mongoose прогоняет все валидаторы
-        //Валидация идет с конца!
-        validate: [
-            {
-                validator: Validators.passwordMinLength,
-                msg: 'Password length should&#39;t be less than 6 characters.'
-            },
-            {
-                validator: Validators.required,
-                msg: 'Password can&#39;t be blank.'
-            }
-        ]
-    },
-    emailConfirmed: {
-        type: Boolean,
-        default: false,
-        //поле не может быть изменено пользователем
-        readonly: true
-    },
-    //Является ли пользователь админом
-    admin: {
-        //поле не может быть изменено пользователем
-        readonly: true,
-        type: Boolean,
-        default: false
-    },
-    locale: {
-        //поле доступно для отправки на клиент
-        public: true,
-        type: String,
-        default: 'en'
-    }
-});
+function checkFieldType(field, value) {
+    var userPaths = UsersShema.paths,
+        fieldSetting = userPaths[field].options;
 
+    if (value === null) {
+        return true;
+    }
+
+    if (fieldSetting.type === String) {
+        return typeof value === 'string';
+    }
+
+    if (fieldSetting.type === Array) {
+        return value instanceof Array;
+    }
+
+    return true;
+}
+
+/**
+ * Метод возвращает список полов с выбранным в модели полом
+ *
+ * @method
+ * @name UsersModel#getSexList
+ * @returns {Array}
+ */
+UsersShema.methods.getSexList = function () {
+    var sexList = _.clone(SEX_LIST),
+        currentSex = this.sex;
+
+    if (currentSex === null) {
+        return sexList;
+    }
+
+    _.each(sexList, function (sex) {
+        var isCurrentSex = sex.value === currentSex;
+        sex.selected = isCurrentSex;
+    });
+
+    return sexList;
+};
 
 /**
  * Метод сравнения паролей
@@ -229,6 +299,97 @@ UsersShema.pre('save', function (next) {
 });
 
 /**
+ * Метод проверяет обновляемые поля модели на соответствие типу
+ *
+ * @method
+ * @name UsersShema.isUpdateFieldsValid
+ * @param {Object} update обновляемые данные
+ * @returns {Boolean} false - ошибка
+ */
+UsersShema.statics.isUpdateFieldsValid = function (update) {
+    var isValid = true;
+
+    _.every(update, function (value, field) {
+        isValid = checkFieldType(field, value);
+        return isValid;
+    });
+
+    return isValid;
+};
+
+/**
+ * Метод удляет все поля из запроса не соответствующие
+ * полям модели и имеющие флаг readOnly
+ *
+ * @method
+ * @name PostsShema.clearUpdate
+ * @param {Object} update обновляемые данные
+ * @returns {Object} очищенный объект обновления
+ */
+UsersShema.statics.clearUpdate = function (update) {
+    var clearUpdate = {},
+        userPaths = UsersShema.paths;
+
+    _.each(update, function (value, fieldName) {
+        var modelField = userPaths[fieldName],
+            fieldSettings;
+
+        if (_.isUndefined(modelField)) {
+            return;
+        }
+
+        fieldSettings = modelField.options;
+
+        if (fieldSettings.readOnly) {
+            return;
+        }
+
+        clearUpdate[fieldName] = value;
+    });
+
+    return clearUpdate;
+};
+
+/**
+ * Метод обновляет персональные данные профиля
+ * (у которых нет флага readOnly)
+ *
+ * @method
+ * @name UsersShema.updatePersonalData
+ * @param {String} userId id пользователя
+ * @param {Object} update обновляемые поля
+ * @param {Function} callback
+ * @returns {undefined}
+ */
+UsersShema.statics.updatePersonalData = function (userId, update, callback) {
+    if (typeof update !== 'object') {
+        callback({error: 'Bad Request', code: 400});
+        return;
+    }
+    update = this.clearUpdate(update);
+
+    //Проверка соответствия типам полей
+    if (!this.isUpdateFieldsValid(update)) {
+        callback({error: 'Bad Request', code: 400});
+        return;
+    }
+
+    this.update({_id: userId}, {$set: update}, _.bind(function (error, updated) {
+        if (error) {
+            callback({error: 'Server is too busy, try later.', code: 503});
+            return;
+        }
+
+        if (updated !== 1) {
+            callback({error: 'Bad request.', code: 400});
+            return;
+        }
+
+        callback(null);
+    }, this));
+};
+
+/**
  * Метод возвращает данные пользователя
  *
  * @method
@@ -246,12 +407,12 @@ UsersShema.statics.getUserByUserName = function (userName, callback) {
         birthday: 1,
         _id: 1
     }).exec(function (error, user) {
-            if (error) {
-                callback({error: 'Server is too busy, try later', code: 503});
-                return;
-            }
-            callback(null, user);
-        });
+        if (error) {
+            callback({error: 'Server is too busy, try later', code: 503});
+            return;
+        }
+        callback(null, user);
+    });
 };
 
 /**

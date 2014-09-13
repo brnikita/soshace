@@ -57,6 +57,10 @@ define([
                 'intro',
                 Soshace.hbs['partials/intro']
             );
+            Handlebars.registerPartial(
+                'postMetadata',
+                Soshace.hbs['partials/postMetadata']
+            );
         },
 
         /**

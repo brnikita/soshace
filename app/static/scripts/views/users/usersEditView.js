@@ -77,8 +77,28 @@ define([
          * @name UsersEditView#setModelFromTemplate
          * @returns {undefined}
          */
-        setModelFromTemplate: function(){
+        setModelFromTemplate: function () {
+            var $form = this.elements.form,
+                userData = $form.data(),
+                formData = this.getFormData();
 
+            this.model.set(_.extend(formData, userData));
+        },
+
+        /**
+         * Метод возвращает сериализованную форму
+         *
+         * @method
+         * @name UsersEditView#getFormData
+         * @returns {Object}
+         */
+        getFormData: function () {
+            var $form = this.elements.form,
+                serializedForm = $form.serializeArray();
+
+            return _.object(_.map(serializedForm, function (field) {
+                return [field.name, field.value];
+            }));
         },
 
         /**
@@ -89,16 +109,20 @@ define([
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
-        submitHandler: function(event){
+        submitHandler: function (event) {
+            var formData = this.getFormData(),
+                diff;
+
             event.preventDefault();
+            this.model.set(formData);
+            diff = this.model.changed;
 
-            var $form = this.elements.form,
-                serializedForm = $form.serializeArray(),
-                formData = _.object(_.map(serializedForm, function(field){
-                    return [field.name, field.value];
-                }));
+            if (_.isEmpty(diff)) {
+                return;
+            }
 
-            this.model.save(formData, {
+            Soshace.profile = this.model.toJSON();
+            this.model.save(diff, {
                 patch: true,
                 success: _.bind(this.submitSuccessHandler, this),
                 error: _.bind(this.submitErrorHandler, this)
@@ -112,7 +136,7 @@ define([
          * @name UsersEditView#submitSuccessHandler
          * @returns {undefined}
          */
-        submitSuccessHandler: function(){
+        submitSuccessHandler: function () {
 
         },
 
@@ -123,7 +147,7 @@ define([
          * @name UsersEditView#submitErrorHandler
          * @returns {undefined}
          */
-        submitErrorHandler: function(){
+        submitErrorHandler: function () {
 
         },
 
@@ -139,7 +163,9 @@ define([
         withoutRender: function ($el) {
             this.$el = $el;
             this.delegateEvents();
-            this.afterRender();
+            this.setElements();
+            this.setModelFromTemplate();
+            this.setDatesControls();
         },
 
         /**
@@ -159,6 +185,8 @@ define([
             data.isOwner = isOwner;
             data.isUserEditTab = true;
             data.locale = Helpers.getLocale();
+            data.sexList = this.model.getSexList();
+
             return data;
         },
 
@@ -181,8 +209,13 @@ define([
          * @name UsersEditView#setDatesControls
          * @returns {undefined}
          */
-        setDatesControls: function(){
-            this.elements.dates.datepicker({});
+        setDatesControls: function () {
+            var locale = Helpers.getLocale();
+
+            this.elements.dates.datepicker({
+                format: 'dd.mm.yyyy',
+                language: locale
+            });
         },
 
         /**

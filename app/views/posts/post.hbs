@@ -5,8 +5,8 @@
          data-status="{{post.status}}"
          data-_id="{{post._id}}"
          data-locale="{{post.locale}}">
-        <div class="posts__full__toolbar js-post-toolbar"></div>
         <h2 class="js-title">{{post.title}}</h2>
+        {{> postMetadata}}
         <div class="js-body">{{{post.body}}}</div>
     </div>
 </div>

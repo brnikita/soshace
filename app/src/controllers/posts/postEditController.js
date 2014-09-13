@@ -121,9 +121,7 @@ module.exports = Controller.extend({
             return;
         }
 
-        response.send({
-            _id: post._id
-        });
+        response.send({created: true, post: post});
     },
 
     /**
@@ -223,7 +221,7 @@ module.exports = Controller.extend({
             requestParams = new RequestParams(request);
 
         if (error) {
-            //TODO: отрендерить страницу с ошибкой
+            this.renderError(error);
             return;
         }
 
@@ -235,7 +233,7 @@ module.exports = Controller.extend({
         response.render('posts/edit/postEdit', _.extend(requestParams, {
             title: 'Edit Post',
             post: post,
-            onlyRead: isReadOnly,
+            readOnly: isReadOnly,
             isNew: false,
             editorDisabled: editorDisabled,
             isPostEditTab: true

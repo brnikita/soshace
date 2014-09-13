@@ -16,18 +16,18 @@
             <div class="user__profile__info__description">
                 <div class="user__profile__block">
                     <h3>
-                        {{user.fullName}}
+                        {{user.firstName}} {{user.lastName}}
                     </h3>
                 </div>
                 <div class="user__profile__block">
-                    {{i18n 'Sex'}}: {{user.sex}}
+                    <strong>{{i18n 'Sex'}}:</strong> {{i18n user.sex}}
                 </div>
                 <div class="user__profile__block">
-                    {{i18n 'Birthday'}}: {{user.birthday}}
+                    <strong>{{i18n 'Birthday'}}:</strong> {{formatDate user.birthday}}
 
                 </div>
                 <div class="user__profile__block">
-                    <div>{{i18n 'About author'}}:</div>
+                    <div><strong>{{i18n 'About author'}}:</strong></div>
                     <div>{{user.aboutAuthor}}</div>
                 </div>
             </div>
@@ -49,13 +49,19 @@
                 {{/if}}
             </div>
         {{else}}
-            <div class="box-message box-message-warning">
-                <h4>
-                    <a class="js-router-link hidden-xs" href="/{{locale}}/posts/new">
-                        {{i18n 'Here could be your posts'}}
-                    </a>
-                    <span class="hide visible-xs">{{i18n 'You have no articles'}}</span>
-                </h4>
+            <div class="box-message box-message-primary">
+                {{#if isOwner}}
+                    <h4>
+                        <a class="js-router-link hidden-xs" href="/{{locale}}/posts/new">
+                            {{i18n 'Here could be your posts'}}
+                        </a>
+                        <span class="hide visible-xs">{{i18n 'You have no articles'}}</span>
+                    </h4>
+                {{else}}
+                    <h4>
+                        {{i18n 'The author has not published any articles yet'}}
+                    </h4>
+                {{/if}}
             </div>
         {{/if}}
     </div>

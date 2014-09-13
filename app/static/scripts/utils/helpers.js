@@ -36,7 +36,7 @@ define([
         },
 
         /**
-         * Метод приводит строки типа camel-case к виду camelCase
+         * Метод приводит строки типа hyp-hen к виду camelCase
          *
          * @method
          * @name Helpers.camelCase
@@ -48,7 +48,7 @@ define([
         },
 
         /**
-         * Метод приводит строки типа camel-case к виду camelCase
+         * Метод приводит строки типа camelCase к виду hyp-hen
          *
          * @method
          * @name Helpers.camelCase
@@ -122,6 +122,25 @@ define([
          */
         checkHistoryApiSupport: function () {
             return !!(window.history && history.pushState);
+        },
+
+        /**
+         * Форматируем числа к виду '01'
+         *
+         * @function
+         * @name Helpers.zeroLeading
+         * @param {Number|String} numberToFormat
+         * @returns {String}
+         */
+        zeroLeading: function (numberToFormat) {
+            numberToFormat = String(numberToFormat);
+            if (numberToFormat && numberToFormat.length) {
+                if (numberToFormat.length === 1) {
+                    return '0' + numberToFormat;
+                }
+                return numberToFormat;
+            }
+            return '00';
         }
     };
 });

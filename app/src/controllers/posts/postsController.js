@@ -159,7 +159,7 @@ module.exports = Controller.extend({
             requestParams = new RequestParams(request),
             postId = request.params._id;
 
-        PostsModel.getPost(postId, function (error, post) {
+        PostsModel.getPost(postId, _.bind(function (error, post) {
             if (post) {
                 response.render('posts/post', _.extend(requestParams, {
                     post: post,
@@ -167,8 +167,8 @@ module.exports = Controller.extend({
                 }));
                 return;
             }
-            response.render('404');
-        });
+            this.renderError('Page not found', 404);
+        }, this));
     },
 
     /**

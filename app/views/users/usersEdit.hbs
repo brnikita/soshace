@@ -1,58 +1,73 @@
 <div class="user content-center">
     {{> usersTabs}}
-    <form class="user__profile js-form">
-        <div class="user__profile__block form-group">
-            <div class="user__profile__info__avatar__img clearfix">
-                {{#if user.profileImg}}
-                    <img src="{{user.profileImg}}"/>
-                {{else}}
-                    <span class="glyphicon glyphicon-user"></span>
-                {{/if}}
-            </div>
-            <div class="user__profile__info__avatar__update">
-                <a href="#" class="js-change-img">{{i18n 'Update photo'}}</a>
-            </div>
-        </div>
-        <div class="user__profile__block form-group">
-            <label for="fullName">{{i18n 'Full name'}}:</label>
+    <div class="user__profile">
+        <form class="js-form"
+              data-user-name="{{user.userName}}"
+              data-_id="{{user._id}}"
+              data-locale="{{user.locale}}">
+            <div class="user__profile__block clearfix">
+                <label class="user__profile__block__description">{{i18n 'Your photo'}}:</label>
 
-            <h3>
-                <input class="form-control" type="text" id="fullName" name="fullName"
-                       value="{{user.fullName}}"/>
-            </h3>
-        </div>
-        <div class="user__profile__block user__profile__sex form-group clearfix">
-            <label>{{i18n 'Sex'}}:</label>
-
-            <div class="radio-group">
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="sex" id="sexMale" value="male">
-                        {{i18n 'Male'}}
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="sex" id="sexFemale" value="female">
-                        {{i18n 'Female'}}
-                    </label>
+                <div class="user__profile__block__control">
+                    <div class="user__profile__info__avatar__img clearfix">
+                        {{#if user.profileImg}}
+                            <img src="{{user.profileImg}}"/>
+                        {{else}}
+                            <span class="glyphicon glyphicon-user"></span>
+                        {{/if}}
+                    </div>
+                    <div class="user__profile__info__avatar__update">
+                        <a href="#" class="js-change-img">{{i18n 'Update photo'}}</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="user__profile__block form-group">
-            <label for="birthday">{{i18n 'Birthday'}}:</label>
+            <div class="user__profile__block clearfix">
+                <label class="user__profile__block__description" for="firstName">{{i18n 'First name'}}:</label>
 
-            <input class="form-control js-date" type="text" id="birthday" name="birthday"
-                   value="{{user.birthday}}"/>
-        </div>
-        <div class="user__profile__block user__profile__about-author form-group">
-            <label for="aboutAuthor">{{i18n 'About author'}}:</label>
-            <textarea id="aboutAuthor" name="aboutAuthor" class="form-control">
-                {{user.aboutAuthor}}
-            </textarea>
-        </div>
-        <div class="user__profile__block form-group">
-            <button type="submit" class="btn btn-primary js-user-save">{{i18n 'Save'}}</button>
-        </div>
-    </form>
+                <div class="user__profile__block__control">
+                    <input class="form-control" type="text" id="firstName" name="firstName"
+                           value="{{user.firstName}}"/>
+                </div>
+            </div>
+            <div class="user__profile__block clearfix">
+                <label class="user__profile__block__description" for="lastName">{{i18n 'Last name'}}:</label>
+
+                <div class="user__profile__block__control">
+                    <input class="form-control" type="text" id="lastName" name="lastName"
+                           value="{{user.lastName}}"/>
+                </div>
+            </div>
+            <div class="user__profile__block clearfix">
+                <label class="user__profile__block__description" for="sex">{{i18n 'Sex'}}:</label>
+
+                <div class="user__profile__block__control">
+                    <select id="sex" name="sex" class="form-control">
+                        {{#each sexList}}
+                            <option {{#if selected}}selected="selected"{{/if}} value="{{value}}">{{i18n title}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="user__profile__block clearfix">
+                <label class="user__profile__block__description" for="birthday">{{i18n 'Birthday'}}:</label>
+
+                <div class="user__profile__block__control">
+                    <input class="form-control js-date" type="text" id="birthday" name="birthday"
+                           value="{{formatDate user.birthday}}"/>
+                </div>
+            </div>
+            <div class="user__profile__about-author user__profile__block clearfix">
+                <label class="user__profile__block__description" for="aboutAuthor">{{i18n 'About myself'}}:</label>
+
+                <div class="user__profile__block__control">
+                    <textarea id="aboutAuthor" name="aboutAuthor" class="form-control">
+                        {{user.aboutAuthor}}
+                    </textarea>
+                </div>
+            </div>
+            <div class="user__profile__block__save">
+                <button type="submit" class="btn btn-primary js-user-save">{{i18n 'Save'}}</button>
+            </div>
+        </form>
+    </div>
 </div>
