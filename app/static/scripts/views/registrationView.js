@@ -89,7 +89,7 @@ define([
             Backbone.Validation.bind(this);
 
             //TODO: у каждого поля должен быть свой debouce метод, чтобы ошибки показывались при быстрой смене фокуса
-            this.setStatusDebounce =  _.debounce(_.bind(this.setStatus, this), 500);
+            this.setStatusDebounce = _.debounce(_.bind(this.setStatus, this), 500);
         },
 
         /**
@@ -134,7 +134,7 @@ define([
 
             Soshace.profile = response.profile;
             app.getView('.js-system-messages').collection.fetch().
-                done(function(){
+                done(function () {
                     Backbone.history.navigate(redirectUrl, {trigger: true});
                 });
         },

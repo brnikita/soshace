@@ -125,6 +125,26 @@ define([
         },
 
         /**
+         * TODO: не работает opara mini
+         *
+         * Метод удобен в мобильных версиях
+         * Поле должно быть хорошо видно
+         *
+         * @method
+         * @name Helpers.scrollFieldToTop
+         * @param {jQuery} $field
+         * @returns {undefined}
+         */
+        scrollFieldToTop: function ($field) {
+            var offset = $field.offset(),
+                top = offset.top - 10;
+
+            setTimeout(function () {
+                window.scrollTo(0, top);
+            }, 1500);
+        },
+
+        /**
          * Форматируем числа к виду '01'
          *
          * @function
