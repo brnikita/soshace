@@ -15,6 +15,9 @@
       max-width: 1200px;
       margin: 0 auto;
     }
+    @media (max-width: @screen-xs-max) {
+      padding: 7px 10px;
+    }
   }
   &__logo {
     display: block;
@@ -27,11 +30,10 @@
       width: 170px;
     }
     &-small {
+      padding-top: 0;
       display: none;
-      padding-top: 5px;
-      padding-bottom: 5px;
       img {
-        width: 48px;
+        width: 46px;
       }
     }
   }
@@ -47,10 +49,8 @@
       border-left: #333 1px solid;
     }
     @media (max-width: @screen-xs-max) {
-      height: 48px;
-      line-height: 48px;
-      margin-bottom: 5px;
-      margin-top: 5px;
+      height: 46px;
+      line-height: 46px;
       border-right: #fff 1px solid;
       border-left: #fff 1px solid;
     }
@@ -90,9 +90,11 @@
         line-height: 55px;
       }
       @media (max-width: @screen-xs-max) {
-        line-height: 46px;
+        line-height: 42px;
       }
-      margin-right: 3px;
+      @media (min-width: @screen-xs-max) {
+        margin-right: 3px;
+      }
     }
   }
 }

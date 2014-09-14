@@ -76,7 +76,7 @@ module.exports = Controller.extend({
         }
 
         userId = requestParams.profile._id;
-        UsersModel.updatePersonalData(userId, update, _.bind(function (error, user) {
+        UsersModel.updatePersonalData(userId, update, _.bind(function (error) {
             if (error) {
                 this.sendError(error);
                 return;
