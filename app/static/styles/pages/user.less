@@ -3,9 +3,6 @@
     padding-top: 10px;
   }
   .nav-tabs {
-    @media (min-width: @screen-xs-max) {
-      margin-bottom: 10px;
-    }
     &__profile-info {
       width: 34%;
     }
@@ -21,8 +18,8 @@
     padding: 10px;
     &__info {
       &__avatar {
-        float: left;
         @media (min-width: @screen-xs-max) {
+          float: left;
           padding-right: 10px;
         }
         &__img {
@@ -45,9 +42,14 @@
         }
       }
       &__description {
-        float: left;
-        width: 60%;
-        padding-top: 6px;
+        @media (min-width: @screen-xs-max) {
+          float: left;
+          width: 60%;
+          padding-top: 6px;
+        }
+        @media (max-width: @screen-xs-max) {
+          padding-top: 5px;
+        }
       }
     }
     &__footer {

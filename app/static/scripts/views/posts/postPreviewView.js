@@ -38,7 +38,6 @@ define([
          * @type {Object}
          */
         elements: {
-            toolbar: null
         },
 
         /**
@@ -76,19 +75,6 @@ define([
         },
 
         /**
-         * Метод добавляет тулбар к превью статьи,
-         * если статья принадлежит пользователю
-         *
-         * @method
-         * @name PostPreviewView#addPostToolBar
-         * @returns {undefined}
-         */
-        addPostToolBar: function () {
-            var toolbar = this.getToolBar();
-            this.elements.toolbar.html(toolbar);
-        },
-
-        /**
          * Метод возвращает отрендеренный тулбар для превью статьи
          *
          * @method
@@ -98,15 +84,25 @@ define([
         getStatusData: function () {
             var status = this.model.get('status'),
                 statusSettings = this.model.statuses[status],
-                statusClass = statusSettings.class,
                 statusTitle = statusSettings.title,
                 editorEnable = statusSettings.editorEnable;
 
             return  {
                 editorEnable: editorEnable,
-                statusClass: statusClass,
                 statusTitle: statusTitle
             };
+        },
+
+        /**
+         * @method
+         * @name PostPreviewView#serialize
+         * @returns {Object}
+         */
+        serialize: function(){
+            var statusData = this.getStatusData(),
+                data = this.model.toJSON();
+
+            return _.extend(data, statusData);
         },
 
         /**
@@ -117,7 +113,6 @@ define([
          * @returns {undefined}
          */
         setElements: function () {
-            this.elements.toolbar = this.$('.js-post-preview-toolbar');
         },
 
         /**
@@ -127,7 +122,6 @@ define([
          */
         afterRender: function () {
             this.setElements();
-            this.addPostToolBar();
         }
     });
 });

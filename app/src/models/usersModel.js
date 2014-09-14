@@ -102,10 +102,22 @@ var _ = require('underscore'),
             type: String,
             default: null
         },
-        birthday: {
+        birthdayDate: {
             //поле доступно для отправки на клиент
             public: true,
-            type: Date,
+            type: Number,
+            default: null
+        },
+        birthdayMonth: {
+            //поле доступно для отправки на клиент
+            public: true,
+            type: Number,
+            default: null
+        },
+        birthdayFullYear: {
+            //поле доступно для отправки на клиент
+            public: true,
+            type: Number,
             default: null
         },
         password: {

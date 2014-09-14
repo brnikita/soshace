@@ -11,8 +11,7 @@
                name="password"
                id="password"/>
     </div>
-    <button type="submit" class="btn btn-primary">{{i18n 'Sign in'}}</button>
-    <span>&nbsp;&nbsp;</span>
+    <button type="submit" class="auth-form__login-btn btn btn-primary">{{i18n 'Sign in'}}</button>
     <!--TODO: запилить повторную отсылку пароля-->
-    <a class="js-router-link" href="/{{locale}}/remind_password">{{i18n 'Forgot your password?'}}</a>
+    <a class="js-router-link auth-form__remind-password-link" href="/{{locale}}/remind_password">{{i18n 'Forgot your password?'}}</a>
 </form>

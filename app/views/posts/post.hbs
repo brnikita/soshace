@@ -1,12 +1,14 @@
 {{> intro}}
-<div class="posts content-center">
-    <div class="posts__full js-post clearfix"
-         data-owner-id="{{post.ownerId}}"
-         data-status="{{post.status}}"
-         data-_id="{{post._id}}"
-         data-locale="{{post.locale}}">
-        <h2 class="js-title">{{post.title}}</h2>
-        {{> postMetadata}}
-        <div class="js-body">{{{post.body}}}</div>
+<div class="content-center">
+    <div class="posts">
+        <div class="posts__full js-post clearfix"
+             data-owner-id="{{post.ownerId}}"
+             data-status="{{post.status}}"
+             data-_id="{{post._id}}"
+             data-locale="{{post.locale}}">
+            <h2 class="js-title">{{post.title}}</h2>
+            {{> postMetadata}}
+            <div class="js-body">{{{post.body}}}</div>
+        </div>
     </div>
 </div>

@@ -13,8 +13,7 @@ define([
     'handlebars',
     'utils/helpers',
     'backbone.layoutmanager',
-    'templates',
-    'bootstrap.datepicker'
+    'templates'
 ], function ($, _, Backbone, Handlebars, Helpers) {
     return Backbone.Layout.extend({
         /**
@@ -210,12 +209,6 @@ define([
          * @returns {undefined}
          */
         setDatesControls: function () {
-            var locale = Helpers.getLocale();
-
-            this.elements.dates.datepicker({
-                format: 'dd.mm.yyyy',
-                language: locale
-            });
         },
 
         /**
@@ -225,7 +218,6 @@ define([
          */
         afterRender: function () {
             this.setElements();
-            this.setDatesControls();
         }
     });
 });

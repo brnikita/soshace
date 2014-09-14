@@ -44,7 +44,9 @@ define([
             lastName: null,
             profileImg: null,
             sex: null,
-            birthday: null,
+            birthdayDate: null,
+            birthdayMonth: null,
+            birthdayFullYear: null,
             aboutAuthor: null
         },
 
