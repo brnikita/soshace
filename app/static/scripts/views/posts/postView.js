@@ -32,7 +32,7 @@ define([
          * @type {Object}
          */
         elements: {
-            toolbar: null,
+            metaDataPanel: null,
             post: null,
             title: null,
             body: null
@@ -56,10 +56,6 @@ define([
             Handlebars.registerPartial(
                 'intro',
                 Soshace.hbs['partials/intro']
-            );
-            Handlebars.registerPartial(
-                'postMetadata',
-                Soshace.hbs['partials/postMetadata']
             );
         },
 
@@ -103,34 +99,57 @@ define([
         },
 
         /**
-         * Метод добавляет тулбар к превью статьи,
-         * если статья принадлежит пользователю
+         * Метод возвращает true, если текущий авторизованный пользователь является владельцем
          *
          * @method
-         * @name PostPreviewView#addPostToolBar
-         * @returns {undefined}
+         * @name PostView#addMetaData
+         * @returns {Boolean}
          */
-        addPostToolBar: function () {
-            var toolbar = this.getToolBar();
-            this.elements.toolbar.html(toolbar);
+        isOwner: function () {
+            var app = Soshace.app,
+                profileId,
+                ownerId;
+
+            if (!app.isAuthenticated()) {
+                return false;
+            }
+
+            profileId = Soshace.profile._id;
+            ownerId = this.model.get('ownerId');
+
+            return profileId === ownerId;
         },
 
         /**
-         * Метод возвращает отрендеренный тулбар для превью статьи
+         * Метод добавляет ланные (статус, дату публикации и пр.) к превью статьи
          *
          * @method
-         * @name PostPreviewView#getToolBar
+         * @name PostView#addMetaData
          * @returns {undefined}
          */
-        getToolBar: function () {
+        addMetaData: function () {
+            var metaData = this.getMetaData();
+            this.elements.metaDataPanel.html(metaData);
+        },
+
+        /**
+         * Метод возвращает отрендеренную панель информации для превью статьи
+         *
+         * @method
+         * @name PostView#getMetaData
+         * @returns {undefined}
+         */
+        getMetaData: function () {
             var model = this.model.toJSON(),
+                isOwner = this.isOwner(),
                 status = this.model.get('status'),
                 statusSettings = this.model.statuses[status],
                 statusClass = statusSettings.class,
                 statusTitle = statusSettings.title,
                 editorEnable = statusSettings.editorEnable;
 
-            return Soshace.hbs['posts/edit/postPreviewToolbar'](_.extend(model, {
+            return Soshace.hbs['posts/edit/postMetaData'](_.extend(model, {
+                isOwner: isOwner,
                 editorEnable: editorEnable,
                 statusClass: statusClass,
                 statusTitle: statusTitle
@@ -145,7 +164,7 @@ define([
          * @returns {undefined}
          */
         setElements: function () {
-            this.elements.toolbar = this.$('.js-post-toolbar');
+            this.elements.metaDataPanel = this.$('.js-meta-data');
             this.elements.post = this.$('.js-post');
             this.elements.title = this.$('.js-title');
             this.elements.body = this.$('.js-body');
@@ -166,7 +185,7 @@ define([
             this.setElements();
             this.delegateEvents();
             this.setModelFromTemplate();
-            this.addPostToolBar();
+            this.addMetaData();
             app.elements.title.html(this.model.get('title'));
         },
 
@@ -179,7 +198,7 @@ define([
             var app = Soshace.app;
 
             this.setElements();
-            this.addPostToolBar();
+            this.addMetaData();
             app.elements.title.html(this.model.get('title'));
         }
     });

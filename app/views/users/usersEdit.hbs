@@ -52,7 +52,7 @@
                 <label class="user__profile__block__description" for="birthday">{{i18n 'Birthday'}}:</label>
 
                 <div class="user__profile__block__control">
-                    <input class="form-control js-date" type="text" id="birthday" name="birthday"
+                    <input class="form-control" type="text" id="birthday" name="birthday"
                            value="{{formatDate user.birthday}}"/>
                 </div>
             </div>
@@ -66,6 +66,7 @@
                 </div>
             </div>
             <div class="user__profile__block__save">
+                <div class="user__profile__block__save__message js-save-messages hide"></div>
                 <button type="submit" class="btn btn-primary js-user-save">{{i18n 'Save'}}</button>
             </div>
         </form>

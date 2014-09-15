@@ -18,7 +18,7 @@ define([
     return Backbone.Layout.extend({
         /**
          * @field
-         * @name HeaderView.elements
+         * @name HeaderView#elements
          * @type {Object}
          */
         elements: {
@@ -26,7 +26,7 @@ define([
 
         /**
          * @field
-         * @name HeaderView.tabsConfig
+         * @name HeaderView#tabsConfig
          * @type {Object}
          */
         tabsConfig: {
@@ -40,7 +40,7 @@ define([
          * Соотношение алиаса страницы и названия таба
          *
          * @field
-         * @name HeaderView.pageAliasToTab
+         * @name HeaderView#pageAliasToTab
          * @type {Object}
          */
         pageAliasToTab: {
@@ -57,34 +57,68 @@ define([
          * Список обработчиков событий
          *
          * @field
-         * @name HeaderView.events
+         * @name HeaderView#events
          * @type {Object}
          */
         events: {
+            'click .js-logout': 'logout'
         },
 
         /**
          * Путь до шаблона
          *
          * @field
-         * @name HeaderView.elements
+         * @name HeaderView#elements
          * @type {string}
          */
         template: Soshace.hbs['partials/header'],
 
         /**
          * @constructor
-         * @name HeaderView.initialize
+         * @name HeaderView#initialize
          * @returns {undefined}
          */
         initialize: function () {
         },
 
         /**
+         * Обработчик клика по кнопке 'Выход'
+         *
+         * @method
+         * @name HeaderView#logout
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        logout: function(event){
+            event.preventDefault();
+            $.get(Soshace.urls.api.logout).done(_.bind(function () {
+                this.logoutHandler();
+            }, this));
+        },
+
+        /**
+         * Метод обработчик выхода пользователя
+         *
+         * @method
+         * @name HeaderView#logoutHandler
+         * @returns {undefined}
+         */
+        logoutHandler: function () {
+            var app = Soshace.app,
+                locale = Helpers.getLocale();
+
+            Soshace.profile = null;
+            app.getView('.js-system-messages').collection.fetch().
+                done(function () {
+                    Backbone.history.navigate('/' + locale, {trigger: true});
+                });
+        },
+
+        /**
          * Метод смены таба
          *
          * @method
-         * @name HeaderView.changeTab
+         * @name HeaderView#changeTab
          * @param {string} [pageAlias] алиас страницы
          * @returns {undefined}
          */
@@ -104,7 +138,7 @@ define([
 
         /**
          * @method
-         * @name HeaderView.serialize
+         * @name HeaderView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -123,7 +157,7 @@ define([
 
         /**
          * @method
-         * @name HeaderView.afterRender
+         * @name HeaderView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {

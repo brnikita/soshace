@@ -61,6 +61,13 @@
   &::-webkit-input-placeholder  { color: @color; } // Safari and Chrome
 }
 
+// Placeholder text
+.placeholder-line-height(@line-height) {
+  &:-moz-placeholder            { line-height: @line-height; } // Firefox 4-18
+  &:-ms-input-placeholder       { line-height: @line-height; } // Internet Explorer 10+
+  &::-webkit-input-placeholder  { line-height: @line-height; } // Safari and Chrome
+}
+
 // Text overflow
 // Requires inline-block or block for proper styling
 .text-overflow() {

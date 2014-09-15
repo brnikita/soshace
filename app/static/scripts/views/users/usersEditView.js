@@ -33,8 +33,8 @@ define([
          * @type {Object}
          */
         elements: {
-            form: null,
-            dates: null
+            saveMessages: null,
+            form: null
         },
 
         /**
@@ -67,6 +67,50 @@ define([
                 'usersTabs',
                 Soshace.hbs['partials/usersTabs']
             );
+        },
+
+        /**
+         * Метод блокирует форму
+         *
+         * @method
+         * @name UsersEditView#formDisabled
+         * @returns {undefined}
+         */
+        formDisabled: function () {
+
+        },
+
+        /**
+         * Метод разблокирует форму
+         *
+         * @method
+         * @name UsersEditView#formEnabled
+         * @returns {undefined}
+         */
+        formEnabled: function () {
+
+        },
+
+        /**
+         * Метод показывает лоадер на кнопке
+         *
+         * @method
+         * @name UsersEditView#showButtonLoader
+         * @returns {undefined}
+         */
+        showSubmitButtonLoader: function () {
+
+        },
+
+        /**
+         * Метод скрывает лоадер
+         *
+         * @method
+         * @name UsersEditView#hideSubmitButtonLoader
+         * @returns {undefined}
+         */
+        hideSubmitButtonLoader: function () {
+
         },
 
         /**
@@ -120,12 +164,50 @@ define([
                 return;
             }
 
+            this.formDisabled();
+            this.showSubmitButtonLoader();
             Soshace.profile = this.model.toJSON();
             this.model.save(diff, {
                 patch: true,
                 success: _.bind(this.submitSuccessHandler, this),
                 error: _.bind(this.submitErrorHandler, this)
             });
+        },
+
+        /**
+         * Метод показывает системное сообщение после отправки формы
+         *
+         * @method
+         * @name UsersEditView#showSaveMessage
+         * @param {String} message
+         * @param {Boolean} [isError] true, если нужно показать ошибку
+         * @returns {undefined}
+         */
+        showSaveMessage: function (message, isError) {
+            var template;
+
+            if (isError) {
+                template = Soshace.hbs['messages/errorMessage']({
+                    message: message
+                });
+            } else {
+                template = Soshace.hbs['messages/successMessage']({
+                    message: message
+                });
+            }
+
+            this.elements.saveMessages.html(template).removeClass('hide');
+        },
+
+        /**
+         * Метод скрывает системное сообщение после отправки формы
+         *
+         * @method
+         * @name UsersEditView#hideSaveMessage
+         * @returns {undefined}
+         */
+        hideSaveMessage: function () {
+            this.elements.saveMessages.addClass('hide');
         },
 
         /**
@@ -136,7 +218,9 @@ define([
          * @returns {undefined}
          */
         submitSuccessHandler: function () {
-
+            this.hideSubmitButtonLoader();
+            this.formEnabled();
+            this.showSaveMessage('Profile successfully updated');
         },
 
         /**
@@ -144,10 +228,17 @@ define([
          *
          * @method
          * @name UsersEditView#submitErrorHandler
+         * @param {UserModel} model модель пользователя
+         * @param {Object} response ответ сервера
          * @returns {undefined}
          */
-        submitErrorHandler: function () {
+        submitErrorHandler: function (model, response) {
+            var responseData = JSON.parse(response.responseText),
+                error = responseData.error;
 
+            this.hideSubmitButtonLoader();
+            this.formEnabled();
+            this.showSaveMessage(error, true);
         },
 
         /**
@@ -198,7 +289,7 @@ define([
          */
         setElements: function () {
             this.elements.form = this.$('.js-form');
-            this.elements.dates = this.$('.js-date');
+            this.elements.saveMessages = this.$('.js-save-messages');
         },
 
         /**

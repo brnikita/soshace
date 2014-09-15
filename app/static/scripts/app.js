@@ -138,7 +138,7 @@ define([
             var $target = $(event.target),
                 link = $target.closest('.js-router-link').attr('href');
 
-            if (Helpers.checkHistoryApiSupport) {
+            if (Helpers.checkHistoryApiSupport()) {
                 event.preventDefault();
                 Backbone.history.navigate(link, {trigger: true});
             }

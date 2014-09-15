@@ -79,25 +79,6 @@ module.exports = Controller.extend({
     },
 
     /**
-     * Обработчик роута выхода из сессии
-     *
-     * @method
-     * @name LoginController#logout
-     * @returns {undefined}
-     */
-    logout: function () {
-        var request = this.request,
-            response = this.response,
-            requestParams = new RequestParams(request),
-            locale = requestParams.locale;
-
-        request.logout();
-        response.clearCookie('isAuthenticated');
-        response.clearCookie('profileUserName');
-        response.redirect('/' + locale);
-    },
-
-    /**
      * @method
      * @name LoginController#authenticateHandler
      * @param {*} error

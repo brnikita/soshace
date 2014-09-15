@@ -11,6 +11,7 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'utils/helpers',
     //Необходимо при сборке
     'controllers/posts/postsController',
     'controllers/posts/postController',
@@ -21,7 +22,7 @@ define([
     'controllers/users/usersController',
     'controllers/users/usersEditController',
     'controllers/users/usersSettingsController'
-], function ($, _, Backbone) {
+], function ($, _, Backbone, Helpers) {
     return Backbone.Router.extend({
         /**
          * Ссылка на текущий контроллер
@@ -54,8 +55,6 @@ define([
             ':locale/posts/:id/edit/': 'controllers/posts/postEditController',
             ':locale/login': 'controllers/loginController',
             ':locale/login/': 'controllers/loginController',
-            ':locale/logout': 'controllers/logoutController',
-            ':locale/logout/': 'controllers/logoutController',
             ':locale/registration': 'controllers/registrationController',
             ':locale/registration/': 'controllers/registrationController',
             ':locale/users/:username': 'controllers/users/usersController',
@@ -83,9 +82,26 @@ define([
         initialize: function () {
             this.controllers = {};
             this.setRouter();
-            Backbone.history.start({
-                pushState: true
-            });
+            this.startRouter();
+        },
+
+        /**
+         * Метод запускает history API при её поддержке или принудительно стартует роут
+         *
+         * @method
+         * @name Router#startRouter
+         * @returns {undefined}
+         */
+        startRouter: function(){
+            if (Helpers.checkHistoryApiSupport()) {
+                Backbone.history.start({
+                    pushState: true
+                });
+                return;
+            }
+
+            //TODO: доделать
+            this.handleRouteByController();
         },
 
         /**

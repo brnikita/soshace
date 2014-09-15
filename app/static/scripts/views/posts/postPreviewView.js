@@ -67,7 +67,8 @@ define([
          */
         withoutRender: function () {
             this.delegateEvents();
-            this.afterRender();
+            this.setElements();
+            this.addMetaData();
         },
 
         /**

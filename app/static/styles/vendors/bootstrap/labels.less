@@ -13,6 +13,7 @@
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 
   // Add hover effects, but only for links
   &[href] {
@@ -40,15 +41,15 @@
 // Contextual variations (linked labels get darker on :hover)
 
 .label-default {
-  .label-variant(@label-default-bg);
+  background-color: #c0c0c0;
 }
 
 .label-primary {
-  .label-variant(@label-primary-bg);
+  background-color: #7FB4F8;
 }
 
 .label-success {
-  .label-variant(@label-success-bg);
+  background-color: #82C987;
 }
 
 .label-info {
@@ -56,9 +57,9 @@
 }
 
 .label-warning {
-  .label-variant(@label-warning-bg);
+  background-color: #FCB853;
 }
 
 .label-danger {
-  .label-variant(@label-danger-bg);
+  background-color: #FC5A53;
 }

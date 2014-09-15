@@ -159,7 +159,7 @@ define([
          * @name PostEditView#showPublishButtonLoader
          * @returns {undefined}
          */
-        showPublishButtonLoader: function(){
+        showPublishButtonLoader: function () {
 
         },
 
@@ -170,7 +170,7 @@ define([
          * @name PostEditView#blockToolbar
          * @returns {undefined}
          */
-        blockToolbar: function(){
+        blockToolbar: function () {
 
         },
 
@@ -181,7 +181,7 @@ define([
          * @name PostEditView#unBlockToolbar
          * @returns {undefined}
          */
-        unBlockToolbar: function(){
+        unBlockToolbar: function () {
 
         },
 
@@ -214,6 +214,7 @@ define([
 
             if (status === 'sent') {
                 this.render();
+                window.scrollTo(0, 0);
                 return;
             }
 
