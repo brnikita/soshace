@@ -10,10 +10,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'handlebars',
     'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone, Handlebars) {
+], function ($, _, Backbone) {
     return Backbone.Layout.extend({
 
         /**
@@ -38,6 +37,7 @@ define([
          * @type {Object}
          */
         elements: {
+            metaDataPanel: null
         },
 
         /**
@@ -55,10 +55,6 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
-            Handlebars.registerPartial(
-                'postMetadata',
-                Soshace.hbs['partials/postMetadata']
-            );
         },
 
         /**
@@ -75,34 +71,61 @@ define([
         },
 
         /**
-         * Метод возвращает отрендеренный тулбар для превью статьи
+         * Метод возвращает true, если текущий авторизованный пользователь является владельцем
          *
          * @method
-         * @name PostPreviewView#getToolBar
-         * @returns {Object}
+         * @name PostPreviewView#addMetaData
+         * @returns {Boolean}
          */
-        getStatusData: function () {
-            var status = this.model.get('status'),
-                statusSettings = this.model.statuses[status],
-                statusTitle = statusSettings.title,
-                editorEnable = statusSettings.editorEnable;
+        isOwner: function () {
+            var app = Soshace.app,
+                profileId,
+                ownerId;
 
-            return  {
-                editorEnable: editorEnable,
-                statusTitle: statusTitle
-            };
+            if (!app.isAuthenticated()) {
+                return false;
+            }
+
+            profileId = Soshace.profile._id;
+            ownerId = this.model.get('ownerId');
+
+            return profileId === ownerId;
         },
 
         /**
+         * Метод добавляет ланные (статус, дату публикации и пр.) к превью статьи
+         *
          * @method
-         * @name PostPreviewView#serialize
-         * @returns {Object}
+         * @name PostPreviewView#addMetaData
+         * @returns {undefined}
          */
-        serialize: function(){
-            var statusData = this.getStatusData(),
-                data = this.model.toJSON();
+        addMetaData: function () {
+            var metaData = this.getMetaData();
+            this.elements.metaDataPanel.html(metaData);
+        },
 
-            return _.extend(data, statusData);
+        /**
+         * Метод возвращает отрендеренную панель информации для превью статьи
+         *
+         * @method
+         * @name PostPreviewView#getMetaData
+         * @returns {undefined}
+         */
+        getMetaData: function () {
+            var model = this.model.toJSON(),
+                isOwner = this.isOwner(),
+                status = this.model.get('status'),
+                statusSettings = this.model.statuses[status],
+                statusClass = statusSettings.class,
+                statusTitle = statusSettings.title,
+                editorEnable = statusSettings.editorEnable;
+
+            return Soshace.hbs['posts/edit/postMetaData'](_.extend(model, {
+                isOwner: isOwner,
+                editorEnable: editorEnable,
+                statusClass: statusClass,
+                statusTitle: statusTitle
+            }));
         },
 
         /**
@@ -113,6 +136,7 @@ define([
          * @returns {undefined}
          */
         setElements: function () {
+            this.elements.metaDataPanel = this.$('.js-meta-data');
         },
 
         /**
@@ -122,6 +146,7 @@ define([
          */
         afterRender: function () {
             this.setElements();
+            this.addMetaData();
         }
     });
 });

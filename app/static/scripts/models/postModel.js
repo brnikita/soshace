@@ -49,15 +49,18 @@ define([
         statuses: {
             saved: {
                 title: 'Post saved',
+                class: 'label-default',
                 editorEnable: true
             },
             //Данный статус есть только на клиенте
             editing: {
                 title: 'Post is editing...',
+                class: 'label-default',
                 editorEnable: true
             },
             sent: {
                 title: 'Post sent',
+                class: 'label-primary',
                 //Статья недоступня для редактирования
                 editorEnable: false,
                 //Причина недоступности статьи
@@ -66,6 +69,7 @@ define([
             },
             published: {
                 title: 'Post published',
+                class: 'label-success',
                 editorEnable: false,
                 //Причина недоступности статьи
                 editorMessage: 'After publication you can&#39;t to edit or delete the article.',
@@ -73,11 +77,13 @@ define([
             },
             denied: {
                 title: 'Publication denied',
+                class: 'label-danger',
                 editorEnable: true,
                 statusMessage: 'messages/postDenied'
             },
             comments: {
                 title: 'Some comments',
+                class: 'label-warning',
                 editorEnable: true,
                 statusMessage: 'messages/postHasComments'
             }

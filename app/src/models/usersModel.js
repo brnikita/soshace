@@ -156,6 +156,22 @@ var _ = require('underscore'),
         }
     });
 
+UsersShema.virtual('fullName').get(function () {
+    var firstName = this.firstName,
+        lastName = this.lastName,
+        fullName = [];
+
+    if(lastName !== null){
+        fullName.push(lastName);
+    }
+
+    if(firstName !== null){
+        fullName.push(firstName);
+    }
+
+    return fullName.join(' ');
+});
+
 /**
  * Метод проверяет сооветствие пришедшего типа
  * значения поля типу установленому в модели

@@ -14,22 +14,30 @@
                 </div>
             </div>
             <div class="user__profile__info__description">
-                <div class="user__profile__block">
-                    <h3>
-                        {{user.firstName}} {{user.lastName}}
-                    </h3>
-                </div>
-                <div class="user__profile__block">
-                    <strong>{{i18n 'Sex'}}:</strong> {{i18n user.sex}}
-                </div>
-                <div class="user__profile__block">
-                    <strong>{{i18n 'Birthday'}}:</strong> {{formatDate user.birthday}}
+                {{#if user.fullName}}
+                    <div class="user__profile__block">
+                        <h3>
+                            {{user.fullName}}
+                        </h3>
+                    </div>
+                {{/if}}
+                {{#if user.sex}}
+                    <div class="user__profile__block">
+                        <strong>{{i18n 'Sex'}}:</strong> {{i18n user.sex}}
+                    </div>
+                {{/if}}
+                {{#if user.birthday}}
+                    <div class="user__profile__block">
+                        <strong>{{i18n 'Birthday'}}:</strong> {{formatDate user.birthday}}
 
-                </div>
-                <div class="user__profile__block">
-                    <div><strong>{{i18n 'About author'}}:</strong></div>
-                    <div>{{user.aboutAuthor}}</div>
-                </div>
+                    </div>
+                {{/if}}
+                {{#if user.aboutAuthor}}
+                    <div class="user__profile__block">
+                        <div><strong>{{i18n 'About author'}}:</strong></div>
+                        <div>{{user.aboutAuthor}}</div>
+                    </div>
+                {{/if}}
             </div>
         </div>
         {{#if isOwner}}
