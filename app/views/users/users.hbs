@@ -23,18 +23,18 @@
                 {{/if}}
                 {{#if user.sex}}
                     <div class="user__profile__block">
-                        <strong>{{i18n 'Sex'}}:</strong> {{i18n user.sex}}
+                        <span class="user__profile__block__title">{{i18n 'Sex'}}:</span> {{i18n user.sex}}
                     </div>
                 {{/if}}
                 {{#if user.birthday}}
                     <div class="user__profile__block">
-                        <strong>{{i18n 'Birthday'}}:</strong> {{formatDate user.birthday}}
+                        <span class="user__profile__block__title">{{i18n 'Birthday'}}:</span> {{formatDate user.birthday}}
 
                     </div>
                 {{/if}}
                 {{#if user.aboutAuthor}}
                     <div class="user__profile__block">
-                        <div><strong>{{i18n 'About author'}}:</strong></div>
+                        <div><span class="user__profile__block__title">{{i18n 'About author'}}:</span></div>
                         <div>{{user.aboutAuthor}}</div>
                     </div>
                 {{/if}}
@@ -43,7 +43,7 @@
         {{#if isOwner}}
             <div class="user__profile__footer hidden-xs">
                 <a href="/{{locale}}/posts/new"
-                   class="btn btn-success js-router-link">{{i18n 'Add post'}}</a>
+                   class="user__profile__footer__add-post btn btn-success js-router-link">{{i18n 'Add post'}}</a>
             </div>
         {{/if}}
     </div>

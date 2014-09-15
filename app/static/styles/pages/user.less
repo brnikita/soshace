@@ -56,6 +56,10 @@
       padding-top: 10px;
     }
     &__block {
+      &__title {
+        .font-color-grey;
+        font-style: italic;
+      }
       padding-bottom: 10px;
       &:last-child {
         padding-bottom: 0;
@@ -67,7 +71,7 @@
         @media (min-width: @screen-xs-max) {
           line-height: 32px;
           float: left;
-          width: 34%;
+          width: 20%;
           text-align: right;
           padding-right: 10px;
         }
@@ -75,12 +79,18 @@
       &__control {
         @media (min-width: @screen-xs-max) {
           float: left;
+          width: 70%;
+        }
+        @media (min-width: @screen-md-max) {
           width: 60%;
         }
       }
       &__save {
         @media (min-width: @screen-xs-max) {
-          margin-left: 34%;
+          margin-left: 20%;
+          width: 70%;
+        }
+        @media (min-width: @screen-md-max) {
           width: 60%;
         }
         &__message {
@@ -96,6 +106,9 @@
       }
     }
     &__footer {
+      &__add-post {
+        width: 200px;
+      }
     }
   }
 }

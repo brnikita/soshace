@@ -49,11 +49,32 @@
                 </div>
             </div>
             <div class="user__profile__block clearfix">
-                <label class="user__profile__block__description" for="birthday">{{i18n 'Birthday'}}:</label>
+                <label class="user__profile__block__description" for="birthdayDate">{{i18n 'Birthday'}}:</label>
 
-                <div class="user__profile__block__control">
-                    <input class="form-control" type="text" id="birthday" name="birthday"
-                           value="{{formatDate user.birthday}}"/>
+                <div class="user__profile__block__control clearfix">
+                    <div class="form-control-calendar clearfix">
+                        <div class="form-control-date">
+                            <select class="form-control" id="birthdayDate" name="birthdayDate">
+                                {{#each birthdayDatesList}}
+                                    <option>1</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form-control-month">
+                            <select class="form-control" id="birthdayMonth" name="birthdayMonth">
+                                {{#each birthdayMonthsList}}
+                                    <option>November</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form-control-year">
+                            <select class="form-control" id="birthdayFullYear" name="birthdayFullYear">
+                                {{#each birthdayFullYearList}}
+                                    <option>1988</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="user__profile__about-author user__profile__block clearfix">

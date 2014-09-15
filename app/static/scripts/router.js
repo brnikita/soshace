@@ -17,7 +17,6 @@ define([
     'controllers/posts/postController',
     'controllers/posts/postEditController',
     'controllers/loginController',
-    'controllers/logoutController',
     'controllers/registrationController',
     'controllers/users/usersController',
     'controllers/users/usersEditController',
