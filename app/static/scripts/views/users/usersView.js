@@ -135,6 +135,29 @@ define([
         },
 
         /**
+         * Метод возвращает полное имя и фамилию пользователя
+         *
+         * @method
+         * @name UsersEditView#getFullName
+         * @returns {string}
+         */
+        getFullName: function(){
+            var firstName = this.model.get('firstName'),
+                lastName = this.model.get('lastName'),
+                fullName = [];
+
+            if(lastName !== null){
+                fullName.push(lastName);
+            }
+
+            if(firstName !== null){
+                fullName.push(firstName);
+            }
+
+            return fullName.join(' ');
+        },
+
+        /**
          * @method
          * @name UsersEditView#serialize
          * @returns {Object}
@@ -152,6 +175,7 @@ define([
             data.isOwner = isOwner;
             data.isUserMainTab = true;
             data.locale = Helpers.getLocale();
+            data.user.fullName = this.getFullName();
             return data;
         },
 
