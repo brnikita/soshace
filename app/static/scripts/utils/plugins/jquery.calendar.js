@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Плагин для добавления масок полям
+ * Плагин календарей (3 селекта: день, месяк, год)
  */
 define([
     'jquery',
@@ -31,7 +31,7 @@ define([
             return methods.initialize.apply(this, arguments);
         }
 
-        return $.error('Метод с именем ' + method + ' не существует для jQuery.masks');
+        return $.error('Метод с именем ' + method + ' не существует для jQuery.calendar');
 
     };
 });
