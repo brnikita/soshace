@@ -70,7 +70,7 @@ define([
                 Soshace.hbs['partials/usersTabs']
             );
             Handlebars.registerPartial(
-                'usersTabs',
+                'jquery/calendar/calendar',
                 Soshace.hbs['partials/jquery/calendar/calendar']
             );
         },
