@@ -130,11 +130,13 @@ define([
          * @returns {Object}
          */
         serialize: function () {
-            var data = {};
+            var app = Soshace.app,
+                data = {};
 
             data.posts = this.collection.toJSON();
             data.paths = Soshace.urls;
             data.locale = Helpers.getLocale();
+            data.isAuthenticated = app.isAuthenticated();
 
             return data;
         },

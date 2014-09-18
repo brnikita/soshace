@@ -104,14 +104,34 @@ define([
          * @returns {undefined}
          */
         logoutHandler: function () {
-            var app = Soshace.app,
-                locale = Helpers.getLocale();
+            var app = Soshace.app;
 
             Soshace.profile = null;
             app.getView('.js-system-messages').collection.fetch().
-                done(function () {
-                    Backbone.history.navigate('/' + locale, {trigger: true});
-                });
+                done(this.logoutDoneHandler);
+        },
+
+        /**
+         * Метод обработчик выхода пользователя после получения
+         * списка системных сообщений
+         *
+         * @method
+         * @name HeaderView#logoutDoneHandler
+         * @returns {undefined}
+         */
+        logoutDoneHandler: function () {
+            var app = Soshace.app,
+                locale = Helpers.getLocale(),
+                routeParams,
+                currentController;
+
+            if(Soshace.pageAlias === 'home'){
+                currentController = app.router.currentController;
+                routeParams = currentController.routeParams;
+                currentController.routeHandler.apply(currentController, routeParams);
+                return;
+            }
+            Backbone.history.navigate('/' + locale, {trigger: true});
         },
 
         /**

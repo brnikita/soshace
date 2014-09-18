@@ -1,4 +1,6 @@
-{{> intro}}
+{{#unless isAuthenticated}}
+    {{> intro}}
+{{/unless}}
 <div class="content-center">
     <div class="posts">
         <div class="posts__full js-post clearfix"

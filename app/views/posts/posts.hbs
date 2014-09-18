@@ -1,4 +1,6 @@
-{{> intro}}
+{{#unless isAuthenticated}}
+    {{> intro}}
+{{/unless}}
 {{#if posts}}
     <div class="content-center">
         <div class="js-posts-list posts clearfix">
