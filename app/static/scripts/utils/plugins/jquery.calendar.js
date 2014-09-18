@@ -5,62 +5,13 @@
  */
 define([
     'jquery',
-    'underscore'
-], function ($, _) {
+    'underscore',
+    'utils/helpers'
+], function ($, _, Helpers) {
     var defaultOptions = {
             startYear: 1900
         },
-        monthsList = [
-            {
-                value: 1,
-                title: 'january'
-            },
-            {
-                value: 2,
-                title: 'february'
-            },
-            {
-                value: 3,
-                title: 'march'
-            },
-            {
-                value: 4,
-                title: 'april'
-            },
-            {
-                value: 5,
-                title: 'may'
-            },
-            {
-                value: 6,
-                title: 'june'
-            },
-            {
-                value: 7,
-                title: 'july'
-            },
-            {
-                value: 8,
-                title: 'august'
-            },
-            {
-                value: 9,
-                title: 'september'
-            },
-            {
-                value: 10,
-                title: 'october'
-            },
-            {
-                value: 11,
-                title: 'november'
-            },
-            {
-                value: 12,
-                title: 'december'
-            }
-
-        ],
+        monthsList = Soshace.monthsList,
         methods = {
             /**
              * @constructor
@@ -68,7 +19,6 @@ define([
              * @param {Object} options
              *                 [options.startYear] - год, с которого начинается календарь
              *                 [options.endYear] - год, на котором заканчивается календарь
-             *                 options.locale - локаль календаря
              *                 options.selectedDate - выставленная дата в календаре
              *                 options.dateField - имя поля даты
              *                 options.monthField - имя поля месяца
@@ -79,8 +29,62 @@ define([
                 var pluginOptions = _.extend(defaultOptions, options);
 
                 return this.each(_.bind(function () {
-                    this.setOptions(pluginOptions);
+                    this.calendar('setOptions', pluginOptions);
+                    this.calendar('render');
+                    this.calendar('addListeners');
                 }, this));
+            },
+
+            /**
+             * Метод добавляет слушатели на элемент календаря
+             *
+             * @method
+             * @name jQuery.fn.calendar#addListeners
+             * @returns {undefined}
+             */
+            addListeners: function(){
+                this.on('change', '.js-calendar-date', methods.dateChangeHandler, methods);
+                this.on('change', '.js-calendar-month', methods.monthChangeHandler, methods);
+                this.on('change', '.js-calendar-year', methods.yearChangeHandler, methods);
+            },
+
+            /**
+             * Метод слушатель изменения даты
+             *
+             * @method
+             * @name jQuery.fn.calendar#dateChangeHandler
+             * @param {jQuery.Event} event
+             * @returns {undefined}
+             */
+            dateChangeHandler: function(event){
+                var $target = $(event.target),
+                    value = $target.val();
+            },
+
+            /**
+             * Метод слушатель изменения месяца
+             *
+             * @method
+             * @name jQuery.fn.calendar#monthChangeHandler
+             * @param {jQuery.Event} event
+             * @returns {undefined}
+             */
+            monthChangeHandler: function(event){
+                var $target = $(event.target),
+                    value = $target.val();
+            },
+
+            /**
+             * Метод слушатель изменения года
+             *
+             * @method
+             * @name jQuery.fn.calendar#yearChangeHandler
+             * @param {jQuery.Event} event
+             * @returns {undefined}
+             */
+            yearChangeHandler: function(event){
+                var $target = $(event.target),
+                    value = $target.val();
             },
 
             /**
@@ -91,9 +95,9 @@ define([
              * @returns {undefined}
              */
             render: function () {
-                var lists = this.getLists(),
-                    options = this.getOptions(),
-                    template = Soshace.hbs['plugins/jquery/calendar/calendar'](
+                var lists = this.calendar('getLists'),
+                    options = this.calendar('getOptions'),
+                    template = Soshace.hbs['partials/jquery/calendar/calendar'](
                         _.extend(lists, options));
 
                 this.html(template);
@@ -108,7 +112,7 @@ define([
              * @returns {undefined}
              */
             setOptions: function (options) {
-                var pluginOptions = this.getOptions();
+                var pluginOptions = this.calendar('getOptions') || {};
                 this.data('calendar', _.extend(pluginOptions, options));
             },
 
@@ -134,9 +138,9 @@ define([
                 var _this = this;
 
                 return {
-                    datesList: _this.getDatesList(),
-                    monthsList: _this.getMothsList(),
-                    fullYearsList: _this.getYearsList()
+                    datesList: _this.calendar('getDatesList'),
+                    monthsList: _this.calendar('getMothsList'),
+                    fullYearsList: _this.calendar('getYearsList')
                 };
             },
 
@@ -150,17 +154,17 @@ define([
             getYearsList: function () {
                 var currentDate = new Date(),
                     currentYear = currentDate.getFullYear(),
-                    options = this.getOptions(),
+                    options = this.calendar('getOptions'),
                     startYear = options.startYear,
                     endYear = options.endYear,
-                    selectedYear = this.getSelectedYear(),
+                    selectedYear = this.calendar('getSelectedYear'),
                     isSelected,
                     year,
                     list = [];
 
                 endYear = endYear || currentYear;
 
-                for (year = startYear; year < endYear; year++) {
+                for (year = startYear; year <= endYear; year++) {
                     isSelected = year === selectedYear;
                     list.push({
                         value: year,
@@ -179,7 +183,7 @@ define([
              * @returns {Number}
              */
             getSelectedYear: function () {
-                var options = this.getOptions(),
+                var options = this.calendar('getOptions'),
                     selectedDate = options.selectedDate,
                     selectedDateObj,
                     today;
@@ -198,10 +202,21 @@ define([
              *
              * @method
              * @name jQuery.fn.calendar#getMothsList
-             * @returns {undefined}
+             * @returns {Array}
              */
             getMothsList: function () {
+                var selectedMonth = this.calendar('getSelectedMonth'),
+                    months = _.clone(monthsList);
 
+                _.each(months, function (month) {
+                    var title = month.title,
+                        value = month.value;
+
+                    month.title = Helpers.i18n(title);
+                    month.selected = value === selectedMonth;
+                });
+
+                return months;
             },
 
             /**
@@ -212,7 +227,7 @@ define([
              * @returns {Number}
              */
             getSelectedMonth: function () {
-                var options = this.getOptions(),
+                var options = this.calendar('getOptions'),
                     selectedDate = options.selectedDate,
                     selectedDateObj,
                     today;
@@ -231,10 +246,39 @@ define([
              *
              * @method
              * @name jQuery.fn.calendar#getDatesList
-             * @returns {undefined}
+             * @returns {Array}
              */
             getDatesList: function () {
+                var dates = [],
+                    date,
+                    isSelected,
+                    selectedDate = this.calendar('getSelectedDate'),
+                    daysInMonth = this.calendar('getDaysInMonth');
 
+                for (date = 1; date <= daysInMonth; date++) {
+                    isSelected = date === selectedDate;
+                    dates.push({
+                        title: date,
+                        value: date,
+                        selected: isSelected
+                    });
+                }
+
+                return dates;
+            },
+
+            /**
+             * Метод возвращает количество дней в текущем месяце
+             *
+             * @method
+             * @name jQuery.fn.calendar#getDaysInMonth
+             * @returns {number}
+             */
+            getDaysInMonth: function () {
+                var year = this.calendar('getSelectedYear'),
+                    month = this.calendar('getSelectedMonth');
+
+                return new Date(year, month, 0).getDate();
             },
 
             /**
@@ -245,7 +289,7 @@ define([
              * @returns {Number}
              */
             getSelectedDate: function () {
-                var options = this.getOptions(),
+                var options = this.calendar('getOptions'),
                     selectedDate = options.selectedDate,
                     selectedDateObj,
                     today;
@@ -268,23 +312,25 @@ define([
              * @returns {undefined}
              */
             setDate: function (selectedDate) {
-                this.setOptions({selectedDate: selectedDate});
+                this.calendar('setOptions', {selectedDate: selectedDate});
+                this.calendar('render');
+                this.trigger('calendar.updated', selectedDate);
             },
 
             /**
              * Метод возвращает timestamp выставленной даты
              *
              * @method
-             * @name jQuery.fn.calendar#setDate
+             * @name jQuery.fn.calendar#getDate
              * @returns {String}
              */
             getDate: function () {
-                var options = this.getOptions();
+                var options = this.calendar('getOptions');
                 return options.selectedDate;
             }
         };
 
-    $.fn.masks = function (method) {
+    $.fn.calendar = function (method) {
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         }

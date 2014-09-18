@@ -13,7 +13,8 @@ define([
     'handlebars',
     'utils/helpers',
     'backbone.layoutmanager',
-    'templates'
+    'templates',
+    'utils/plugins/jquery.calendar'
 ], function ($, _, Backbone, Handlebars, Helpers) {
     return Backbone.Layout.extend({
         /**
@@ -34,6 +35,7 @@ define([
          */
         elements: {
             saveMessages: null,
+            birthday: null,
             form: null
         },
 
@@ -66,6 +68,10 @@ define([
             Handlebars.registerPartial(
                 'usersTabs',
                 Soshace.hbs['partials/usersTabs']
+            );
+            Handlebars.registerPartial(
+                'usersTabs',
+                Soshace.hbs['partials/jquery/calendar/calendar']
             );
         },
 
@@ -290,6 +296,7 @@ define([
         setElements: function () {
             this.elements.form = this.$('.js-form');
             this.elements.saveMessages = this.$('.js-save-messages');
+            this.elements.birthday = this.$('.js-birthday-calendar');
         },
 
         /**
@@ -300,6 +307,7 @@ define([
          * @returns {undefined}
          */
         setDatesControls: function () {
+            this.elements.birthday.calendar();
         },
 
         /**
@@ -309,6 +317,7 @@ define([
          */
         afterRender: function () {
             this.setElements();
+            this.setDatesControls();
         }
     });
 });
