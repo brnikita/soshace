@@ -6,12 +6,14 @@
  * @class RegistrationController
  */
 define([
-        'utils/controller',
-        'models/registrationModel',
-        'views/registrationView',
-        'config'
-    ],
-    function (Controller, RegistrationModel, RegistrationView) {
+    'backbone',
+    'utils/controller',
+    'models/registrationModel',
+    'views/registrationView',
+    'utils/helpers',
+    'config'
+],
+    function (Backbone, Controller, RegistrationModel, RegistrationView, Helpers) {
         return Controller.extend({
             /**
              * Алиас страницы
@@ -73,8 +75,16 @@ define([
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = this.view,
+                var locale,
+                    userName,
+                    view = this.view,
                     app = Soshace.app;
+
+                if (app.isAuthenticated()) {
+                    locale = Helpers.getLocale();
+                    userName = Soshace.profile.userName;
+                    Backbone.history.navigate('/' + locale + '/users/' + userName);
+                }
 
                 this.view = view;
                 app.setView('.js-content', view).render();

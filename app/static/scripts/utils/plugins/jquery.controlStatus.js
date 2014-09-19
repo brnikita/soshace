@@ -169,7 +169,7 @@ define([
 
                 $formGroup.removeClass('has-error');
                 $formGroup.removeClass('has-success');
-                methods.hideHelper.call(this);
+                $this.controlStatus('hideHelper');
                 $this.data('controlStatus', _.extend(controlStatusData, {
                     status: null
                 }));

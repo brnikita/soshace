@@ -5,8 +5,14 @@
  *
  * @class LoginController
  */
-define(['utils/controller', 'models/loginModel', 'views/loginView'],
-    function (Controller, LoginModel, LoginView) {
+define([
+    'backbone',
+    'utils/controller',
+    'models/loginModel',
+    'views/loginView',
+    'utils/helpers'
+],
+    function (Backbone, Controller, LoginModel, LoginView, Helpers) {
         return Controller.extend({
             /**
              * Алиас страницы
@@ -68,8 +74,17 @@ define(['utils/controller', 'models/loginModel', 'views/loginView'],
              * @returns {undefined}
              */
             secondLoad: function () {
-                var view = this.view,
+                var locale,
+                    userName,
+                    view = this.view,
                     app = Soshace.app;
+
+                if (app.isAuthenticated()) {
+                    locale = Helpers.getLocale();
+                    userName = Soshace.profile.userName;
+                    Backbone.history.navigate('/' + locale + '/users/' + userName);
+                    return;
+                }
 
                 this.view = view;
                 app.setView('.js-content', view).render();

@@ -37,7 +37,16 @@ module.exports = Controller.extend({
     renderLogin: function () {
         var request = this.request,
             response = this.response,
-            requestParams = new RequestParams(request);
+            requestParams = new RequestParams(request),
+            locale,
+            profileUserName;
+
+        if (requestParams.isAuthenticated) {
+            locale = requestParams.locale;
+            profileUserName = requestParams.profileUserName;
+            response.redirect('/' + locale + '/users/' + profileUserName);
+            return;
+        }
 
         response.render('auth/auth', _.extend(requestParams, {
             isAuthTab: true,
@@ -95,7 +104,7 @@ module.exports = Controller.extend({
             return this.sendError(error);
         }
 
-        request.login(user, _.bind(function(error){
+        request.login(user, _.bind(function (error) {
             this.userLogin(error, user);
         }, this));
     },
