@@ -19,34 +19,32 @@ define([
          * @returns {jQuery}
          */
         initialize: function (options) {
-            return this.each(function () {
-                var controlOptions = {},
-                    $this = $(this),
-                    $formGroup = $this.parent();
+            var controlOptions = {},
+                $formGroup = this.parent();
 
-                _.extend(controlOptions, options || {});
-                $this.data('controlStatus', controlOptions);
-                $formGroup.addClass('has-feedback');
-                $formGroup.append($('<span>', {
-                    'class': 'form-control-feedback'
-                }));
-                $formGroup.append($('<div>', {
-                    'class': 'form-group-status',
-                    style: 'display: none;'
-                }));
-            });
+            _.extend(controlOptions, options || {});
+            this.data('controlStatus', controlOptions);
+            $formGroup.addClass('has-feedback');
+            $formGroup.append($('<span>', {
+                'class': 'form-control-feedback'
+            }));
+            $formGroup.append($('<div>', {
+                'class': 'form-group-status',
+                style: 'display: none;'
+            }));
+
+            return this;
         },
 
         /**
          * Метод показывает тултип подсказки у поля
          *
          * @method
-         * @returns {undefined}
+         * @returns {jQuery}
          */
         helper: function () {
-            var $this = $(this),
-                controlStatusData = $this.data('controlStatus'),
-                $formGroup = $this.parent(),
+            var controlStatusData = this.data('controlStatus'),
+                $formGroup = this.parent(),
                 $groupStatus = $('.form-group-status', $formGroup);
 
             $formGroup.removeClass('has-error');
@@ -57,32 +55,35 @@ define([
                 $groupStatus.slideDown();
             }
 
-            $this.data('controlStatus', _.extend(controlStatusData, {
+            this.data('controlStatus', _.extend(controlStatusData, {
                 helperIsShowing: true,
                 status: 'helper'
             }));
+
+            return this;
         },
 
         /**
          * Метод скрывает тултипы подсказки у поля
          *
          * @method
-         * @returns {undefined}
+         * @returns {jQuery}
          */
         hideHelper: function () {
-            var $this = $(this),
-                controlStatusData = $this.data('controlStatus');
+            var controlStatusData = this.data('controlStatus');
 
             if (!(controlStatusData && controlStatusData.helperIsShowing)) {
-                return;
+                return this;
             }
 
-            $this.data('controlStatus', _.extend(controlStatusData, {
+            this.data('controlStatus', _.extend(controlStatusData, {
                 helperIsShowing: false
             }));
 
-            $this.siblings('.form-group-status').
+            this.siblings('.form-group-status').
                 slideUp();
+
+            return this;
         },
 
         /**
@@ -93,25 +94,24 @@ define([
          * @returns {jQuery}
          */
         error: function (error) {
-            return this.each(function () {
-                var $this = $(this),
-                    controlStatusData = $this.data('controlStatus') || {},
-                    $formGroup = $this.parent(),
-                    $groupStatus = $('.form-group-status', $formGroup);
+            var controlStatusData = this.data('controlStatus') || {},
+                $formGroup = this.parent(),
+                $groupStatus = $('.form-group-status', $formGroup);
 
-                $formGroup.removeClass('has-success');
-                $formGroup.addClass('has-error');
-                $groupStatus.html(error);
+            $formGroup.removeClass('has-success');
+            $formGroup.addClass('has-error');
+            $groupStatus.html(error);
 
-                if (!(controlStatusData.helperIsShowing)) {
-                    $groupStatus.slideDown();
-                }
+            if (!(controlStatusData.helperIsShowing)) {
+                $groupStatus.slideDown();
+            }
 
-                $this.data('controlStatus', _.extend(controlStatusData, {
-                    helperIsShowing: true,
-                    status: 'error'
-                }));
-            });
+            this.data('controlStatus', _.extend(controlStatusData, {
+                helperIsShowing: true,
+                status: 'error'
+            }));
+
+            return this;
         },
 
         /**
@@ -121,24 +121,23 @@ define([
          * @returns {jQuery}
          */
         success: function () {
-            return this.each(function () {
-                var $this = $(this),
-                    controlStatusData = $this.data('controlStatus'),
-                    $formGroup = $this.parent(),
-                    $groupStatus = $('.form-group-status', $formGroup);
+            var controlStatusData = this.data('controlStatus'),
+                $formGroup = this.parent(),
+                $groupStatus = $('.form-group-status', $formGroup);
 
-                $formGroup.removeClass('has-error');
-                $formGroup.addClass('has-success');
-                $groupStatus.html(controlStatusData.successTitle);
+            $formGroup.removeClass('has-error');
+            $formGroup.addClass('has-success');
+            $groupStatus.html(controlStatusData.successTitle);
 
-                if (!(controlStatusData && controlStatusData.helperIsShowing)) {
-                    $groupStatus.slideDown();
-                }
+            if (!(controlStatusData && controlStatusData.helperIsShowing)) {
+                $groupStatus.slideDown();
+            }
 
-                $this.data('controlStatus', _.extend(controlStatusData, {
-                    status: 'success'
-                }));
-            });
+            this.data('controlStatus', _.extend(controlStatusData, {
+                status: 'success'
+            }));
+
+            return this;
         },
 
         /**
@@ -148,18 +147,17 @@ define([
          * @returns {jQuery}
          */
         base: function () {
-            return this.each(function () {
-                var $this = $(this),
-                    controlStatusData = $this.data('controlStatus'),
-                    $formGroup = $this.parent();
+            var controlStatusData = this.data('controlStatus'),
+                $formGroup = this.parent();
 
-                $formGroup.removeClass('has-error');
-                $formGroup.removeClass('has-success');
-                methods.hideHelper.call(this);
-                $this.data('controlStatus', _.extend(controlStatusData, {
-                    status: null
-                }));
-            });
+            $formGroup.removeClass('has-error');
+            $formGroup.removeClass('has-success');
+            this.controlStatus('hideHelper');
+            this.data('controlStatus', _.extend(controlStatusData, {
+                status: null
+            }));
+
+            return this;
         },
 
         /**
@@ -169,28 +167,34 @@ define([
          * @returns {jQuery}
          */
         destroy: function () {
-            return this.each(function () {
-                var $this = $(this),
-                    $formGroup = $this.parent();
+            var $formGroup = this.parent();
 
-                $this.removeData('controlStatus');
-                $formGroup.removeClass('has-feedback');
-                $('.form-group-status', $formGroup).remove();
-                $('.form-control-feedback', $formGroup).remove();
-            });
+            this.removeData('controlStatus');
+            $formGroup.removeClass('has-feedback');
+            $('.form-group-status', $formGroup).remove();
+            $('.form-control-feedback', $formGroup).remove();
+
+            return this;
         }
     };
 
     $.fn.controlStatus = function (method) {
-        if (methods[method]) {
-            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-        }
+        var optionsList = arguments;
 
-        if (typeof method === 'object' || !method) {
-            return methods.initialize.apply(this, arguments);
-        }
+        return this.each(function () {
+            var $this = $(this);
 
-        return $.error('Метод с именем ' + method + ' не существует для jQuery.controlStatus');
+            if (methods[method]) {
+                methods[method].apply($this, Array.prototype.slice.call(optionsList, 1));
+                return;
+            }
 
+            if (typeof method === 'object' || !method) {
+                methods.initialize.apply($this, optionsList);
+                return;
+            }
+
+            $.error('Метод с именем ' + method + ' не существует для jQuery.controlStatus');
+        });
     };
 });
