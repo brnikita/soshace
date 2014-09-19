@@ -73,8 +73,8 @@ define([
             );
 
             Handlebars.registerPartial(
-                'login',
-                Soshace.hbs['partials/login']
+                'auth/login',
+                Soshace.hbs['partials/auth/login']
             );
 
             Backbone.Validation.bind(this);

@@ -44,21 +44,8 @@ var Blog = Class.extend({
             Strategies.localStrategy();
             new Router(App);
             App.listen(Soshace.PORT, Soshace.HOST);
-            this.initializeSystemMessages();
         }, this));
 
-    },
-
-    /**
-     * Метод устанавливает дефолтные системные сообщения
-     *
-     * @method
-     * @name Blog.initializeSystemMessages
-     * @returns {undefined}
-     */
-    initializeSystemMessages: function(){
-        var systemMessages = new SystemMessagesController();
-        systemMessages.setCommonMessages();
     },
 
     /**

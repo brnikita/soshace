@@ -14,13 +14,14 @@ define([
     'underscore',
     'underscore.string',
     'backbone',
+    'handlebars',
     'utils/helpers',
     'prettify',
     'jquery.hotkeys',
     'jquery.fileupload',
     'backbone.layoutmanager',
     'templates'
-], function ($, _, _s, Backbone, Helpers) {
+], function ($, _, _s, Backbone, Handlebars, Helpers) {
     return Backbone.Layout.extend({
 
         /**
@@ -134,6 +135,10 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
+            Handlebars.registerPartial(
+                'messages/enableEditor',
+                Soshace.hbs['partials/messages/enableEditor']
+            );
             this.addModelListeners();
         },
 
@@ -678,7 +683,8 @@ define([
          * @returns {Object}
          */
         serialize: function () {
-            var data = this.model.toJSON();
+            var app = Soshace.app,
+                data = this.model.toJSON();
 
             data.title = Helpers.i18n('Edit Post');
             data.editorDisabled = this.isEditorDisabled();
@@ -686,6 +692,8 @@ define([
             data.post = this.model.toJSON();
             data.isNew = this.model.isNew();
             data.readOnly = this.readOnly();
+            data.isAuthenticated = app.isAuthenticated();
+
             return data;
         },
 

@@ -14,37 +14,6 @@ var _ = require('underscore'),
  *
  */
 module.exports = Controller.extend({
-
-    /**
-     * Метод устанавливает сообщения для незарегистрированных
-     * пользователей
-     *
-     * @method
-     * @name SystemMessagesController#initialize
-     * 2returns {undefined}
-     */
-    setCommonMessages: function () {
-        SystemMessagesModel.getMessages({notAuthenticated: true}, function (error, messages) {
-            if (error) {
-                return;
-            }
-
-            if (messages.length) {
-                return;
-            }
-
-            var successConfirmEmail = new SystemMessagesModel({
-                alias: 'enableEditor',
-                ownerId: null,
-                templatePath: 'messages/enableEditor',
-                notAuthenticated: true,
-                pages: ['postEdit']
-            });
-
-            successConfirmEmail.save();
-        });
-    },
-
     /**
      * Метод отправляет сообщения для незарегистрированных пользователей
      *

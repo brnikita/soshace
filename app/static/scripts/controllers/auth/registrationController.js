@@ -1,50 +1,51 @@
 'use strict';
 
 /**
- * Контроллер страницы логина
+ * Контроллер страницы регистрации
  *
- * @class LoginController
+ * @class RegistrationController
  */
 define([
     'backbone',
     'utils/controller',
-    'models/loginModel',
-    'views/loginView',
-    'utils/helpers'
+    'models/auth/registrationModel',
+    'views/auth/registrationView',
+    'utils/helpers',
+    'config'
 ],
-    function (Backbone, Controller, LoginModel, LoginView, Helpers) {
+    function (Backbone, Controller, RegistrationModel, RegistrationView, Helpers) {
         return Controller.extend({
             /**
              * Алиас страницы
              *
              * @field
-             * @name LoginController#pageAlias
+             * @name RegistrationController#pageAlias
              * @type {String}
              */
-            pageAlias: 'login',
+            pageAlias: 'registration',
 
             /**
              * @field
-             * @name LoginController#model
-             * @type {LoginModel}
+             * @name RegistrationController#model
+             * @type {RegistrationModel}
              */
             model: null,
 
             /**
              * @field
-             * @name LoginController#view
-             * @type {LoginView}
+             * @name RegistrationController#view
+             * @type {RegistrationView}
              */
             view: null,
 
             /**
              * @constructor
-             * @name LoginController#initialize
+             * @name RegistrationController#initialize
              * @returns {undefined}
              */
             initialize: function () {
-                this.model = new LoginModel();
-                this.view = new LoginView({
+                this.model = new RegistrationModel();
+                this.view = new RegistrationView({
                     model: this.model
                 });
             },
@@ -54,7 +55,7 @@ define([
              * Метод вызывает при рендере на сервере
              *
              * @method
-             * @name LoginController#firstLoad
+             * @name RegistrationController#firstLoad
              * @returns {undefined}
              */
             firstLoad: function () {
@@ -70,7 +71,7 @@ define([
              * Метод вызывает при рендере на клиенте
              *
              * @method
-             * @name LoginController#firstLoad
+             * @name RegistrationController#firstLoad
              * @returns {undefined}
              */
             secondLoad: function () {
@@ -83,7 +84,6 @@ define([
                     locale = Helpers.getLocale();
                     userName = Soshace.profile.userName;
                     Backbone.history.navigate('/' + locale + '/users/' + userName);
-                    return;
                 }
 
                 this.view = view;
