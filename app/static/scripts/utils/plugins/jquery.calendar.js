@@ -23,78 +23,116 @@ define([
              *                 options.dateField - имя поля даты
              *                 options.monthField - имя поля месяца
              *                 options.fullYearField - имя поля года
-             * @returns {undefined}
+             * @returns {jQuery}
              */
             initialize: function (options) {
                 var pluginOptions = _.extend(defaultOptions, options);
 
                 return this.each(_.bind(function () {
-                    this.calendar('setOptions', pluginOptions);
-                    this.calendar('render');
-                    this.calendar('addListeners');
+                    var $this = $(this);
+                    $this.calendar('_setOptions', pluginOptions);
+                    $this.calendar('_render');
+                    $this.calendar('_addListeners');
                 }, this));
             },
 
             /**
              * Метод добавляет слушатели на элемент календаря
              *
+             * @private
              * @method
              * @name jQuery.fn.calendar#addListeners
-             * @returns {undefined}
+             * @returns {jQuery}
              */
-            addListeners: function(){
-                this.on('change', '.js-calendar-date', methods.dateChangeHandler, methods);
-                this.on('change', '.js-calendar-month', methods.monthChangeHandler, methods);
-                this.on('change', '.js-calendar-year', methods.yearChangeHandler, methods);
+            _addListeners: function () {
+                this.on('change', '.js-calendar-date', _.bind(function (event) {
+                    this.calendar('_dateChangeHandler', event);
+                }, this));
+                this.on('change', '.js-calendar-month', _.bind(function (event) {
+                    this.calendar('_monthChangeHandler', event);
+                }, this));
+                this.on('change', '.js-calendar-year', _.bind(function (event) {
+                    this.calendar('_yearChangeHandler', event);
+                }, this));
+
+                return this;
             },
 
             /**
              * Метод слушатель изменения даты
              *
+             * @private
              * @method
              * @name jQuery.fn.calendar#dateChangeHandler
              * @param {jQuery.Event} event
-             * @returns {undefined}
+             * @returns {jQuery}
              */
-            dateChangeHandler: function(event){
+            _dateChangeHandler: function (event) {
                 var $target = $(event.target),
+                    selectedDate = this.calendar('getDate'),
+                    selectedDateObj = new Date(selectedDate),
                     value = $target.val();
+
+                selectedDateObj.setDate(value);
+                selectedDate = selectedDateObj.getTime();
+                this.calendar('setDate', selectedDate);
+
+                return this;
             },
 
             /**
              * Метод слушатель изменения месяца
              *
+             * @private
              * @method
              * @name jQuery.fn.calendar#monthChangeHandler
              * @param {jQuery.Event} event
-             * @returns {undefined}
+             * @returns {jQuery}
              */
-            monthChangeHandler: function(event){
+            _monthChangeHandler: function (event) {
                 var $target = $(event.target),
+                    selectedDate = this.calendar('getDate'),
+                    selectedDateObj = new Date(selectedDate),
                     value = $target.val();
+
+                selectedDateObj.setMonth(value);
+                selectedDate = selectedDateObj.getTime();
+                this.calendar('setDate', selectedDate);
+
+                return this;
             },
 
             /**
              * Метод слушатель изменения года
              *
+             * @private
              * @method
              * @name jQuery.fn.calendar#yearChangeHandler
              * @param {jQuery.Event} event
-             * @returns {undefined}
+             * @returns {jQuery}
              */
-            yearChangeHandler: function(event){
+            _yearChangeHandler: function (event) {
                 var $target = $(event.target),
+                    selectedDate = this.calendar('getDate'),
+                    selectedDateObj = new Date(selectedDate),
                     value = $target.val();
+
+                selectedDateObj.setFullYear(value);
+                selectedDate = selectedDateObj.getTime();
+                this.calendar('setDate', selectedDate);
+
+                return this;
             },
 
             /**
              * Метод рендерит календари на основе параметров
              *
+             * @private
              * @method
              * @name jQuery.fn.calendar#render
              * @returns {undefined}
              */
-            render: function () {
+            _render: function () {
                 var lists = this.calendar('getLists'),
                     options = this.calendar('getOptions'),
                     template = Soshace.hbs['partials/jquery/calendar/calendar'](
@@ -106,19 +144,26 @@ define([
             /**
              * Метод сохраняет настройки в данных элемента
              *
+             * @private
              * @method
              * @name jQuery.fn.calendar#setOptions
              * @param {Object} options
              * @returns {undefined}
              */
-            setOptions: function (options) {
-                var pluginOptions = this.calendar('getOptions') || {};
-                this.data('calendar', _.extend(pluginOptions, options));
+            _setOptions: function (options) {
+                var pluginOptions = this.calendar('getOptions') || {},
+                    fullOptions = _.extend(pluginOptions, options),
+                    selectedDate = fullOptions.selectedDate,
+                    today = new Date();
+
+                fullOptions.selectedDate = selectedDate || today.getTime();
+                this.data('calendar', fullOptions);
             },
 
             /**
              * Метод возвращает параметры контрола
              *
+             * @public
              * @method
              * @name jQuery.fn.calendar#getOptions
              * @returns {Object}
@@ -130,6 +175,7 @@ define([
             /**
              * Метод возвращает списки дат, месяцев и лет
              *
+             * @public
              * @method
              * @name jQuery.fn.calendar#getLists
              * @returns {Object}
@@ -147,6 +193,7 @@ define([
             /**
              * Метод возвращает список лет
              *
+             * @public
              * @method
              * @name jQuery.fn.calendar#getYearsList
              * @returns {Array}
@@ -178,6 +225,7 @@ define([
             /**
              * Метод возвращает установленный год
              *
+             * @public
              * @method
              * @name jQuery.fn.calendar#getSelectedYear
              * @returns {Number}
@@ -185,13 +233,7 @@ define([
             getSelectedYear: function () {
                 var options = this.calendar('getOptions'),
                     selectedDate = options.selectedDate,
-                    selectedDateObj,
-                    today;
-
-                if (_.isUndefined(selectedDate)) {
-                    today = new Date();
-                    return today.getFullYear();
-                }
+                    selectedDateObj;
 
                 selectedDateObj = new Date(selectedDate);
                 return selectedDateObj.getFullYear();
@@ -200,6 +242,7 @@ define([
             /**
              * Метод возвращает список месяцев
              *
+             * @public
              * @method
              * @name jQuery.fn.calendar#getMothsList
              * @returns {Array}
@@ -222,6 +265,7 @@ define([
             /**
              * Метод возвращает установленный месяц
              *
+             * @public
              * @method
              * @name jQuery.fn.calendar#getSelectedMonth
              * @returns {Number}
@@ -229,21 +273,16 @@ define([
             getSelectedMonth: function () {
                 var options = this.calendar('getOptions'),
                     selectedDate = options.selectedDate,
-                    selectedDateObj,
-                    today;
-
-                if (_.isUndefined(selectedDate)) {
-                    today = new Date();
-                    return today.getMonth() + 1;
-                }
+                    selectedDateObj;
 
                 selectedDateObj = new Date(selectedDate);
-                return selectedDateObj.getMonth() + 1;
+                return selectedDateObj.getMonth();
             },
 
             /**
              * Метод возвращает список дат
              *
+             * @public
              * @method
              * @name jQuery.fn.calendar#getDatesList
              * @returns {Array}
@@ -270,6 +309,7 @@ define([
             /**
              * Метод возвращает количество дней в текущем месяце
              *
+             * @public
              * @method
              * @name jQuery.fn.calendar#getDaysInMonth
              * @returns {number}
@@ -278,12 +318,13 @@ define([
                 var year = this.calendar('getSelectedYear'),
                     month = this.calendar('getSelectedMonth');
 
-                return new Date(year, month, 0).getDate();
+                return new Date(year, month + 1, 0).getDate();
             },
 
             /**
              * Метод возвращает установленный день
              *
+             * @public
              * @method
              * @name jQuery.fn.calendar#getSelectedDate
              * @returns {Number}
@@ -291,13 +332,7 @@ define([
             getSelectedDate: function () {
                 var options = this.calendar('getOptions'),
                     selectedDate = options.selectedDate,
-                    selectedDateObj,
-                    today;
-
-                if (_.isUndefined(selectedDate)) {
-                    today = new Date();
-                    return today.getDate();
-                }
+                    selectedDateObj;
 
                 selectedDateObj = new Date(selectedDate);
                 return selectedDateObj.getDate();
@@ -306,20 +341,26 @@ define([
             /**
              * Метод устанавливает дату календаря
              *
+             * @public
              * @method
              * @name jQuery.fn.calendar#setDate
              * @param {String} selectedDate timestamp текущей даты
-             * @returns {undefined}
+             * @returns {jQuery}
              */
             setDate: function (selectedDate) {
-                this.calendar('setOptions', {selectedDate: selectedDate});
-                this.calendar('render');
-                this.trigger('calendar.updated', selectedDate);
+                return this.each(function () {
+                    var $this = $(this);
+
+                    $this.calendar('_setOptions', {selectedDate: selectedDate});
+                    $this.calendar('_render');
+                    $this.trigger('calendar.updated', selectedDate);
+                });
             },
 
             /**
              * Метод возвращает timestamp выставленной даты
              *
+             * @public
              * @method
              * @name jQuery.fn.calendar#getDate
              * @returns {String}

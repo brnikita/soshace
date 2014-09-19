@@ -12,6 +12,7 @@ define([
     var methods = {
         /**
          * @constructor
+         * @name jQuery.fn.controlStatus#initialize
          * @param {Object} [options]
          *                  options.helperTitle - текст подсказки для поля
          *                  options.successTitle - текст сообщения для
@@ -19,182 +20,193 @@ define([
          * @returns {jQuery}
          */
         initialize: function (options) {
-            var controlOptions = {},
-                $formGroup = this.parent();
+            return this.each(function () {
+                var $this = $(this),
+                    $formGroup = $this.parent();
 
-            _.extend(controlOptions, options || {});
-            this.data('controlStatus', controlOptions);
-            $formGroup.addClass('has-feedback');
-            $formGroup.append($('<span>', {
-                'class': 'form-control-feedback'
-            }));
-            $formGroup.append($('<div>', {
-                'class': 'form-group-status',
-                style: 'display: none;'
-            }));
-
-            return this;
+                options = options || {};
+                $this.data('controlStatus', options);
+                $formGroup.addClass('has-feedback');
+                $formGroup.append($('<span>', {
+                    'class': 'form-control-feedback'
+                }));
+                $formGroup.append($('<div>', {
+                    'class': 'form-group-status',
+                    style: 'display: none;'
+                }));
+            });
         },
 
         /**
          * Метод показывает тултип подсказки у поля
          *
+         * @public
          * @method
+         * @name jQuery.fn.controlStatus#helper
          * @returns {jQuery}
          */
         helper: function () {
-            var controlStatusData = this.data('controlStatus'),
-                $formGroup = this.parent(),
-                $groupStatus = $('.form-group-status', $formGroup);
+            return this.each(function () {
+                var $this = $(this),
+                    controlStatusData = $this.data('controlStatus'),
+                    $formGroup = $this.parent(),
+                    $groupStatus = $('.form-group-status', $formGroup);
 
-            $formGroup.removeClass('has-error');
-            $formGroup.removeClass('has-success');
-            $groupStatus.html(controlStatusData.helperTitle);
+                $formGroup.removeClass('has-error');
+                $formGroup.removeClass('has-success');
+                $groupStatus.html(controlStatusData.helperTitle);
 
-            if (!controlStatusData.helperIsShowing) {
-                $groupStatus.slideDown();
-            }
+                if (!controlStatusData.helperIsShowing) {
+                    $groupStatus.slideDown();
+                }
 
-            this.data('controlStatus', _.extend(controlStatusData, {
-                helperIsShowing: true,
-                status: 'helper'
-            }));
-
-            return this;
+                $this.data('controlStatus', _.extend(controlStatusData, {
+                    helperIsShowing: true,
+                    status: 'helper'
+                }));
+            });
         },
 
         /**
          * Метод скрывает тултипы подсказки у поля
          *
+         * @public
          * @method
+         * @name jQuery.fn.controlStatus#hideHelper
          * @returns {jQuery}
          */
         hideHelper: function () {
-            var controlStatusData = this.data('controlStatus');
+            return this.each(function () {
+                var $this = $(this),
+                    controlStatusData = $this.data('controlStatus');
 
-            if (!(controlStatusData && controlStatusData.helperIsShowing)) {
-                return this;
-            }
+                if (!(controlStatusData && controlStatusData.helperIsShowing)) {
+                    return;
+                }
 
-            this.data('controlStatus', _.extend(controlStatusData, {
-                helperIsShowing: false
-            }));
+                $this.data('controlStatus', _.extend(controlStatusData, {
+                    helperIsShowing: false
+                }));
 
-            this.siblings('.form-group-status').
-                slideUp();
-
-            return this;
+                $this.siblings('.form-group-status').
+                    slideUp();
+            });
         },
 
         /**
          * Метод отображает ошибку у поля
          *
+         * @public
          * @method
+         * @name jQuery.fn.controlStatus#error
          * @param {String} error текст ошибки
          * @returns {jQuery}
          */
         error: function (error) {
-            var controlStatusData = this.data('controlStatus') || {},
-                $formGroup = this.parent(),
-                $groupStatus = $('.form-group-status', $formGroup);
+            return this.each(function () {
+                var $this = $(this),
+                    controlStatusData = $this.data('controlStatus') || {},
+                    $formGroup = $this.parent(),
+                    $groupStatus = $('.form-group-status', $formGroup);
 
-            $formGroup.removeClass('has-success');
-            $formGroup.addClass('has-error');
-            $groupStatus.html(error);
+                $formGroup.removeClass('has-success');
+                $formGroup.addClass('has-error');
+                $groupStatus.html(error);
 
-            if (!(controlStatusData.helperIsShowing)) {
-                $groupStatus.slideDown();
-            }
+                if (!(controlStatusData.helperIsShowing)) {
+                    $groupStatus.slideDown();
+                }
 
-            this.data('controlStatus', _.extend(controlStatusData, {
-                helperIsShowing: true,
-                status: 'error'
-            }));
-
-            return this;
+                $this.data('controlStatus', _.extend(controlStatusData, {
+                    helperIsShowing: true,
+                    status: 'error'
+                }));
+            });
         },
 
         /**
          * Метод устаналивает поле в состояние успех
          *
+         * @public
          * @method
+         * @name jQuery.fn.controlStatus#success
          * @returns {jQuery}
          */
         success: function () {
-            var controlStatusData = this.data('controlStatus'),
-                $formGroup = this.parent(),
-                $groupStatus = $('.form-group-status', $formGroup);
+            return this.each(function () {
+                var $this = $(this),
+                    controlStatusData = $this.data('controlStatus'),
+                    $formGroup = $this.parent(),
+                    $groupStatus = $('.form-group-status', $formGroup);
 
-            $formGroup.removeClass('has-error');
-            $formGroup.addClass('has-success');
-            $groupStatus.html(controlStatusData.successTitle);
+                $formGroup.removeClass('has-error');
+                $formGroup.addClass('has-success');
+                $groupStatus.html(controlStatusData.successTitle);
 
-            if (!(controlStatusData && controlStatusData.helperIsShowing)) {
-                $groupStatus.slideDown();
-            }
+                if (!(controlStatusData && controlStatusData.helperIsShowing)) {
+                    $groupStatus.slideDown();
+                }
 
-            this.data('controlStatus', _.extend(controlStatusData, {
-                status: 'success'
-            }));
-
-            return this;
+                $this.data('controlStatus', _.extend(controlStatusData, {
+                    status: 'success'
+                }));
+            });
         },
 
         /**
          * Метод устанавливает поле в дефолтное состояние
          *
+         * @public
          * @method
+         * @name jQuery.fn.controlStatus#base
          * @returns {jQuery}
          */
         base: function () {
-            var controlStatusData = this.data('controlStatus'),
-                $formGroup = this.parent();
+            return this.each(function () {
+                var $this = $(this),
+                    controlStatusData = $this.data('controlStatus'),
+                    $formGroup = $this.parent();
 
-            $formGroup.removeClass('has-error');
-            $formGroup.removeClass('has-success');
-            this.controlStatus('hideHelper');
-            this.data('controlStatus', _.extend(controlStatusData, {
-                status: null
-            }));
-
-            return this;
+                $formGroup.removeClass('has-error');
+                $formGroup.removeClass('has-success');
+                methods.hideHelper.call(this);
+                $this.data('controlStatus', _.extend(controlStatusData, {
+                    status: null
+                }));
+            });
         },
 
         /**
          * Метод удалет все слушатели и чистит все за плагином
          *
+         * @public
          * @method
+         * @name jQuery.fn.controlStatus#destroy
          * @returns {jQuery}
          */
         destroy: function () {
-            var $formGroup = this.parent();
+            return this.each(function () {
+                var $this = $(this),
+                    $formGroup = $this.parent();
 
-            this.removeData('controlStatus');
-            $formGroup.removeClass('has-feedback');
-            $('.form-group-status', $formGroup).remove();
-            $('.form-control-feedback', $formGroup).remove();
-
-            return this;
+                $this.removeData('controlStatus');
+                $formGroup.removeClass('has-feedback');
+                $('.form-group-status', $formGroup).remove();
+                $('.form-control-feedback', $formGroup).remove();
+            });
         }
     };
 
     $.fn.controlStatus = function (method) {
-        var optionsList = arguments;
+        if (methods[method]) {
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        }
 
-        return this.each(function () {
-            var $this = $(this);
+        if (typeof method === 'object' || !method) {
+            return methods.initialize.apply(this, arguments);
+        }
 
-            if (methods[method]) {
-                methods[method].apply($this, Array.prototype.slice.call(optionsList, 1));
-                return;
-            }
+        return $.error('Метод с именем ' + method + ' не существует для jQuery.controlStatus');
 
-            if (typeof method === 'object' || !method) {
-                methods.initialize.apply($this, optionsList);
-                return;
-            }
-
-            $.error('Метод с именем ' + method + ' не существует для jQuery.controlStatus');
-        });
     };
 });
