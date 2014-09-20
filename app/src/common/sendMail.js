@@ -49,11 +49,9 @@ var SendMail = {
             mailSubject  = request.i18n.__('Confirmation message from Soshace blog');
 
         Handlebars.render(mailTemplatePath, _.extend(requestParams,{
-            host: Soshace.PRODUCTION_HOST,
-            userName: user.userName,
-            emailConfirmLink: confirmationLink,
-            locale: locale
+            emailConfirmLink: confirmationLink
         }), function (error, template) {
+            console.log(template);
             transport.sendMail({
                 from: Soshace.MAIL_NO_REPLY,
                 to: user.email,

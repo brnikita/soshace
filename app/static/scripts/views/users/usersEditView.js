@@ -265,6 +265,28 @@ define([
         },
 
         /**
+         * Метод возвращает True, если страница должна быть заблокирована
+         * Если пользователь не авторизован или у пользователя не подтвержден email
+         * см. Wiki
+         *
+         * @method
+         * @name UsersEditView#isDisabled
+         * @returns {Boolean}
+         */
+        isDisabled: function () {
+            var app = Soshace.app,
+                isAuthenticated = app.isAuthenticated(),
+                profile;
+
+            if (!isAuthenticated) {
+                return true;
+            }
+
+            profile = Soshace.profile;
+            return !profile.emailConfirmed;
+        },
+
+        /**
          * @method
          * @name UsersEditView#serialize
          * @returns {Object}
@@ -282,6 +304,7 @@ define([
             data.isUserEditTab = true;
             data.locale = Helpers.getLocale();
             data.sexList = this.model.getSexList();
+            data.isDisabled = this.isDisabled();
 
             return data;
         },

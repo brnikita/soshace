@@ -246,7 +246,12 @@ module.exports = Controller.extend({
             alias: 'notConfirmedEmail',
             ownerId: user._id,
             templatePath: 'messages/notConfirmedEmail',
-            pages: ['user', 'postEdit'],
+            pages: [
+                'user',
+                'postEdit',
+                'userEdit',
+                'userSettings'
+            ],
             readOnly: true
         });
 

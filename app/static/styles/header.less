@@ -32,6 +32,7 @@
     }
     &-small {
       padding-top: 0;
+      .box-shadow(0 0 3px rgba(0, 0, 0, 0.4));
       display: none;
       img {
         width: 46px;
@@ -52,8 +53,8 @@
     @media (max-width: @screen-xs-max) {
       height: 46px;
       line-height: 46px;
-      border-right: #fff 1px solid;
-      border-left: #fff 1px solid;
+      border-right: @bg-color-grey-light 1px solid;
+      border-left: @bg-color-grey-light 1px solid;
     }
     float: left;
     padding: 0 15px;
@@ -62,28 +63,35 @@
         color: #fff;
       }
       @media (max-width: @screen-xs-max) {
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
         color: #a9a9a9;
       }
       text-decoration: none;
     }
-    &-link:hover {
-      color: #fff;
-      @media (min-width: @screen-xs-max) {
-        background: #0b0a0a;
+    &-link {
+      &:hover, &:focus {
+        @media (min-width: @screen-xs-max) {
+          color: #fff;
+          background: #232323;
+        }
+        @media (max-width: @screen-xs-max) {
+          background-color: darken(@bg-color-grey-light, 8%);
+          color: #a9a9a9;
+        }
+        text-decoration: none;
       }
-      @media (max-width: @screen-xs-max) {
-        .bg-color-grey;
-      }
-      text-decoration: none;
     }
-    &-active {
+    &-active, &:active {
       @media (min-width: @screen-xs-max) {
-        background: #0b0a0a;
+        background: #232323;
+        .box-shadow(inset 0 0 5px rgba(0, 0, 0, 1));
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 1);
       }
       @media (max-width: @screen-xs-max) {
         color: #fff;
         .bg-color-grey;
-        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+        .box-shadow(inset 0 0 5px rgba(0, 0, 0, 0.3));
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
       }
     }
     .glyphicon {

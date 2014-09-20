@@ -1,7 +1,7 @@
 .user {
   @media (min-width: @screen-xs-max) {
     margin-top: 10px;
-    .box-shadow(0 0 2px rgba(0,0,0,0.2));
+    .box-shadow(0 0 2px rgba(0, 0, 0, 0.2));
   }
   .nav-tabs {
     &__profile-info {
@@ -17,6 +17,7 @@
   &__profile {
     background-color: #fff;
     padding: 10px;
+    position: relative;
     &__info {
       &__avatar {
         @media (min-width: @screen-xs-max) {
@@ -27,6 +28,7 @@
           width: 200px;
           min-height: 200px;
           text-align: center;
+          overflow: hidden;
           .bg-color-grey;
           color: #fff;
           .glyphicon {
@@ -50,6 +52,20 @@
         }
         @media (max-width: @screen-xs-max) {
           padding-top: 5px;
+        }
+        &__empty {
+          .font-color-grey;
+          @media (min-width: @screen-xs-max) {
+            text-align: center;
+            padding-top: 60px;
+          }
+          @media (max-width: @screen-xs-max) {
+            margin: 0;
+            font-weight: normal;
+          }
+          a {
+            text-decoration: underline;
+          }
         }
       }
     }

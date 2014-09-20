@@ -176,6 +176,8 @@ define([
             data.isUserMainTab = true;
             data.locale = Helpers.getLocale();
             data.user.fullName = this.getFullName();
+            data.isProfileInfoEmpty = this.model.isProfileInfoEmpty();
+
             return data;
         },
 

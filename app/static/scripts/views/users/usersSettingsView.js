@@ -57,6 +57,39 @@ define([
         },
 
         /**
+         * Метод возвращает True, если страница должна быть заблокирована
+         * Если пользователь не авторизован или у пользователя не подтвержден email
+         * см. Wiki
+         *
+         * @method
+         * @name UsersSettingsView#isDisabled
+         * @returns {Boolean}
+         */
+        isDisabled: function () {
+            var app = Soshace.app,
+                isAuthenticated = app.isAuthenticated(),
+                profile;
+
+            if (!isAuthenticated) {
+                return true;
+            }
+
+            profile = Soshace.profile;
+            return !profile.emailConfirmed;
+        },
+
+        /**
+         * Метод возвращает True, если
+         *
+         * @method
+         * @name UsersSettingsView#isProfileEmpty
+         * @returns {Boolean}
+         */
+        isProfileEmpty: function(){
+
+        },
+
+        /**
          * @method
          * @name UsersSettingsView#serialize
          * @returns {Object}
@@ -73,6 +106,8 @@ define([
             data.isOwner = isOwner;
             data.isUserSettingsTab = true;
             data.locale = Helpers.getLocale();
+            data.isDisabled = this.isDisabled();
+
             return data;
         },
 

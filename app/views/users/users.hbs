@@ -1,5 +1,8 @@
 <div class="content-center">
-    <div class="user">
+    <div class="user js-user"
+         data-user-name="{{user.userName}}"
+         data-_id="{{user._id}}"
+         data-locale="{{user.locale}}">
         {{#if isOwner}}
             {{> usersTabs}}
         {{/if}}
@@ -15,30 +18,40 @@
                     </div>
                 </div>
                 <div class="user__profile__info__description">
-                    {{#if user.fullName}}
-                        <div class="user__profile__block">
-                            <h3>
-                                {{user.fullName}}
-                            </h3>
-                        </div>
-                    {{/if}}
-                    {{#if user.sex}}
-                        <div class="user__profile__block">
-                            <span class="user__profile__block__title">{{i18n 'Sex'}}:</span> {{i18n user.sex}}
-                        </div>
-                    {{/if}}
-                    {{#if user.birthday}}
-                        <div class="user__profile__block">
+                    {{#if isProfileInfoEmpty}}
+                        <h4 class="user__profile__info__description__empty">
+                            {{#if isOwner}}
+                                <a href="/{{locale}}/users/{{user.userName}}/edit" class="js-router-link">{{i18n 'Tell about yourself'}}</a>
+                            {{else}}
+                                <span>{{i18n "Author hasn't gave information about themselves yet."}}</span>
+                            {{/if}}
+                        </h4>
+                    {{else}}
+                        {{#if user.fullName}}
+                            <div class="user__profile__block">
+                                <h3>
+                                    {{user.fullName}}
+                                </h3>
+                            </div>
+                        {{/if}}
+                        {{#if user.sex}}
+                            <div class="user__profile__block">
+                                <span class="user__profile__block__title">{{i18n 'Sex'}}:</span> {{i18n user.sex}}
+                            </div>
+                        {{/if}}
+                        {{#if user.birthday}}
+                            <div class="user__profile__block">
                             <span class="user__profile__block__title">{{i18n 'Birthday'}}
                                 :</span> {{formatDate user.birthday}}
 
-                        </div>
-                    {{/if}}
-                    {{#if user.aboutAuthor}}
-                        <div class="user__profile__block">
-                            <div><span class="user__profile__block__title">{{i18n 'About author'}}:</span></div>
-                            <div>{{user.aboutAuthor}}</div>
-                        </div>
+                            </div>
+                        {{/if}}
+                        {{#if user.aboutAuthor}}
+                            <div class="user__profile__block">
+                                <div><span class="user__profile__block__title">{{i18n 'About author'}}:</span></div>
+                                <div>{{user.aboutAuthor}}</div>
+                            </div>
+                        {{/if}}
                     {{/if}}
                 </div>
             </div>

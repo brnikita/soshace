@@ -87,6 +87,25 @@ module.exports = Controller.extend({
     },
 
     /**
+     * Метод возвращает True, если редактор профиля или настроек должен быть заблокирован
+     *
+     * @method
+     * @name UsersController#isDisabled
+     * @returns {Boolean}
+     */
+    isDisabled: function () {
+        var request = this.request,
+            requestParams = new RequestParams(request),
+            profile = requestParams.profile;
+
+        if (!request.isAuthenticated()) {
+            return true;
+        }
+
+        return !profile.emailConfirmed;
+    },
+
+    /**
      * Метод рендерит страницу редактирования профиля
      *
      * @method
@@ -122,12 +141,14 @@ module.exports = Controller.extend({
     renderProfileEditForAuthenticatedUser: function (profile) {
         var request = this.request,
             response = this.response,
+            isDisabled = this.isDisabled(),
             sexList = profile.getSexList(),
             requestParams = new RequestParams(request);
 
         response.render('users/usersEdit', _.extend(requestParams, {
             sexList: sexList,
             user: profile,
+            isDisabled: isDisabled,
             isUserEditTab: true,
             isOwner: true,
             title: 'Edit profile'
@@ -170,11 +191,13 @@ module.exports = Controller.extend({
     renderProfileSettingsForAuthenticatedUser: function (profile) {
         var request = this.request,
             response = this.response,
+            isDisabled = this.isDisabled(),
             requestParams = new RequestParams(request);
 
         response.render('users/usersSettings', _.extend(requestParams, {
             user: profile,
             isUserSettingsTab: true,
+            isDisabled: isDisabled,
             isOwner: true,
             title: 'Settings'
         }));
@@ -233,13 +256,17 @@ module.exports = Controller.extend({
             requestParams = new RequestParams(request);
 
         PostsModel.getUserPosts(userId, _.bind(function (error, posts) {
+            var isProfileInfoEmpty;
+
             if (error) {
                 this.renderError(error);
                 return;
             }
 
+            isProfileInfoEmpty = user.isProfileInfoEmpty();
             response.render('users/users', _.extend(requestParams, {
                 user: user,
+                isProfileInfoEmpty: isProfileInfoEmpty,
                 isUserTab: true,
                 posts: posts,
                 title: 'User Profile'
@@ -263,13 +290,17 @@ module.exports = Controller.extend({
             requestParams = new RequestParams(request);
 
         PostsModel.getProfilePosts(profileId, _.bind(function (error, posts) {
+            var isProfileInfoEmpty;
+
             if (error) {
                 this.renderError(error);
                 return;
             }
 
+            isProfileInfoEmpty = profile.isProfileInfoEmpty();
             response.render('users/users', _.extend(requestParams, {
                 user: profile,
+                isProfileInfoEmpty: isProfileInfoEmpty,
                 isUserMainTab: true,
                 isOwner: true,
                 posts: posts,

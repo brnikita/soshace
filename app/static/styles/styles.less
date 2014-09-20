@@ -15,6 +15,13 @@ img.center {
   margin: 0 auto;
 }
 
+h4 {
+  @media (max-width: @screen-xs-max) {
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+
 code {
   white-space: normal;
 }
@@ -33,12 +40,9 @@ html, body {
 }
 
 body {
+  .bg-color-grey-light;
   @media (min-width: @screen-xs-max) {
-    .bg-color-grey-light;
     background-image: url('/static/images/backgrounds/bg-symbols.png');
-  }
-  @media (max-width: @screen-xs-max) {
-    background-color: #fff;
   }
 }
 
@@ -61,14 +65,6 @@ body {
   p {
     margin: 4px 0;
   }
-}
-
-.btn, .btn:focus {
-  border-radius: 0;
-}
-
-.form-control {
-  border-radius: 0;
 }
 
 .error {
@@ -104,11 +100,17 @@ body {
     height: 100%;
   }
   &__ban {
+    @media (min-width: @screen-xs-max) {
+      top: 50%;
+      margin-top: -50px;
+    }
+    @media (max-width: @screen-xs-max) {
+      top: 50px;
+    }
     position: absolute;
-    top: 30px;
     text-align: center;
     width: 100%;
-    font-size: 70px;
+    font-size: 100px;
     color: #FF5754;
   }
   &__comment {

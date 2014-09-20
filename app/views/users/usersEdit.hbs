@@ -71,6 +71,14 @@
                     <button type="submit" class="btn btn-primary js-user-save">{{i18n 'Save'}}</button>
                 </div>
             </form>
+            {{#if isDisabled}}
+                <div class="disable-cover">
+                    <div class="disable-cover__bg"></div>
+                    <div class="disable-cover__ban">
+                        <span class="glyphicon glyphicon-ban-circle"></span>
+                    </div>
+                </div>
+            {{/if}}
         </div>
     </div>
 </div>

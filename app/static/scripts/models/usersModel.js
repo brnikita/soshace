@@ -20,7 +20,7 @@ define([
          * @name UsersModel#idAttribute
          * @type {String}
          */
-        idAttribute: 'userName',
+        idAttribute: '_id',
 
         /**
          * @method
@@ -51,6 +51,23 @@ define([
         },
 
         /**
+         * Поля, которые отностятся к информации о профиле
+         * По этим полям определятся заполненность профиля
+         *
+         * @field
+         * @name UsersModel#profileInformationFields
+         * @type {Array}
+         */
+        profileInformationFields: [
+            'firstName',
+            'lastName',
+            'profileImg',
+            'sex',
+            'birthday',
+            'aboutAuthor'
+        ],
+
+        /**
          * Список полов
          *
          * @field
@@ -69,6 +86,28 @@ define([
                 selected: false
             }
         ],
+
+        /**
+         * Метод возвращает true, если информация по прфилю пустая
+         *
+         * @method
+         * @name UsersModel#isProfileInfoEmpty
+         * @returns {Boolean}
+         */
+        isProfileInfoEmpty: function () {
+            var profileInformationFields = this.profileInformationFields,
+                fieldsLength = profileInformationFields.length,
+                fieldName,
+                i;
+
+            for (i = 0; i < fieldsLength; i++) {
+                fieldName = profileInformationFields[i];
+                if (this.get(fieldName) !== null) {
+                    return false;
+                }
+            }
+            return true;
+        },
 
         /**
          * Метод загружает данные пользователя

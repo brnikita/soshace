@@ -37,11 +37,17 @@ var _ = require('underscore'),
             readonly: true
         },
         firstName: {
+            //Поля, которые отностятся к информации о профиле
+            //По этим полям определятся заполненность профиля
+            profileInformation: true,
             type: String,
             default: null,
             public: true
         },
         lastName: {
+            //Поля, которые отностятся к информации о профиле
+            //По этим полям определятся заполненность профиля
+            profileInformation: true,
             type: String,
             default: null,
             public: true
@@ -91,33 +97,31 @@ var _ = require('underscore'),
             ]
         },
         sex: {
+            //Поля, которые отностятся к информации о профиле
+            //По этим полям определятся заполненность профиля
+            profileInformation: true,
             //поле доступно для отправки на клиент
             public: true,
             type: String,
             default: null
         },
         aboutAuthor: {
+            //Поля, которые отностятся к информации о профиле
+            //По этим полям определятся заполненность профиля
+            profileInformation: true,
             //поле доступно для отправки на клиент
             public: true,
             type: String,
             default: null
         },
-        birthdayDate: {
+        birthday: {
+            //Поля, которые отностятся к информации о профиле
+            //По этим полям определятся заполненность профиля
+            profileInformation: true,
             //поле доступно для отправки на клиент
+            //Используется timestamp
             public: true,
-            type: Number,
-            default: null
-        },
-        birthdayMonth: {
-            //поле доступно для отправки на клиент
-            public: true,
-            type: Number,
-            default: null
-        },
-        birthdayFullYear: {
-            //поле доступно для отправки на клиент
-            public: true,
-            type: Number,
+            type: String,
             default: null
         },
         password: {
@@ -161,11 +165,11 @@ UsersShema.virtual('fullName').get(function () {
         lastName = this.lastName,
         fullName = [];
 
-    if(lastName !== null){
+    if (lastName !== null) {
         fullName.push(lastName);
     }
 
-    if(firstName !== null){
+    if (firstName !== null) {
         fullName.push(firstName);
     }
 
@@ -222,6 +226,34 @@ UsersShema.methods.getSexList = function () {
     });
 
     return sexList;
+};
+
+/**
+ * Метод возвращает true, если информация по прфилю пустая
+ *
+ * @method
+ * @name UsersModel#isProfileInfoEmpty
+ * @returns {Boolean}
+ */
+UsersShema.methods.isProfileInfoEmpty = function () {
+    var isEmpty = true,
+        userPaths = UsersShema.paths,
+        fieldSettings;
+
+    _.every(userPaths, _.bind(function (path, field) {
+        if (!this[field]) {
+            return true;
+        }
+
+        fieldSettings = path.options;
+        if (fieldSettings.profileInformation) {
+            isEmpty = false;
+            return false;
+        }
+
+        return true;
+    }, this));
+    return isEmpty;
 };
 
 /**

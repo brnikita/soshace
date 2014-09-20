@@ -5,11 +5,11 @@
 </head>
 <body>
 <p>
-    {{i18n 'Hello'}}, {{userName}}.
+    {{i18n 'Hello'}}, {{profileUserName}}.
 </p>
 
 <p>
-    {{{i18n "To confirm the <a href='http://soshace.com'>Soshace</a> blog account you need to click on this link:"}}}
+    {{{i18n "To confirm the <a href='http://{{host}}/{{locale}}'>Soshace</a> blog account you need to click on this link:"}}}
 
     <a href="{{emailConfirmLink}}">{{emailConfirmLink}}</a>
 </p>
@@ -19,7 +19,7 @@
 </p>
 
 <p>
-    {{{i18n "With best wishes, <a href='http://soshace.com'>Soshace</a> blog team."}}}
+    {{{i18n "With best wishes, <a href='http://{{host}}/{{locale}}'>Soshace</a> blog team."}}}
 </p>
 </body>
 <html>

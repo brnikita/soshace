@@ -112,15 +112,15 @@
     "To confirm the": "To confirm the",
     "account you need to click on this link:": "account you need to click on this link:",
     "blog team.": "blog team.",
-    "To confirm the <a href='http://soshace.com'>Soshace</a> blog account you need to click on this link:": "Для подтверждения аккаунта в блоге <a href='http://soshace.com'>Soshace</a>, вам нужно перейти по следующей ссылке:",
-    "With best wishes, <a href='http://soshace.com'>Soshace</a> blog team.": "С наилучшими пожеланиями, команда блога <a href='http://soshace.com'>Soshace</a>.",
+    "To confirm the <a href='http://{{host}}/{{locale}}'>Soshace</a> blog account you need to click on this link:": "Для подтверждения аккаунта в блоге <a href='http://{{host}}/{{locale}}'>Soshace</a>, вам нужно перейти по следующей ссылке:",
+    "With best wishes, <a href='http://{{host}}/{{locale}}'>Soshace</a> blog team.": "С наилучшими пожеланиями, команда блога <a href='http://{{host}}/{{locale}}'>Soshace</a>.",
     "Here could be your posts": "Здесь могли бы быть ваши статьи",
     "First Name Last Name": "Имя фамилия",
     "Sex": "Пол",
     "Birthday": "День рождения",
     "Inforfomation obout author": "Inforfomation obout author",
     "Hobbies": "Увлечения",
-    "To your email address have sent confirmation message.": "На ваш электронный почтовый адрес было отправлено письмо с подтверждетнием.",
+    "To your email address have sent confirmation message.": "На ваш электронный почтовый адрес было отправлено письмо с подтверждением.",
     "Please confirm your email to get full access of Soshace account.": "Пожалуйста, подтвердите ваш электронный почтовый адрес для получения полного доступа к аккаунту Soshace.",
     "To enable editor, you need to <a href='/{{locale}}/login' class='js-router-link'>sign in</a>.": "Чтобы включить редактор, вам нужно <a href='/{{locale}}/login' class='js-router-link'>войти</a>.",
     "User with same username already exists.": "Пользователь с таким именем пользователя уже зарегистрирован.",
@@ -193,5 +193,8 @@
     "December": "Декабрь",
     "Soshace - venue of enthusiastic people.": "Soshace - место встречи увлеченных людей.",
     "<a class='js-router-link' href='/{{locale}}/posts/new'><strong>Write</strong></a> about your hobbies, interesting person, place or event.": "<a class='js-router-link' href='/{{locale}}/posts/new'><strong>Напиши</strong></a> о своем хобби, интересном человеке, месте или событии.",
-    "You only need <a class='js-router-link' href='/{{locale}}/registration'><strong>to register</strong></a>.": "Тебе нужно только <a class='js-router-link' href='/{{locale}}/registration'><strong>зарегистрироваться</strong></a>."
+    "You only need <a class='js-router-link' href='/{{locale}}/registration'><strong>to register</strong></a>.": "Тебе нужно только <a class='js-router-link' href='/{{locale}}/registration'><strong>зарегистрироваться</strong></a>.",
+    "Author information": "Информация об авторе",
+    "Author hasn't gave information about themselves yet.": "Автор пока не указал информацию о себе.",
+    "Tell about yourself": "Расскажите о себе"
 }
