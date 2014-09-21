@@ -15,7 +15,6 @@ define([
     'backbone',
     'handlebars',
     'utils/helpers',
-    'prettify',
     'backbone.layoutmanager',
     'templates'
 ], function ($, _, Backbone, Handlebars, Helpers) {

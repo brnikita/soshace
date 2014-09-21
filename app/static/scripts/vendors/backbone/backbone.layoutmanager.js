@@ -1,8 +1,3 @@
-/*!
- * backbone.layoutmanager.js v0.9.5
- * Copyright 2013, Tim Branyen (@tbranyen)
- * backbone.layoutmanager.js may be freely distributed under the MIT license.
- */
 (function(window, factory) {
     "use strict";
 

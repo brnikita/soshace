@@ -7,8 +7,6 @@ require.config(
             'callbacks': 'vendors/zepto/callbacks',
             'data': 'vendors/zepto/data',
             'underscore': 'vendors/underscore',
-            'underscore.string': 'vendors/underscore/underscore.string',
-            'prettify': 'vendors/prettify',
             'handlebars': 'vendors/handlebars',
             'class': 'vendors/class',
             'google-analytics': 'vendors/google-analytics',
@@ -29,11 +27,6 @@ require.config(
             'jquery.cookie': {
                 deps: [
                     'zepto'
-                ]
-            },
-            'underscore.string': {
-                deps: [
-                    'underscore'
                 ]
             },
             'backbone': {
