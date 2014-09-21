@@ -8,7 +8,7 @@
  */
 
 define([
-    'jquery',
+    'zepto',
     'underscore',
     'jquery.cookie',
     'config'

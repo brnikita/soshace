@@ -7,7 +7,7 @@
  */
 
 define([
-    'jquery',
+    'zepto',
     'underscore',
     'backbone',
     'config'

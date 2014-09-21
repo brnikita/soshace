@@ -9,7 +9,7 @@
     // AMD. Register as an anonymous module.  Wrap in function so we have access
     // to root via `this`.
     if (typeof define === "function" && define.amd) {
-        return define(["backbone", "underscore", "jquery"], function() {
+        return define(["backbone", "underscore", "zepto"], function() {
             return factory.apply(window, arguments);
         });
     }
@@ -102,7 +102,7 @@
                 if (_.isString(rendered)) {
                     // If no container is specified, we must replace the content.
                     if (manager.noel) {
-                        rendered = $.parseHTML(rendered, true);
+                        rendered = $(rendered);
 
                         // Remove extra root elements.
                         this.$el.slice(1).remove();

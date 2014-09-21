@@ -14,7 +14,7 @@
  */
 
 define([
-    'jquery',
+    'zepto',
     'underscore',
     'backbone',
     'models/postModel',

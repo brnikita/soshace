@@ -2,19 +2,18 @@ require.config(
     {
         baseUrl: '/static/scripts/',
         paths: {
-            'jquery': 'vendors/jquery',
+            'zepto': 'vendors/zepto',
+            'deferred': 'vendors/zepto/deferred',
+            'callbacks': 'vendors/zepto/callbacks',
+            'data': 'vendors/zepto/data',
             'underscore': 'vendors/underscore',
             'underscore.string': 'vendors/underscore/underscore.string',
-            'bootstrap': 'vendors/bootstrap',
             'prettify': 'vendors/prettify',
             'handlebars': 'vendors/handlebars',
             'class': 'vendors/class',
             'google-analytics': 'vendors/google-analytics',
             'yandex-metrika': 'vendors/yandex-metrika',
-            'jquery.hotkeys': 'vendors/jquery/jquery.hotkeys',
             'jquery.cookie': 'vendors/jquery/jquery.cookie',
-            'jquery.fileupload': 'vendors/jquery/jquery.fileupload',
-            'jquery.ui.widget': 'vendors/jquery/jquery.ui.widget',
             'backbone': 'vendors/backbone',
             'backbone.layoutmanager': 'vendors/backbone/backbone.layoutmanager',
             'backbone.validation': 'vendors/backbone/backbone.validation'
@@ -24,34 +23,12 @@ require.config(
             underscore: {
                 exports: '_'
             },
-            jquery: {
+            zepto: {
                 exports: '$'
-            },
-            'bootstrap': {
-                deps: [
-                    'jquery'
-                ]
-            },
-            'jquery.hotkeys': {
-                deps: [
-                    'jquery'
-                ]
             },
             'jquery.cookie': {
                 deps: [
-                    'jquery'
-                ]
-            },
-            'jquery.ui.widget': {
-                deps: [
-                    'jquery'
-                ]
-            },
-            'jquery.fileuplaod': {
-                deps: [
-                    'jquery',
-                    'jquery.ui.widget',
-                    'jquery.iframe-transport'
+                    'zepto'
                 ]
             },
             'underscore.string': {
@@ -61,7 +38,7 @@ require.config(
             },
             'backbone': {
                 deps: [
-                    'jquery',
+                    'zepto',
                     'underscore'
                 ],
                 exports: 'Backbone'

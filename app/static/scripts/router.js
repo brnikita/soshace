@@ -8,7 +8,7 @@
  * @module Router
  */
 define([
-    'jquery',
+    'zepto',
     'underscore',
     'backbone',
     'utils/helpers',

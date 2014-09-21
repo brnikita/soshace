@@ -10,18 +10,15 @@
  */
 
 define([
-    'jquery',
+    'zepto',
     'underscore',
-    'underscore.string',
     'backbone',
     'handlebars',
     'utils/helpers',
     'prettify',
-    'jquery.hotkeys',
-    'jquery.fileupload',
     'backbone.layoutmanager',
     'templates'
-], function ($, _, _s, Backbone, Handlebars, Helpers) {
+], function ($, _, Backbone, Handlebars, Helpers) {
     return Backbone.Layout.extend({
 
         /**
@@ -793,7 +790,7 @@ define([
          */
         addListeners: function () {
             if (!this.isEditorDisabled()) {
-                this.addImageButtonListener();
+//                this.addImageButtonListener();
                 this.addListenersToLinkModal();
                 this.addListenersToRemovePostModal();
                 this.elements.window.on('scroll', _.bind(this.windowScrollHandler, this));

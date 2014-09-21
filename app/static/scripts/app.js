@@ -1,7 +1,7 @@
 'use strict';
 
 define([
-    'jquery',
+    'zepto',
     'underscore',
     'backbone',
     'router',
@@ -10,9 +10,10 @@ define([
     'views/headerView',
     'views/systemMessagesView',
     'jquery.cookie',
-    'bootstrap',
     'backbone.layoutmanager',
-    'config'
+    'config',
+    'deferred',
+    'data'
 ], function ($, _, Backbone, Router, Helpers, SystemMessagesCollection, HeaderView, SystemMessagesView) {
     var App = Backbone.Layout.extend({
 

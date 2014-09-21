@@ -4,7 +4,7 @@
  * Плагин календарей (3 селекта: день, месяк, год)
  */
 define([
-    'jquery',
+    'zepto',
     'underscore',
     'utils/helpers'
 ], function ($, _, Helpers) {

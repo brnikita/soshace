@@ -1,7 +1,7 @@
 'use strict';
 
 define([
-    'jquery',
+    'zepto',
     'underscore',
     'views/admin/postReView',
     'config'

@@ -6,7 +6,7 @@
 'use strict';
 
 define([
-    'jquery',
+    'zepto',
     'underscore'
 ], function ($, _) {
     var methods = {
@@ -31,8 +31,7 @@ define([
                     'class': 'form-control-feedback'
                 }));
                 $formGroup.append($('<div>', {
-                    'class': 'form-group-status',
-                    style: 'display: none;'
+                    'class': 'form-group-status hide'
                 }));
             });
         },
@@ -57,7 +56,7 @@ define([
                 $groupStatus.html(controlStatusData.helperTitle);
 
                 if (!controlStatusData.helperIsShowing) {
-                    $groupStatus.slideDown();
+                    $groupStatus.removeClass('hide');
                 }
 
                 $this.data('controlStatus', _.extend(controlStatusData, {
@@ -88,8 +87,7 @@ define([
                     helperIsShowing: false
                 }));
 
-                $this.siblings('.form-group-status').
-                    slideUp();
+                $this.siblings('.form-group-status').addClass('hide');
             });
         },
 
@@ -114,7 +112,7 @@ define([
                 $groupStatus.html(error);
 
                 if (!(controlStatusData.helperIsShowing)) {
-                    $groupStatus.slideDown();
+                    $groupStatus.removeClass('hide');
                 }
 
                 $this.data('controlStatus', _.extend(controlStatusData, {
@@ -144,7 +142,7 @@ define([
                 $groupStatus.html(controlStatusData.successTitle);
 
                 if (!(controlStatusData && controlStatusData.helperIsShowing)) {
-                    $groupStatus.slideDown();
+                    $groupStatus.removeClass('hide');
                 }
 
                 $this.data('controlStatus', _.extend(controlStatusData, {

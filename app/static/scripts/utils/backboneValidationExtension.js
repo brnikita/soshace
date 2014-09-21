@@ -5,7 +5,7 @@
  */
 
 define([
-    'jquery',
+    'zepto',
     'underscore',
     'backbone',
     'backbone.validation',
