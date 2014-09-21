@@ -2,7 +2,10 @@
   @media (min-width: @screen-xs-max) {
     width: 650px;
     margin: 10px auto 0 auto;
-    .box-shadow(0 0 2px rgba(0,0,0,0.2));
+    .box-shadow(0 0 2px rgba(0, 0, 0, 0.2));
+  }
+  @media (max-width: @screen-xs-max) {
+    border-bottom: 1px solid @border-color-grey;
   }
   .nav-tabs {
     &__login {

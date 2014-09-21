@@ -3,6 +3,16 @@
     margin-top: 10px;
     .box-shadow(0 0 2px rgba(0, 0, 0, 0.2));
   }
+  @media (max-width: @screen-xs-max) {
+    border-bottom: 1px solid @border-color-grey;
+  }
+  &-profile-page {
+    @media (max-width: @screen-xs-max) {
+      .posts {
+        border-top: none;
+      }
+    }
+  }
   .nav-tabs {
     &__profile-info {
       width: 34%;
@@ -18,6 +28,11 @@
     background-color: #fff;
     padding: 10px;
     position: relative;
+    &__save-message {
+      .alert {
+        margin: 0 0 10px 0;
+      }
+    }
     &__info {
       &__avatar {
         @media (min-width: @screen-xs-max) {
@@ -108,11 +123,6 @@
         }
         @media (min-width: @screen-md-max) {
           width: 60%;
-        }
-        &__message {
-          .box-message {
-            margin: 0 0 10px 0;
-          }
         }
       }
     }

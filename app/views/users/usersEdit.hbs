@@ -6,6 +6,7 @@
                   data-user-name="{{user.userName}}"
                   data-_id="{{user._id}}"
                   data-locale="{{user.locale}}">
+                <div class="user__profile__save-message js-save-messages hide"></div>
                 <div class="user__profile__block clearfix">
                     <label class="user__profile__block__description">{{i18n 'Your photo'}}:</label>
 
@@ -67,7 +68,6 @@
                     </div>
                 </div>
                 <div class="user__profile__block__save">
-                    <div class="user__profile__block__save__message js-save-messages hide"></div>
                     <button type="submit" class="btn btn-primary js-user-save">{{i18n 'Save'}}</button>
                 </div>
             </form>

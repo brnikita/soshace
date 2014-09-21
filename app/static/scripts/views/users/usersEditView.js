@@ -190,7 +190,8 @@ define([
          * @returns {undefined}
          */
         showSaveMessage: function (message, isError) {
-            var template;
+            var $saveMessagesthis = this.elements.saveMessages,
+                template;
 
             if (isError) {
                 template = Soshace.hbs['messages/errorMessage']({
@@ -202,7 +203,8 @@ define([
                 });
             }
 
-            this.elements.saveMessages.html(template).removeClass('hide');
+            $saveMessagesthis.html(template).removeClass('hide');
+            Helpers.scrollToElementTop($saveMessagesthis);
         },
 
         /**

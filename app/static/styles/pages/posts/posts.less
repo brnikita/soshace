@@ -3,7 +3,7 @@
     margin-top: 10px;
   }
   @media (max-width: @screen-xs-max) {
-    border-top: 1px solid #e5e5e5;
+    border-top: 1px solid @border-color-grey;
   }
   h2 {
     overflow: hidden;
@@ -53,7 +53,7 @@
       }
     }
     @media (max-width: @screen-xs-max) {
-      border-bottom: 1px solid #e5e5e5;
+      border-bottom: 1px solid @border-color-grey;
     }
     &__description {
       padding-bottom: 10px;
@@ -70,6 +70,9 @@
     background: #fff;
     @media (min-width: @screen-xs-max) {
       .box-shadow(0 0 2px rgba(0, 0, 0, 0.2));
+    }
+    @media (max-width: @screen-xs-max) {
+      border-bottom: 1px solid @border-color-grey;
     }
   }
 }

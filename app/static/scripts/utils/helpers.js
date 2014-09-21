@@ -132,24 +132,20 @@ define([
         },
 
         /**
-         * TODO: не работает opara mini
-         *
-         * Метод удобен в мобильных версиях
-         * Поле должно быть хорошо видно
+         * Метод прокручивает до верхнего края элемента + 10px, чтобы
+         * элемент было хорошо видно
          *
          * @public
          * @method
-         * @name Helpers.scrollFieldToTop
-         * @param {jQuery} $field
+         * @name Helpers.scrollToElementTop
+         * @param {jQuery} $element
          * @returns {undefined}
          */
-        scrollFieldToTop: function ($field) {
-            var offset = $field.offset(),
+        scrollToElementTop: function ($element) {
+            var offset = $element.offset(),
                 top = offset.top - 10;
 
-            setTimeout(function () {
-                window.scrollTo(0, top);
-            }, 1500);
+            window.scrollTo(0, top);
         },
 
         /**

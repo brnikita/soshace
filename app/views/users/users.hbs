@@ -1,4 +1,4 @@
-<div class="content-center">
+<div class="content-center user-profile-page">
     <div class="user js-user"
          data-user-name="{{user.userName}}"
          data-_id="{{user._id}}"
@@ -72,7 +72,7 @@
             {{/if}}
         </div>
     {{else}}
-        <div class="box-message box-message-primary">
+        <div class="alert alert-info">
             {{#if isOwner}}
                 <h4>
                     <a class="js-router-link hidden-xs" href="/{{locale}}/posts/new">

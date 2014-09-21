@@ -1,7 +1,12 @@
-.box-message {
+.alert {
+  border: none;
   @media (min-width: @screen-xs-max) {
     margin-top: 10px;
-    .box-shadow(0 0 2px rgba(0, 0, 0, 0.2));
+  }
+  &.shadow {
+    @media (min-width: @screen-xs-max) {
+      .box-shadow(0 0 2px rgba(0, 0, 0, 0.2));
+    }
   }
   padding: 10px;
   text-align: center;
@@ -31,7 +36,7 @@
       .font-color-green;
     }
   }
-  &-primary {
+  &-info {
     .bg-color-blue-light;
     .font-color-blue-light;
     a {
