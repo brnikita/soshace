@@ -3,7 +3,7 @@
 /**
  * Вид страницы пользователя
  *
- * @class UsersEditView
+ * @class UsersView
  */
 
 define([
@@ -21,7 +21,7 @@ define([
          * Модель деталей статьи
          *
          * @field
-         * @name UsersEditView#model
+         * @name UsersView#model
          * @type {Backbone.Model | null}
          */
         model: null,
@@ -30,7 +30,7 @@ define([
          * Коллекция статей
          *
          * @field
-         * @name UsersEditView#postsCollection
+         * @name UsersView#postsCollection
          * @type {Backbone.Model | null}
          */
         postsCollection: null,
@@ -39,25 +39,26 @@ define([
          * Ссылки на DOM элементы
          *
          * @field
-         * @name UsersEditView#elements
+         * @name UsersView#elements
          * @type {Object}
          */
         elements: {
-            postsPreviews: null
+            postsPreviews: null,
+            user: null,
         },
 
         /**
          * Путь до шаблона
          *
          * @field
-         * @name UsersEditView#elements
+         * @name UsersView#elements
          * @type {string}
          */
         template: Soshace.hbs['users/users'],
 
         /**
          * @constructor
-         * @name UsersEditView#initialize
+         * @name UsersView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -68,11 +69,25 @@ define([
         },
 
         /**
+         * Метод заполняет данными модель из шаблона
+         *
+         * @method
+         * @name UsersView#setModelFromTemplate
+         * @returns {undefined}
+         */
+        setModelFromTemplate: function () {
+            var $user = this.elements.user,
+                userData = $user.data();
+
+            this.model.set(userData);
+        },
+
+        /**
          * Метод заполняет данными коллекцию статей и устанавливает виды preview используя
          * данные из шаблона
          *
          * @method
-         * @name UsersEditView#setPreViewsFromTemplate
+         * @name UsersView#setPreViewsFromTemplate
          * @returns {undefined}
          */
         setPreViewsFromTemplate: function () {
@@ -111,7 +126,7 @@ define([
          * Метод добавляет вид превью с списку статей
          *
          * @method
-         * @name UsersEditView#addOneView
+         * @name UsersView#addOneView
          * @param {Backbone.Model} postModel модель статьи
          * @returns {undefined}
          */
@@ -127,7 +142,7 @@ define([
          * Метод заполняет список статей
          *
          * @method
-         * @name UsersEditView#fillPostsList
+         * @name UsersView#fillPostsList
          * @returns {undefined}
          */
         fillPostsList: function () {
@@ -138,7 +153,7 @@ define([
          * Метод возвращает полное имя и фамилию пользователя
          *
          * @method
-         * @name UsersEditView#getFullName
+         * @name UsersView#getFullName
          * @returns {string}
          */
         getFullName: function(){
@@ -159,7 +174,7 @@ define([
 
         /**
          * @method
-         * @name UsersEditView#serialize
+         * @name UsersView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -185,18 +200,19 @@ define([
          * Метод сохраняет DOM элементы
          *
          * @method
-         * @name UsersEditView#setElements
+         * @name UsersView#setElements
          * @returns {undefined}
          */
         setElements: function () {
             this.elements.postsPreviews = this.$('.js-post-preview');
+            this.elements.user = this.$('.js-user');
         },
 
         /**
          * Метод запускается, когда рендеринг шаблона происходит на сервере
          *
          * @method
-         * @name UsersEditView#withoutRender
+         * @name UsersView#withoutRender
          * @param {jQuery} $el корневой элемент
          * @returns {undefined}
          */
@@ -204,12 +220,13 @@ define([
             this.$el = $el;
             this.delegateEvents();
             this.setElements();
+            this.setModelFromTemplate();
             this.setPreViewsFromTemplate();
         },
 
         /**
          * @method
-         * @name UsersEditView#beforeRender
+         * @name UsersView#beforeRender
          * @returns {undefined}
          */
         beforeRender: function () {
@@ -218,7 +235,7 @@ define([
 
         /**
          * @method
-         * @name UsersEditView#afterRender
+         * @name UsersView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {

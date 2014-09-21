@@ -128,10 +128,9 @@ define([
          */
         setModelFromTemplate: function () {
             var $form = this.elements.form,
-                userData = $form.data(),
-                formData = this.getFormData();
+                userData = $form.data();
 
-            this.model.set(_.extend(formData, userData));
+            this.model.set(userData);
         },
 
         /**
@@ -263,6 +262,7 @@ define([
             this.delegateEvents();
             this.setElements();
             this.setModelFromTemplate();
+            this.model.getUser();
             this.setDatesControls();
         },
 
