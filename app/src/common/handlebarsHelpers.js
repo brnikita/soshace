@@ -1,6 +1,7 @@
 'use strict';
 
-var Helpers = require('./helpers');
+var _ = require('underscore'),
+    Helpers = require('./helpers');
 
 /**
  * Конструктор хелперов для Handlebars
@@ -11,7 +12,7 @@ var Helpers = require('./helpers');
  * @returns {Object}
  */
 module.exports = function (request) {
-    return {
+    var HandlebarsHelpers = {
         /**
          * Метод возврвращает первод строки-параметра
          *
@@ -20,8 +21,35 @@ module.exports = function (request) {
          * @return {String}
          */
         i18n: function () {
-            var i18n = request.i18n;
-            return i18n.__.apply(i18n, arguments);
+            //В случае each передается контекст объекта в цикле,
+            //поэтому используется ссылка на HandlebarsHelpers
+            var _this = HandlebarsHelpers,
+                i18n = request.i18n,
+                translate = i18n.__.apply(i18n, arguments);
+
+            Array.prototype.shift.call(arguments);
+            return _this._i18nSetParams(translate, arguments);
+        },
+
+        /**
+         * Метод вставляет в строку переменные из списка опций
+         * Заменяет {{param}}
+         *
+         * @private
+         * @method
+         * @name HandlebarsHelpers._i18nSetParams
+         * @param {String} value строка перевода
+         * @param {Array} optionsList список опций
+         * @returns {String}
+         */
+        _i18nSetParams: function (value, optionsList) {
+            var stringParams = value.match(/\{\{(.+?)\}\}/g);
+
+            _.each(stringParams, function (param, index) {
+                value = value.replace(param, optionsList[index]);
+            });
+
+            return value;
         },
 
         /**
@@ -44,4 +72,6 @@ module.exports = function (request) {
             return [date, month, year].join('.');
         }
     };
+
+    return HandlebarsHelpers;
 };

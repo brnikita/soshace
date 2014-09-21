@@ -27,7 +27,7 @@ var SendMail = {
      * @param {string} code код подтверждения email
      * @returns {string}
      */
-    getConfirmationLink: function(locale, code){
+    getConfirmationLink: function (locale, code) {
         var host = Soshace.LOCAL_MACHINE ? Soshace.LOCAL_HOST : Soshace.PRODUCTION_HOST;
         return 'http://' + host + '/' + locale + '/registration/confirm_email?code=' + code;
     },
@@ -46,12 +46,12 @@ var SendMail = {
             locale = request.i18n.getLocale(),
             mailTemplatePath = Soshace.DIR_NAME + '/app/views/mails/confirmationMail.hbs',
             confirmationLink = this.getConfirmationLink(locale, user.code),
-            mailSubject  = request.i18n.__('Confirmation message from Soshace blog');
+            mailSubject = request.i18n.__('Confirmation message from Soshace blog');
 
-        Handlebars.render(mailTemplatePath, _.extend(requestParams,{
+        Handlebars.render(mailTemplatePath, _.extend(requestParams, {
+            userName: user.userName,
             emailConfirmLink: confirmationLink
         }), function (error, template) {
-            console.log(template);
             transport.sendMail({
                 from: Soshace.MAIL_NO_REPLY,
                 to: user.email,

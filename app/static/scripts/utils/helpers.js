@@ -15,29 +15,9 @@ define([
 ], function ($, _) {
     return {
         /**
-         * TODO: в jquery есть такое же
-         * Метод возвращает данные формы в виде объекта
-         *
-         * @deprecated
-         * @method
-         * @name Helpers.serializeFormObject
-         * @param {jQuery} formElement ссылка на элемент формы
-         * @returns {Object} сериализованная форма
-         */
-        serializeFormObject: function (formElement) {
-            var formArray = formElement.serializeArray(),
-                formObject = {};
-
-            _.each(formArray, function (formField) {
-                formObject[formField.name] = formField.value;
-            });
-
-            return formObject;
-        },
-
-        /**
          * Метод приводит строки типа hyp-hen к виду camelCase
          *
+         * @public
          * @method
          * @name Helpers.camelCase
          * @param {String} value
@@ -50,6 +30,7 @@ define([
         /**
          * Метод приводит строки типа camelCase к виду hyp-hen
          *
+         * @public
          * @method
          * @name Helpers.camelCase
          * @param {String} value
@@ -62,6 +43,7 @@ define([
         /**
          * Метод возвращает сериализованный инпут
          *
+         * @public
          * @method
          * @name Helpers.serializeField
          * @param {jQuery} $input
@@ -93,29 +75,54 @@ define([
         /**
          * Метод переводит переданныу строку
          *
+         * @public
          * @method
          * @name Helpers.i18n
-         * @param {String} value
          * @returns {String}
          */
-        i18n: function (value) {
-            var locale = this.getLocale(),
+        i18n: function () {
+            var value = arguments[0],
+                locale = this.getLocale(),
                 translations = Soshace.locales[locale];
 
+            Array.prototype.shift.call(arguments);
+
             if (typeof translations === 'undefined') {
-                return value;
+                return this._i18nSetParams(value, arguments);
             }
 
             if (typeof translations[value] === 'undefined') {
-                return value;
+                return this._i18nSetParams(value, arguments);
             }
 
-            return translations[value];
+            return this._i18nSetParams(translations[value], arguments);
+        },
+
+        /**
+         * Метод вставляет в строку переменные из списка опций
+         * Заменяет {{param}}
+         *
+         * @private
+         * @method
+         * @name Helpers._i18nSetParams
+         * @param {String} value строка перевода
+         * @param {Array} optionsList список опций
+         * @returns {String}
+         */
+        _i18nSetParams: function (value, optionsList) {
+            var stringParams = value.match(/\{\{(.+?)\}\}/g);
+
+            _.each(stringParams, function (param, index) {
+                value = value.replace(param, optionsList[index]);
+            });
+
+            return value;
         },
 
         /**
          * Метод возвращает true, если есть поддержка History API
          *
+         * @public
          * @method
          * @name Helpers.checkHistoryApiSupport
          * @returns {boolean}
@@ -130,6 +137,7 @@ define([
          * Метод удобен в мобильных версиях
          * Поле должно быть хорошо видно
          *
+         * @public
          * @method
          * @name Helpers.scrollFieldToTop
          * @param {jQuery} $field
@@ -147,7 +155,8 @@ define([
         /**
          * Форматируем числа к виду '01'
          *
-         * @function
+         * @public
+         * @method
          * @name Helpers.zeroLeading
          * @param {Number|String} numberToFormat
          * @returns {String}

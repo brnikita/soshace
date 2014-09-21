@@ -741,7 +741,6 @@ define([
          */
         afterRender: function () {
             this.setElements();
-            this.showPostStatus();
             this.showStatusMessages();
             this.toolbarInitOffset = this.elements.toolbar.offset();
         },
@@ -817,7 +816,6 @@ define([
             this.setDataToModelFromView();
             this.addListeners();
             this.showStatusMessages();
-            this.showPostStatus();
         },
 
         /**
