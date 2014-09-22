@@ -8,7 +8,7 @@
 
 define([
     'zepto',
-    'underscore',
+    'plugins/underscoreSmall',
     'backbone',
     'models/reviewCommentsModel',
     'config'

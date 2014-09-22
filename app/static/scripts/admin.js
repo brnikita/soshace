@@ -2,7 +2,7 @@
 
 define([
     'zepto',
-    'underscore',
+    'plugins/underscoreSmall',
     'views/admin/postReView',
     'config'
 ], function (

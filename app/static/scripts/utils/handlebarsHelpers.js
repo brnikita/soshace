@@ -8,7 +8,7 @@
  */
 
 define([
-    'underscore',
+    'plugins/underscoreSmall',
     'handlebars',
     'utils/helpers'
 ], function (_, Handlebars, Helpers) {

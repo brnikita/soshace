@@ -6,7 +6,7 @@
 
 define([
     'zepto',
-    'underscore',
+    'plugins/underscoreSmall',
     'backbone',
     'backbone.validation',
     'config'

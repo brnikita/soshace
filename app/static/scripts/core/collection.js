@@ -1,3 +1,12 @@
+'use strict';
+
 /**
- * Created by nikita on 22.09.14.
+ * Класс коллекции
+ *
+ * @module Collection
  */
+define(['./class'], function (Class) {
+    return Class.extend({
+
+    });
+});

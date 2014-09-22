@@ -9,7 +9,7 @@
  */
 define([
     'zepto',
-    'underscore',
+    'plugins/underscoreSmall',
     'backbone',
     'utils/helpers',
     //Необходимо при сборке

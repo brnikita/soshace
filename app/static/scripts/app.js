@@ -2,7 +2,7 @@
 
 define([
     'zepto',
-    'underscore',
+    'plugins/underscoreSmall',
     'backbone',
     'router',
     'utils/helpers',

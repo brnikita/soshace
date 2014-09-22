@@ -6,7 +6,7 @@
  * @class PostEditController
  */
 define([
-        'underscore',
+        'plugins/underscoreSmall',
         'utils/controller',
         'models/postModel',
         'views/posts/postEditView'

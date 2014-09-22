@@ -6,7 +6,7 @@
  * @class UsersEditController
  */
 define([
-        'underscore',
+        'plugins/underscoreSmall',
         'utils/controller',
         'models/usersModel',
         'views/users/usersEditView'

@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Класс роутера
+ * Класс Валидатора
  *
- * @module Router
+ * @module Validation
  */
 define(['./class'], function (Class) {
     return Class.extend({

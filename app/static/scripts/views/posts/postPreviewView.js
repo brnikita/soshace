@@ -8,7 +8,7 @@
 
 define([
     'zepto',
-    'underscore',
+    'plugins/underscoreSmall',
     'backbone',
     'backbone.layoutmanager',
     'templates'

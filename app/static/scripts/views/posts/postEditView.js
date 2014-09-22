@@ -11,7 +11,7 @@
 
 define([
     'zepto',
-    'underscore',
+    'plugins/underscoreSmall',
     'backbone',
     'handlebars',
     'utils/helpers',

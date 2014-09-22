@@ -6,7 +6,7 @@
  * @class NotFoundController
  */
 define([
-        'underscore',
+        'plugins/underscoreSmall',
         'utils/controller',
         'views/notFoundView'
     ],
