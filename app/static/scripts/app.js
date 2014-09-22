@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-    'zepto',
-    'plugins/underscoreSmall',
+    'jquery',
+    'underscore',
     'backbone',
     'router',
     'utils/helpers',

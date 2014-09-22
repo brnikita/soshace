@@ -1,4 +1,4 @@
-define(['zepto'], function($){
+define(['./zepto'], function($){
     var data = {}, dataAttr = $.fn.data, camelize = $.camelCase,
         exp = $.expando = 'Zepto' + (+new Date()), emptyArray = []
 

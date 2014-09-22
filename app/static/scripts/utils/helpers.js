@@ -8,8 +8,8 @@
  */
 
 define([
-    'zepto',
-    'plugins/underscoreSmall',
+    'jquery',
+    'underscore',
     'jquery.cookie',
     'config'
 ], function ($, _) {

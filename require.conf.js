@@ -2,11 +2,8 @@ require.config(
     {
         baseUrl: '/static/scripts/',
         paths: {
-            'zepto': 'vendors/zepto',
-            'deferred': 'vendors/zepto/deferred',
-            'callbacks': 'vendors/zepto/callbacks',
-            'data': 'vendors/zepto/data',
-            'underscore': 'vendors/underscore',
+            'jquery': 'vendors/jquery',
+            'underscore': 'plugins/underscoreSmall',
             'handlebars': 'vendors/handlebars',
             'class': 'vendors/class',
             'google-analytics': 'vendors/google-analytics',
@@ -18,20 +15,14 @@ require.config(
 
         },
         shim: {
-            underscore: {
-                exports: '_'
-            },
-            zepto: {
-                exports: '$'
-            },
             'jquery.cookie': {
                 deps: [
-                    'zepto'
+                    'jquery'
                 ]
             },
             'backbone': {
                 deps: [
-                    'zepto',
+                    'jquery',
                     'underscore'
                 ],
                 exports: 'Backbone'

@@ -6,8 +6,8 @@
 'use strict';
 
 define([
-    'zepto',
-    'plugins/underscoreSmall'
+    'jquery',
+    'underscore'
 ], function ($, _) {
     var methods = {
         /**

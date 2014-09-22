@@ -6,7 +6,7 @@
  * @class PostsController
  */
 define([
-    'plugins/underscoreSmall',
+    'underscore',
     'utils/controller',
     'collections/postsCollection',
     'views/posts/postsView'

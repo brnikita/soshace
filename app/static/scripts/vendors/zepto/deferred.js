@@ -1,4 +1,4 @@
-define(['zepto', 'callbacks'], function ($) {
+define(['./zepto', './callbacks'], function ($) {
     var slice = Array.prototype.slice
 
     function Deferred(func) {

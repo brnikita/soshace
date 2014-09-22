@@ -5,8 +5,8 @@
  *
  * @module Model
  */
-define(['./class'], function (Class) {
-    return Class.extend({
+define(['jquery', 'underscore', './event'], function ($, _, Event) {
+    return Event.extend({
 
         /**
          * Название id атрибута, по наличию которого определяется
@@ -40,6 +40,15 @@ define(['./class'], function (Class) {
         url: null,
 
         /**
+         * Дефолтные значения полей
+         *
+         * @field
+         * @name Model#defaults
+         * @type {Object | null}
+         */
+        defaults: null,
+
+        /**
          * @private
          * @field
          * @name Model#attributes
@@ -50,10 +59,43 @@ define(['./class'], function (Class) {
         /**
          * @public
          * @constructor
-         * @name Model.initialize
+         * @name Model#initialize
          * @returns {undefined}
          */
         initialize: function () {
+            this._setDefaultsToAttribute();
+        },
+
+        /**
+         * Метод возвращает путь API
+         *
+         * @private
+         * @method
+         * @name Model#initialize
+         * @returns {string}
+         */
+        _getUrl: function(){
+            var url = this.url;
+
+            if(_.isFunction(url)){
+                return url();
+            }
+
+            return url;
+        },
+
+        /**
+         * Метод устанавливает дефолтные значения полей в модель
+         *
+         * @private
+         * @method
+         * @name Model#_setDefaultsToAttribute
+         * @returns {undefined}
+         */
+        _setDefaultsToAttribute: function(){
+            if(this.defaults !== null){
+                this._attributes = _.clone(this.defaults);
+            }
         },
 
         /**
@@ -66,7 +108,7 @@ define(['./class'], function (Class) {
          * @returns {*}
          */
         get: function(attributeName){
-
+            return this._attributes[attributeName];
         },
 
         /**
@@ -75,10 +117,20 @@ define(['./class'], function (Class) {
          * @public
          * @method
          * @name Model#set
+         * @param {Object} attributes
+         * @param {Object} [options]
          * @returns {undefined}
          */
-        set: function(){
+        set: function(attributes, options){
+            var silent = options.silent,
+                _attributes = this._attributes || {};
 
+            this._attributes = _.extend(_attributes, attributes);
+            this._setChanged(attributes);
+
+            if(!silent){
+                this.trigger()
+            }
         },
 
         /**
@@ -91,6 +143,21 @@ define(['./class'], function (Class) {
          */
         toJSON: function(){
             return this._attributes;
+        },
+
+        /**
+         * Метод устанавливает измененные поля
+         *
+         * @private
+         * @method
+         * @param {Object} attributes
+         * @name Model#_setChanged
+         * @returns {undefined}
+         */
+        _setChanged: function(attributes){
+            var _changed = this._changed || {};
+
+            this._changed = _.extend(_changed, attributes);
         },
 
         /**
@@ -117,16 +184,36 @@ define(['./class'], function (Class) {
             return this.get(this.isAttribute) === null;
         },
 
+        /**
+         * @method
+         * @name Model#parse
+         * @returns {Object}
+         */
         parse: function () {
 
         },
 
+        /**
+         * Метод сохраняет модель
+         *
+         * @method
+         * @name Model#save
+         * @returns {$.Deferred}
+         */
         save: function () {
 
         },
 
+        /**
+         * @method
+         * @name Model#fetch
+         * @returns {$.Deferred}
+         */
         fetch: function(){
-
+            return $.get(this._getUrl()).
+                done(_.bind(function(response){
+                    this.set(this.parse(response), options);
+                }, this));
         }
 
     });

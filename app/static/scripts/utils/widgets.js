@@ -7,8 +7,8 @@
  */
 
 define([
-    'plugins/underscoreSmall',
-    'zepto'
+    'underscore',
+    'jquery'
 ], function (_, $) {
     return {
         /**

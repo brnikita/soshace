@@ -4,8 +4,8 @@
  * Плагин календарей (3 селекта: день, месяк, год)
  */
 define([
-    'zepto',
-    'plugins/underscoreSmall',
+    'jquery',
+    'underscore',
     'utils/helpers'
 ], function ($, _, Helpers) {
     var defaultOptions = {

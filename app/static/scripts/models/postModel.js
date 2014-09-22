@@ -7,8 +7,8 @@
  */
 
 define([
-    'zepto',
-    'plugins/underscoreSmall',
+    'jquery',
+    'underscore',
     'backbone',
     'utils/helpers',
     'config'

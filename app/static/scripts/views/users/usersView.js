@@ -7,8 +7,8 @@
  */
 
 define([
-    'zepto',
-    'plugins/underscoreSmall',
+    'jquery',
+    'underscore',
     'backbone',
     'handlebars',
     'utils/helpers',
@@ -44,7 +44,7 @@ define([
          */
         elements: {
             postsPreviews: null,
-            user: null,
+            user: null
         },
 
         /**

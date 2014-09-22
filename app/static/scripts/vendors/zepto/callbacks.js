@@ -1,4 +1,4 @@
-define(['zepto'], function($){
+define(['./zepto'], function($){
     // Create a collection of callbacks to be fired in a sequence, with configurable behaviour
     // Option flags:
     //   - once: Callbacks fired at most one time.

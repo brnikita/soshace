@@ -8,8 +8,8 @@
  * @module Router
  */
 define([
-    'zepto',
-    'plugins/underscoreSmall',
+    'jquery',
+    'underscore',
     'backbone',
     'utils/helpers',
     //Необходимо при сборке

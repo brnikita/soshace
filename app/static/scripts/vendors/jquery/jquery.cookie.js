@@ -1,7 +1,7 @@
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as anonymous module.
-        define(['zepto'], factory);
+        define(['jquery'], factory);
     } else {
         // Browser globals.
         factory(jQuery);

@@ -10,8 +10,8 @@
  */
 
 define([
-    'zepto',
-    'plugins/underscoreSmall',
+    'jquery',
+    'underscore',
     'backbone',
     'handlebars',
     'utils/helpers',

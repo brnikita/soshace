@@ -14,8 +14,8 @@
  */
 
 define([
-    'zepto',
-    'plugins/underscoreSmall',
+    'jquery',
+    'underscore',
     'backbone',
     'models/postModel',
     'collections/reviewCommentsCollection'
