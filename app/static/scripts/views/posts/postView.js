@@ -103,7 +103,7 @@ define([
          *
          * @method
          * @name PostView#addMetaData
-         * @returns {Boolean}
+         * @returns {boolean}
          */
         isOwner: function () {
             var app = Soshace.app,

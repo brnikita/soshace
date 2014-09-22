@@ -13,8 +13,8 @@ module.exports = {
      *
      * @function
      * @name Helpers.zeroLeading
-     * @param {Number|String} numberToFormat
-     * @returns {String}
+     * @param {number | string} numberToFormat
+     * @returns {string}
      */
     zeroLeading: function (numberToFormat) {
         numberToFormat = String(numberToFormat);
@@ -32,8 +32,8 @@ module.exports = {
      *
      * @method
      * @name Helpers.encodeMd5
-     * @param {String} value кодируемая строка
-     * @returns {String}
+     * @param {string} value кодируемая строка
+     * @returns {string}
      */
     encodeMd5: function(value){
         return Crypto.createHash('md5').update(value).digest('hex');

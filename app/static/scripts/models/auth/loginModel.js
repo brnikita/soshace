@@ -56,7 +56,7 @@ define([
         /**
          * @field
          * @name LoginModel#url
-         * @type {String}
+         * @type {string}
          */
         url: Soshace.urls.api.login,
 

@@ -9,7 +9,7 @@ module.exports = Class.extend({
      *
      * @field
      * @name Router#controllersPrefix
-     * @type {String}
+     * @type {string}
      */
     controllersPrefix: './controllers/',
 
@@ -98,7 +98,7 @@ module.exports = Class.extend({
      *
      * @method
      * @name Router#getController
-     * @param {String} path путь до контроллера
+     * @param {string} path путь до контроллера
      * @returns {Object}
      */
     getController: function (path) {

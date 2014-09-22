@@ -15,7 +15,7 @@ define([
          *
          * @field
          * @name Controller#pageAlias
-         * @type {String}
+         * @type {string}
          */
         pageAlias: Soshace.pageAlias,
 

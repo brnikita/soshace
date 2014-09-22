@@ -97,7 +97,7 @@ define([
          * @public
          * @method
          * @name jQuery.fn.controlStatus#error
-         * @param {String} error текст ошибки
+         * @param {string} error текст ошибки
          * @returns {jQuery}
          */
         error: function (error) {

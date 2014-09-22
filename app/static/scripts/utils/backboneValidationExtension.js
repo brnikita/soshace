@@ -16,8 +16,8 @@ define([
          * Метод валидации userName
          *
          * @method
-         * @param {String} value
-         * @returns {String | undefined}
+         * @param {string} value
+         * @returns {string | undefined}
          */
         userName: function (value) {
             if (!Soshace.patterns.userName.test(value)) {

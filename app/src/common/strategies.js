@@ -45,8 +45,8 @@ var Strategies = {
      *
      * @function
      * @name Strategies.local
-     * @param {String} userEmail
-     * @param {String} userPassword
+     * @param {string} userEmail
+     * @param {string} userPassword
      * @param {Function} done
      * @return {undefined}
      */
@@ -69,8 +69,8 @@ var Strategies = {
      * @name Strategies.getUserByEmailHandler
      * @param {*} error
      * @param {Object | null} user
-     * @param {String} userEmail
-     * @param {String} userPassword
+     * @param {string} userEmail
+     * @param {string} userPassword
      * @param {Function} done
      * @returns {undefined}
      */

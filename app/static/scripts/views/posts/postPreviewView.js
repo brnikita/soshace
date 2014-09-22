@@ -18,7 +18,7 @@ define([
         /**
          * @field
          * @name PostPreviewView#el
-         * @type {Boolean}
+         * @type {boolean}
          */
         el: false,
 
@@ -76,7 +76,7 @@ define([
          *
          * @method
          * @name PostPreviewView#addMetaData
-         * @returns {Boolean}
+         * @returns {boolean}
          */
         isOwner: function () {
             var app = Soshace.app,

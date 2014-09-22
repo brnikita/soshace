@@ -43,7 +43,7 @@ define([
         /**
          * @field
          * @name PostReView#el
-         * @type {String}
+         * @type {string}
          */
         el: '.js-post-review',
 

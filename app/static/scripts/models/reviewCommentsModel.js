@@ -17,14 +17,14 @@ define([
         /**
          * @field
          * @name ReviewCommentsModel#idAttribute
-         * @type {String}
+         * @type {string}
          */
         idAttribute: '_id',
 
         /**
          * @field
          * @name ReviewCommentsModel#default
-         * @type {String | null}
+         * @type {string | null}
          */
         default: {
             _id: null,

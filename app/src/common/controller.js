@@ -57,8 +57,8 @@ module.exports = Class.extend({
      *
      * @method
      * @name ControllerInit#sendError
-     * @param {Object | String} error  Пример: {error: 'Ошибка', code: 400} или 'Ошибка'
-     * @param {String} [code] код ошибки, 404, 500 по-умолчанию 400
+     * @param {Object | string} error  Пример: {error: 'Ошибка', code: 400} или 'Ошибка'
+     * @param {string} [code] код ошибки, 404, 500 по-умолчанию 400
      * @returns {undefined}
      */
     sendError: function (error, code) {
@@ -82,8 +82,8 @@ module.exports = Class.extend({
     /**
      * @method
      * @name ControllerInit#renderError
-     * @param {Object | String} error  Пример: {error: 'Ошибка', code: 400} или 'Ошибка'
-     * @param {String} [code] код ошибки, 404, 500 по-умолчанию 400
+     * @param {Object | string} error  Пример: {error: 'Ошибка', code: 400} или 'Ошибка'
+     * @param {string} [code] код ошибки, 404, 500 по-умолчанию 400
      * @returns {undefined}
      */
     renderError: function (error, code) {
@@ -113,7 +113,7 @@ module.exports = Class.extend({
      *
      * @method
      * @name ControllerInit#sendSuccess
-     * @param {String} message
+     * @param {string} message
      *                               сообщение
      * @returns {undefined}
      */

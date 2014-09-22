@@ -20,7 +20,7 @@ define([
              *
              * @field
              * @name RegistrationController#pageAlias
-             * @type {String}
+             * @type {string}
              */
             pageAlias: 'registration',
 

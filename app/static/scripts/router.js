@@ -124,7 +124,7 @@ define([
          *
          * @method
          * @name Router#getController
-         * @param {String} path путь до контроллера
+         * @param {string} path путь до контроллера
          * @returns {jQuery.Deferred}
          */
         getController: function (path) {
@@ -150,7 +150,7 @@ define([
          *
          * @method
          * @name Router#handleRouteByController
-         * @param {String} controllerPath путь до контроллера
+         * @param {string} controllerPath путь до контроллера
          * @param {Array} routeParams параметры запроса
          * @returns {undefined}
          */

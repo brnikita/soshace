@@ -18,7 +18,7 @@ define([
              *
              * @field
              * @name PostController#pageAlias
-             * @type {String}
+             * @type {string}
              */
             pageAlias: 'postDetail',
 

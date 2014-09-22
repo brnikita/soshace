@@ -33,7 +33,7 @@ define([
         /**
          * @field
          * @name SystemMessagesCollection#url
-         * @type {String}
+         * @type {string}
          */
         url: Soshace.urls.api.systemMessages,
 

@@ -17,7 +17,7 @@ define([
              *
              * @field
              * @name NotFoundController#pageAlias
-             * @type {String}
+             * @type {string}
              */
             pageAlias: '404',
 

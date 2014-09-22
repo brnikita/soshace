@@ -17,14 +17,14 @@ define([
         /**
          * @field
          * @name PostModel#idAttribute
-         * @type {String}
+         * @type {string}
          */
         idAttribute: '_id',
 
         /**
          * @field
          * @name PostModel#default
-         * @type {String | null}
+         * @type {string | null}
          */
         default: {
             _id: null,
@@ -198,7 +198,7 @@ define([
          *
          * @method
          * @name PostModel#initialize
-         * @param {String} [postId] id поста
+         * @param {string} [postId] id поста
          * @returns {jQuery.Deferred}
          */
         getPost: function (postId) {

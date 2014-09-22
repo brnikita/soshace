@@ -18,7 +18,7 @@ module.exports = function (request) {
          *
          * @method
          * @name HandlebarsHelpers.i18n
-         * @return {String}
+         * @return {string}
          */
         i18n: function () {
             //В случае each передается контекст объекта в цикле,
@@ -38,9 +38,9 @@ module.exports = function (request) {
          * @private
          * @method
          * @name HandlebarsHelpers._i18nSetParams
-         * @param {String} value строка перевода
+         * @param {string} value строка перевода
          * @param {Array} optionsList список опций
-         * @returns {String}
+         * @returns {string}
          */
         _i18nSetParams: function (value, optionsList) {
             var stringParams = value.match(/\{\{(.+?)\}\}/g);
@@ -57,8 +57,8 @@ module.exports = function (request) {
          *
          * @method
          * @name HandlebarsHelpers.formatDate
-         * @param {String} notFormattedDate неотформатированная дата
-         * @return {String}
+         * @param {string} notFormattedDate неотформатированная дата
+         * @return {string}
          */
         formatDate: function (notFormattedDate) {
             var dateObject = new Date(notFormattedDate),

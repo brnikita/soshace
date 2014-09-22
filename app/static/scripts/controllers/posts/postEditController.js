@@ -18,7 +18,7 @@ define([
              *
              * @field
              * @name PostEditController#pageAlias
-             * @type {String}
+             * @type {string}
              */
             pageAlias: 'postEdit',
 

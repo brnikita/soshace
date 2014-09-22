@@ -17,7 +17,7 @@ define([
         /**
          * @field
          * @name SystemMessagesModel#idAttribute
-         * @type {String}
+         * @type {string}
          */
         idAttribute: '_id',
 

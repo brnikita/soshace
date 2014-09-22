@@ -63,7 +63,7 @@ define([
          *
          * @method
          * @name UsersSettingsView#isDisabled
-         * @returns {Boolean}
+         * @returns {boolean}
          */
         isDisabled: function () {
             var app = Soshace.app,
@@ -83,7 +83,7 @@ define([
          *
          * @method
          * @name UsersSettingsView#isProfileEmpty
-         * @returns {Boolean}
+         * @returns {boolean}
          */
         isProfileEmpty: function(){
 

@@ -129,7 +129,7 @@ module.exports = Controller.extend({
      *
      * @method
      * @name PostEditController#isEditorDisabled
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     isEditorDisabled: function () {
         var request = this.request,
@@ -209,7 +209,7 @@ module.exports = Controller.extend({
      *
      * @method
      * @name PostEditController#renderEditPostForAuthenticatedHandler
-     * @param {String} error текст ошибки
+     * @param {string} error текст ошибки
      * @param {Backbone.Model} post модель статьи
      * @returns {undefined}
      */

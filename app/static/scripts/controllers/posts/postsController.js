@@ -18,7 +18,7 @@ define([
              *
              * @field
              * @name PostsController#pageAlias
-             * @type {String}
+             * @type {string}
              */
             pageAlias: 'home',
 

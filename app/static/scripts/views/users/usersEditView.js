@@ -184,8 +184,8 @@ define([
          *
          * @method
          * @name UsersEditView#showSaveMessage
-         * @param {String} message
-         * @param {Boolean} [isError] true, если нужно показать ошибку
+         * @param {string} message
+         * @param {boolean} [isError] true, если нужно показать ошибку
          * @returns {undefined}
          */
         showSaveMessage: function (message, isError) {
@@ -273,7 +273,7 @@ define([
          *
          * @method
          * @name UsersEditView#isDisabled
-         * @returns {Boolean}
+         * @returns {boolean}
          */
         isDisabled: function () {
             var app = Soshace.app,

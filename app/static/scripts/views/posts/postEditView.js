@@ -104,7 +104,7 @@ define([
          *
          * @field
          * @name PostEditView#setToModelTimeOut
-         * @type {Number}
+         * @type {number}
          */
         setToModelTimeOut: 1500,
 
@@ -227,7 +227,7 @@ define([
          *
          * @method
          * @name PostEditView#showPostStatus
-         *  @param {String} [status] название статуса (редактируется, сохранена, создана)
+         *  @param {string} [status] название статуса (редактируется, сохранена, создана)
          * @returns {undefined}
          */
         showPostStatus: function (status) {
@@ -617,7 +617,7 @@ define([
          *
          * @method
          * @name PostEditView#isEditorDisabled
-         * @returns {Boolean}
+         * @returns {boolean}
          */
         isEditorDisabled: function () {
             var app = Soshace.app,
@@ -639,7 +639,7 @@ define([
          *
          * @method
          * @name PostEditView#readOnly
-         * @returns {Boolean}
+         * @returns {boolean}
          */
         readOnly: function () {
             var app = Soshace.app,
@@ -769,7 +769,7 @@ define([
          *
          * @method
          * @name PostEditView#showEditorReadOnlyReason
-         * @param {String} editorMessage
+         * @param {string} editorMessage
          * @returns {undefined}
          */
         showEditorReadOnlyReason: function (editorMessage) {

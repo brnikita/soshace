@@ -36,7 +36,7 @@ define([
         /**
          * @field
          * @name App#el
-         * @type {String}
+         * @type {string}
          */
         el: 'body',
 
@@ -69,7 +69,7 @@ define([
          *
          * @method
          * @name App#isAuthenticated
-         * @returns {Boolean}
+         * @returns {boolean}
          */
         isAuthenticated: function () {
             return $.cookie('isAuthenticated') === '1';

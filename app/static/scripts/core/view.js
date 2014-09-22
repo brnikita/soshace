@@ -49,7 +49,7 @@ define(['./class'], function(Class){
          *
          * @field
          * @name View#template
-         * @type {String | null}
+         * @type {string | null}
          */
         template: null,
 

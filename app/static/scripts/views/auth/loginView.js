@@ -114,7 +114,7 @@ define([
          * @method
          * @name LoginView#showFieldsErrors
          * @param {Object} errors список ошибок
-         * @param {Boolean} [translate] true - перевести ошибки
+         * @param {boolean} [translate] true - перевести ошибки
          * @returns {undefined}
          */
         showFieldsErrors: function (errors, translate) {

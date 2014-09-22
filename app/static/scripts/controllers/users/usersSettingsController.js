@@ -18,7 +18,7 @@ define([
              *
              * @field
              * @name UsersSettingsController#pageAlias
-             * @type {String}
+             * @type {string}
              */
             pageAlias: 'userSettings',
 

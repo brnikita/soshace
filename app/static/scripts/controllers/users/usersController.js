@@ -19,7 +19,7 @@ define([
              *
              * @field
              * @name UsersController#pageAlias
-             * @type {String}
+             * @type {string}
              */
             pageAlias: 'user',
 

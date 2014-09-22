@@ -164,7 +164,7 @@ define(function () {
          *
          * @field
          * @name Soshace.pageAlias
-         * @type {String}
+         * @type {string}
          */
         pageAlias: 'home'
     };

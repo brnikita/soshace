@@ -20,7 +20,7 @@ define([
          * @public
          * @method
          * @name Helpers.camelCase
-         * @param {String} value
+         * @param {string} value
          * @returns {string}
          */
         camelCase: function (value) {
@@ -33,7 +33,7 @@ define([
          * @public
          * @method
          * @name Helpers.camelCase
-         * @param {String} value
+         * @param {string} value
          * @returns {string}
          */
         hyphen: function (value) {
@@ -78,7 +78,7 @@ define([
          * @public
          * @method
          * @name Helpers.i18n
-         * @returns {String}
+         * @returns {string}
          */
         i18n: function () {
             var value = arguments[0],
@@ -105,9 +105,9 @@ define([
          * @private
          * @method
          * @name Helpers._i18nSetParams
-         * @param {String} value строка перевода
+         * @param {string} value строка перевода
          * @param {Array} optionsList список опций
-         * @returns {String}
+         * @returns {string}
          */
         _i18nSetParams: function (value, optionsList) {
             var stringParams = value.match(/\{\{(.+?)\}\}/g);
@@ -154,8 +154,8 @@ define([
          * @public
          * @method
          * @name Helpers.zeroLeading
-         * @param {Number|String} numberToFormat
-         * @returns {String}
+         * @param {number | string} numberToFormat
+         * @returns {string}
          */
         zeroLeading: function (numberToFormat) {
             numberToFormat = String(numberToFormat);

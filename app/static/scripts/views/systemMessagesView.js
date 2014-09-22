@@ -87,7 +87,7 @@ define([
          *
          * @method
          * @name RegistrationView#getFirsAvailableMessage
-         * @param {String} pageAlias сокращенное название страницы
+         * @param {string} pageAlias сокращенное название страницы
          * @returns {Backbone.Model}
          */
         getFirsAvailableMessage: function (pageAlias) {
@@ -115,7 +115,7 @@ define([
          *
          * @method
          * @name RegistrationView#changePage
-         * @param {String} pageAlias сокращенное название страницы
+         * @param {string} pageAlias сокращенное название страницы
          * @returns {undefined}
          */
         changePage: function (pageAlias) {

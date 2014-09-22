@@ -14,7 +14,7 @@ module.exports = {
      * @method
      * @param {*} value
      * @name Validators.required
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     required: function (value) {
         if (value === '') {
@@ -41,7 +41,7 @@ module.exports = {
      *
      * @method
      * @name Validators.userNameUnique
-     * @param {String} value значение
+     * @param {string} value значение
      * @param {Function} respond функция обратного вызова
      * @returns {undefined}
      */
@@ -60,7 +60,7 @@ module.exports = {
      *
      * @method
      * @name Validators.emailUnique
-     * @param {String} value значение
+     * @param {string} value значение
      * @param {Function} respond функция обратного вызова
      * @returns {undefined}
      */
@@ -78,9 +78,9 @@ module.exports = {
      * Метод валидирует длину пароля не меньше 6 символов
      *
      * @method
-     * @param {String} value
+     * @param {string} value
      * @name Validators.email
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     passwordMinLength: function(value){
         value = String(value);

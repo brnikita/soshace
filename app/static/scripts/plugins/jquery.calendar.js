@@ -228,7 +228,7 @@ define([
              * @public
              * @method
              * @name jQuery.fn.calendar#getSelectedYear
-             * @returns {Number}
+             * @returns {number}
              */
             getSelectedYear: function () {
                 var options = this.calendar('getOptions'),
@@ -268,7 +268,7 @@ define([
              * @public
              * @method
              * @name jQuery.fn.calendar#getSelectedMonth
-             * @returns {Number}
+             * @returns {number}
              */
             getSelectedMonth: function () {
                 var options = this.calendar('getOptions'),
@@ -327,7 +327,7 @@ define([
              * @public
              * @method
              * @name jQuery.fn.calendar#getSelectedDate
-             * @returns {Number}
+             * @returns {number}
              */
             getSelectedDate: function () {
                 var options = this.calendar('getOptions'),
@@ -344,7 +344,7 @@ define([
              * @public
              * @method
              * @name jQuery.fn.calendar#setDate
-             * @param {String} selectedDate timestamp текущей даты
+             * @param {string} selectedDate timestamp текущей даты
              * @returns {jQuery}
              */
             setDate: function (selectedDate) {
@@ -363,7 +363,7 @@ define([
              * @public
              * @method
              * @name jQuery.fn.calendar#getDate
-             * @returns {String}
+             * @returns {string}
              */
             getDate: function () {
                 var options = this.calendar('getOptions');

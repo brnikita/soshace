@@ -18,7 +18,7 @@ define([
         /**
          * @field
          * @name UsersModel#idAttribute
-         * @type {String}
+         * @type {string}
          */
         idAttribute: '_id',
 
@@ -92,7 +92,7 @@ define([
          *
          * @method
          * @name UsersModel#isProfileInfoEmpty
-         * @returns {Boolean}
+         * @returns {boolean}
          */
         isProfileInfoEmpty: function () {
             var profileInformationFields = this.profileInformationFields,

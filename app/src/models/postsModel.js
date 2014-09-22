@@ -81,7 +81,7 @@ var _ = require('underscore'),
  *
  * @method
  * @name getPostDescription
- * @param {String} postBody тело поста
+ * @param {string} postBody тело поста
  * @returns {*}
  */
 function getPostDescription(postBody) {
@@ -100,7 +100,7 @@ function getPostDescription(postBody) {
  *
  * @method
  * @name checkFieldType
- * @param {String} field
+ * @param {string} field
  * @param {*} value
  * @returns {boolean} вовращает true, если поле соответствует типу в модели
  */
@@ -161,7 +161,7 @@ PostsShema.pre('save', function (next) {
  *
  * @method
  * @name PostsShema.getPosts
- * @param {String} locale
+ * @param {string} locale
  * @param {Function} callback
  * @return {Cursor}
  */
@@ -192,7 +192,7 @@ PostsShema.statics.getPosts = function (locale, callback) {
  *
  * @method
  * @name PostsShema.getStatusSentPosts
- * @param {String} locale локаль
+ * @param {string} locale локаль
  * @param {Function} callback
  * @return {undefined}
  */
@@ -225,7 +225,7 @@ PostsShema.statics.getStatusSentPosts = function (locale, callback) {
  * @method
  * @name PostsShema.isUpdateFieldsValid
  * @param {Object} update обновляемые данные
- * @returns {Boolean} false - ошибка
+ * @returns {boolean} false - ошибка
  */
 PostsShema.statics.isUpdateFieldsValid = function (update) {
     var isValid = true;
@@ -278,7 +278,7 @@ PostsShema.statics.clearUpdate = function (update) {
  *
  * @method
  * @name PostsShema.updatePost
- * @param {String} postId id статьи
+ * @param {string} postId id статьи
  * @param {Mongoose.model} profile профиль пользователя
  * @param {Object} update обновляемые поля
  * @param {Function} callback
@@ -337,7 +337,7 @@ PostsShema.statics.updatePost = function (postId, profile, update, callback) {
  * @method
  * @name PostsShema.updatePostHandler
  * @param {Object} error ошибка
- * @param {Number} updated флаг, означающий, что статья была обновлена
+ * @param {number} updated флаг, означающий, что статья была обновлена
  * @param {Function} callback
  * @returns {undefined}
  */
@@ -361,7 +361,7 @@ PostsShema.statics.updatePostHandler = function (error, updated, callback) {
  * @method
  * @name PostsShema.checkUpdateStatus
  * @param {Mongoose.model} profile профиль пользователя
- * @param {String} status пришедший статус статьи
+ * @param {string} status пришедший статус статьи
  * @return {Object | null} ошибка доступа
  */
 PostsShema.statics.checkUpdateStatus = function (profile, status) {
@@ -382,8 +382,8 @@ PostsShema.statics.checkUpdateStatus = function (profile, status) {
  *
  * @method
  * @name PostsShema.getProfilePost
- * @param {String} postId id статьи
- * @param {String} ownerId id пользователя
+ * @param {string} postId id статьи
+ * @param {string} ownerId id пользователя
  * @param {Function} callback
  * @return {undefined}
  */
@@ -415,7 +415,7 @@ PostsShema.statics.getProfilePost = function (postId, ownerId, callback) {
  *
  * @method
  * @name PostsShema.getProfilePosts
- * @param {String} ownerId id пользователя
+ * @param {string} ownerId id пользователя
  * @param {Function} callback
  * @return {undefined}
  */
@@ -445,7 +445,7 @@ PostsShema.statics.getProfilePosts = function (ownerId, callback) {
  *
  * @method
  * @name PostsShema.getUserPosts
- * @param {String} ownerId id пользователя
+ * @param {string} ownerId id пользователя
  * @param {Function} callback
  * @return {undefined}
  */
@@ -475,7 +475,7 @@ PostsShema.statics.getUserPosts = function (ownerId, callback) {
  *
  * @method
  * @name PostsShema.getPost
- * @param {String} postId id статьи
+ * @param {string} postId id статьи
  * @param {Function} callback
  * @return {undefined}
  */

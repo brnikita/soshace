@@ -19,7 +19,7 @@ define([
              *
              * @field
              * @name LoginController#pageAlias
-             * @type {String}
+             * @type {string}
              */
             pageAlias: 'login',
 
