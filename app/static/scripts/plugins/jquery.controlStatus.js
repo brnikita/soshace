@@ -7,7 +7,7 @@
 
 define([
     'zepto',
-    'underscore'
+    '../../../.'
 ], function ($, _) {
     var methods = {
         /**

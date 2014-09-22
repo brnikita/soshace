@@ -2,7 +2,7 @@
 
 var _ = require('underscore'),
     RequestParams = srcRequire('common/requestParams'),
-    Class = srcRequire('vendors/class');
+    Class = require('./class');
 
 /**
  * Родительский класс для контороллеров

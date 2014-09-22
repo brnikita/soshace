@@ -6,7 +6,7 @@
  * @class Controller
  */
 define([
-    'class',
+    './class',
     'config'
 ], function (Class) {
     return Class.extend({

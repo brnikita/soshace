@@ -5,7 +5,7 @@
  */
 define([
     'zepto',
-    'underscore',
+    '../../../.',
     'utils/helpers'
 ], function ($, _, Helpers) {
     var defaultOptions = {
