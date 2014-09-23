@@ -8,11 +8,9 @@ define(function () {
         ArrayProto = Array.prototype, ObjProto = Object.prototype, FuncProto = Function.prototype,
 
     // Create quick reference variables for speed access to core prototypes.
-        push = ArrayProto.push,
         slice = ArrayProto.slice,
         concat = ArrayProto.concat,
         toString = ObjProto.toString,
-        hasOwnProperty = ObjProto.hasOwnProperty,
 
     // All **ECMAScript 5** native function implementations that we hope to use
     // are declared here.
@@ -46,7 +44,7 @@ define(function () {
     // Delegates to **ECMAScript 5**'s native `map` if available.
     _.map = _.collect = function (obj, iterator, context) {
         var results = [];
-        if (obj == null) return results;
+        if (obj === null) return results;
         if (nativeMap && obj.map === nativeMap) return obj.map(iterator, context);
         each(obj, function (value, index, list) {
             results.push(iterator.call(context, value, index, list));
