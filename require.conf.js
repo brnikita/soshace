@@ -2,7 +2,7 @@ require.config(
     {
         baseUrl: '/static/scripts/',
         paths: {
-            'jquery': 'vendors/jquery',
+            'jquery': 'vendors/jqueryCore/index',
             'underscore': 'plugins/underscoreSmall',
             'handlebars': 'vendors/handlebars',
             'class': 'vendors/class',
