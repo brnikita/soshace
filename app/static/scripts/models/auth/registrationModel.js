@@ -9,13 +9,13 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
+    'core/model',
     'utils/helpers',
     'backbone.validation',
     'utils/backboneValidationExtension',
     'config'
-], function ($, _, Backbone, Helpers) {
-    return Backbone.Model.extend({
+], function ($, _, Model, Helpers) {
+    return Model.extend({
         /**
          * @field
          * @name RegistrationModel#defaults

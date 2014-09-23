@@ -9,10 +9,10 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
+    'core/model',
     'config'
-], function ($, _, Backbone) {
-    return Backbone.Model.extend({
+], function ($, _, Model) {
+    return Model.extend({
 
         /**
          * @field

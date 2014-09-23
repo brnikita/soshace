@@ -9,11 +9,11 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
+    'core/model',
     'utils/helpers',
     'config'
-], function ($, _, Backbone, Helpers) {
-    return Backbone.Model.extend({
+], function ($, _, Model, Helpers) {
+    return Model.extend({
         /**
          * @property
          * @name LoginModel#defaults
