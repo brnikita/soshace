@@ -129,7 +129,7 @@ define(['jquery', 'underscore', './event'], function ($, _, Event) {
             this._setChanged(attributes);
 
             if(!silent){
-                this.trigger()
+                this.trigger('change');
             }
         },
 
@@ -185,12 +185,16 @@ define(['jquery', 'underscore', './event'], function ($, _, Event) {
         },
 
         /**
+         * Метод парсит ответ сервера
+         * Метод можно переопределить в своей модели
+         *
          * @method
          * @name Model#parse
+         * @param {Object} response
          * @returns {Object}
          */
-        parse: function () {
-
+        parse: function (response) {
+            return response;
         },
 
         /**
@@ -209,7 +213,7 @@ define(['jquery', 'underscore', './event'], function ($, _, Event) {
          * @name Model#fetch
          * @returns {$.Deferred}
          */
-        fetch: function(){
+        fetch: function(options){
             return $.get(this._getUrl()).
                 done(_.bind(function(response){
                     this.set(this.parse(response), options);

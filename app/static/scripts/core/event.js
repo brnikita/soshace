@@ -11,11 +11,12 @@ define(['./class'], function (Class) {
          * Поле хранит список событий
          * имя события: callback
          *
+         * @private
          * @field
-         * @name Event#_events
+         * @name Event#_eventHandlers
          * @type {Object | null}
          */
-        _events: null,
+        _eventHandlers: null,
 
         /**
          * @constructor
@@ -23,28 +24,70 @@ define(['./class'], function (Class) {
          * @returns {undefined}
          */
         initialize: function () {
-
+            this._eventHandlers = [];
         },
 
         /**
-         * Метод добавляет событие и callback в список событий
+         * Подписка на событие
+         * Использование:
+         *  Obj.on('select', function(item) { ... }
          *
-         * @method
-         * @param {string} name имя события
-         * @param {Function} callback
+         *  @public
+         *  @name Event#on
+         *  @param {string} eventName имя события
+         *  @param {Function} handler обработчик
+         *  @returns {undefined}
          */
-        on: function (name, callback) {
+        on: function (eventName, handler) {
+            if (!this._eventHandlers[eventName]) {
+                this._eventHandlers[eventName] = [];
+            }
+            this._eventHandlers[eventName].push(handler);
+        },
+        /**
+         * Прекращение подписки
+         *  Obj.off('select',  handler)
+         *
+         *  @public
+         *  @name Event#off
+         *  @param {string} eventName имя события
+         *  @param {Function} handler обработчик
+         *  @returns {undefined}
+         */
+        off: function (eventName, handler) {
+            var i,
+                handlers = this._eventHandlers[eventName];
+            if (!handlers) {
+                return;
+            }
+            for (i = 0; i < handlers.length; i++) {
+                if (handlers[i] === handler) {
+                    handlers.splice(i--, 1);
+                }
+            }
         },
 
-        once: function (name, callback) {
-        },
+        /**
+         * Генерация события с передачей данных
+         *  Obj.trigger('select', item);
+         *
+         *  @public
+         *  @name Event#trigger
+         *  @param {string} eventName имя события
+         *  @returns {undefined}
+         */
+        trigger: function (eventName) {
+            var handlers, i;
 
-        off: function (name, callback, context) {
-        },
-
-        trigger: function (name) {
+            if (!this._eventHandlers[eventName]) {
+                return; // обработчиков для события нет
+            }
+            // вызвать обработчики
+            handlers = this._eventHandlers[eventName];
+            for (i = 0; i < handlers.length; i++) {
+                handlers[i].apply(this, [].slice.call(arguments, 1));
+            }
         }
-
 
     });
 });
