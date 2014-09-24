@@ -7,12 +7,13 @@
  */
 define([
         'underscore',
-        'utils/controller',
+        'core',
         'models/usersModel',
-        'views/users/usersEditView'
+        'views/users/usersEditView',
+        'global'
     ],
-    function (_, Controller, UsersModel, UsersEditView) {
-        return Controller.extend({
+    function (_, Core, UsersModel, UsersEditView, Soshace) {
+        return Core.Controller.extend({
             /**
              * Алиас страницы
              *

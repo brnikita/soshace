@@ -7,8 +7,8 @@
  */
 define([
     './class',
-    'config'
-], function (Class) {
+    'global'
+], function (Class, Soshace) {
     return Class.extend({
         /**
          * Алиас страницы

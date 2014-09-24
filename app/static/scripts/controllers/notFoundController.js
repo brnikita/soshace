@@ -7,11 +7,12 @@
  */
 define([
         'underscore',
-        'utils/controller',
-        'views/notFoundView'
+        'core',
+        'views/notFoundView',
+        'global'
     ],
-    function (_, Controller, NotFoundView) {
-        return Controller.extend({
+    function (_, Core, NotFoundView, Soshace) {
+        return Core.Controller.extend({
             /**
              * Алиас страницы
              *

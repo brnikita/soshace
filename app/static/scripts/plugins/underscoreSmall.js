@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * Урезанная версия underscore
+ *
+ * @module underscore
+ */
 define(function () {
     // Establish the object that gets returned to break out of a loop iteration.
     var _ = {}, breaker = {},
@@ -25,17 +30,25 @@ define(function () {
     // Handles objects with the built-in `forEach`, arrays, and raw objects.
     // Delegates to **ECMAScript 5**'s native `forEach` if available.
         each = _.each = _.forEach = function (obj, iterator, context) {
-            if (obj === null) return;
+            var i, length;
+
+            if (obj === null) {
+                return;
+            }
             if (nativeForEach && obj.forEach === nativeForEach) {
                 obj.forEach(iterator, context);
             } else if (obj.length === +obj.length) {
-                for (var i = 0, length = obj.length; i < length; i++) {
-                    if (iterator.call(context, obj[i], i, obj) === breaker) return;
+                for (i = 0, length = obj.length; i < length; i++) {
+                    if (iterator.call(context, obj[i], i, obj) === breaker) {
+                        return;
+                    }
                 }
             } else {
                 var keys = _.keys(obj);
-                for (var i = 0, length = keys.length; i < length; i++) {
-                    if (iterator.call(context, obj[keys[i]], keys[i], obj) === breaker) return;
+                for (i = 0, length = keys.length; i < length; i++) {
+                    if (iterator.call(context, obj[keys[i]], keys[i], obj) === breaker) {
+                        return;
+                    }
                 }
             }
         };
@@ -44,8 +57,12 @@ define(function () {
     // Delegates to **ECMAScript 5**'s native `map` if available.
     _.map = _.collect = function (obj, iterator, context) {
         var results = [];
-        if (obj === null) return results;
-        if (nativeMap && obj.map === nativeMap) return obj.map(iterator, context);
+        if (obj === null) {
+            return results;
+        }
+        if (nativeMap && obj.map === nativeMap) {
+            return obj.map(iterator, context);
+        }
         each(obj, function (value, index, list) {
             results.push(iterator.call(context, value, index, list));
         });
@@ -57,10 +74,16 @@ define(function () {
     // Aliased as `select`.
     _.filter = _.select = function (obj, iterator, context) {
         var results = [];
-        if (obj === null) return results;
-        if (nativeFilter && obj.filter === nativeFilter) return obj.filter(iterator, context);
+        if (obj === null) {
+            return results;
+        }
+        if (nativeFilter && obj.filter === nativeFilter){
+            return obj.filter(iterator, context);
+        }
         each(obj, function (value, index, list) {
-            if (iterator.call(context, value, index, list)) results.push(value);
+            if (iterator.call(context, value, index, list)) {
+                results.push(value);
+            }
         });
         return results;
     };
@@ -70,7 +93,9 @@ define(function () {
     _.where = function (obj, attrs, first) {
         return _[first ? 'find' : 'filter'](obj, function (value) {
             for (var key in attrs) {
-                if (attrs[key] !== value[key]) return false;
+                if (attrs[key] !== value[key]) {
+                    return false;
+                }
             }
             return true;
         });
@@ -85,16 +110,22 @@ define(function () {
     // available.
     _.bind = function (func, context) {
         var args, bound;
-        if (nativeBind && func.bind === nativeBind) return nativeBind.apply(func, slice.call(arguments, 1));
-        if (!_.isFunction(func)) throw new TypeError;
+        if (nativeBind && func.bind === nativeBind) {
+            return nativeBind.apply(func, slice.call(arguments, 1));
+        }
+        if (!_.isFunction(func)) {
+            throw new TypeError();
+        }
         args = slice.call(arguments, 2);
         return bound = function () {
             if (!(this instanceof bound)) return func.apply(context, args.concat(slice.call(arguments)));
             ctor.prototype = func.prototype;
-            var self = new ctor;
+            var self = new ctor();
             ctor.prototype = null;
             var result = func.apply(self, args.concat(slice.call(arguments)));
-            if (Object(result) === result) return result;
+            if (Object(result) === result) {
+                return result;
+            }
             return self;
         };
     };
@@ -251,6 +282,12 @@ define(function () {
     // Is a given variable undefined?
     _.isUndefined = function (obj) {
         return obj === void 0;
+    };
+
+    // Shortcut function for checking if an object has a given property directly
+    // on itself (in other words, not on a prototype).
+    _.has = function(obj, key) {
+        return obj !== null && hasOwnProperty.call(obj, key);
     };
 
     return _;

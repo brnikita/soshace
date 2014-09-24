@@ -5,7 +5,7 @@
  *
  * @module Model
  */
-define(['jquery', 'underscore', './event'], function ($, _, Event) {
+define(['jquery', 'underscore', './event', './ajax'], function ($, _, Event, Ajax) {
     return Event.extend({
 
         /**
@@ -74,10 +74,10 @@ define(['jquery', 'underscore', './event'], function ($, _, Event) {
          * @name Model#initialize
          * @returns {string}
          */
-        _getUrl: function(){
+        _getUrl: function () {
             var url = this.url;
 
-            if(_.isFunction(url)){
+            if (_.isFunction(url)) {
                 return url();
             }
 
@@ -92,8 +92,8 @@ define(['jquery', 'underscore', './event'], function ($, _, Event) {
          * @name Model#_setDefaultsToAttribute
          * @returns {undefined}
          */
-        _setDefaultsToAttribute: function(){
-            if(this.defaults !== null){
+        _setDefaultsToAttribute: function () {
+            if (this.defaults !== null) {
                 this._attributes = _.clone(this.defaults);
             }
         },
@@ -107,7 +107,7 @@ define(['jquery', 'underscore', './event'], function ($, _, Event) {
          * @param {string} attributeName имя аттрибута
          * @returns {*}
          */
-        get: function(attributeName){
+        get: function (attributeName) {
             return this._attributes[attributeName];
         },
 
@@ -121,14 +121,14 @@ define(['jquery', 'underscore', './event'], function ($, _, Event) {
          * @param {Object} [options]
          * @returns {undefined}
          */
-        set: function(attributes, options){
+        set: function (attributes, options) {
             var silent = options.silent,
                 _attributes = this._attributes || {};
 
             this._attributes = _.extend(_attributes, attributes);
             this._setChanged(attributes);
 
-            if(!silent){
+            if (!silent) {
                 this.trigger('change');
             }
         },
@@ -141,7 +141,7 @@ define(['jquery', 'underscore', './event'], function ($, _, Event) {
          * @name Model#toJSON
          * @returns {Object | null}
          */
-        toJSON: function(){
+        toJSON: function () {
             return this._attributes;
         },
 
@@ -154,7 +154,7 @@ define(['jquery', 'underscore', './event'], function ($, _, Event) {
          * @name Model#_setChanged
          * @returns {undefined}
          */
-        _setChanged: function(attributes){
+        _setChanged: function (attributes) {
             var _changed = this._changed || {};
 
             this._changed = _.extend(_changed, attributes);
@@ -168,7 +168,7 @@ define(['jquery', 'underscore', './event'], function ($, _, Event) {
          * @name Model#getChanged
          * @returns {Object | null}
          */
-        getChanged: function(){
+        getChanged: function () {
             return this._changed;
         },
 
@@ -213,11 +213,16 @@ define(['jquery', 'underscore', './event'], function ($, _, Event) {
          * @name Model#fetch
          * @returns {$.Deferred}
          */
-        fetch: function(options){
-            return $.get(this._getUrl()).
-                done(_.bind(function(response){
-                    this.set(this.parse(response), options);
-                }, this));
+        fetch: function (options) {
+            var request = new Ajax('GET', this._getUrl()),
+                deferred = request.deferred;
+
+            deferred.done(_.bind(function (data) {
+                var response = data.response;
+                this.set(this.parse(response), options);
+            }, this));
+
+            return deferred;
         }
 
     });

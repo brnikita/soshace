@@ -6,13 +6,14 @@
  * @class PostsController
  */
 define([
-    'underscore',
-    'utils/controller',
-    'collections/postsCollection',
-    'views/posts/postsView'
-],
-    function (_, Controller, PostsCollection, PostsView) {
-        return Controller.extend({
+        'underscore',
+        'core',
+        'collections/postsCollection',
+        'views/posts/postsView',
+        'global'
+    ],
+    function (_, Core, PostsCollection, PostsView, Soshace) {
+        return Core.Controller.extend({
             /**
              * Алиас страницы
              *

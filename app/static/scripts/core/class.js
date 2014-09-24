@@ -3,7 +3,7 @@
 /**
  * @module Class
  */
-define(['utils/underscore'], function (_) {
+define(['underscore'], function (_) {
     var Class = function () {
         var initialize = this.initialize;
 

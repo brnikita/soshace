@@ -7,13 +7,12 @@
  */
 
 define([
-    'jquery',
     'underscore',
-    'backbone',
+    'core',
     'models/postModel',
-    'config'
-], function ($, _, Backbone, PostModel) {
-    return Backbone.Collection.extend({
+    'global'
+], function (_, Core, PostModel, Soshace) {
+    return Core.Collection.extend({
         /**
          * Модель превью поста
          *
@@ -36,7 +35,6 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
-            _.bindAll(this, 'getPostsSuccess');
         },
 
         /**
@@ -54,7 +52,7 @@ define([
             this.fetch({
                 data: params,
                 silent: true
-            }).done(this.getPostsSuccess);
+            }).done(_.bind(this.getPostsSuccess, this));
         },
 
         /**

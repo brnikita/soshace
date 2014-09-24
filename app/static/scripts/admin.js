@@ -3,11 +3,12 @@
 define([
     'jquery',
     'underscore',
-    'views/admin/postReView',
-    'config'
+    'global',
+    'views/admin/postReView'
 ], function (
     $,
     _,
+    Soshace,
     PostReview) {
 
     if($('.js-post-review').length){

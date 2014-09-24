@@ -6,14 +6,14 @@
  * @class LoginController
  */
 define([
-    'backbone',
-    'utils/controller',
-    'models/auth/loginModel',
-    'views/auth/loginView',
-    'utils/helpers'
-],
-    function (Backbone, Controller, LoginModel, LoginView, Helpers) {
-        return Controller.extend({
+        'core',
+        'models/auth/loginModel',
+        'views/auth/loginView',
+        'utils/helpers',
+        'global'
+    ],
+    function (Core, LoginModel, LoginView, Helpers, Soshace) {
+        return Core.Controller.extend({
             /**
              * Алиас страницы
              *

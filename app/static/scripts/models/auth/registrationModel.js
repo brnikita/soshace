@@ -11,9 +11,7 @@ define([
     'underscore',
     'core',
     'utils/helpers',
-    'global',
-    'backbone.validation',
-    'utils/backboneValidationExtension'
+    'global'
 ], function ($, _, Core, Helpers, Soshace) {
     return Core.Model.extend({
         /**
@@ -119,11 +117,12 @@ define([
         validateFieldByServer: function (serializedField) {
             var params = {},
                 name = serializedField.name,
-                value = serializedField.value;
+                value = serializedField.value,
+                request;
 
             params[name] = value;
-            //TODO: переделать на POST
-            return $.get(Soshace.urls.api.registration.validateField, params);
+            request = Core.ajax('GET', Soshace.urls.api.registration.validateField, params);
+            return request.deferred;
         }
     });
 });

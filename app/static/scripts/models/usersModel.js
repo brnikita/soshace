@@ -7,12 +7,11 @@
  */
 
 define([
-    'jquery',
     'underscore',
     'core',
     'utils/helpers',
     'global'
-], function ($, _, Core, Helpers, Soshace) {
+], function (_, Core, Helpers, Soshace) {
     return Core.Model.extend({
 
         /**
@@ -117,7 +116,7 @@ define([
          * @returns {jQuery.Deferred}
          */
         getUser: function () {
-            var deferred = $.Deferred(),
+            var deferred = Core.deferred(),
                 userName = this.get('userName'),
                 profileUserName = '',
                 profile = Soshace.profile;

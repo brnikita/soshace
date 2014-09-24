@@ -7,12 +7,13 @@
  */
 define([
         'underscore',
-        'utils/controller',
+        'core',
         'models/postModel',
-        'views/posts/postView'
+        'views/posts/postView',
+        'global'
     ],
-    function (_, Controller, PostModel, PostView) {
-        return Controller.extend({
+    function (_, Core, PostModel, PostView, Soshace) {
+        return Core.Controller.extend({
             /**
              * Алиас страницы
              *

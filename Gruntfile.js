@@ -193,7 +193,7 @@ module.exports = function (grunt) {
         handlebars: {
             compile: {
                 options: {
-                    amd: ['handlebars', 'utils/handlebarsHelpers', 'config'],
+                    amd: ['handlebars', 'utils/handlebarsHelpers', 'global'],
                     namespace: 'Soshace.hbs',
                     processName: function(filePath) {
                         return filePath.replace(/app\/views\/|\.hbs/g, '');

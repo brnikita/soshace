@@ -8,9 +8,8 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'backbone.validation',
-    'config'
-], function ($, _, Backbone) {
+    'global'
+], function ($, _, Backbone, Soshace) {
     _.extend(Backbone.Validation.validators, {
         /**
          * Метод валидации userName

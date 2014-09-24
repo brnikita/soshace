@@ -6,15 +6,14 @@
  * @class RegistrationController
  */
 define([
-    'backbone',
-    'utils/controller',
+    'core',
     'models/auth/registrationModel',
     'views/auth/registrationView',
     'utils/helpers',
-    'config'
+    'global'
 ],
-    function (Backbone, Controller, RegistrationModel, RegistrationView, Helpers) {
-        return Controller.extend({
+    function (Core, RegistrationModel, RegistrationView, Helpers, Soshace) {
+        return Core.Controller.extend({
             /**
              * Алиас страницы
              *

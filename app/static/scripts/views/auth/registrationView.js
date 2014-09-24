@@ -12,9 +12,7 @@ define([
     'core',
     'utils/helpers',
     'handlebars',
-    'backbone.validation',
-    'utils/backboneValidationExtension',
-    'utils/plugins/jquery.controlStatus',
+    'plugins/controlStatus',
     'templates'
 ], function ($, _, Core, Helpers, Handlebars) {
     return Core.View.extend({

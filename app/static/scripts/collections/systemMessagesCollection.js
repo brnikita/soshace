@@ -7,13 +7,11 @@
  */
 
 define([
-    'jquery',
-    'underscore',
-    'backbone',
+    'core',
     'models/systemMessagesModel',
-    'config'
-], function ($, _, Backbone, SystemMessagesModel) {
-    return Backbone.Collection.extend({
+    'global'
+], function (Core, SystemMessagesModel, Soshace) {
+    return Core.Collection.extend({
         /**
          * @field
          * @name SystemMessagesCollection#model

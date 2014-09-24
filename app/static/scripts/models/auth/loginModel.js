@@ -7,12 +7,10 @@
  */
 
 define([
-    'jquery',
-    'underscore',
     'core',
     'utils/helpers',
     'global'
-], function ($, _, Core, Helpers, Soshace) {
+], function (Core, Helpers, Soshace) {
     return Core.Model.extend({
         /**
          * @property

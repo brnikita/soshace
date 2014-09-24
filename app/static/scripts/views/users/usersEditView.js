@@ -13,7 +13,7 @@ define([
     'handlebars',
     'utils/helpers',
     'templates',
-    'utils/plugins/jquery.calendar'
+    'plugins/calendar'
 ], function ($, _, Core, Handlebars, Helpers) {
     return Core.View.extend({
         /**

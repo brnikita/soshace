@@ -7,12 +7,11 @@
  */
 
 define([
-    'jquery',
     'underscore',
     'core',
     'utils/helpers',
     'global'
-], function ($, _, Core, Helpers, Soshace) {
+], function (_, Core, Helpers, Soshace) {
     return Core.Model.extend({
         /**
          * @field
@@ -199,7 +198,7 @@ define([
          * @method
          * @name PostModel#initialize
          * @param {string} [postId] id поста
-         * @returns {jQuery.Deferred}
+         * @returns {Core.Deferred}
          */
         getPost: function (postId) {
             if (typeof postId === 'string') {
@@ -208,7 +207,7 @@ define([
             }
 
             this.setToDefault();
-            return $.Deferred().resolve();
+            return Core.deferred().resolve();
         }
     });
 });
