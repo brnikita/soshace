@@ -4,9 +4,7 @@ define([
     './zepto',
     './callbacks',
     './data',
-    './deferred',
-    './event',
-    './ajax'
+    './deferred'
 ], function($){
     return $;
 });

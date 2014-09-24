@@ -9,11 +9,11 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
-    'backbone.layoutmanager',
+    'core',
+    'global',
     'templates'
-], function ($, _, Backbone) {
-    return Backbone.Layout.extend({
+], function (Core, Soshace) {
+    return Core.extend({
         /**
          * Путь до шаблона
          *

@@ -2,7 +2,7 @@
 
 define(function () {
     // Establish the object that gets returned to break out of a loop iteration.
-    var _, breaker = {},
+    var _ = {}, breaker = {},
 
     // Save bytes in the minified (but not gzipped) version:
         ArrayProto = Array.prototype, ObjProto = Object.prototype, FuncProto = Function.prototype,
@@ -198,7 +198,7 @@ define(function () {
     // Is a given value an array?
     // Delegates to ECMA5's native Array.isArray
     _.isArray = nativeIsArray || function (obj) {
-        return toString.call(obj) == '[object Array]';
+        return toString.call(obj) === '[object Array]';
     };
 
     // Is a given variable an object?
@@ -206,18 +206,25 @@ define(function () {
         return obj === Object(obj);
     };
 
+    // Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp.
+    _.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp'], function(name) {
+        _['is' + name] = function(obj) {
+            return toString.call(obj) === '[object ' + name + ']';
+        };
+    });
+
     // Define a fallback version of the method in browsers (ahem, IE), where
     // there isn't any inspectable "Arguments" type.
     if (!_.isArguments(arguments)) {
-        _.isArguments = function (obj) {
-            return !!(obj && _.has(obj, 'callee'));
+        _.isArguments = function(obj) {
+            return _.has(obj, 'callee');
         };
     }
 
-    // Optimize `isFunction` if appropriate.
-    if (typeof (/./) !== 'function') {
-        _.isFunction = function (obj) {
-            return typeof obj === 'function';
+    // Optimize `isFunction` if appropriate. Work around an IE 11 bug.
+    if (typeof /./ !== 'function') {
+        _.isFunction = function(obj) {
+            return typeof obj === 'function' || false;
         };
     }
 
@@ -228,12 +235,12 @@ define(function () {
 
     // Is the given value `NaN`? (NaN is the only number which does not equal itself).
     _.isNaN = function (obj) {
-        return _.isNumber(obj) && obj != +obj;
+        return _.isNumber(obj) && obj !== +obj;
     };
 
     // Is a given value a boolean?
     _.isBoolean = function (obj) {
-        return obj === true || obj === false || toString.call(obj) == '[object Boolean]';
+        return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
     };
 
     // Is a given value equal to null?

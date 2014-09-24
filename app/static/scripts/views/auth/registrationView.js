@@ -9,23 +9,22 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
+    'core',
     'utils/helpers',
     'handlebars',
     'backbone.validation',
     'utils/backboneValidationExtension',
     'utils/plugins/jquery.controlStatus',
-    'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone, Helpers, Handlebars) {
-    return Backbone.Layout.extend({
+], function ($, _, Core, Helpers, Handlebars) {
+    return Core.View.extend({
 
         /**
          * Модель формы регистрации
          *
          * @field
          * @name RegistrationView#model
-         * @type {Backbone.Model | null}
+         * @type {Core.Model | null}
          */
         model: null,
 

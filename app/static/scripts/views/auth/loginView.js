@@ -9,24 +9,23 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
+    'core',
     'utils/helpers',
     'utils/widgets',
     'handlebars',
     'backbone.validation',
     'utils/backboneValidationExtension',
     'utils/plugins/jquery.controlStatus',
-    'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone, Helpers, Widgets, Handlebars) {
-    return Backbone.Layout.extend({
+], function ($, _, Core, Helpers, Widgets, Handlebars) {
+    return Core.View.extend({
 
         /**
          * Модель формы логина
          *
          * @field
          * @name LoginView#model
-         * @type {Backbone.Model | null}
+         * @type {Core.Model | null}
          */
         model: null,
 

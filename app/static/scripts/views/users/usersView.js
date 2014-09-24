@@ -9,20 +9,20 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
+    'core',
     'handlebars',
     'utils/helpers',
     './../posts/postPreviewView',
     'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone, Handlebars, Helpers, PostPreviewView) {
-    return Backbone.Layout.extend({
+], function ($, _, Core, Handlebars, Helpers, PostPreviewView) {
+    return Core.View.extend({
         /**
          * Модель деталей статьи
          *
          * @field
          * @name UsersView#model
-         * @type {Backbone.Model | null}
+         * @type {Core.Model | null}
          */
         model: null,
 

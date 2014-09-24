@@ -12,13 +12,12 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
+    'core',
     'handlebars',
     'utils/helpers',
-    'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone, Handlebars, Helpers) {
-    return Backbone.Layout.extend({
+], function ($, _, Core, Handlebars, Helpers) {
+    return Core.View.extend({
 
         /**
          * Позиция панели редактирования при рендере
@@ -32,7 +31,7 @@ define([
         /**
          * @field
          * @name PostEditController#model
-         * @type {Backbone.Model}
+         * @type {Core.Model}
          */
         model: null,
 

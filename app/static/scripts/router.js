@@ -10,7 +10,7 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
+    'core',
     'utils/helpers',
     //Необходимо при сборке
     'controllers/posts/postsController',
@@ -21,8 +21,8 @@ define([
     'controllers/users/usersController',
     'controllers/users/usersEditController',
     'controllers/users/usersSettingsController'
-], function ($, _, Backbone, Helpers) {
-    return Backbone.Router.extend({
+], function ($, _, Core, Helpers) {
+    return Core.Router.extend({
         /**
          * Ссылка на текущий контроллер
          *
@@ -93,7 +93,7 @@ define([
          */
         startRouter: function(){
             if (Helpers.checkHistoryApiSupport()) {
-                Backbone.history.start({
+                Soshace.app.history.start({
                     pushState: true
                 });
                 return;

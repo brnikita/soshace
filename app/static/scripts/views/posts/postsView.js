@@ -9,20 +9,19 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
+    'core',
     'handlebars',
     'utils/helpers',
     './postPreviewView',
-    'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone, Handlebars, Helpers, PostPreviewView) {
-    return Backbone.Layout.extend({
+], function ($, _, Core, Handlebars, Helpers, PostPreviewView) {
+    return Core.View.extend({
         /**
          * Список статей
          *
          * @field
          * @name PostsView#collection
-         * @type {Backbone.Model | null}
+         * @type {Core.Collection | null}
          */
         collection: null,
 

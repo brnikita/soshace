@@ -9,13 +9,13 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
+    'core',
     'utils/helpers',
     'jquery.cookie',
     'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone, Helpers) {
-    return Backbone.Layout.extend({
+], function ($, _, Core, Helpers) {
+    return Core.View.extend({
         /**
          * @field
          * @name HeaderView#elements

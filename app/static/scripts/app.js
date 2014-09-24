@@ -3,19 +3,16 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
+    'core',
     'router',
     'utils/helpers',
     'collections/systemMessagesCollection',
     'views/headerView',
+    'global',
     'views/systemMessagesView',
-    'jquery.cookie',
-    'backbone.layoutmanager',
-    'config',
-    'deferred',
-    'data'
-], function ($, _, Backbone, Router, Helpers, SystemMessagesCollection, HeaderView, SystemMessagesView) {
-    var App = Backbone.Layout.extend({
+    'jquery.cookie'
+], function ($, _, Core, Router, Helpers, SystemMessagesCollection, HeaderView, SystemMessagesView, Soshace) {
+    var App = Core.View.extend({
 
         /**
          * @field
@@ -141,7 +138,7 @@ define([
 
             if (Helpers.checkHistoryApiSupport()) {
                 event.preventDefault();
-                Backbone.history.navigate(link, {trigger: true});
+                Core.app.history.navigate(link, {trigger: true});
             }
         },
 

@@ -9,11 +9,10 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
-    'backbone.layoutmanager',
+    'core',
     'templates'
-], function ($, _, Backbone) {
-    return Backbone.Layout.extend({
+], function ($, _, Core) {
+    return Core.View.extend({
 
         /**
          * @field
@@ -27,7 +26,7 @@ define([
          *
          * @field
          * @name RegistrationView#model
-         * @type {Backbone.Model | null}
+         * @type {Core.Model | null}
          */
         model: null,
 

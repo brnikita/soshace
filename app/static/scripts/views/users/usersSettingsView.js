@@ -9,13 +9,12 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
+    'core',
     'handlebars',
     'utils/helpers',
-    'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone, Handlebars, Helpers) {
-    return Backbone.Layout.extend({
+], function ($, _, Core, Handlebars, Helpers) {
+    return Core.View.extend({
         /**
          * Модель деталей статьи
          *

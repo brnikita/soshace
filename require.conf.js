@@ -2,7 +2,8 @@ require.config(
     {
         baseUrl: '/static/scripts/',
         paths: {
-            'jquery': 'vendors/jqueryCore',
+            'jquery': 'vendors/jqueryCore/index',
+            'core': 'core/index',
             'underscore': 'plugins/underscoreSmall',
             'handlebars': 'vendors/handlebars',
             'google-analytics': 'vendors/google-analytics',
