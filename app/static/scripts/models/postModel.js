@@ -9,11 +9,11 @@
 define([
     'jquery',
     'underscore',
-    'core/model',
+    'core',
     'utils/helpers',
-    'config'
-], function ($, _, Model, Helpers) {
-    return Model.extend({
+    'global'
+], function ($, _, Core, Helpers, Soshace) {
+    return Core.Model.extend({
         /**
          * @field
          * @name PostModel#idAttribute
@@ -162,7 +162,7 @@ define([
                 postId = post._id;
                 this.set(post, {silent: true});
                 postUrl = '/' + locale + '/posts/' + postId + '/edit';
-                Backbone.history.navigate(postUrl);
+                Soshace.app.history.navigate(postUrl);
                 this.trigger('postCreated');
                 return;
             }

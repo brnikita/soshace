@@ -20,9 +20,8 @@ var _ = require('underscore'),
     Passport = require('passport'),
     Handlebars = require('express3-handlebars'),
     Strategies = srcRequire('common/strategies'),
-    Class = srcRequire('vendors/class'),
+    Class = srcRequire('common/class'),
     methodOverride = require('method-override'),
-    SystemMessagesController = srcRequire('controllers/systemMessagesController'),
     MongoStore = require('connect-mongo')(session);
 
 var Blog = Class.extend({

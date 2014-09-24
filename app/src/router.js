@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('underscore'),
-    Class = srcRequire('vendors/class');
+    Class = srcRequire('common/class');
 
 module.exports = Class.extend({
     /**

@@ -9,11 +9,11 @@
 define([
     'jquery',
     'underscore',
-    'core/model',
+    'core',
     'utils/helpers',
-    'config'
-], function ($, _, Model, Helpers) {
-    return Model.extend({
+    'global'
+], function ($, _, Core, Helpers, Soshace) {
+    return Core.Model.extend({
         /**
          * @property
          * @name LoginModel#defaults

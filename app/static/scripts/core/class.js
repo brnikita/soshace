@@ -15,9 +15,7 @@ define(['utils/underscore'], function (_) {
      * @param {Object} staticProps статичные свойства
      */
     Class.extend = function (protoProps, staticProps) {
-        var parent = this,
-            child,
-            Surrogate;
+        var parent = this, child, Surrogate;
 
         // The constructor function for the new subclass is either defined by you
         // (the "constructor" property in your `extend` definition), or defaulted
@@ -50,6 +48,8 @@ define(['utils/underscore'], function (_) {
         // Set a convenience property in case the parent's prototype is needed
         // later.
         child._super = parent.prototype;
+
+        return child;
     };
 
     return Class;
