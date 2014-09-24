@@ -5,7 +5,11 @@
  */
 define(['utils/underscore'], function (_) {
     var Class = function () {
-        this.initialize.apply(this, arguments);
+        var initialize = this.initialize;
+
+        if (_.isFunction(initialize)) {
+            initialize.apply(this, arguments);
+        }
     };
 
     /**
