@@ -195,7 +195,7 @@ define([
         }
     };
 
-    $.fn.controlStatus = function (method) {
+    Core.Dom.prototype.controlStatus = function (method) {
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         }

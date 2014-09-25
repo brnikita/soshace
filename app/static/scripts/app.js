@@ -53,9 +53,8 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
-            _.bindAll(this, 'routerLinkHandler', 'initializeCompleted');
             this.systemMessagesCollection = new SystemMessagesCollection();
-            this.getCommonData().done(this.initializeCompleted);
+            this.getCommonData().done(_.bind(this.initializeCompleted, this));
         },
 
         /**
@@ -86,7 +85,7 @@ define([
             this.setView('.js-system-messages', new SystemMessagesView({
                 collection: _this.systemMessagesCollection
             }));
-            this.$el.on('click', '.js-router-link', this.routerLinkHandler);
+            this.$el.on('click', '.js-router-link', _.bind(this.routerLinkHandler, this));
             this.router = new Router();
         },
 
@@ -101,7 +100,7 @@ define([
          * @returns {jQuery.Deferred}
          */
         getCommonData: function () {
-            return $.when(
+            return Core.Deferred.when(
                 this.getCurrentLocale(),
                 this.getProfileData(),
                 this.getSystemMessages()
@@ -191,7 +190,7 @@ define([
          * @returns {deferred}
          */
         getCurrentLocale: function () {
-            var deferred = $.Deferred(),
+            var deferred = Core.deferred(),
                 locale = Helpers.getLocale(),
                 locales = Soshace.locales,
                 localeUrl = Soshace.urls.locales + locale + '.json';

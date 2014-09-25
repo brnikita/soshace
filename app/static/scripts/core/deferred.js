@@ -43,7 +43,9 @@ define(['./class'], function (Class) {
          * @param {Function} callback
          * @returns {Deferred}
          */
-        done: function(callback){},
+        done: function(callback){
+
+        },
 
         /**
          * Add handlers to be called when the Deferred object is rejected.
@@ -54,6 +56,18 @@ define(['./class'], function (Class) {
          * @param {Function} callback
          * @returns {Deferred}
          */
-        fail: function(callback){}
+        fail: function(callback){
+
+        }
+    }, {
+        /**
+         * @public
+         * @method
+         * @name Deferred.when
+         * @returns {Deferred}
+         */
+        when: function(){
+
+        }
     });
 });
