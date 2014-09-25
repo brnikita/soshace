@@ -7,14 +7,13 @@
  */
 
 define([
-    'jquery',
     'underscore',
     'core',
     'handlebars',
     'utils/helpers',
     './postPreviewView',
     'templates'
-], function ($, _, Core, Handlebars, Helpers, PostPreviewView) {
+], function (_, Core, Handlebars, Helpers, PostPreviewView) {
     return Core.View.extend({
         /**
          * Список статей

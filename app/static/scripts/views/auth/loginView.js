@@ -7,7 +7,6 @@
  */
 
 define([
-    'jquery',
     'underscore',
     'core',
     'utils/helpers',
@@ -15,7 +14,7 @@ define([
     'handlebars',
     'plugins/controlStatus',
     'templates'
-], function ($, _, Core, Helpers, Widgets, Handlebars) {
+], function (_, Core, Helpers, Widgets, Handlebars) {
     return Core.View.extend({
 
         /**

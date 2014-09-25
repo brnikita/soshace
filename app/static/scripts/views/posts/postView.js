@@ -7,13 +7,12 @@
  */
 
 define([
-    'jquery',
     'underscore',
     'core',
     'handlebars',
     'utils/helpers',
     'templates'
-], function ($, _, Core, Handlebars, Helpers) {
+], function (_, Core, Handlebars, Helpers) {
     return Core.View.extend({
 
         /**

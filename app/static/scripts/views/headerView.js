@@ -7,14 +7,11 @@
  */
 
 define([
-    'jquery',
     'underscore',
     'core',
     'utils/helpers',
-    'jquery.cookie',
-    'backbone.layoutmanager',
     'templates'
-], function ($, _, Core, Helpers) {
+], function (_, Core, Helpers) {
     return Core.View.extend({
         /**
          * @field

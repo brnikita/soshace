@@ -7,14 +7,13 @@
  */
 
 define([
-    'jquery',
     'underscore',
     'core',
     'handlebars',
     'utils/helpers',
     'templates',
     'plugins/calendar'
-], function ($, _, Core, Handlebars, Helpers) {
+], function (_, Core, Handlebars, Helpers) {
     return Core.View.extend({
         /**
          * Модель деталей статьи

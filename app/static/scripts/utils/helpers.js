@@ -8,11 +8,10 @@
  */
 
 define([
-    'jquery',
+    'core',
     'underscore',
-    'global',
-    'jquery.cookie'
-], function ($, _, Soshace) {
+    'global'
+], function (Core, _, Soshace) {
     return {
         /**
          * Метод приводит строки типа hyp-hen к виду camelCase

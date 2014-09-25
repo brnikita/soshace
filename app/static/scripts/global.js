@@ -6,7 +6,7 @@
  * @module Global
  */
 define(['underscore'], function (_) {
-    var Soshace = this.Soshace,
+    var Soshace = window.Soshace,
         Global = {
             /**
              * Ссылка на экземпляр приложения
@@ -173,12 +173,12 @@ define(['underscore'], function (_) {
 
 
     if (_.isUndefined(Soshace)) {
-        this.Soshace = {};
+        Soshace = window.Soshace = {};
     }
 
     if (_.isUndefined(Soshace.app)) {
-        this.Soshace = _.extend(Soshace, Global);
+        Soshace = _.extend(Soshace, Global);
     }
 
-    return Global;
+    return Soshace;
 });

@@ -8,8 +8,8 @@
 
 define([
     'underscore',
-    'jquery'
-], function (_, $) {
+    'core'
+], function (_, Core) {
     return {
         /**
          * TODO: переделать на плагин

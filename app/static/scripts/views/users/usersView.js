@@ -7,15 +7,13 @@
  */
 
 define([
-    'jquery',
     'underscore',
     'core',
     'handlebars',
     'utils/helpers',
     './../posts/postPreviewView',
-    'backbone.layoutmanager',
     'templates'
-], function ($, _, Core, Handlebars, Helpers, PostPreviewView) {
+], function (_, Core, Handlebars, Helpers, PostPreviewView) {
     return Core.View.extend({
         /**
          * Модель деталей статьи

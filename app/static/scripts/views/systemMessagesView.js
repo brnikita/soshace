@@ -7,11 +7,10 @@
  */
 
 define([
-    'jquery',
     'underscore',
     'core',
     'templates'
-], function ($, _, Core) {
+], function (_, Core) {
     return Core.View.extend({
 
         /**

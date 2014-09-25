@@ -7,8 +7,6 @@
  */
 
 define([
-    'jquery',
-    'underscore',
     'core',
     'global',
     'templates'

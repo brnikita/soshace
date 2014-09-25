@@ -4,10 +4,10 @@
  * Плагин календарей (3 селекта: день, месяк, год)
  */
 define([
-    'jquery',
+    'core',
     'underscore',
     'utils/helpers'
-], function ($, _, Helpers) {
+], function (Core, _, Helpers) {
     var defaultOptions = {
             startYear: 1900
         },

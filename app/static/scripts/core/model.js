@@ -5,7 +5,7 @@
  *
  * @module Model
  */
-define(['jquery', 'underscore', './event', './ajax'], function ($, _, Event, Ajax) {
+define(['./dom', 'underscore', './event', './ajax'], function (Dom, _, Event, Ajax) {
     return Event.extend({
 
         /**

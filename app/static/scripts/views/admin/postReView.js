@@ -14,13 +14,12 @@
  */
 
 define([
-    'jquery',
     'underscore',
-    'backbone',
+    'core',
     'models/postModel',
     'collections/reviewCommentsCollection'
-], function ($, _, Backbone, PostModel, ReviewCommentsCollection) {
-    return Backbone.View.extend({
+], function (_, Core, PostModel, ReviewCommentsCollection) {
+    return Core.View.extend({
 
         /**
          * Модель статьи

@@ -5,11 +5,11 @@
  */
 
 define([
-    'jquery',
+    'core',
     'underscore',
     'backbone',
     'global'
-], function ($, _, Backbone, Soshace) {
+], function (Core, _, Backbone, Soshace) {
     _.extend(Backbone.Validation.validators, {
         /**
          * Метод валидации userName

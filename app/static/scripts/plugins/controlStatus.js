@@ -6,9 +6,9 @@
 'use strict';
 
 define([
-    'jquery',
+    'core',
     'underscore'
-], function ($, _) {
+], function (Core, _) {
     var methods = {
         /**
          * @constructor

@@ -25,7 +25,7 @@ define([
     'core/history',
     'core/router'
 ], function (_, Class, Event, Deferred, Ajax, Dom, Model, Validation, View, Collection, Controller, History, Router) {
-    var Global = this.Soshace,
+    var Global = window.Soshace,
         Core = {
             /**
              * Базовый класс
@@ -175,11 +175,11 @@ define([
         };
 
     if (_.isUndefined(Global)) {
-        this.Soshace = {};
+        Global = window.Soshace = {};
     }
 
     if (_.isUndefined(Global.Core)) {
-        this.Soshace.Core = Core;
+        Global.Core = Core;
     }
 
     return Core;

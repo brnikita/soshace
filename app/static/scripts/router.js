@@ -8,7 +8,6 @@
  * @module Router
  */
 define([
-    'jquery',
     'underscore',
     'core',
     'utils/helpers',
@@ -21,7 +20,7 @@ define([
     'controllers/users/usersController',
     'controllers/users/usersEditController',
     'controllers/users/usersSettingsController'
-], function ($, _, Core, Helpers) {
+], function (_, Core, Helpers) {
     return Core.Router.extend({
         /**
          * Ссылка на текущий контроллер

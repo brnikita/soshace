@@ -1,7 +1,6 @@
 'use strict';
 
 define([
-    'jquery',
     'underscore',
     'core',
     'router',
@@ -9,9 +8,8 @@ define([
     'collections/systemMessagesCollection',
     'views/headerView',
     'global',
-    'views/systemMessagesView',
-    'jquery.cookie'
-], function ($, _, Core, Router, Helpers, SystemMessagesCollection, HeaderView, SystemMessagesView, Soshace) {
+    'views/systemMessagesView'
+], function (_, Core, Router, Helpers, SystemMessagesCollection, HeaderView, SystemMessagesView, Soshace) {
     var App = Core.View.extend({
 
         /**
@@ -119,8 +117,8 @@ define([
          * @returns {undefined}
          */
         setElements: function () {
-            this.elements.title = $('title');
-            this.elements.contentFirstLoad = $('.js-content-first-load');
+            this.elements.title = Core.dom('title');
+            this.elements.contentFirstLoad =  Core.dom('.js-content-first-load');
         },
 
         /**
