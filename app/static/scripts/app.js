@@ -7,8 +7,8 @@ define([
     'utils/helpers',
     'collections/systemMessagesCollection',
     'views/headerView',
-    'global',
-    'views/systemMessagesView'
+    'views/systemMessagesView',
+    'global'
 ], function (_, Core, Router, Helpers, SystemMessagesCollection, HeaderView, SystemMessagesView, Soshace) {
     var App = Core.View.extend({
 
@@ -171,7 +171,7 @@ define([
                 return deferred.resolve(Soshace.profile);
             }
 
-            profileUserName = $.cookie('profileUserName');
+            profileUserName = Helpers.getCookie('profileUserName');
             profileUrl = Soshace.urls.api.user.replace('0', profileUserName);
             $.get(profileUrl, function (data) {
                 Soshace.profile = data;

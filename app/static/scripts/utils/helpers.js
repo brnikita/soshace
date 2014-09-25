@@ -23,7 +23,9 @@ define([
          * @returns {string}
          */
         camelCase: function (value) {
-            return $.camelCase(value);
+            return value.toLowerCase().replace(/-(.)/g, function (match, group1) {
+                return group1.toUpperCase();
+            });
         },
 
         /**
@@ -50,12 +52,11 @@ define([
          */
         serializeField: function ($input) {
             var value = $input.val(),
-                name = $input.attr('name'),
-                _this = this;
+                name = $input.attr('name');
 
             return {
-                name: _this.camelCase(name),
-                value: $.trim(value)
+                name: this.camelCase(name),
+                value: this.trim(value)
             };
         },
 
@@ -68,7 +69,7 @@ define([
          * @return {String}
          */
         getLocale: function () {
-            return $.cookie('locale') || 'en';
+            return this.getCookie('locale') || 'en';
         },
 
         /**
@@ -165,6 +166,79 @@ define([
                 return numberToFormat;
             }
             return '00';
+        },
+
+        /**
+         * Метод возврвщает cookie
+         *
+         * @public
+         * @method
+         * @param {string} name
+         * @returns {string}
+         */
+        getCookie: function (name) {
+            var matches = document.cookie.match(new RegExp(
+                    '(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)'
+            ));
+            return matches ? decodeURIComponent(matches[1]) : undefined;
+        },
+
+        /**
+         * Метод устанавливает cookie
+         *
+         * @public
+         * @method
+         * @name Helpers.setCookie
+         * @param {string} name
+         * @param {string} value
+         * @param {Object} options
+         * @returns {undefined}
+         */
+        setCookie: function (name, value, options) {
+            var expires, today, propName, propValue, updatedCookie;
+
+            options = options || {};
+
+            expires = options.expires;
+
+            if (_.isNumber(expires) && expires) {
+                today = new Date();
+                today.setTime(today.getTime() + expires * 1000);
+                expires = options.expires = today;
+            }
+            if (expires && expires.toUTCString) {
+                options.expires = expires.toUTCString();
+            }
+
+            value = encodeURIComponent(value);
+
+            updatedCookie = name + '=' + value;
+
+            for (propName in options) {
+                if (options.hasOwnProperty(propName)) {
+                    updatedCookie += '; ' + propName;
+                    propValue = options[propName];
+                    if (propValue !== true) {
+                        updatedCookie += '=' + propValue;
+                    }
+                }
+
+            }
+
+            document.cookie = updatedCookie;
+        },
+
+        /**
+         * Метод удаляет из строки пробелы в начале и в конце
+         *
+         * @public
+         * @method
+         * @name Helpers.trim
+         * @param {string} value
+         * @returns {string}
+         */
+        trim: function(value){
+            return value.replace(/^\s+|\s+$/gm,'');
         }
     };
 });
