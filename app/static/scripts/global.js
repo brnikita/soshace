@@ -13,7 +13,7 @@ define(['underscore'], function (_) {
              *
              * @field
              * @name Soshace.app
-             * @type {Backbone.Layout}
+             * @type {App}
              */
             app: null,
 

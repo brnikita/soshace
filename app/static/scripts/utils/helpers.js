@@ -239,6 +239,18 @@ define([
          */
         trim: function(value){
             return value.replace(/^\s+|\s+$/gm,'');
+        },
+
+        /**
+         * Метод вовзращает true, если есть профиль
+         * аутентифицированного пользователя
+         *
+         * @method
+         * @name Helpers.isAuthenticated
+         * @returns {boolean}
+         */
+        isAuthenticated: function () {
+            return this.getCookie('isAuthenticated') === '1';
         }
     };
 });

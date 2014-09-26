@@ -58,18 +58,6 @@ define([
         },
 
         /**
-         * Метод вовзращает true, если есть профиль
-         * аутентифицированного пользователя
-         *
-         * @method
-         * @name App#isAuthenticated
-         * @returns {boolean}
-         */
-        isAuthenticated: function () {
-            return $.cookie('isAuthenticated') === '1';
-        },
-
-        /**
          * Метод обработчик заврешения инициализации приложения
          * Когда загружается все необходимы польховательские данные
          *
@@ -97,7 +85,7 @@ define([
          *
          * @method
          * @name App#getCommonData
-         * @returns {jQuery.Deferred}
+         * @returns {Deferred}
          */
         getCommonData: function () {
             return Core.Deferred.when(
@@ -157,13 +145,13 @@ define([
          *
          * @method
          * @name App#getProfileData
-         * @returns {jQuery.Deferred}
+         * @returns {Deferred}
          */
         getProfileData: function (profileUserName) {
             var profileUrl,
-                deferred = $.Deferred();
+                deferred = Core.deferred();
 
-            if (!this.isAuthenticated()) {
+            if (!Helpers.isAuthenticated()) {
                 return deferred.resolve(null);
             }
 
@@ -173,10 +161,10 @@ define([
 
             profileUserName = Helpers.getCookie('profileUserName');
             profileUrl = Soshace.urls.api.user.replace('0', profileUserName);
-            $.get(profileUrl, function (data) {
+            Core.get(profileUrl).done(function (data) {
                 Soshace.profile = data;
                 deferred.resolve(data);
-            }, 'json');
+            });
 
             return deferred;
         },
@@ -187,7 +175,7 @@ define([
          *
          * @method
          * @name App#getCurrentLocale
-         * @returns {deferred}
+         * @returns {Deferred}
          */
         getCurrentLocale: function () {
             var deferred = Core.deferred(),
@@ -203,10 +191,10 @@ define([
                 return deferred.resolve(locales[locale]);
             }
 
-            $.get(localeUrl, function (data) {
+            Core.get(localeUrl).done(function (data) {
                 locales[locale] = data;
                 deferred.resolve(data);
-            }, 'json');
+            });
 
             return deferred;
         }

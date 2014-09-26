@@ -60,9 +60,11 @@ define(['./dom', 'underscore', './event', './ajax'], function (Dom, _, Event, Aj
          * @public
          * @constructor
          * @name Model#initialize
+         * @param {Object} attributes
          * @returns {undefined}
          */
-        initialize: function () {
+        initialize: function (attributes) {
+            this.set(attributes, {silent: true});
             this._setDefaultsToAttribute();
         },
 
@@ -202,28 +204,50 @@ define(['./dom', 'underscore', './event', './ajax'], function (Dom, _, Event, Aj
          *
          * @method
          * @name Model#save
-         * @returns {$.Deferred}
+         * @param {Object} options
+         *                 options.patch сделать PATCH измененных данных
+         * @returns {Ajax}
          */
-        save: function () {
+        save: function (options) {
+            var params,
+                request,
+                url = this._getUrl();
 
+            if (options.patch && this.isNew()) {
+                params = this.getChanged();
+                request = new Ajax('PATCH', url, params);
+            } else {
+                params = this.toJSON();
+                request = new Ajax('POST', url, params);
+            }
+
+            request.done(_.bind(function (data) {
+                var response = data.response;
+                this.set(this.parse(response), {silent: true});
+                this._changed = null;
+            }, this));
+
+            return request;
         },
 
         /**
+         * Метод берет данные с сервера
+         *
          * @method
          * @name Model#fetch
-         * @returns {$.Deferred}
+         * @param {Object} options
+         *                 options.params - параметры запроса
+         * @returns {Ajax}
          */
         fetch: function (options) {
-            var request = new Ajax('GET', this._getUrl()),
-                deferred = request.deferred;
+            var request = new Ajax('GET', this._getUrl(), options.params);
 
-            deferred.done(_.bind(function (data) {
+            request.done(_.bind(function (data) {
                 var response = data.response;
-                this.set(this.parse(response), options);
+                this.set(this.parse(response));
             }, this));
 
-            return deferred;
+            return request;
         }
-
     });
 });

@@ -5,11 +5,31 @@
  *
  * @module Deferred
  */
-define(['./class'], function (Class) {
+define(['underscore', './class'], function (_, Class) {
     /**
      * @class Deferred
      */
-    return Class.extend({
+    var Deferred = Class.extend({
+        /**
+         * Флаг, означающий, что метод resolve уже вызван
+         *
+         * @private
+         * @field
+         * @name Deferred#resolved
+         * @type {boolean}
+         */
+        _resolved: false,
+
+        /**
+         * Флаг, означающий, что метод reject уже вызван
+         *
+         * @private
+         * @field
+         * @name Deferred#rejected
+         * @type {boolean}
+         */
+        _rejected: false,
+
         /**
          * Список успешных колбеков
          *
@@ -42,7 +62,13 @@ define(['./class'], function (Class) {
             var i,
                 successList = this._callbacksListSuccess;
 
-            for (i = 0; i < successList.length; i ++) {
+            this._resolved = true;
+
+            if (_.isNull(successList)) {
+                return this;
+            }
+
+            for (i = 0; i < successList.length; i++) {
                 successList[i].apply(this, arguments);
             }
 
@@ -61,7 +87,13 @@ define(['./class'], function (Class) {
             var i,
                 failList = this._callbacksListFail;
 
-            for (i = 0; i < failList.length; i ++) {
+            this._rejected = true;
+
+            if (_.isNull(failList)) {
+                return this;
+            }
+
+            for (i = 0; i < failList.length; i++) {
                 failList[i].apply(this, arguments);
             }
 
@@ -78,6 +110,11 @@ define(['./class'], function (Class) {
          * @returns {Deferred}
          */
         done: function (callback) {
+            if (this._resolved) {
+                callback();
+                return this;
+            }
+
             if (this._callbacksListSuccess === null) {
                 this._callbacksListSuccess = [];
             }
@@ -96,6 +133,11 @@ define(['./class'], function (Class) {
          * @returns {Deferred}
          */
         fail: function (callback) {
+            if (this._rejected) {
+                callback();
+                return this;
+            }
+
             if (this._callbacksListFail === null) {
                 this._callbacksListFail = [];
             }
@@ -113,9 +155,8 @@ define(['./class'], function (Class) {
          * @param {Function} callback
          * @returns {Deferred}
          */
-        always: function(callback){
-            this.done(callback).fail(callback);
-            return this;
+        always: function (callback) {
+            return this.done(callback).fail(callback);
         }
     }, {
         /**
@@ -131,7 +172,25 @@ define(['./class'], function (Class) {
          * @returns {Deferred}
          */
         when: function () {
+            var whenArguments = arguments,
+                responsesCount = 0,
+                whenDeferred = new Deferred(),
+                responsesList = [];
 
+            _.each(whenArguments, _.bind(function (deferred, index) {
+                deferred.always(function (response) {
+                    responsesList[index] = response;
+                    responsesCount++;
+
+                    if (responsesCount === whenArguments.length) {
+                        whenDeferred.resolve.apply(this, responsesList);
+                    }
+                });
+            }, this));
+
+            return whenDeferred;
         }
     });
+
+    return Deferred;
 });

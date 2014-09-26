@@ -33,7 +33,7 @@ define([
              * @public
              * @field
              * @name Soshace.Core.Class
-             * @type {Class}
+             * @type {Function}
              */
             Class: Class,
 
@@ -43,7 +43,7 @@ define([
              * @public
              * @field
              * @name Soshace.Core.Event
-             * @type {Event}
+             * @type {Function}
              */
             Event: Event,
 
@@ -51,7 +51,7 @@ define([
              * @public
              * @field
              * @name Soshace.Core.Deferred
-             * @type {Deferred}
+             * @type {Function}
              */
             Deferred: Deferred,
 
@@ -61,7 +61,7 @@ define([
              * @public
              * @field
              * @name Soshace.Core.Ajax
-             * @type {Ajax}
+             * @type {Function}
              */
             Ajax: Ajax,
 
@@ -71,7 +71,7 @@ define([
              * @public
              * @field
              * @name Soshace.Core.Dom
-             * @type {Dom}
+             * @type {Function}
              */
             Dom: Dom,
 
@@ -79,7 +79,7 @@ define([
              * @public
              * @field
              * @name Soshace.Core.Ajax
-             * @type {Model}
+             * @type {Function}
              */
             Model: Model,
 
@@ -87,7 +87,7 @@ define([
              * @public
              * @field
              * @name Soshace.Core.Validation
-             * @type {Validation}
+             * @type {Function}
              */
             Validation: Validation,
 
@@ -95,7 +95,7 @@ define([
              * @public
              * @field
              * @name Soshace.Core.View
-             * @type {View}
+             * @type {Function}
              */
             View: View,
 
@@ -103,7 +103,7 @@ define([
              * @public
              * @field
              * @name Soshace.Core.Collection
-             * @type {Collection}
+             * @type {Function}
              */
             Collection: Collection,
 
@@ -111,7 +111,7 @@ define([
              * @public
              * @field
              * @name Soshace.Core.Controller
-             * @type {Controller}
+             * @type {Function}
              */
             Controller: Controller,
 
@@ -121,7 +121,7 @@ define([
              * @public
              * @field
              * @name Soshace.Core.History
-             * @type {History}
+             * @type {Function}
              */
             History: History,
 
@@ -129,7 +129,7 @@ define([
              * @public
              * @field
              * @name Soshace.Core.Router
-             * @type {Router}
+             * @type {Function}
              */
             Router: Router,
 
@@ -141,11 +141,41 @@ define([
              * @name Soshace.Core.ajax
              * @param {string} requestType
              * @param {string} url
-             * @param {Object} params параметры запроса
+             * @param {Object} [params] параметры запроса
              * @returns {Ajax}
              */
             ajax: function(requestType, url, params){
                 return new Ajax(requestType, url, params);
+            },
+
+            /**
+             * Метод возвращает Ajax ообъект
+             * Метод делает GET запрос
+             *
+             * @public
+             * @method
+             * @name Soshace.Core.get
+             * @param {string} url
+             * @param {Object} [params] параметры запроса
+             * @returns {Ajax}
+             */
+            get: function(url, params){
+                return new Ajax('GET', url, params);
+            },
+
+            /**
+             * Метод возвращает Ajax ообъект
+             * Метод делает POST запрос
+             *
+             * @public
+             * @method
+             * @name Soshace.Core.post
+             * @param {string} url
+             * @param {Object} [params] параметры запроса
+             * @returns {Ajax}
+             */
+            post: function(url, params){
+                return new Ajax('POST', url, params);
             },
 
             /**

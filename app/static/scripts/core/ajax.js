@@ -5,46 +5,35 @@
  *
  * @module Ajax
  */
-define(['./class', './deferred'], function (Class, Deferred) {
-    return Class.extend({
-
-        deferred: null,
-
+define(['underscore', './deferred'], function (_, Deferred) {
+    return Deferred.extend({
         /**
          * @constructor
          * @param {string} requestType
          * @param {string} url
          * @param {Object} params параметры запроса
-         * @return {Deferred}
+         * @return {undefined}
          */
         initialize: function (requestType, url, params) {
-            var deferred = new Deferred(),
-                xmlHttp = new XMLHttpRequest();
+            var xmlHttp = new XMLHttpRequest();
 
-            xmlHttp.onreadystatechange = function () {
-                var status;
+            xmlHttp.onreadystatechange = _.bind(function () {
+                var response, status;
 
                 if (xmlHttp.readyState === 4) {
                     status = xmlHttp.status;
+                    response =  JSON.parse(xmlHttp.responseText);
 
                     if (status === 200) {
-                        deferred.resolve({
-                            response: xmlHttp.responseText,
-                            status: status
-                        });
+                        this.resolve(response, status);
                     } else {
-                        deferred.fail({
-                            response: xmlHttp.responseText,
-                            status: status
-                        });
+                        this.fail(response, status);
                     }
                 }
-            };
+            }, this);
 
             xmlHttp.open(requestType, url, true);
-            xmlHttp.send();
-
-            return deferred;
+            xmlHttp.send(params);
         }
     });
 });

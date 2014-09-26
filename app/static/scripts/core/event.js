@@ -6,6 +6,9 @@
  * @module Event
  */
 define(['./class'], function (Class) {
+    /**
+     * @class Event
+     */
     return Class.extend({
         /**
          * Поле хранит список событий
