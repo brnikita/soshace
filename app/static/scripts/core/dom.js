@@ -108,6 +108,7 @@ define(['./class', 'underscore'], function (Class, _) {
         /**
          * Метод навешивает слушатели на элементы DOM с выбранным селектором
          *
+         * @public
          * @method
          * @name Dom#on
          * @param {string} eventName
@@ -127,6 +128,7 @@ define(['./class', 'underscore'], function (Class, _) {
         /**
          * Метод удаляет слушатели с элементов DOM с выбранным селектором
          *
+         * @public
          * @method
          * @name Dom#off
          * @param {string} eventName
@@ -141,6 +143,106 @@ define(['./class', 'underscore'], function (Class, _) {
             }
 
             return this;
+        },
+
+        /**
+         * Метод добавляет класс всей группе элементов
+         *
+         * @public
+         * @method
+         * @name Dom#addClass
+         * @param {string} className
+         * @returns {Dom}
+         */
+        addClass: function(className){
+            return this;
+        },
+
+        /**
+         * Метод удаляет класс у всей группы элементов
+         *
+         * @public
+         * @method
+         * @name Dom#removeClass
+         * @param {string} className
+         * @returns {Dom}
+         */
+        removeClass: function(className){
+            return this;
+        },
+
+        /**
+         * Метод добавляет аттрибут всей группе элементов
+         *
+         * @public
+         * @method
+         * @name Dom#addAttr
+         * @param {string} attrName
+         * @param {string | number} attrValue
+         * @returns {Dom}
+         */
+        addAttr: function(attrName, attrValue){
+            return this;
+        },
+
+        /**
+         * Метод удаляет аттрибут у всей группе элементов
+         *
+         * @public
+         * @method
+         * @name Dom#removeAttr
+         * @param {string} attrName
+         * @returns {Dom}
+         */
+        removeAttr: function(attrName){
+            return this;
+        },
+
+        /**
+         * Метод возвращает значение аттрибута для первого элемента в группе элементов
+         *
+         * @public
+         * @method
+         * @name Dom#getAttr
+         * @param {string} attrName
+         * @returns {string} значение аттрибута
+         */
+        getAttr: function(attrName){
+        },
+
+        /**
+         * Метод задает значение аттрибута для всей группы элементов
+         *
+         * @public
+         * @method
+         * @name Dom#setAttr
+         * @param {string} attrName
+         * @param {string | number} attrValue
+         * @returns {Dom}
+         */
+        setAttr: function(attrName, attrValue){
+            return this;
+        },
+
+        /**
+         * Метод возвращает значение аттрибута для первого элемента в группе элементов
+         *
+         * Если передан второй параметр, то:
+         * Метод задает значение аттрибута для всей группы элементов
+         *
+         * @public
+         * @method
+         * @name Dom#attr
+         * @param {string} attrName
+         * @param {string | number} attrValue
+         * @returns {Dom | string}
+         */
+        attr: function(attrName, attrValue){
+            if(_.isUndefined(attrValue)){
+                return this.getAttr(attrName);
+            }
+
+            return this.setAttr(attrName, attrValue);
         }
     });
 
