@@ -3,69 +3,63 @@
 /**
  * Модель страницы логина
  *
- * @module LoginModel
+ * @module Soshace.models.LoginModel
  */
 
-define([
-    'core',
-    'utils/helpers',
-    'global'
-], function (Core, Helpers, Soshace) {
-    return Core.Model.extend({
-        /**
-         * @property
-         * @name LoginModel#defaults
-         * @type {Object}
-         */
-        defaults: {
-            locale: null,
-            email: null,
-            password: null
-        },
+Soshace.models.LoginModel = Soshace.core.Model.extend({
+    /**
+     * @property
+     * @name Soshace.models.LoginModel#defaults
+     * @type {Object}
+     */
+    defaults: {
+        locale: null,
+        email: null,
+        password: null
+    },
 
-        /**
-         * @field
-         * @name RegistrationModel#validation
-         * @type {Object}
-         */
-        validation: {
-            email: [
-                {
-                    required: true,
-                    msg: 'Email can&#39;t be blank.'
-                },
-                {
-                    pattern: Soshace.patterns.email,
-                    msg: 'Email is invalid.'
-                }
-            ],
-            password: [
-                {
-                    required: true,
-                    msg: 'Password can&#39;t be blank.'
-                },
-                {
-                    minLength: 6,
-                    msg: 'Password length should&#39;t be less than 6 characters.'
-                }
-            ]
-        },
+    /**
+     * @field
+     * @name RegistrationModel#validation
+     * @type {Object}
+     */
+    validation: {
+        email: [
+            {
+                required: true,
+                msg: 'Email can&#39;t be blank.'
+            },
+            {
+                pattern: Soshace.patterns.email,
+                msg: 'Email is invalid.'
+            }
+        ],
+        password: [
+            {
+                required: true,
+                msg: 'Password can&#39;t be blank.'
+            },
+            {
+                minLength: 6,
+                msg: 'Password length should&#39;t be less than 6 characters.'
+            }
+        ]
+    },
 
-        /**
-         * @field
-         * @name LoginModel#url
-         * @type {string}
-         */
-        url: Soshace.urls.api.login,
+    /**
+     * @field
+     * @name Soshace.models.LoginModel#url
+     * @type {string}
+     */
+    url: Soshace.urls.api.login,
 
-        /**
-         * @constructor
-         * @name LoginModel#initialize
-         * @returns {undefined}
-         */
-        initialize: function () {
-            var locale = Helpers.getLocale();
-            this.set({locale: locale}, {silent: true});
-        }
-    });
+    /**
+     * @constructor
+     * @name Soshace.models.LoginModel#initialize
+     * @returns {undefined}
+     */
+    initialize: function () {
+        var locale = Soshace.helpers.getLocale();
+        this.set({locale: locale}, {silent: true});
+    }
 });
