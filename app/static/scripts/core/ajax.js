@@ -3,37 +3,36 @@
 /**
  * Класс для работы с ajax запросами
  *
- * @module Ajax
+ * @class Soshace.core.Ajax
  */
-define(['underscore', './deferred'], function (_, Deferred) {
-    return Deferred.extend({
-        /**
-         * @constructor
-         * @param {string} requestType
-         * @param {string} url
-         * @param {Object} params параметры запроса
-         * @return {undefined}
-         */
-        initialize: function (requestType, url, params) {
-            var xmlHttp = new XMLHttpRequest();
+Soshace.core.Ajax = Soshace.core.Deferred.extend({
+    /**
+     * @constructor
+     * @name Soshace.core.Ajax#initialize
+     * @param {string} requestType
+     * @param {string} url
+     * @param {Object} params параметры запроса
+     * @return {undefined}
+     */
+    initialize: function (requestType, url, params) {
+        var xmlHttp = new XMLHttpRequest();
 
-            xmlHttp.onreadystatechange = _.bind(function () {
-                var response, status;
+        xmlHttp.onreadystatechange = _.bind(function () {
+            var response, status;
 
-                if (xmlHttp.readyState === 4) {
-                    status = xmlHttp.status;
-                    response =  JSON.parse(xmlHttp.responseText);
+            if (xmlHttp.readyState === 4) {
+                status = xmlHttp.status;
+                response = JSON.parse(xmlHttp.responseText);
 
-                    if (status === 200) {
-                        this.resolve(response, status);
-                    } else {
-                        this.fail(response, status);
-                    }
+                if (status === 200) {
+                    this.resolve(response, status);
+                } else {
+                    this.fail(response, status);
                 }
-            }, this);
+            }
+        }, this);
 
-            xmlHttp.open(requestType, url, true);
-            xmlHttp.send(params);
-        }
-    });
+        xmlHttp.open(requestType, url, true);
+        xmlHttp.send(params);
+    }
 });

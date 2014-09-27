@@ -5,7 +5,7 @@
  *
  * @module underscore
  */
-define(function () {
+(function () {
     // Establish the object that gets returned to break out of a loop iteration.
     var _ = {}, breaker = {},
 
@@ -290,5 +290,5 @@ define(function () {
         return obj !== null && hasOwnProperty.call(obj, key);
     };
 
-    return _;
-});
+    window._ = _;
+})();

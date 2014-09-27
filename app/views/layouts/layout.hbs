@@ -39,5 +39,5 @@
         require(['app']);
     </script>
 {{else}}
-    <script data-main="{{paths.static}}require.conf" src="{{paths.scripts}}vendors/require.js"></script>
+    {{> scriptsList}}
 {{/if}}
