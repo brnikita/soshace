@@ -232,9 +232,33 @@
         return toString.call(obj) === '[object Array]';
     };
 
+    _.toArray = function(argumentsList){
+        return Array.prototype.slice.call(argumentsList);
+    };
+
+    _.trim = function (value) {
+        return value.replace(/^\s+|\s+$/gm, '');
+    };
+
     // Is a given variable an object?
     _.isObject = function (obj) {
         return obj === Object(obj);
+    };
+
+    /**
+     * Метод приводит строки типа hyp-hen к виду camelCase
+     */
+    _.camelCase = function (value) {
+        return value.toLowerCase().replace(/-(.)/g, function (match, group1) {
+            return group1.toUpperCase();
+        });
+    };
+
+    /**
+     * Метод приводит строки типа camelCase к виду hyp-hen
+     */
+    _.hyphen = function (value) {
+        return value.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
     };
 
     // Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp.

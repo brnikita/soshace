@@ -17,7 +17,8 @@ module.exports = function (request) {
         isProduction = Soshace.IS_PRODUCTION,
         localHost = Soshace.LOCAL_HOST,
         productionHost = Soshace.PRODUCTION_HOST,
-        host = isProduction ? productionHost : localHost;
+        host = isProduction ? productionHost : localHost,
+        scriptsList = isProduction ? [] : Soshace.SCRIPTS_LIST;
 
     return {
         isProduction: isProduction,
@@ -30,6 +31,7 @@ module.exports = function (request) {
         profile: profile,
         profileUserName: profileUserName,
         //для шаблонов
-        backend: true
+        backend: true,
+        scriptsList: scriptsList
     };
 };

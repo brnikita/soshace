@@ -1,21 +1,19 @@
 'use strict';
 
-/**
- * Вспомогательные методы для шаблонизатора
- * Handlebars
- *
- * @module HandlebarsHelpers
- */
+(function (Soshace) {
+    var Handlebars = Soshace.Handlebars,
+        _ = Soshace._;
 
-define([
-    'underscore',
-    'handlebars',
-    'utils/helpers'
-], function (_, Handlebars, Helpers) {
+    /**
+     * Вспомогательные методы для шаблонизатора
+     * Handlebars
+     *
+     * @module HandlebarsHelpers
+     */
     /**
      * Метод перевода
      */
-    Handlebars.registerHelper('i18n', _.bind(Helpers.i18n, Helpers));
+    Handlebars.registerHelper('i18n', _.bind(Soshace.helpers.i18n, Soshace.helpers));
 
     /**
      * Метод отображает дату в формате 'mm.dd.yyyy'
@@ -26,9 +24,9 @@ define([
             month = dateObject.getMonth() + 1,
             year = dateObject.getFullYear();
 
-        date = Helpers.zeroLeading(date);
-        month = Helpers.zeroLeading(month);
+        date = Soshace.helpers.zeroLeading(date);
+        month = Soshace.helpers.zeroLeading(month);
 
         return [date, month, year].join('.');
     });
-});
+})(window.Soshace);

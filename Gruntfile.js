@@ -1,6 +1,8 @@
 'use strict';
 
 module.exports = function (grunt) {
+    //Список клиентских скриптов
+    var clientScripts = grunt.file.readJSON('clientScripts.json');
 
     // Загружает grunt tasks автоматически
     require('load-grunt-tasks')(grunt);
@@ -178,13 +180,28 @@ module.exports = function (grunt) {
         },
 
         //Собираем скрипты
-        requirejs: {
-            compile: {
-                options: {
-                    baseUrl: '<%= blog.dist %>/scripts/',
-                    mainConfigFile: 'require.conf.js',
-                    out: '<%= blog.dist %>/scripts/scripts.min.js',
-                    include: ['vendors/require', 'google-analytics', 'yandex-metrika']
+        uglify: {
+            options: {
+                compress: {
+                    'drop_console': true
+                }
+            },
+            scriptsMin: {
+                files: {
+                    '<%= blog.dist %>/scripts/scripts.min.js': (function () {
+                        var i,
+                            baseDir = 'dist/scripts/',
+                            formattedScriptsList = [],
+                            scriptPath,
+                            scriptsList = clientScripts.scripts;
+
+                        for (i = 0; i < scriptsList.length; i++) {
+                            scriptPath = baseDir + scriptsList[i] + '.js';
+                            formattedScriptsList.push(scriptPath);
+                        }
+
+                        return formattedScriptsList;
+                    })()
                 }
             }
         },
@@ -195,7 +212,7 @@ module.exports = function (grunt) {
                 options: {
                     amd: ['handlebars', 'utils/handlebarsHelpers', 'global'],
                     namespace: 'Soshace.hbs',
-                    processName: function(filePath) {
+                    processName: function (filePath) {
                         return filePath.replace(/app\/views\/|\.hbs/g, '');
                     }
                 },
@@ -235,11 +252,11 @@ module.exports = function (grunt) {
 
     //Верия для продакшена
     grunt.registerTask('prod', [
-//        'newer:jshint:all',
+        'newer:jshint:all',
         'clean',
         'copy:prod',
         'handlebars',
-        'requirejs',
+        'uglify',
         'less:prod'
     ]);
 

@@ -1,0 +1,63 @@
+{
+    "scripts": [
+        "soshace",
+
+        "plugins/underscoreSmall",
+
+        "utils/helpers",
+        "utils/handlebarsHelpers",
+
+        "templates",
+
+        "core",
+        "core/class",
+        "core/template",
+        "core/event",
+        "core/deferred",
+        "core/ajax",
+        "core/dom",
+        "core/model",
+        "core/view",
+        "core/collection",
+        "core/controller",
+        "core/history",
+        "core/router",
+
+        "models/systemMessagesModel",
+        "models/reviewCommentsModel",
+        "models/postModel",
+        "models/usersModel",
+        "models/auth/loginModel",
+        "models/auth/registrationModel",
+
+        "collections/postsCollection",
+        "collections/reviewCommentsCollection",
+        "collections/systemMessagesCollection",
+
+        "views/headerView",
+        "views/notFoundView",
+        "views/systemMessagesView",
+        "views/admin/postReView",
+        "views/auth/loginView",
+        "views/auth/registrationView",
+        "views/posts/postEditView",
+        "views/posts/postPreviewView",
+        "views/posts/postsView",
+        "views/posts/postView",
+        "views/users/usersEditView",
+        "views/users/usersSettingsView",
+        "views/users/usersView",
+
+        "controllers/notFoundController",
+        "controllers/auth/loginController",
+        "controllers/auth/registrationController",
+        "controllers/posts/postController",
+        "controllers/posts/postEditController",
+        "controllers/posts/postsController",
+        "controllers/users/usersController",
+        "controllers/users/usersEditController",
+        "controllers/users/usersSettingsController",
+
+        "app"
+    ]
+}

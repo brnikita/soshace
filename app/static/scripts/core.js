@@ -23,6 +23,16 @@
         Class: null,
 
         /**
+         * Класс для работы с шаблонами
+         *
+         * @public
+         * @field
+         * @name Soshace.Core.Template
+         * @type {Function | null}
+         */
+        Template: null,
+
+        /**
          * Класс событий
          *
          * @public

@@ -9,7 +9,8 @@ global.srcRequire = function (name) {
 
 var _ = require('underscore'),
     express = require('express'),
-    Package = require('./package'),
+    packageJson = require('./package'),
+    clientScripts = require('./clientScripts'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
@@ -35,7 +36,8 @@ var Blog = Class.extend({
      */
     initialize: function () {
         Soshace.DIR_NAME = __dirname;
-        Soshace.VERSION = Package.version;
+        Soshace.VERSION = packageJson.version;
+        Soshace.SCRIPTS_LIST = clientScripts.scripts;
         Soshace.IS_PRODUCTION = App.get('env') === 'production';
         this.configure();
         //Подрубаемся к базе
