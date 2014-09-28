@@ -1,32 +1,27 @@
 'use strict';
 
-/**
- * Вид страницы просмотра статьи
- *
- * @class PostView
- */
+(function(Soshace){
+    var _ = Soshace._;
 
-define([
-    'underscore',
-    'core',
-    'handlebars',
-    'utils/helpers',
-    'templates'
-], function (_, Core, Handlebars, Helpers) {
-    return Core.View.extend({
+    /**
+     * Вид страницы просмотра статьи
+     *
+     * @class Soshace.views.PostView
+     */
+    Soshace.views.PostView = Soshace.core.View.extend({
 
         /**
          * Модель деталей статьи
          *
          * @field
-         * @name PostView#model
+         * @name Soshace.views.PostView#model
          * @type {Core.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name PostView#elements
+         * @name Soshace.views.PostView#elements
          * @type {Object}
          */
         elements: {
@@ -40,14 +35,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name PostView#elements
+         * @name Soshace.views.PostView#elements
          * @type {string}
          */
         template: Soshace.hbs['posts/post'],
 
         /**
          * @constructor
-         * @name PostView#initialize
+         * @name Soshace.views.PostView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -59,7 +54,7 @@ define([
 
         /**
          * @method
-         * @name PostView#serialize
+         * @name Soshace.views.PostView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -70,7 +65,7 @@ define([
             data.isAuthenticated = app.isAuthenticated();
             data.post = model;
             data.paths = Soshace.urls;
-            data.locale = Helpers.getLocale();
+            data.locale = Soshace.helpers.getLocale();
             return data;
         },
 
@@ -100,7 +95,7 @@ define([
          * Метод возвращает true, если текущий авторизованный пользователь является владельцем
          *
          * @method
-         * @name PostView#addMetaData
+         * @name Soshace.views.PostView#addMetaData
          * @returns {boolean}
          */
         isOwner: function () {
@@ -122,7 +117,7 @@ define([
          * Метод добавляет ланные (статус, дату публикации и пр.) к превью статьи
          *
          * @method
-         * @name PostView#addMetaData
+         * @name Soshace.views.PostView#addMetaData
          * @returns {undefined}
          */
         addMetaData: function () {
@@ -134,7 +129,7 @@ define([
          * Метод возвращает отрендеренную панель информации для превью статьи
          *
          * @method
-         * @name PostView#getMetaData
+         * @name Soshace.views.PostView#getMetaData
          * @returns {undefined}
          */
         getMetaData: function () {
@@ -158,7 +153,7 @@ define([
          * Метод сохраняет ссылки на DOM элементы
          *
          * @method
-         * @name PostView#setElements
+         * @name Soshace.views.PostView#setElements
          * @returns {undefined}
          */
         setElements: function () {
@@ -172,7 +167,7 @@ define([
          * Метод вызывается, когда шаблон рендерится на сервере
          *
          * @method
-         * @name PostView#withoutRender
+         * @name Soshace.views.PostView#withoutRender
          * @param {jQuery} $el
          * @returns {undefined}
          */
@@ -189,7 +184,7 @@ define([
 
         /**
          * @method
-         * @name PostView#afterRender
+         * @name Soshace.views.PostView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
@@ -200,4 +195,4 @@ define([
             app.elements.title.html(this.model.get('title'));
         }
     });
-});
+})(window.Soshace);

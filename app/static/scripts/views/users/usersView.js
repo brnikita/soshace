@@ -1,25 +1,20 @@
 'use strict';
 
-/**
- * Вид страницы пользователя
- *
- * @class UsersView
- */
+(function(Soshace){
+    var $ = Soshace.$,
+        _ = Soshace._;
 
-define([
-    'underscore',
-    'core',
-    'handlebars',
-    'utils/helpers',
-    './../posts/postPreviewView',
-    'templates'
-], function (_, Core, Handlebars, Helpers, PostPreviewView) {
-    return Core.View.extend({
+    /**
+     * Вид страницы пользователя
+     *
+     * @class Soshace.views.UsersView
+     */
+    Soshace.views.UsersView = Soshace.core.View.extend({
         /**
          * Модель деталей статьи
          *
          * @field
-         * @name UsersView#model
+         * @name Soshace.views.UsersView#model
          * @type {Core.Model | null}
          */
         model: null,
@@ -28,7 +23,7 @@ define([
          * Коллекция статей
          *
          * @field
-         * @name UsersView#postsCollection
+         * @name Soshace.views.UsersView#postsCollection
          * @type {Backbone.Model | null}
          */
         postsCollection: null,
@@ -37,7 +32,7 @@ define([
          * Ссылки на DOM элементы
          *
          * @field
-         * @name UsersView#elements
+         * @name Soshace.views.UsersView#elements
          * @type {Object}
          */
         elements: {
@@ -49,14 +44,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name UsersView#elements
+         * @name Soshace.views.UsersView#elements
          * @type {string}
          */
         template: Soshace.hbs['users/users'],
 
         /**
          * @constructor
-         * @name UsersView#initialize
+         * @name Soshace.views.UsersView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -70,7 +65,7 @@ define([
          * Метод заполняет данными модель из шаблона
          *
          * @method
-         * @name UsersView#setModelFromTemplate
+         * @name Soshace.views.UsersView#setModelFromTemplate
          * @returns {undefined}
          */
         setModelFromTemplate: function () {
@@ -85,7 +80,7 @@ define([
          * данные из шаблона
          *
          * @method
-         * @name UsersView#setPreViewsFromTemplate
+         * @name Soshace.views.UsersView#setPreViewsFromTemplate
          * @returns {undefined}
          */
         setPreViewsFromTemplate: function () {
@@ -124,12 +119,12 @@ define([
          * Метод добавляет вид превью с списку статей
          *
          * @method
-         * @name UsersView#addOneView
+         * @name Soshace.views.UsersView#addOneView
          * @param {Backbone.Model} postModel модель статьи
          * @returns {undefined}
          */
         addOneView: function (postModel) {
-            var view = new PostPreviewView({
+            var view = new Soshace.views.PostPreviewView({
                 model: postModel
             });
 
@@ -140,7 +135,7 @@ define([
          * Метод заполняет список статей
          *
          * @method
-         * @name UsersView#fillPostsList
+         * @name Soshace.views.UsersView#fillPostsList
          * @returns {undefined}
          */
         fillPostsList: function () {
@@ -151,7 +146,7 @@ define([
          * Метод возвращает полное имя и фамилию пользователя
          *
          * @method
-         * @name UsersView#getFullName
+         * @name Soshace.views.UsersView#getFullName
          * @returns {string}
          */
         getFullName: function(){
@@ -172,7 +167,7 @@ define([
 
         /**
          * @method
-         * @name UsersView#serialize
+         * @name Soshace.views.UsersView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -187,7 +182,7 @@ define([
             data.posts = this.postsCollection.toJSON();
             data.isOwner = isOwner;
             data.isUserMainTab = true;
-            data.locale = Helpers.getLocale();
+            data.locale = Soshace.helpers.getLocale();
             data.user.fullName = this.getFullName();
             data.isProfileInfoEmpty = this.model.isProfileInfoEmpty();
 
@@ -198,7 +193,7 @@ define([
          * Метод сохраняет DOM элементы
          *
          * @method
-         * @name UsersView#setElements
+         * @name Soshace.views.UsersView#setElements
          * @returns {undefined}
          */
         setElements: function () {
@@ -210,7 +205,7 @@ define([
          * Метод запускается, когда рендеринг шаблона происходит на сервере
          *
          * @method
-         * @name UsersView#withoutRender
+         * @name Soshace.views.UsersView#withoutRender
          * @param {jQuery} $el корневой элемент
          * @returns {undefined}
          */
@@ -224,7 +219,7 @@ define([
 
         /**
          * @method
-         * @name UsersView#beforeRender
+         * @name Soshace.views.UsersView#beforeRender
          * @returns {undefined}
          */
         beforeRender: function () {
@@ -233,11 +228,11 @@ define([
 
         /**
          * @method
-         * @name UsersView#afterRender
+         * @name Soshace.views.UsersView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
             this.setElements();
         }
     });
-});
+})(window.Soshace);

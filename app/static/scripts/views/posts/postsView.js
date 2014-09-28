@@ -1,32 +1,27 @@
 'use strict';
 
-/**
- * Вид страницы списка статей
- *
- * @class PostsView
- */
+(function(Soshace){
+    var _ = Soshace._,
+        $ = Soshace.core.$;
 
-define([
-    'underscore',
-    'core',
-    'handlebars',
-    'utils/helpers',
-    './postPreviewView',
-    'templates'
-], function (_, Core, Handlebars, Helpers, PostPreviewView) {
-    return Core.View.extend({
+    /**
+     * Вид страницы списка статей
+     *
+     * @class Soshace.views.PostsView
+     */
+    Soshace.views.PostsView = Soshace.core.View.extend({
         /**
          * Список статей
          *
          * @field
-         * @name PostsView#collection
+         * @name Soshace.views.PostsView#collection
          * @type {Core.Collection | null}
          */
         collection: null,
 
         /**
          * @field
-         * @name PostsView#elements
+         * @name Soshace.views.PostsView#elements
          * @type {Object}
          */
         elements: {
@@ -37,14 +32,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name PostsView#elements
+         * @name Soshace.views.PostsView#elements
          * @type {string}
          */
         template: Soshace.hbs['posts/posts'],
 
         /**
          * @constructor
-         * @name PostsView#initialize
+         * @name Soshace.views.PostsView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -59,7 +54,7 @@ define([
          * данные из шаблона
          *
          * @method
-         * @name PostsView#setViewsFromTemplate
+         * @name Soshace.views.PostsView#setViewsFromTemplate
          * @returns {undefined}
          */
         setViewsFromTemplate: function () {
@@ -99,12 +94,12 @@ define([
          * Метод добавляет вид превью с списку статей
          *
          * @method
-         * @name PostsView#addOneView
+         * @name Soshace.views.PostsView#addOneView
          * @param {Backbone.Model} postModel модель статьи
          * @returns {undefined}
          */
         addOneView: function (postModel) {
-            var view = new PostPreviewView({
+            var view = new Soshace.views.PostPreviewView({
                 model: postModel
             });
 
@@ -115,7 +110,7 @@ define([
          * Метод заполняет список статей
          *
          * @method
-         * @name PostsView#fillPostsList
+         * @name Soshace.views.PostsView#fillPostsList
          * @returns {undefined}
          */
         fillPostsList: function () {
@@ -124,7 +119,7 @@ define([
 
         /**
          * @method
-         * @name PostsView#serialize
+         * @name Soshace.views.PostsView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -133,7 +128,7 @@ define([
 
             data.posts = this.collection.toJSON();
             data.paths = Soshace.urls;
-            data.locale = Helpers.getLocale();
+            data.locale = Soshace.helpers.getLocale();
             data.isAuthenticated = app.isAuthenticated();
 
             return data;
@@ -143,7 +138,7 @@ define([
          * Метод вызывается, когда рендер происходит на сервере
          *
          * @method
-         * @name PostsView#withoutRender
+         * @name Soshace.views.PostsView#withoutRender
          * @param {jQuery} $el корневой элемент вида
          * @returns {undefined}
          */
@@ -156,7 +151,7 @@ define([
 
         /**
          * @method
-         * @name PostsView#beforeRender
+         * @name Soshace.views.PostsView#beforeRender
          * @returns {undefined}
          */
         beforeRender: function () {
@@ -167,7 +162,7 @@ define([
          * Метод сохраняет ссылки на DOM элементы
          *
          * @method
-         * @name PostsView#setElements
+         * @name Soshace.views.PostsView#setElements
          * @returns {undefined}
          */
         setElements: function () {
@@ -176,11 +171,11 @@ define([
 
         /**
          * @method
-         * @name PostsView#afterRender
+         * @name Soshace.views.PostsView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
             this.setElements();
         }
     });
-});
+})(window.Soshace);

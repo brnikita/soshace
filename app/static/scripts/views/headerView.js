@@ -1,21 +1,17 @@
 'use strict';
 
-/**
- * Вид страницы списка постов
- *
- * @module HeaderView
- */
+(function (Soshace) {
+    var _ = Soshace._;
 
-define([
-    'underscore',
-    'core',
-    'utils/helpers',
-    'templates'
-], function (_, Core, Helpers) {
-    return Core.View.extend({
+    /**
+     * Вид страницы списка постов
+     *
+     * @class Soshace.views.HeaderView
+     */
+    Soshace.views.HeaderView = Soshace.core.View.extend({
         /**
          * @field
-         * @name HeaderView#elements
+         * @name Soshace.views.HeaderView#elements
          * @type {Object}
          */
         elements: {
@@ -23,7 +19,7 @@ define([
 
         /**
          * @field
-         * @name HeaderView#tabsConfig
+         * @name Soshace.views.HeaderView#tabsConfig
          * @type {Object}
          */
         tabsConfig: {
@@ -37,7 +33,7 @@ define([
          * Соотношение алиаса страницы и названия таба
          *
          * @field
-         * @name HeaderView#pageAliasToTab
+         * @name Soshace.views.HeaderView#pageAliasToTab
          * @type {Object}
          */
         pageAliasToTab: {
@@ -54,7 +50,7 @@ define([
          * Список обработчиков событий
          *
          * @field
-         * @name HeaderView#events
+         * @name Soshace.views.HeaderView#events
          * @type {Object}
          */
         events: {
@@ -65,14 +61,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name HeaderView#elements
+         * @name Soshace.views.HeaderView#elements
          * @type {string}
          */
         template: Soshace.hbs['partials/header'],
 
         /**
          * @constructor
-         * @name HeaderView#initialize
+         * @name Soshace.views.HeaderView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -82,13 +78,13 @@ define([
          * Обработчик клика по кнопке 'Выход'
          *
          * @method
-         * @name HeaderView#logout
+         * @name Soshace.views.HeaderView#logout
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
-        logout: function(event){
+        logout: function (event) {
             event.preventDefault();
-            $.get(Soshace.urls.api.logout).done(_.bind(function () {
+            Soshace.core.get(Soshace.urls.api.logout).done(_.bind(function () {
                 this.logoutHandler();
             }, this));
         },
@@ -97,7 +93,7 @@ define([
          * Метод обработчик выхода пользователя
          *
          * @method
-         * @name HeaderView#logoutHandler
+         * @name Soshace.views.HeaderView#logoutHandler
          * @returns {undefined}
          */
         logoutHandler: function () {
@@ -113,16 +109,16 @@ define([
          * списка системных сообщений
          *
          * @method
-         * @name HeaderView#logoutDoneHandler
+         * @name Soshace.views.HeaderView#logoutDoneHandler
          * @returns {undefined}
          */
         logoutDoneHandler: function () {
             var app = Soshace.app,
-                locale = Helpers.getLocale(),
+                locale = Soshace.helpers.getLocale(),
                 routeParams,
                 currentController;
 
-            if(Soshace.pageAlias === 'home'){
+            if (Soshace.pageAlias === 'home') {
                 currentController = app.router.currentController;
                 routeParams = currentController.routeParams;
                 currentController.routeHandler.apply(currentController, routeParams);
@@ -135,7 +131,7 @@ define([
          * Метод смены таба
          *
          * @method
-         * @name HeaderView#changeTab
+         * @name Soshace.views.HeaderView#changeTab
          * @param {string} [pageAlias] алиас страницы
          * @returns {undefined}
          */
@@ -155,15 +151,15 @@ define([
 
         /**
          * @method
-         * @name HeaderView#serialize
+         * @name Soshace.views.HeaderView#serialize
          * @returns {Object}
          */
         serialize: function () {
             var app = Soshace.app,
                 data = {};
-            
+
             data = _.extend(data, this.tabsConfig);
-            data.locale = Helpers.getLocale();
+            data.locale = Soshace.helpers.getLocale();
             data.isAuthenticated = app.isAuthenticated();
             data.paths = Soshace.urls;
             if (data.isAuthenticated) {
@@ -174,10 +170,10 @@ define([
 
         /**
          * @method
-         * @name HeaderView#afterRender
+         * @name Soshace.views.HeaderView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
         }
     });
-});
+})(window.Soshace);

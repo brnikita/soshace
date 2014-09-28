@@ -1,37 +1,32 @@
 'use strict';
+(function (Soshace) {
+    var _ = Soshace._;
 
-/**
- * Коллекция списка сообщений ревью статьи
- *
- * @class ReviewCommentsCollection
- */
-
-define([
-    'underscore',
-    'core',
-    'models/reviewCommentsModel',
-    'global'
-], function (_, Core, ReviewCommentsModel, Soshace) {
-    return Core.Collection.extend({
+    /**
+     * Коллекция списка сообщений ревью статьи
+     *
+     * @class Soshace.collections.ReviewCommentsCollection
+     */
+    Soshace.collections.ReviewCommentsCollection = Soshace.core.Collection.extend({
         /**
          * Модель превью поста
          *
          * @field
-         * @name ReviewCommentsCollection#model
-         * @type {PostModel}
+         * @name Soshace.collections.ReviewCommentsCollection#model
+         * @type {Function}
          */
-        model: ReviewCommentsModel,
+        model: Soshace.models.ReviewCommentsModel,
 
         /**
          * @method
-         * @name ReviewCommentsCollection#initialize
+         * @name Soshace.collections.ReviewCommentsCollection#initialize
          * @returns {string}
          */
         url: Soshace.urls.api.reviewComments,
 
         /**
          * @constructor
-         * @name ReviewCommentsCollection#initialize
+         * @name Soshace.collections.ReviewCommentsCollection#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -44,7 +39,7 @@ define([
          * Т.к. change не отрабатывает при полуении такой же модели
          *
          * @method
-         * @name ReviewCommentsCollection#getPosts
+         * @name Soshace.collections.ReviewCommentsCollection#getPosts
          * @param {Object} params параметры запроса
          * @returns {undefined}
          */
@@ -59,7 +54,7 @@ define([
          * Метод обработчик удачного получения списка постов
          *
          * @method
-         * @name ReviewCommentsCollection#getPostsSuccess
+         * @name Soshace.collections.ReviewCommentsCollection#getPostsSuccess
          * @param {Array} postsList список постов
          * @returns {undefined}
          */
@@ -71,4 +66,4 @@ define([
             this.trigger('postsReceived');
         }
     });
-});
+})(window.Soshace);

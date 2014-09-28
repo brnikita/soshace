@@ -1,32 +1,27 @@
 //TODO: добавить оповещение при смене статуса
 'use strict';
 
-/**
- * Вид страницы адмистрирования статьи
- *
- * У страниц адмистрирования нет клиентского роутинга
- * и шаблонизации, т.к. на клиенте не должно быть никаких упоминаний
- * о наличии страницы адмистрирования и API для адмистрования
- *
- * Так же скрипты админки не участвуют в общей сборке
- *
- * @module PostReView
- */
+(function (Soshace) {
+    var $ = Soshace.core.$;
 
-define([
-    'underscore',
-    'core',
-    'models/postModel',
-    'collections/reviewCommentsCollection'
-], function (_, Core, PostModel, ReviewCommentsCollection) {
-    return Core.View.extend({
-
+    /**
+     * Вид страницы адмистрирования статьи
+     *
+     * У страниц адмистрирования нет клиентского роутинга
+     * и шаблонизации, т.к. на клиенте не должно быть никаких упоминаний
+     * о наличии страницы адмистрирования и API для адмистрования
+     *
+     * Так же скрипты админки не участвуют в общей сборке
+     *
+     * @class Soshace.views.PostReView
+     */
+    Soshace.views.PostReView = Soshace.core.View.extend({
         /**
          * Модель статьи
          *
          * @field
-         * @name PostReView#postModel
-         * @type {PostModel | null}
+         * @name Soshace.views.PostReView#postModel
+         * @type {Soshace.models.PostModel | null}
          */
         postModel: null,
 
@@ -34,21 +29,21 @@ define([
          * Коллекция комментариев ревью статьи
          *
          * @field
-         * @name PostReView#reviewCommentsCollection
+         * @name Soshace.views.PostReView#reviewCommentsCollection
          * @type {ReviewCommentsCollection}
          */
         reviewCommentsCollection: null,
 
         /**
          * @field
-         * @name PostReView#el
+         * @name Soshace.views.PostReView#el
          * @type {string}
          */
         el: '.js-post-review',
 
         /**
          * @field
-         * @name PostReView#elements
+         * @name Soshace.views.PostReView#elements
          * @type {Object}
          */
         elements: {
@@ -59,7 +54,7 @@ define([
 
         /**
          * @field
-         * @name PostReView#events
+         * @name Soshace.views.PostReView#events
          * @type {Object}
          */
         events: {
@@ -69,11 +64,11 @@ define([
 
         /**
          * @constructor
-         * @name PostReView#initialize
+         * @name Soshace.views.PostReView#initialize
          * @returns {undefined}
          */
         initialize: function () {
-            this.postModel = new PostModel();
+            this.postModel = new Soshace.models.PostModel();
             this.setElements();
             this.setDataToModelFromView();
         },
@@ -82,11 +77,11 @@ define([
          * Метод обработчик изменения выпадающих списоков
          *
          * @method
-         * @name PostReView#selectChangeHandler
+         * @name Soshace.views.PostReView#selectChangeHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
-        selectChangeHandler: function(event){
+        selectChangeHandler: function (event) {
             var $target = $(event.target),
                 name = $target.attr('name'),
                 value = $target.val();
@@ -98,11 +93,11 @@ define([
          * Метод обработчик отправки формы
          *
          * @method
-         * @name PostReView#submitHandler
+         * @name Soshace.views.PostReView#submitHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
-        submitHandler: function(event){
+        submitHandler: function (event) {
             event.preventDefault();
             this.postModel.patchModel();
         },
@@ -111,10 +106,10 @@ define([
          * Метод берет данные из шаблона и сетит модель статьи
          *
          * @method
-         * @name PostReView#setDataToModelFromView
+         * @name Soshace.views.PostReView#setDataToModelFromView
          * @returns {undefined}
          */
-        setDataToModelFromView: function(){
+        setDataToModelFromView: function () {
             var body = this.elements.postBody.html(),
                 title = this.elements.postTitle.html(),
                 ownerId = this.elements.post.data('ownerId'),
@@ -132,13 +127,13 @@ define([
          * Метод сохраняет ссылки на элементы DOM
          *
          * @method
-         * @name PostReView#setElements
+         * @name Soshace.views.PostReView#setElements
          * @returns {undefined}
          */
-        setElements: function(){
+        setElements: function () {
             this.elements.postTitle = this.$('.js-title');
             this.elements.postBody = this.$('.js-body');
             this.elements.post = this.$('.js-post');
         }
     });
-});
+})(window.Soshace);

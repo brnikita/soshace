@@ -1,24 +1,20 @@
 'use strict';
 
-/**
- * Вид страницы 404
- *
- * @class NotFoundView
- */
+(function (Soshace) {
+    /**
+     * Вид страницы 404
+     *
+     * @class Soshace.views.NotFoundView
+     */
 
-define([
-    'core',
-    'global',
-    'templates'
-], function (Core, Soshace) {
-    return Core.extend({
+    Soshace.views.NotFoundView = Soshace.core.View.extend({
         /**
          * Путь до шаблона
          *
          * @field
-         * @name NotFoundView#template
+         * @name Soshace.views.NotFoundView#template
          * @type {string}
          */
         template: Soshace.hbs['404']
     });
-});
+})(window.Soshace);

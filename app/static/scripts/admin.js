@@ -1,20 +1,14 @@
 'use strict';
 
-define([
-    'jquery',
-    'underscore',
-    'global',
-    'views/admin/postReView'
-], function (
-    $,
-    _,
-    Soshace,
-    PostReview) {
+(function(Soshace){
+    var $ = Soshace.core.$;
 
     if($('.js-post-review').length){
-        new PostReview();
+        new Soshace.views.PostReview();
     }
-});
+})(window.Soshace);
+
+
 
 
 

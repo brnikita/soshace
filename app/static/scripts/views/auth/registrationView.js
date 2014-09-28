@@ -1,33 +1,27 @@
 'use strict';
 
-/**
- * Вид страницы регистрации
- *
- * @class RegistrationView
- */
+(function (Soshace) {
+    var _ = Soshace._,
+        $ = Soshace.core.$;
 
-define([
-    'underscore',
-    'core',
-    'utils/helpers',
-    'handlebars',
-    'plugins/controlStatus',
-    'templates'
-], function (_, Core, Helpers, Handlebars) {
-    return Core.View.extend({
-
+    /**
+     * Вид страницы регистрации
+     *
+     * @class Soshace.views.RegistrationView
+     */
+    Soshace.views.RegistrationView = Soshace.core.View.extend({
         /**
          * Модель формы регистрации
          *
          * @field
-         * @name RegistrationView#model
+         * @name Soshace.views.RegistrationView#model
          * @type {Core.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name RegistrationView#elements
+         * @name Soshace.views.RegistrationView#elements
          * @type {Object}
          */
         elements: {
@@ -38,7 +32,7 @@ define([
          * метод setStatus, который устанавливает статусы у полей
          *
          * @field
-         * @name RegistrationView#setStatusDebounce
+         * @name Soshace.views.RegistrationView#setStatusDebounce
          * @type {Function | null}
          */
         setStatusDebounce: null,
@@ -47,7 +41,7 @@ define([
          * Список обработчиков событий
          *
          * @field
-         * @name RegistrationView#events
+         * @name Soshace.views.RegistrationView#events
          * @type {Object}
          */
         events: {
@@ -61,14 +55,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name RegistrationView#template
+         * @name Soshace.views.RegistrationView#template
          * @type {string}
          */
         template: Soshace.hbs['auth/auth'],
 
         /**
          * @constructor
-         * @name RegistrationView#initialize
+         * @name Soshace.views.RegistrationView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -92,7 +86,7 @@ define([
          * Метод обработчик клика на кнопке 'Зарегистрироваться'
          *
          * @method
-         * @name RegistrationView#userRegistrationHandler
+         * @name Soshace.views.RegistrationView#userRegistrationHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
@@ -119,7 +113,7 @@ define([
          * Метод обработчик успешной регистрации пользователя
          *
          * @method
-         * @name RegistrationView#userRegistrationSuccess
+         * @name Soshace.views.RegistrationView#userRegistrationSuccess
          * @param {Backbone.Model} model
          * @param {Object} response
          * @returns {undefined}
@@ -139,7 +133,7 @@ define([
          * Метод обработчик неуспешной регистрации пользователя
          *
          * @method
-         * @name RegistrationView#userRegistrationFail
+         * @name Soshace.views.RegistrationView#userRegistrationFail
          * @param {Backbone.Model} model
          * @param {Object} response
          * @returns {undefined}
@@ -160,7 +154,7 @@ define([
          * Метод обработчик получения фокуса полем
          *
          * @method
-         * @name RegistrationView#focusFormFieldHandler
+         * @name Soshace.views.RegistrationView#focusFormFieldHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
@@ -184,13 +178,13 @@ define([
          * Метод обработчик получения фокуса полем
          *
          * @method
-         * @name RegistrationView#blurFormFieldHandler
+         * @name Soshace.views.RegistrationView#blurFormFieldHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
         blurFormFieldHandler: function (event) {
             var $target = $(event.target),
-                serializedField = Helpers.serializeField($target),
+                serializedField = Soshace.helpers.serializeField($target),
                 fieldName = serializedField.name,
                 fieldValue,
                 error;
@@ -201,10 +195,10 @@ define([
                 return;
             }
 
-            serializedField = Helpers.serializeField($target);
+            serializedField = Soshace.helpers.serializeField($target);
             fieldValue = serializedField.value;
             error = this.model.preValidate(fieldName, fieldValue);
-            error = Helpers.i18n(error);
+            error = Soshace.helpers.i18n(error);
             $target.controlStatus('error', error);
         },
 
@@ -212,14 +206,14 @@ define([
          * Метод обработчик события изменения поля формы
          *
          * @method
-         * @name RegistrationView#changeFormFieldHandler
+         * @name Soshace.views.RegistrationView#changeFormFieldHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
         changeFormFieldHandler: function (event) {
             var $target = $(event.target),
                 model = this.model,
-                serializedField = Helpers.serializeField($target),
+                serializedField = Soshace.helpers.serializeField($target),
                 fieldName = serializedField.name,
                 fieldValue = serializedField.value;
 
@@ -241,7 +235,7 @@ define([
          * Метод устанавливает статусы для полей success или error
          *
          * @method
-         * @name RegistrationView#setStatus
+         * @name Soshace.views.RegistrationView#setStatus
          * @param {jQuery} $field ссылка на поле
          * @param serializedField сериализованное поле {name: '', value: ''}
          * @returns {undefined}
@@ -259,7 +253,7 @@ define([
             error = model.preValidate(fieldName, fieldValue);
 
             if (error) {
-                error = Helpers.i18n(error);
+                error = Soshace.helpers.i18n(error);
                 $field.controlStatus('error', error);
                 return;
             }
@@ -281,7 +275,7 @@ define([
 
         /**
          * @method
-         * @name RegistrationView#serialize
+         * @name Soshace.views.RegistrationView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -298,7 +292,7 @@ define([
          * переданных полей
          *
          * @method
-         * @name RegistrationView#showFieldsErrors
+         * @name Soshace.views.RegistrationView#showFieldsErrors
          * @param {Object} errors список ошибок
          * @param {boolean} [translate] true - перевести ошибки
          * @returns {undefined}
@@ -307,10 +301,10 @@ define([
             _.each(errors, _.bind(function (error, fieldName) {
                 var $field;
 
-                fieldName = Helpers.hyphen(fieldName);
+                fieldName = Soshace.helpers.hyphen(fieldName);
                 $field = $('#' + fieldName);
                 if (translate) {
-                    error = Helpers.i18n(error);
+                    error = Soshace.helpers.i18n(error);
                 }
                 $field.controlStatus('error', error);
             }, this));
@@ -320,7 +314,7 @@ define([
          * Метод устанавливает всплывающие подсказоки у полей
          *
          * @method
-         * @name RegistrationView#setFieldsHelpers
+         * @name Soshace.views.RegistrationView#setFieldsHelpers
          * @param {Object} helpers список подсказок
          * @returns {undefined}
          */
@@ -329,18 +323,18 @@ define([
                 var $field,
                     successTitle = this.model.successMessages[fieldName];
 
-                fieldName = Helpers.hyphen(fieldName);
+                fieldName = Soshace.helpers.hyphen(fieldName);
                 $field = $('#' + fieldName);
                 $field.controlStatus({
-                    helperTitle: Helpers.i18n(helper),
-                    successTitle: Helpers.i18n(successTitle)
+                    helperTitle: Soshace.helpers.i18n(helper),
+                    successTitle: Soshace.helpers.i18n(successTitle)
                 });
             }, this));
         },
 
         /**
          * @method
-         * @name RegistrationView#afterRender
+         * @name Soshace.views.RegistrationView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
@@ -351,4 +345,4 @@ define([
             }, 0);
         }
     });
-});
+})(window.Soshace);

@@ -1,21 +1,18 @@
 'use strict';
 
-/**
- * Вид предпросмотра статьи
- *
- * @class PostPreviewView
- */
+(function (Soshace) {
+    var _ = Soshace._;
 
-define([
-    'underscore',
-    'core',
-    'templates'
-], function (_, Core) {
-    return Core.View.extend({
+    /**
+     * Вид предпросмотра статьи
+     *
+     * @class Soshace.views.PostPreviewView
+     */
+    Soshace.views.PostPreviewView = Soshace.core.View.extend({
 
         /**
          * @field
-         * @name PostPreviewView#el
+         * @name Soshace.views.PostPreviewView#el
          * @type {boolean}
          */
         el: false,
@@ -24,14 +21,14 @@ define([
          * Модель деталей статьи
          *
          * @field
-         * @name PostPreviewView#model
+         * @name Soshace.views.PostPreviewView#model
          * @type {Core.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name PostPreviewView#elements
+         * @name Soshace.views.PostPreviewView#elements
          * @type {Object}
          */
         elements: {
@@ -42,14 +39,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name PostPreviewView#elements
+         * @name Soshace.views.PostPreviewView#elements
          * @type {string}
          */
         template: Soshace.hbs['partials/postPreview'],
 
         /**
          * @constructor
-         * @name PostPreviewView#initialize
+         * @name Soshace.views.PostPreviewView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -60,7 +57,7 @@ define([
          * Но надо навесить слушатели и выполнить afterRender и т.д.
          *
          * @method
-         * @name PostPreviewView#withoutRender
+         * @name Soshace.views.PostPreviewView#withoutRender
          * @returns {undefined}
          */
         withoutRender: function () {
@@ -73,7 +70,7 @@ define([
          * Метод возвращает true, если текущий авторизованный пользователь является владельцем
          *
          * @method
-         * @name PostPreviewView#addMetaData
+         * @name Soshace.views.PostPreviewView#addMetaData
          * @returns {boolean}
          */
         isOwner: function () {
@@ -95,7 +92,7 @@ define([
          * Метод добавляет ланные (статус, дату публикации и пр.) к превью статьи
          *
          * @method
-         * @name PostPreviewView#addMetaData
+         * @name Soshace.views.PostPreviewView#addMetaData
          * @returns {undefined}
          */
         addMetaData: function () {
@@ -107,7 +104,7 @@ define([
          * Метод возвращает отрендеренную панель информации для превью статьи
          *
          * @method
-         * @name PostPreviewView#getMetaData
+         * @name Soshace.views.PostPreviewView#getMetaData
          * @returns {undefined}
          */
         getMetaData: function () {
@@ -131,7 +128,7 @@ define([
          * Метод сохраняет ссылки на элементы DOM
          *
          * @method
-         * @name PostPreviewView#setElements
+         * @name Soshace.views.PostPreviewView#setElements
          * @returns {undefined}
          */
         setElements: function () {
@@ -140,7 +137,7 @@ define([
 
         /**
          * @method
-         * @name PostPreviewView#afterRender
+         * @name Soshace.views.PostPreviewView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
@@ -148,4 +145,4 @@ define([
             this.addMetaData();
         }
     });
-});
+})(window.Soshace);

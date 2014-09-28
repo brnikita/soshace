@@ -1,189 +1,192 @@
 'use strict';
-
-/**
- * Класс деферред объектов
- *
- * @class Soshace.core.Deferred
- */
-Soshace.core.Deferred = Soshace.core.Class.extend({
-    /**
-     * Флаг, означающий, что метод resolve уже вызван
-     *
-     * @private
-     * @field
-     * @name Soshace.core.Deferred#resolved
-     * @type {boolean}
-     */
-    _resolved: false,
+(function (Soshace) {
+    var _ = Soshace._;
 
     /**
-     * Флаг, означающий, что метод reject уже вызван
+     * Класс деферред объектов
      *
-     * @private
-     * @field
-     * @name Soshace.core.Deferred#rejected
-     * @type {boolean}
+     * @class Soshace.core.Deferred
      */
-    _rejected: false,
+    Soshace.core.Deferred = Soshace.core.Class.extend({
+        /**
+         * Флаг, означающий, что метод resolve уже вызван
+         *
+         * @private
+         * @field
+         * @name Soshace.core.Deferred#resolved
+         * @type {boolean}
+         */
+        _resolved: false,
 
-    /**
-     * Список успешных колбеков
-     *
-     * @private
-     * @field
-     * @name Soshace.core.Deferred#_callbacksListSuccess
-     * @type {Array | null}
-     */
-    _callbacksListSuccess: null,
+        /**
+         * Флаг, означающий, что метод reject уже вызван
+         *
+         * @private
+         * @field
+         * @name Soshace.core.Deferred#rejected
+         * @type {boolean}
+         */
+        _rejected: false,
 
-    /**
-     * Список неудачных колбеков
-     *
-     * @private
-     * @field
-     * @name Soshace.core.Deferred#_callbacksListFail
-     * @type {Array | null}
-     */
-    _callbacksListFail: null,
+        /**
+         * Список успешных колбеков
+         *
+         * @private
+         * @field
+         * @name Soshace.core.Deferred#_callbacksListSuccess
+         * @type {Array | null}
+         */
+        _callbacksListSuccess: null,
 
-    /**
-     * Resolve a Deferred object and call any doneCallbacks with the given args.
-     *
-     * @public
-     * @method
-     * @name Soshace.core.Deferred#resolve
-     * @returns {Deferred}
-     */
-    resolve: function () {
-        var i,
-            successList = this._callbacksListSuccess;
+        /**
+         * Список неудачных колбеков
+         *
+         * @private
+         * @field
+         * @name Soshace.core.Deferred#_callbacksListFail
+         * @type {Array | null}
+         */
+        _callbacksListFail: null,
 
-        this._resolved = true;
+        /**
+         * Resolve a Deferred object and call any doneCallbacks with the given args.
+         *
+         * @public
+         * @method
+         * @name Soshace.core.Deferred#resolve
+         * @returns {Deferred}
+         */
+        resolve: function () {
+            var i,
+                successList = this._callbacksListSuccess;
 
-        if (_.isNull(successList)) {
+            this._resolved = true;
+
+            if (_.isNull(successList)) {
+                return this;
+            }
+
+            for (i = 0; i < successList.length; i++) {
+                successList[i].apply(this, arguments);
+            }
+
             return this;
-        }
+        },
 
-        for (i = 0; i < successList.length; i++) {
-            successList[i].apply(this, arguments);
-        }
+        /**
+         * Reject a Deferred object and call any failCallbacks with the given args.
+         *
+         * @public
+         * @method
+         * @name Soshace.core.Deferred#reject
+         * @returns {Deferred}
+         */
+        reject: function () {
+            var i,
+                failList = this._callbacksListFail;
 
-        return this;
-    },
+            this._rejected = true;
 
-    /**
-     * Reject a Deferred object and call any failCallbacks with the given args.
-     *
-     * @public
-     * @method
-     * @name Soshace.core.Deferred#reject
-     * @returns {Deferred}
-     */
-    reject: function () {
-        var i,
-            failList = this._callbacksListFail;
+            if (_.isNull(failList)) {
+                return this;
+            }
 
-        this._rejected = true;
+            for (i = 0; i < failList.length; i++) {
+                failList[i].apply(this, arguments);
+            }
 
-        if (_.isNull(failList)) {
             return this;
-        }
+        },
 
-        for (i = 0; i < failList.length; i++) {
-            failList[i].apply(this, arguments);
-        }
+        /**
+         * Add handlers to be called when the Deferred object is resolved.
+         *
+         * @public
+         * @method
+         * @name Soshace.core.Deferred#done
+         * @param {Function} callback
+         * @returns {Deferred}
+         */
+        done: function (callback) {
+            if (this._resolved) {
+                callback();
+                return this;
+            }
 
-        return this;
-    },
+            if (this._callbacksListSuccess === null) {
+                this._callbacksListSuccess = [];
+            }
 
-    /**
-     * Add handlers to be called when the Deferred object is resolved.
-     *
-     * @public
-     * @method
-     * @name Soshace.core.Deferred#done
-     * @param {Function} callback
-     * @returns {Deferred}
-     */
-    done: function (callback) {
-        if (this._resolved) {
-            callback();
+            this._callbacksListSuccess.push(callback);
             return this;
-        }
+        },
 
-        if (this._callbacksListSuccess === null) {
-            this._callbacksListSuccess = [];
-        }
+        /**
+         * Add handlers to be called when the Deferred object is rejected.
+         *
+         * @public
+         * @method
+         * @name Soshace.core.Deferred#fail
+         * @param {Function} callback
+         * @returns {Deferred}
+         */
+        fail: function (callback) {
+            if (this._rejected) {
+                callback();
+                return this;
+            }
 
-        this._callbacksListSuccess.push(callback);
-        return this;
-    },
+            if (this._callbacksListFail === null) {
+                this._callbacksListFail = [];
+            }
 
-    /**
-     * Add handlers to be called when the Deferred object is rejected.
-     *
-     * @public
-     * @method
-     * @name Soshace.core.Deferred#fail
-     * @param {Function} callback
-     * @returns {Deferred}
-     */
-    fail: function (callback) {
-        if (this._rejected) {
-            callback();
+            this._callbacksListFail.push(callback);
             return this;
+        },
+
+        /**
+         * Метод добавляет обработчик, который выполнится в любом случае
+         *
+         * @public
+         * @method
+         * @name Soshace.core.Deferred#always
+         * @param {Function} callback
+         * @returns {Deferred}
+         */
+        always: function (callback) {
+            return this.done(callback).fail(callback);
         }
+    }, {
+        /**
+         * Метод ожидает выполнения всех переданных деферред объектов
+         * В callback передается список всех результатов
+         *
+         * Параметры:
+         * deferred1, deferred2, deferred3, ..., callback
+         *
+         * @public
+         * @method
+         * @name Deferred.when
+         * @returns {Deferred}
+         */
+        when: function () {
+            var whenArguments = arguments,
+                responsesCount = 0,
+                whenDeferred = new Soshace.core.deferred(),
+                responsesList = [];
 
-        if (this._callbacksListFail === null) {
-            this._callbacksListFail = [];
+            _.each(whenArguments, _.bind(function (deferred, index) {
+                deferred.always(function (response) {
+                    responsesList[index] = response;
+                    responsesCount++;
+
+                    if (responsesCount === whenArguments.length) {
+                        whenDeferred.resolve.apply(this, responsesList);
+                    }
+                });
+            }, this));
+
+            return whenDeferred;
         }
-
-        this._callbacksListFail.push(callback);
-        return this;
-    },
-
-    /**
-     * Метод добавляет обработчик, который выполнится в любом случае
-     *
-     * @public
-     * @method
-     * @name Soshace.core.Deferred#always
-     * @param {Function} callback
-     * @returns {Deferred}
-     */
-    always: function (callback) {
-        return this.done(callback).fail(callback);
-    }
-}, {
-    /**
-     * Метод ожидает выполнения всех переданных деферред объектов
-     * В callback передается список всех результатов
-     *
-     * Параметры:
-     * deferred1, deferred2, deferred3, ..., callback
-     *
-     * @public
-     * @method
-     * @name Deferred.when
-     * @returns {Deferred}
-     */
-    when: function () {
-        var whenArguments = arguments,
-            responsesCount = 0,
-            whenDeferred = new Deferred(),
-            responsesList = [];
-
-        _.each(whenArguments, _.bind(function (deferred, index) {
-            deferred.always(function (response) {
-                responsesList[index] = response;
-                responsesCount++;
-
-                if (responsesCount === whenArguments.length) {
-                    whenDeferred.resolve.apply(this, responsesList);
-                }
-            });
-        }, this));
-
-        return whenDeferred;
-    }
-});
+    });
+})(window.Soshace);

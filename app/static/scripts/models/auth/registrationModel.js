@@ -1,119 +1,121 @@
 'use strict';
 
-/**
- * Модель страницы регистрации
- *
- * @class Soshace.models.RegistrationModel
- */
-Soshace.models.RegistrationModel = Soshace.core.Model.extend({
+(function (Soshace) {
     /**
-     * @field
-     * @name Soshace.models.RegistrationModel#defaults
-     * @type {Object}
-     */
-    defaults: {
-        locale: null,
-        email: null,
-        password: null,
-        userName: null
-    },
-
-    /**
-     * @field
-     * @name Soshace.models.RegistrationModel#validation
-     * @type {Object}
-     */
-    validation: {
-        userName: [
-            {
-                required: true,
-                msg: 'Username can&#39;t be blank.'
-            },
-            {
-                userName: 1
-            }
-        ],
-        email: [
-            {
-                required: true,
-                msg: 'Email can&#39;t be blank.'
-            },
-            {
-                pattern: Soshace.patterns.email,
-                msg: 'Email is invalid.'
-            }
-        ],
-        password: [
-            {
-                required: true,
-                msg: 'Password can&#39;t be blank.'
-            },
-            {
-                minLength: 6,
-                msg: 'Password length should&#39;t be less than 6 characters.'
-            }
-        ]
-    },
-
-    /**
-     * Список подсказок к полям
+     * Модель страницы регистрации
      *
-     * @field
-     * @name Soshace.models.RegistrationModel#helpers
-     * @type {Object}
+     * @class Soshace.models.RegistrationModel
      */
-    helpers: {
-        userName: 'Use the Latin alphabet, numbers, &#34;.&#34;, &#34;_&#34;, &#34;-&#34;.',
-        email: 'Please enter your e-mail address.',
-        password: 'Use the numbers, upper-and lowercase letters, symbols'
-    },
+    Soshace.models.RegistrationModel = Soshace.core.Model.extend({
+        /**
+         * @field
+         * @name Soshace.models.RegistrationModel#defaults
+         * @type {Object}
+         */
+        defaults: {
+            locale: null,
+            email: null,
+            password: null,
+            userName: null
+        },
 
-    /**
-     * Список подписей к успешным полям
-     *
-     * @field
-     * @name Soshace.models.RegistrationModel#successMessages
-     * @type {Object}
-     */
-    successMessages: {
-        userName: 'Great username!',
-        email: 'Great email!',
-        password: 'Great password!'
-    },
+        /**
+         * @field
+         * @name Soshace.models.RegistrationModel#validation
+         * @type {Object}
+         */
+        validation: {
+            userName: [
+                {
+                    required: true,
+                    msg: 'Username can&#39;t be blank.'
+                },
+                {
+                    userName: 1
+                }
+            ],
+            email: [
+                {
+                    required: true,
+                    msg: 'Email can&#39;t be blank.'
+                },
+                {
+                    pattern: Soshace.patterns.email,
+                    msg: 'Email is invalid.'
+                }
+            ],
+            password: [
+                {
+                    required: true,
+                    msg: 'Password can&#39;t be blank.'
+                },
+                {
+                    minLength: 6,
+                    msg: 'Password length should&#39;t be less than 6 characters.'
+                }
+            ]
+        },
 
-    /**
-     * @field
-     * @name Soshace.models.RegistrationModel#url
-     * @type {string}
-     */
-    url: Soshace.urls.api.createUser,
+        /**
+         * Список подсказок к полям
+         *
+         * @field
+         * @name Soshace.models.RegistrationModel#helpers
+         * @type {Object}
+         */
+        helpers: {
+            userName: 'Use the Latin alphabet, numbers, &#34;.&#34;, &#34;_&#34;, &#34;-&#34;.',
+            email: 'Please enter your e-mail address.',
+            password: 'Use the numbers, upper-and lowercase letters, symbols'
+        },
 
-    /**
-     * @constructor
-     * @name Soshace.models.RegistrationModel#initialize
-     * @returns {undefined}
-     */
-    initialize: function () {
-        var locale = Soshace.helpers.getLocale();
-        this.set({locale: locale}, {silent: true});
-    },
+        /**
+         * Список подписей к успешным полям
+         *
+         * @field
+         * @name Soshace.models.RegistrationModel#successMessages
+         * @type {Object}
+         */
+        successMessages: {
+            userName: 'Great username!',
+            email: 'Great email!',
+            password: 'Great password!'
+        },
 
-    /**
-     * Метод делает запрос на валидацию поля на сервере
-     *
-     * @method
-     * @name Soshace.models.RegistrationModel#validation
-     * @param {Object} serializedField
-     * @returns {Soshace.core.Ajax}
-     */
-    validateFieldByServer: function (serializedField) {
-        var params = {},
-            name = serializedField.name,
-            value = serializedField.value,
-            request;
+        /**
+         * @field
+         * @name Soshace.models.RegistrationModel#url
+         * @type {string}
+         */
+        url: Soshace.urls.api.createUser,
 
-        params[name] = value;
-        request = Soshace.core.get(Soshace.urls.api.registration.validateField, params);
-        return request;
-    }
-});
+        /**
+         * @constructor
+         * @name Soshace.models.RegistrationModel#initialize
+         * @returns {undefined}
+         */
+        initialize: function () {
+            var locale = Soshace.helpers.getLocale();
+            this.set({locale: locale}, {silent: true});
+        },
+
+        /**
+         * Метод делает запрос на валидацию поля на сервере
+         *
+         * @method
+         * @name Soshace.models.RegistrationModel#validation
+         * @param {Object} serializedField
+         * @returns {Soshace.core.Ajax}
+         */
+        validateFieldByServer: function (serializedField) {
+            var params = {},
+                name = serializedField.name,
+                value = serializedField.value,
+                request;
+
+            params[name] = value;
+            request = Soshace.core.get(Soshace.urls.api.registration.validateField, params);
+            return request;
+        }
+    });
+})(window.Soshace);

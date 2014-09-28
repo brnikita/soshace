@@ -1,17 +1,14 @@
 'use strict';
 
-/**
- * Вид блока системных уведомлений
- *
- * @class SystemMessagesView
- */
+(function (Soshace) {
+    var _ = Soshace._;
 
-define([
-    'underscore',
-    'core',
-    'templates'
-], function (_, Core) {
-    return Core.View.extend({
+    /**
+     * Вид блока системных уведомлений
+     *
+     * @class SystemMessagesView
+     */
+    Soshace.views.SystemMessagesView = Soshace.core.View.extend({
 
         /**
          * @field
@@ -139,4 +136,4 @@ define([
             this.checkShowOnceFlag();
         }
     });
-});
+})(window.Soshace);

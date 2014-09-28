@@ -1,25 +1,18 @@
 'use strict';
 
-/**
- * Вид страницы настроек пользователя
- *
- * @class UsersSettingsView
- */
-
-define([
-    'underscore',
-    'core',
-    'handlebars',
-    'utils/helpers',
-    'templates'
-], function (_, Core, Handlebars, Helpers) {
-    return Core.View.extend({
+(function(Soshace){
+    /**
+     * Вид страницы настроек пользователя
+     *
+     * @class Soshace.views.UsersSettingsView
+     */
+    Soshace.views.UsersSettingsView = Soshace.core.View.extend({
         /**
-         * Модель деталей статьи
+         * Модель юзера
          *
          * @field
-         * @name UsersSettingsView#model
-         * @type {Backbone.Model | null}
+         * @name Soshace.views.UsersSettingsView#model
+         * @type {Soshace.models.UsersModel | null}
          */
         model: null,
 
@@ -27,7 +20,7 @@ define([
          * Ссылки на DOM элементы
          *
          * @field
-         * @name UsersSettingsView#elements
+         * @name Soshace.views.UsersSettingsView#elements
          * @type {Object}
          */
         elements: {
@@ -37,14 +30,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name UsersSettingsView#elements
+         * @name Soshace.views.UsersSettingsView#elements
          * @type {string}
          */
         template: Soshace.hbs['users/usersSettings'],
 
         /**
          * @constructor
-         * @name UsersSettingsView#initialize
+         * @name Soshace.views.UsersSettingsView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -60,7 +53,7 @@ define([
          * см. Wiki
          *
          * @method
-         * @name UsersSettingsView#isDisabled
+         * @name Soshace.views.UsersSettingsView#isDisabled
          * @returns {boolean}
          */
         isDisabled: function () {
@@ -80,7 +73,7 @@ define([
          * Метод возвращает True, если
          *
          * @method
-         * @name UsersSettingsView#isProfileEmpty
+         * @name Soshace.views.UsersSettingsView#isProfileEmpty
          * @returns {boolean}
          */
         isProfileEmpty: function(){
@@ -89,7 +82,7 @@ define([
 
         /**
          * @method
-         * @name UsersSettingsView#serialize
+         * @name Soshace.views.UsersSettingsView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -103,7 +96,7 @@ define([
             data.user = model;
             data.isOwner = isOwner;
             data.isUserSettingsTab = true;
-            data.locale = Helpers.getLocale();
+            data.locale = Soshace.helpers.getLocale();
             data.isDisabled = this.isDisabled();
 
             return data;
@@ -114,7 +107,7 @@ define([
          * Но надо навесить слушатели и выполнить afterRender и т.д.
          *
          * @method
-         * @name UsersSettingsView#withoutRender
+         * @name Soshace.views.UsersSettingsView#withoutRender
          * @returns {undefined}
          */
         withoutRender: function () {
@@ -126,7 +119,7 @@ define([
          * Метод сохраняет DOM элементы
          *
          * @method
-         * @name UsersSettingsView#setElements
+         * @name Soshace.views.UsersSettingsView#setElements
          * @returns {undefined}
          */
         setElements: function () {
@@ -134,11 +127,11 @@ define([
 
         /**
          * @method
-         * @name UsersSettingsView#afterRender
+         * @name Soshace.views.UsersSettingsView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
             this.setElements();
         }
     });
-});
+})(window.Soshace);

@@ -3,26 +3,22 @@
 //TODO: почему несколько раз проходит PATCH?
 'use strict';
 
-/**
- * Вид страницы редактирования статьи
- *
- * @class PostEditView
- */
+(function (Soshace) {
+    var _ = Soshace._,
+        $ = Soshace.core.$;
 
-define([
-    'underscore',
-    'core',
-    'handlebars',
-    'utils/helpers',
-    'templates'
-], function (_, Core, Handlebars, Helpers) {
-    return Core.View.extend({
+    /**
+     * Вид страницы редактирования статьи
+     *
+     * @class Soshace.views.PostEditView
+     */
+    Soshace.views.PostEditView = Soshace.core.View.extend({
 
         /**
          * Позиция панели редактирования при рендере
          *
          * @field
-         * @name PostEditView#toolbarInitOffeset
+         * @name Soshace.views.PostEditView#toolbarInitOffeset
          * @type {Object}
          */
         toolbarInitOffset: null,
@@ -57,7 +53,7 @@ define([
          * Список обработчиков ошибок
          *
          * @field
-         * @name PostEditView#events
+         * @name Soshace.views.PostEditView#events
          * @type {Object}
          */
         events: {
@@ -76,7 +72,7 @@ define([
          * повторного обращения к ним
          *
          * @field
-         * @name PostEditView#elements
+         * @name Soshace.views.PostEditView#elements
          * @type {Object}
          */
         elements: {
@@ -101,7 +97,7 @@ define([
          * с которым производится запись в модель
          *
          * @field
-         * @name PostEditView#setToModelTimeOut
+         * @name Soshace.views.PostEditView#setToModelTimeOut
          * @type {number}
          */
         setToModelTimeOut: 1500,
@@ -109,7 +105,7 @@ define([
         /**
          *
          * @field
-         * @name PostEditView#selectedRange
+         * @name Soshace.views.PostEditView#selectedRange
          * @type {Object | null}
          */
         selectedRange: null,
@@ -118,14 +114,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name PostEditView#elements
+         * @name Soshace.views.PostEditView#elements
          * @type {string}
          */
         template: Soshace.hbs['posts/edit/postEdit'],
 
         /**
          * @constructor
-         * @name PostEditView#initialize
+         * @name Soshace.views.PostEditView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -142,7 +138,7 @@ define([
          * Метод обработчик клика по кнопке опубликовать
          *
          * @method
-         * @name PostEditView#postPublish
+         * @name Soshace.views.PostEditView#postPublish
          * @returns {undefined}
          */
         postPublish: function () {
@@ -155,7 +151,7 @@ define([
          * Метод показывает лоадер на кнопке 'Опубликовать' и блокирует интерфейс
          *
          * @method
-         * @name PostEditView#showPublishButtonLoader
+         * @name Soshace.views.PostEditView#showPublishButtonLoader
          * @returns {undefined}
          */
         showPublishButtonLoader: function () {
@@ -166,7 +162,7 @@ define([
          * Метод блокирует панель инструментов
          *
          * @method
-         * @name PostEditView#blockToolbar
+         * @name Soshace.views.PostEditView#blockToolbar
          * @returns {undefined}
          */
         blockToolbar: function () {
@@ -177,7 +173,7 @@ define([
          * Метод разблокирует панель инструментов
          *
          * @method
-         * @name PostEditView#unBlockToolbar
+         * @name Soshace.views.PostEditView#unBlockToolbar
          * @returns {undefined}
          */
         unBlockToolbar: function () {
@@ -188,7 +184,7 @@ define([
          * Метод добавляет слушатели на модель
          *
          * @method
-         * @name PostEditView#addModelListeners
+         * @name Soshace.views.PostEditView#addModelListeners
          * @returns {undefined}
          */
         addModelListeners: function () {
@@ -205,7 +201,7 @@ define([
          * Метод обработчик патча модели на сервере
          *
          * @method
-         * @name PostEditView#postPatchHandler
+         * @name Soshace.views.PostEditView#postPatchHandler
          * @returns {undefined}
          */
         postPatchHandler: function () {
@@ -224,7 +220,7 @@ define([
          * Метод отображает статус у статьи
          *
          * @method
-         * @name PostEditView#showPostStatus
+         * @name Soshace.views.PostEditView#showPostStatus
          *  @param {string} [status] название статуса (редактируется, сохранена, создана)
          * @returns {undefined}
          */
@@ -244,7 +240,7 @@ define([
             statuses = this.model.statuses;
             $status = this.elements.status;
             statusSettings = statuses[postStatus];
-            statusTitle = Helpers.i18n(statusSettings.title);
+            statusTitle = Soshace.helpers.i18n(statusSettings.title);
             $status.html(statusTitle);
         },
 
@@ -252,7 +248,7 @@ define([
          * Метод обработчик создания статьи
          *
          * @method
-         * @name PostEditView#postCreatedHandler
+         * @name Soshace.views.PostEditView#postCreatedHandler
          * @returns {undefined}
          */
         postCreatedHandler: function () {
@@ -264,7 +260,7 @@ define([
          * Метод обработчик
          *
          * @method
-         * @name PostEditView#deletePost
+         * @name Soshace.views.PostEditView#deletePost
          * @returns {undefined}
          */
         deletePost: function () {
@@ -275,7 +271,7 @@ define([
          * Метод обработчик подтверждения удаления статьи в модальном окне
          *
          * @method
-         * @name PostEditView#reallyDeletePost
+         * @name Soshace.views.PostEditView#reallyDeletePost
          * @returns {undefined}
          */
         reallyDeletePost: function () {
@@ -293,7 +289,7 @@ define([
          * Метод обработчик удачного удаления статьи
          *
          * @method
-         * @name PostEditView#destroySuccess
+         * @name Soshace.views.PostEditView#destroySuccess
          * @returns {undefined}
          */
         destroySuccess: function () {
@@ -310,7 +306,7 @@ define([
          * Метод обработчик неудачного удаления статьи
          *
          * @method
-         * @name PostEditView#destroyFail
+         * @name Soshace.views.PostEditView#destroyFail
          * @returns {undefined}
          */
         destroyFail: function () {
@@ -321,7 +317,7 @@ define([
          * Метод сохраняет значение поля 'Загловок'  в модели
          *
          * @method
-         * @name PostEditView#saveTileToModel
+         * @name Soshace.views.PostEditView#saveTileToModel
          * @returns {undefined}
          */
         saveTileToModel: function () {
@@ -341,7 +337,7 @@ define([
          * Метод сохраняет тело статьи  в модели
          *
          * @method
-         * @name PostEditView#saveBodyToModel
+         * @name Soshace.views.PostEditView#saveBodyToModel
          * @returns {undefined}
          */
         saveBodyToModel: function () {
@@ -363,7 +359,7 @@ define([
          *
          *
          * @method
-         * @name PostEditView#applyCommand
+         * @name Soshace.views.PostEditView#applyCommand
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
@@ -383,7 +379,7 @@ define([
          * тексту применена команада
          *
          * @method
-         * @name PostEditView#updateToolbar
+         * @name Soshace.views.PostEditView#updateToolbar
          * @returns {undefined}
          */
         updateToolbar: function () {
@@ -403,7 +399,7 @@ define([
          * Метод обработчик скрола окна
          *
          * @method
-         * @name PostEditView#windowScrollHandler
+         * @name Soshace.views.PostEditView#windowScrollHandler
          * @returns {undefined}
          */
         windowScrollHandler: function () {
@@ -423,7 +419,7 @@ define([
          * Метод для работы с выделенным текстом
          *
          * @method
-         * @name PostEditView#execCommand
+         * @name Soshace.views.PostEditView#execCommand
          * @param {string} commandWithArgs
          * @param {string} valueArg
          * @returns {undefined}
@@ -443,22 +439,22 @@ define([
          * Слушает нажатие горячих клавиш
          *
          * @method
-         * @name PostEditView#execCommand
+         * @name Soshace.views.PostEditView#execCommand
          * @param {Object} hotKeys список горячих клавиш
          * @returns {undefined}
          */
         bindHotKeys: function (hotKeys) {
             $.each(hotKeys, _.bind(function (hotKey, command) {
                 this.elements.postBody.keydown(hotKey, _.bind(function () {
-                        this.execCommand(command, null);
-                        return false;
-                    }, this)).keyup(hotKey, _.bind(function (event) {
-                        if (this.elements.postBody.attr('contenteditable') &&
-                            this.elements.postBody.is(':visible')) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                    }, this));
+                    this.execCommand(command, null);
+                    return false;
+                }, this)).keyup(hotKey, _.bind(function (event) {
+                    if (this.elements.postBody.attr('contenteditable') &&
+                        this.elements.postBody.is(':visible')) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                }, this));
             }, this));
         },
 
@@ -468,7 +464,7 @@ define([
          * текста
          *
          * @method
-         * @name PostEditView#execCommand
+         * @name Soshace.views.PostEditView#execCommand
          * @returns {Range|null}
          */
         getCurrentRange: function () {
@@ -486,7 +482,7 @@ define([
          * в приватной переменной selectedRange
          *
          * @method
-         * @name PostEditView#saveSelection
+         * @name Soshace.views.PostEditView#saveSelection
          * @returns {undefined}
          */
         saveSelection: function () {
@@ -498,7 +494,7 @@ define([
          * Метод восстанавливает выделение в редакторе
          *
          * @method
-         * @name PostEditView#restoreSelection
+         * @name Soshace.views.PostEditView#restoreSelection
          * @returns {undefined}
          */
         restoreSelection: function () {
@@ -522,7 +518,7 @@ define([
          * Метод показывает модальное окно
          *
          * @method
-         * @name PostEditView#showAddLinkModal
+         * @name Soshace.views.PostEditView#showAddLinkModal
          * @returns {undefined}
          */
         showAddLinkModal: function () {
@@ -534,7 +530,7 @@ define([
          * 'Сохранить' в модальном окне добавления ссылки
          *
          * @method
-         * @name PostEditView#saveLinkHandler
+         * @name Soshace.views.PostEditView#saveLinkHandler
          * @returns {undefined}
          */
         saveLinkHandler: function () {
@@ -549,7 +545,7 @@ define([
          * изображения
          *
          * @method
-         * @name PostEditView#addImageButtonListener
+         * @name Soshace.views.PostEditView#addImageButtonListener
          * @returns {undefined}
          */
         addImageButtonListener: function () {
@@ -580,15 +576,15 @@ define([
                     }));
                 }
             }).on('change', function () {
-                    _this.elements.postBody.append(preLoader);
-                });
+                _this.elements.postBody.append(preLoader);
+            });
         },
 
         /**
          * Метод сохраняет ссылки на элементы DOM
          *
          * @method
-         * @name PostEditView#setElements
+         * @name Soshace.views.PostEditView#setElements
          * @returns {undefined}
          */
         setElements: function () {
@@ -614,7 +610,7 @@ define([
          * см. Wiki
          *
          * @method
-         * @name PostEditView#isEditorDisabled
+         * @name Soshace.views.PostEditView#isEditorDisabled
          * @returns {boolean}
          */
         isEditorDisabled: function () {
@@ -636,7 +632,7 @@ define([
          * см. Wiki
          *
          * @method
-         * @name PostEditView#readOnly
+         * @name Soshace.views.PostEditView#readOnly
          * @returns {boolean}
          */
         readOnly: function () {
@@ -673,7 +669,7 @@ define([
 
         /**
          * @method
-         * @name PostEditView#serialize
+         * @name Soshace.views.PostEditView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -697,7 +693,7 @@ define([
          * Метод вызывается роутером перед выходом из вида
          *
          * @method
-         * @name PostEditView#viewExitHandler
+         * @name Soshace.views.PostEditView#viewExitHandler
          * @returns {undefined}
          */
         viewExitHandler: function () {
@@ -708,7 +704,7 @@ define([
          * Метод добавляет слушатели на модальное окно добавлтения ссылки
          *
          * @method
-         * @name PostEditView#addListenersToLinkModal
+         * @name Soshace.views.PostEditView#addListenersToLinkModal
          * @returns {undefined}
          */
         addListenersToLinkModal: function () {
@@ -720,7 +716,7 @@ define([
          * Метод навешивает слушатели на модальное окно подтверждения удаления статьи
          *
          * @method
-         * @name PostEditView#addListenersToRemovePostModal
+         * @name Soshace.views.PostEditView#addListenersToRemovePostModal
          * @returns {undefined}
          */
         addListenersToRemovePostModal: function () {
@@ -730,7 +726,7 @@ define([
 
         /**
          * @method
-         * @name PostEditView#afterRender
+         * @name Soshace.views.PostEditView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
@@ -743,7 +739,7 @@ define([
          * Метод показывает сообщения в зависимости от статуса статьи
          *
          * @method
-         * @name PostEditView#showStatusMessages
+         * @name Soshace.views.PostEditView#showStatusMessages
          * @returns {undefined}
          */
         showStatusMessages: function () {
@@ -766,7 +762,7 @@ define([
          * Метод отображает причину статуса 'Только для чтения'
          *
          * @method
-         * @name PostEditView#showEditorReadOnlyReason
+         * @name Soshace.views.PostEditView#showEditorReadOnlyReason
          * @param {string} editorMessage
          * @returns {undefined}
          */
@@ -798,7 +794,7 @@ define([
          * Метод вызывается, когда рендер шаблона осуществляется на сервере
          *
          * @method
-         * @name PostEditView#withoutRender
+         * @name Soshace.views.PostEditView#withoutRender
          * @param {jQuery} $el
          * @returns {undefined}
          */
@@ -819,7 +815,7 @@ define([
          * Используется при первом рендере
          *
          * @method
-         * @name PostEditView#setDataToModelFromView
+         * @name Soshace.views.PostEditView#setDataToModelFromView
          * @returns {undefined}
          */
         setDataToModelFromView: function () {
@@ -841,4 +837,4 @@ define([
             this.model.set(data, {silent: true});
         }
     });
-});
+})(window.Soshace);

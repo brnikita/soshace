@@ -1,34 +1,27 @@
 'use strict';
 
-/**
- * Вид страницы логина
- *
- * @module LoginView
- */
+(function(Soshace){
+    var $ = Soshace.core.$,
+        _ = Soshace._;
 
-define([
-    'underscore',
-    'core',
-    'utils/helpers',
-    'utils/widgets',
-    'handlebars',
-    'plugins/controlStatus',
-    'templates'
-], function (_, Core, Helpers, Widgets, Handlebars) {
-    return Core.View.extend({
-
+    /**
+     * Вид страницы логина
+     *
+     * @class Soshace.views.LoginView
+     */
+    Soshace.views.LoginView = Soshace.core.View.extend({
         /**
          * Модель формы логина
          *
          * @field
-         * @name LoginView#model
+         * @name Soshace.views.LoginView#model
          * @type {Core.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name LoginView#elements
+         * @name Soshace.views.LoginView#elements
          * @type {Object}
          */
         elements: {
@@ -37,7 +30,7 @@ define([
 
         /**
          * @field
-         * @name LoginView#events
+         * @name Soshace.views.LoginView#events
          * @type {Object}
          */
         events: {
@@ -51,14 +44,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name LoginView#template
+         * @name Soshace.views.LoginView#template
          * @type {string}
          */
         template: Soshace.hbs['auth/auth'],
 
         /**
          * @constructor
-         * @name LoginView#initialize
+         * @name Soshace.views.LoginView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -80,7 +73,7 @@ define([
          * Метод обработчик клика на кнопке 'Войти'
          *
          * @method
-         * @name LoginView#userLoginHandler
+         * @name Soshace.views.LoginView#userLoginHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
@@ -108,7 +101,7 @@ define([
          * переданных полей
          *
          * @method
-         * @name LoginView#showFieldsErrors
+         * @name Soshace.views.LoginView#showFieldsErrors
          * @param {Object} errors список ошибок
          * @param {boolean} [translate] true - перевести ошибки
          * @returns {undefined}
@@ -117,10 +110,10 @@ define([
             _.each(errors, _.bind(function (error, fieldName) {
                 var $field;
 
-                fieldName = Helpers.hyphen(fieldName);
+                fieldName = Soshace.helpers.hyphen(fieldName);
                 $field = $('#' + fieldName);
                 if (translate) {
-                    error = Helpers.i18n(error);
+                    error = Soshace.helpers.i18n(error);
                 }
                 $field.controlStatus('error', error);
             }, this));
@@ -130,7 +123,7 @@ define([
          * Метод обработчик успешной входа пользователя
          *
          * @method
-         * @name LoginView#userLoginSuccess
+         * @name Soshace.views.LoginView#userLoginSuccess
          * @param {Backbone.Model} model
          * @param {Object} response в ответе приходит профиль пользователя
          * @returns {undefined}
@@ -173,13 +166,13 @@ define([
          * Метод обработчик события изменения поля формы
          *
          * @method
-         * @name LoginView#changeFormFieldHandler
+         * @name Soshace.views.LoginView#changeFormFieldHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
         changeFormFieldHandler: function (event) {
             var $target = $(event.target),
-                serializedField = Helpers.serializeField($target),
+                serializedField = Soshace.helpers.serializeField($target),
                 fieldName = serializedField.name,
                 fieldValue = serializedField.value,
                 params = {};
@@ -190,7 +183,7 @@ define([
 
         /**
          * @method
-         * @name LoginView#serialize
+         * @name Soshace.views.LoginView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -206,7 +199,7 @@ define([
          * Метод сохраняет ссылки на элементы DOM
          *
          * @method
-         * @name LoginView#setElements
+         * @name Soshace.views.LoginView#setElements
          * @returns {undefined}
          */
         setElements: function () {
@@ -217,7 +210,7 @@ define([
          * Метод обработчик получения фокуса полем валидации
          *
          * @method
-         * @name LoginView#validateFieldFocusHandler
+         * @name Soshace.views.LoginView#validateFieldFocusHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
@@ -229,7 +222,7 @@ define([
 
         /**
          * @method
-         * @name LoginView#afterRender
+         * @name Soshace.views.LoginView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
@@ -238,4 +231,4 @@ define([
             $('#email').focus();
         }
     });
-});
+})(window.Soshace);

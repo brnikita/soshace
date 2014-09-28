@@ -5,7 +5,7 @@
  *
  * @module underscore
  */
-(function () {
+(function (Soshace) {
     // Establish the object that gets returned to break out of a loop iteration.
     var _ = {}, breaker = {},
 
@@ -290,5 +290,5 @@
         return obj !== null && hasOwnProperty.call(obj, key);
     };
 
-    window._ = _;
-})();
+    Soshace._ = _;
+})(window.Soshace);

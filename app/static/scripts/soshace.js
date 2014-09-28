@@ -16,6 +16,15 @@ window.Soshace = {
     app: null,
 
     /**
+     * Экземпляр роутера, используещегося в приложении
+     *
+     * @field
+     * @name Soshace.router
+     * @type {Soshace.Core.Router}
+     */
+    router: null,
+
+    /**
      * Список видов
      *
      * @field

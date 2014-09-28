@@ -1,46 +1,40 @@
 'use strict';
-
-/**
- * Коллекция системных сообщений
- *
- * @class SystemMessagesCollection
- */
-
-define([
-    'core',
-    'models/systemMessagesModel',
-    'global'
-], function (Core, SystemMessagesModel, Soshace) {
-    return Core.Collection.extend({
+(function (Soshace) {
+    /**
+     * Коллекция системных сообщений
+     *
+     * @class Soshace.collections.SystemMessagesCollection
+     */
+    Soshace.collections.SystemMessagesCollection = Soshace.core.Collection.extend({
         /**
          * @field
-         * @name SystemMessagesCollection#model
-         * @type {SystemMessagesModel}
+         * @name Soshace.collections.SystemMessagesCollection#model
+         * @type {Function}
          */
-        model: SystemMessagesModel,
+        model: Soshace.models.SystemMessagesModel,
 
         /**
          * @method
-         * @name SystemMessagesCollection#parse
+         * @name Soshace.collections.SystemMessagesCollection#parse
          * @returns {undefined}
          */
-        parse: function(response){
+        parse: function (response) {
             return response.results;
         },
 
         /**
          * @field
-         * @name SystemMessagesCollection#url
+         * @name Soshace.collections.SystemMessagesCollection#url
          * @type {string}
          */
         url: Soshace.urls.api.systemMessages,
 
         /**
          * @constructor
-         * @name SystemMessagesCollection#initialize
+         * @name Soshace.collections.SystemMessagesCollection#initialize
          * @returns {undefined}
          */
         initialize: function () {
         }
     });
-});
+})(window.Soshace);
