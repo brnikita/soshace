@@ -8,7 +8,7 @@
      *
      * Экземпляр создается при инициализации приложения
      *
-     * @module Soshace.core.Template
+     * @class Soshace.core.Template
      */
     Soshace.core.Template = Soshace.core.Class.extend({
         /**
@@ -65,10 +65,24 @@
          * @public
          * @method
          * @name Soshace.core.Template#getTemplate
+         * @param {string} templatePath путь до шаблона
          * @returns {string}
          */
-        getTemplate: function (templateName) {
-            return this._templates[templateName];
+        getTemplate: function (templatePath) {
+            return this._templates[templatePath];
+        },
+
+        /**
+         * Метод устанавливает записывает шаблон в объет
+         *
+         * @method
+         * @name Soshace.core.Template#setTemplate
+         * @param {string} templatePath уть до шаблона
+         * @param {string} template шаблон
+         * @returns {undefined}
+         */
+        setTemplate: function(templatePath, template){
+            this._templates[templatePath] = template;
         },
 
         /**
@@ -89,7 +103,7 @@
         },
 
         /**
-         * Метод возврашщает отрендеренный шаблон
+         * Метод возврашает отрендеренный шаблон
          *
          * В метод передается шаблон и контекст
          *
@@ -110,12 +124,14 @@
                 paramExpression = this._regExp.paramExpression,
                 paramHtmlExpression = this._regExp.paramHtmlExpression;
 
+            //Рендер партиалов
             template = template.replace(new RegExp(partialExpression, 'g'), _.bind(function () {
                 var partialPath = arguments[0];
 
                 this._renderPartial(partialPath, context);
             }, this));
 
+            //Рендер блоковых выражений
             template = template.replace(new RegExp(blockExpression, 'g'), _.bind(function () {
                 var argumentsList = _.toArray(arguments),
                     paramsList = argumentsList.push(context);
@@ -123,6 +139,7 @@
                 this._renderBlockExpression.apply(this, paramsList);
             }, this));
 
+            //Рендер инлайновых выражений с рендером html
             template = template.replace(new RegExp(inlineHtmlExpression, 'g'), _.bind(function () {
                 var helpersName = arguments[0],
                     paramsListString = '' || arguments[1],
@@ -133,6 +150,7 @@
                 this._renderInlineExpression(true, helpersName, paramsList, context);
             }, this));
 
+            //Рендер инлайновых выражений, теги будут экранированы
             template = template.replace(new RegExp(inlineStringExpression, 'g'), _.bind(function () {
                 var helpersName = arguments[0],
                     paramsListString = '' || arguments[1],
@@ -143,12 +161,14 @@
                 this._renderInlineExpression(false, helpersName, paramsList, context);
             }, this));
 
+            //Рендер параметров в html
             template = template.replace(new RegExp(paramHtmlExpression, 'g'), _.bind(function () {
                 var paramName = arguments[0];
 
                 this._renderParam(true, paramName, context);
             }, this));
 
+            //Рендер параметров в строку, тэги будут экранированы
             template = template.replace(new RegExp(paramExpression, 'g'), _.bind(function () {
                 var paramName = arguments[0];
 

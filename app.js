@@ -19,7 +19,7 @@ var _ = require('underscore'),
     I18n = require('i18n-2'),
     Router = srcRequire('router'),
     Passport = require('passport'),
-    Handlebars = require('express3-handlebars'),
+    template = srcRequire('template/expressTemplate'),
     Strategies = srcRequire('common/strategies'),
     Class = srcRequire('common/class'),
     methodOverride = require('method-override'),
@@ -62,12 +62,7 @@ var Blog = Class.extend({
         App.use(methodOverride());
         App.enable('view cache');
         App.set('views', 'app/views/');
-        App.engine('hbs', new Handlebars({
-            layoutsDir: 'app/views/layouts',
-            partialsDir: 'app/views/partials',
-            defaultLayout: 'layout',
-            extname: '.hbs'
-        }));
+        App.engine('hbs', template);
 
         App.set('view engine', 'hbs');
         I18n.expressBind(App, {

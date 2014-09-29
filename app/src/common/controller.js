@@ -7,13 +7,13 @@ var _ = require('underscore'),
 /**
  * Родительский класс для контороллеров
  *
- * @class ControllerInit
+ * @class Controller
  */
 module.exports = Class.extend({
 
     /**
      * @field
-     * @name ControllerInit#next
+     * @name Controller#next
      * @type {Function | null}
      */
     next: null,
@@ -22,7 +22,7 @@ module.exports = Class.extend({
      * Объект ответа
      *
      * @field
-     * @name ControllerInit#response
+     * @name Controller#response
      * @type {Object | null}
      */
     response: null,
@@ -31,14 +31,14 @@ module.exports = Class.extend({
      * Объект запроса
      *
      * @field
-     * @name ControllerInit#request
+     * @name Controller#request
      * @type {Object | null}
      */
     request: null,
 
     /**
      * @constructor
-     * @name ControllerInit#initialize
+     * @name Controller#initialize
      * @param {Object} request объект запроса
      * @param {Object} response Объект ответа
      * @param {Function} next
@@ -56,7 +56,7 @@ module.exports = Class.extend({
      * Текст ошибки передается в параметре
      *
      * @method
-     * @name ControllerInit#sendError
+     * @name Controller#sendError
      * @param {Object | string} error  Пример: {error: 'Ошибка', code: 400} или 'Ошибка'
      * @param {string} [code] код ошибки, 404, 500 по-умолчанию 400
      * @returns {undefined}
@@ -81,7 +81,7 @@ module.exports = Class.extend({
 
     /**
      * @method
-     * @name ControllerInit#renderError
+     * @name Controller#renderError
      * @param {Object | string} error  Пример: {error: 'Ошибка', code: 400} или 'Ошибка'
      * @param {string} [code] код ошибки, 404, 500 по-умолчанию 400
      * @returns {undefined}
@@ -112,7 +112,7 @@ module.exports = Class.extend({
      * Текст сообщения передается в параметре
      *
      * @method
-     * @name ControllerInit#sendSuccess
+     * @name Controller#sendSuccess
      * @param {string} message
      *                               сообщение
      * @returns {undefined}
