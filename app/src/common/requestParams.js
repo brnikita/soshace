@@ -10,9 +10,7 @@
  * @returns {Object}
  */
 module.exports = function (request) {
-    var HandlebarsHelpers = require('./handlebarsHelpers'),
-        helpers = new HandlebarsHelpers(request),
-        profile = request.user && request.user[0],
+    var profile = request.user && request.user[0],
         profileUserName = profile && profile.userName,
         isProduction = Soshace.IS_PRODUCTION,
         localHost = Soshace.LOCAL_HOST,
@@ -24,7 +22,6 @@ module.exports = function (request) {
         isProduction: isProduction,
         host: host,
         version: Soshace.VERSION,
-        helpers: helpers,
         locale: request.i18n.getLocale(),
         isAuthenticated: request.isAuthenticated(),
         paths: Soshace.PATHS,
