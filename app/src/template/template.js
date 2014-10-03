@@ -55,6 +55,7 @@ module.exports = Class.extend({
      * @returns {undefined}
      */
     initialize: function (options) {
+        options = options || {};
         this._helpers = options.helpers || {};
         this._templates = options.templates || {};
     },

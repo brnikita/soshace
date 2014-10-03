@@ -1,8 +1,10 @@
 'use strict';
 
 var _ = require('underscore'),
+    fs = require('fs'),
+    path = require('path'),
     Template = require('./template'),
-    TemplateHelpers = require('./handlebarsHelpers'),
+    TemplateHelpers = require('./templateHelpers'),
     Class = srcRequire('common/class');
 
 /**
@@ -48,25 +50,45 @@ module.exports = Class.extend({
      * @param {Object} options
      * @returns {undefined}
      */
-    initialize: function(options){
+    initialize: function (options) {
+        options = options || {};
         this._layoutPath = options.layout;
-        this.getTemplate(this._layoutPath, _.bind(function(template){
-            this._layout = template;
-        }, this));
         this._template = new Template();
+        this._getTemplate(this._layoutPath, _.bind(function (error, template) {
+            if (error === null) {
+                this._layout = template;
+            }
+        }, this));
     },
 
     /**
      * Метод возвращает шаблон по пути
      *
+     * @private
      * @method
-     * @name ExpressTemplate#getTemplate
+     * @name ExpressTemplate#_getTemplate
      * @param {string} templatePath путь до шаблона
-     * @param callback
+     * @param {Function} callback
      * @returns {undefined}
      */
-    getTemplate: function(templatePath, callback){
+    _getTemplate: function (templatePath, callback) {
+        templatePath = path.resolve(templatePath);
 
+        var template = this._template.getTemplate(templatePath);
+
+        if (template) {
+            callback(null, template);
+            return;
+        }
+
+        fs.readFile(templatePath, 'utf8', _.bind(function (error, template) {
+            if (!error) {
+                this._template.setTemplate(templatePath, template);
+                callback(null, template);
+            }
+
+            callback(error);
+        }, this));
     },
 
     /**

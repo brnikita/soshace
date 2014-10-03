@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('underscore'),
-    Helpers = require('./helpers');
+    Helpers = srcRequire('common/helpers');
 
 /**
  * Конструктор хелперов для шаблонизатора

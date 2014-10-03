@@ -19,7 +19,7 @@ var _ = require('underscore'),
     I18n = require('i18n-2'),
     Router = srcRequire('router'),
     Passport = require('passport'),
-    template = srcRequire('template/expressTemplate'),
+    Template = srcRequire('template/expressTemplate'),
     Strategies = srcRequire('common/strategies'),
     Class = srcRequire('common/class'),
     methodOverride = require('method-override'),
@@ -62,7 +62,9 @@ var Blog = Class.extend({
         App.use(methodOverride());
         App.enable('view cache');
         App.set('views', 'app/views/');
-        App.engine('hbs', template);
+        App.engine('hbs', (new Template({
+            layout: ''
+        })).engine);
 
         App.set('view engine', 'hbs');
         I18n.expressBind(App, {
