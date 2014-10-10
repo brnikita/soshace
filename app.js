@@ -57,14 +57,15 @@ var Blog = Class.extend({
      * @return {undefined}
      */
     configure: function () {
+        var template = new Template({
+            defaultLayout: 'app/views/layouts/layout.hbs'
+        });
         App.use(bodyParser.json());
         App.use(cookieParser());
         App.use(methodOverride());
         App.enable('view cache');
         App.set('views', 'app/views/');
-        App.engine('hbs', (new Template({
-            layout: ''
-        })).engine);
+        App.engine('hbs', _.bind(template.engine, template));
 
         App.set('view engine', 'hbs');
         I18n.expressBind(App, {

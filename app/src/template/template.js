@@ -24,8 +24,8 @@ module.exports = Class.extend({
         inlineHtmlExpression: '/\\{\\{\\{\\#(\\w+)(?:\\s(.*?))?\\}\\}\\}/',
         blockExpression: '\\{\\{\\#(\\w+)\\}\\}(.*?){{\\/\\w+\\}\\}',
         partialExpression: '\\{\\{\\>(\\w+)\\}\\}',
-        paramExpression: '\\{\\{\\(\\w+)\\}\\}',
-        paramHtmlExpression: '\\{\\{\\{\\(\\w+)\\}\\}\\}'
+        paramExpression: '\\{\\{(\\w+)\\}\\}',
+        paramHtmlExpression: '\\{\\{\\{(\\w+)\\}\\}\\}'
     },
 
     /**
@@ -100,7 +100,7 @@ module.exports = Class.extend({
      */
     render: function (templateName, context) {
         var template = this.getTemplate(templateName);
-        return this._render(template, context);
+        return this.renderTemplate(template, context);
     },
 
     /**
@@ -110,14 +110,14 @@ module.exports = Class.extend({
      *
      * Порядок рендера имеет значение!
      *
-     * @private
+     * @public
      * @method
-     * @name Template#render
+     * @name Template#renderTemplate
      * @param {string} template шаблон
      * @param {Object} context контекст, в котором шаблон исполняется
      * @returns {string} отрендеренный шаблон
      */
-    _render: function (template, context) {
+    renderTemplate: function (template, context) {
         var blockExpression = this._regExp.blockExpression,
             inlineHtmlExpression = this._regExp.inlineHtmlExpression,
             inlineStringExpression = this._regExp.inlineStringExpression,

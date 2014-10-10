@@ -30,19 +30,19 @@ module.exports = Class.extend({
      *
      * @private
      * @field
-     * @name ExpressTemplate#_layoutPath
+     * @name ExpressTemplate#_defaultLayoutPath
      * @type {string | null}
      */
-    _layoutPath: null,
+    _defaultLayoutPath: null,
 
     /**
      * Тело лайоута
      *
      * @field
-     * @name ExpressTemplate#_layout
+     * @name ExpressTemplate#_defaultLayout
      * @type {string | null}
      */
-    _layout: null,
+    _defaultLayout: null,
 
     /**
      * @constructor
@@ -52,13 +52,36 @@ module.exports = Class.extend({
      */
     initialize: function (options) {
         options = options || {};
-        this._layoutPath = options.layout;
+        this._defaultLayoutPath = options.defaultLayout;
         this._template = new Template();
-        this._getTemplate(this._layoutPath, _.bind(function (error, template) {
-            if (error === null) {
-                this._layout = template;
+        this._getTemplate(this._defaultLayoutPath, _.bind(function (error, template) {
+            console.log('template', null);
+            if (error !== null) {
+                console.log(template);
+                this._defaultLayout = template;
             }
         }, this));
+    },
+
+    /**
+     * Метод возвращает шаблон вместе с лайоутом
+     *
+     * @private
+     * @method
+     * @name ExpressTemplate#_getTemplateWithLayout
+     * @param {string} template
+     * @returns {string}
+     */
+    _getTemplateWithLayout: function (template) {
+        if (this._defaultLayout === null) {
+            return template;
+        }
+
+        return this._defaultLayout.replace('{{{body}}}', template);
+    },
+
+    _getLayout: function(layoutPath){
+
     },
 
     /**
@@ -75,7 +98,6 @@ module.exports = Class.extend({
         templatePath = path.resolve(templatePath);
 
         var template = this._template.getTemplate(templatePath);
-
         if (template) {
             callback(null, template);
             return;
@@ -83,8 +105,10 @@ module.exports = Class.extend({
 
         fs.readFile(templatePath, 'utf8', _.bind(function (error, template) {
             if (!error) {
+                template = this._getTemplateWithLayout(template);
                 this._template.setTemplate(templatePath, template);
                 callback(null, template);
+                return;
             }
 
             callback(error);
@@ -97,12 +121,18 @@ module.exports = Class.extend({
      * @public
      * @method
      * @param {string} templatePath путь до шаблона
-     * @param {Object} request параметры запроса
+     * @param {Object} params параметры переданные в шаблон
      * @param {Function} callback
      * @returns {undefined}
      */
-    engine: function (templatePath, request, callback) {
-        var templateHelpers = new TemplateHelpers(request);
-        callback(null, 'Hello world');
+    engine: function (templatePath, params, callback) {
+        this._getTemplate(templatePath, _.bind(function (error, template) {
+            if (error) {
+                callback(error);
+                return;
+            }
+
+            callback(null, this._template.renderTemplate(template, params));
+        }, this));
     }
 });
