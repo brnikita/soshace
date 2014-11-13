@@ -26,6 +26,31 @@ module.exports = Class.extend({
     _template: null,
 
     /**
+     * Field contains list of cached layouts
+     *
+     * {
+     *   layoutName: '<html>...</html>',
+     *   ...
+     * }
+     *
+     * @private
+     * @field
+     * @name ExpressTemplate#_layouts
+     * @type {Object | null}
+     */
+    _layouts: null,
+
+    /**
+     * Field contains layout path of current request
+     *
+     * @private
+     * @method
+     * @name ExpressTemplate#_layoutPath
+     * @type {string | null}
+     */
+    _layoutPath: null,
+
+    /**
      * Путь до лайаута
      *
      * @private
@@ -34,15 +59,6 @@ module.exports = Class.extend({
      * @type {string | null}
      */
     _defaultLayoutPath: null,
-
-    /**
-     * Тело лайоута
-     *
-     * @field
-     * @name ExpressTemplate#_defaultLayout
-     * @type {string | null}
-     */
-    _defaultLayout: null,
 
     /**
      * @constructor
@@ -54,12 +70,53 @@ module.exports = Class.extend({
         options = options || {};
         this._defaultLayoutPath = options.defaultLayout;
         this._template = new Template();
-        this._getTemplate(this._defaultLayoutPath, _.bind(function (error, template) {
-            console.log('template', null);
-            if (error !== null) {
-                console.log(template);
-                this._defaultLayout = template;
+        this._layouts = {};
+    },
+
+    /**
+     * Method returns current layout path
+     *
+     * @private
+     * @name ExpressTemplate#_getLayoutPath
+     * @param {string} layoutPath
+     * @returns {string}
+     */
+    _getLayoutPath: function (layoutPath) {
+        return path.resolve(layoutPath || this._defaultLayoutPath);
+    },
+
+    /**
+     * Method returns current layout
+     *
+     * @private
+     * @method
+     * @name ExpressTemplate#_getTemplateWithLayout
+     * @param {Object} params параметры переданные в шаблон
+     * @param {Function} callback
+     * @returns {undefined}
+     */
+    _getLayout: function (params, callback) {
+        var layoutPath = this._getLayoutPath(params.layout),
+            layout = this._layouts[layoutPath];
+        console.log(1);
+        if (!_.isUndefined(layout)) {
+            console.log(2);
+            callback(null, layout);
+            return;
+        }
+
+        console.log(3);
+        fs.readFile(layoutPath, 'utf8', _.bind(function (error, template) {
+            console.log(4);
+            if (!error) {
+                console.log(5);
+                this._layouts[layoutPath] = template;
+                callback(null, template);
+                return;
             }
+
+            console.log(6);
+            callback(error);
         }, this));
     },
 
@@ -69,19 +126,33 @@ module.exports = Class.extend({
      * @private
      * @method
      * @name ExpressTemplate#_getTemplateWithLayout
-     * @param {string} template
-     * @returns {string}
+     * @param {string} templatePath
+     * @param {Object} params параметры переданные в шаблон
+     * @param {Function} callback
+     * @returns {undefined}
      */
-    _getTemplateWithLayout: function (template) {
-        if (this._defaultLayout === null) {
-            return template;
-        }
+    _getTemplateWithLayout: function (templatePath, params, callback) {
+        console.log(0);
+        this._getLayout(params, _.bind(function (error, layout) {
+            if (error) {
+                console.log(6);
+                callback(error);
+                return;
+            }
 
-        return this._defaultLayout.replace('{{{body}}}', template);
-    },
+            console.log(7);
+            this._getTemplate(templatePath, params, _.bind(function (error, template) {
+                console.log(15);
+                if (error) {
+                    console.log(16);
+                    callback(error);
+                    return;
+                }
 
-    _getLayout: function(layoutPath){
-
+                console.log(17);
+                callback(null, layout.replace('{{{body}}}', template));
+            }, this));
+        }, this));
     },
 
     /**
@@ -90,28 +161,34 @@ module.exports = Class.extend({
      * @private
      * @method
      * @name ExpressTemplate#_getTemplate
+     * @param {Object} params параметры переданные в шаблон
      * @param {string} templatePath путь до шаблона
      * @param {Function} callback
      * @returns {undefined}
      */
-    _getTemplate: function (templatePath, callback) {
+    _getTemplate: function (templatePath, params, callback) {
+        var template;
+        console.log(8);
         templatePath = path.resolve(templatePath);
-
-        var template = this._template.getTemplate(templatePath);
+        template = this._template.getTemplate(templatePath);
+        console.log(9);
         if (template) {
+            console.log(10);
             callback(null, template);
-            return;
         }
 
+        console.log(11);
         fs.readFile(templatePath, 'utf8', _.bind(function (error, template) {
-            if (!error) {
-                template = this._getTemplateWithLayout(template);
-                this._template.setTemplate(templatePath, template);
-                callback(null, template);
+            console.log(12);
+            if (error) {
+                console.log(13);
+                callback(error);
                 return;
             }
 
-            callback(error);
+            console.log(14);
+            this._template.setTemplate(templatePath, template);
+            callback(null, template);
         }, this));
     },
 
@@ -126,7 +203,7 @@ module.exports = Class.extend({
      * @returns {undefined}
      */
     engine: function (templatePath, params, callback) {
-        this._getTemplate(templatePath, _.bind(function (error, template) {
+        this._getTemplateWithLayout(templatePath, params, _.bind(function (error, template) {
             if (error) {
                 callback(error);
                 return;
