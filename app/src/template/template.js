@@ -39,6 +39,16 @@ module.exports = Class.extend({
     _helpers: null,
 
     /**
+     * List of partials
+     *
+     * @private
+     * @field
+     * @name Template#_partials
+     * @type {Object | null}
+     */
+    _partials: null,
+
+    /**
      * Список шаблонов
      *
      * @private
@@ -58,6 +68,41 @@ module.exports = Class.extend({
         options = options || {};
         this._helpers = options.helpers || {};
         this._templates = options.templates || {};
+    },
+
+    /**
+     * Method returns partial by template path
+     *
+     * Method can be overridden on server side
+     *
+     * @public
+     * @name Template#getPartial
+     * @param {string} partialPath
+     * @param {Function} [callback]
+     * @returns {string}
+     */
+    getPartial: function (partialPath, callback) {
+        var partial = this._partials[partialPath];
+
+        if (_.isFunction(callback)) {
+            return  callback(null, partial);
+        }
+
+        return partial;
+    },
+
+    /**
+     * Method saves partial in cache
+     *
+     * @public
+     * @method
+     * @name Template#setPartial
+     * @param {string} partialPath
+     * @param {string} partial
+     * @returns {undefined}
+     */
+    setPartial: function (partialPath, partial) {
+        this._partials[partialPath] = partial;
     },
 
     /**
@@ -82,7 +127,7 @@ module.exports = Class.extend({
      * @param {string} template шаблон
      * @returns {undefined}
      */
-    setTemplate: function(templatePath, template){
+    setTemplate: function (templatePath, template) {
         this._templates[templatePath] = template;
     },
 

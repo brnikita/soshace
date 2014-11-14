@@ -70,7 +70,55 @@ module.exports = Class.extend({
         options = options || {};
         this._defaultLayoutPath = options.defaultLayout;
         this._template = new Template();
+        this._template.getPartial = this.getPartial;
         this._layouts = {};
+    },
+
+    /**
+     * Method returns full partial path
+     *
+     * @private
+     * @method
+     * @name ExpressTemplate#_getPartialPath
+     * @param {string} partialPath
+     * @returns {string}
+     */
+    _getPartialPath: function (partialPath) {
+        console.log(path.resolve(partialPath));
+        return path.resolve(partialPath);
+    },
+
+    /**
+     * Method returns partial
+     *
+     * @public
+     * @method
+     * @param {string} partialPath
+     * @param {Function} callback
+     * @name ExpressTemplate#_getLayoutPath
+     * @returns {undefined}
+     */
+    getPartial: function (partialPath, callback) {
+        var templateInstance = this._template,
+            partial;
+
+        partialPath = this._getPartialPath(partialPath);
+        partial = templateInstance._partials[partialPath];
+
+        if (_.isString(partial)) {
+            callback(null, partial);
+            return;
+        }
+
+        fs.readFile(partialPath, 'utf8', _.bind(function (error, template) {
+            if (!error) {
+                this._layouts[partialPath] = template;
+                callback(null, template);
+                return;
+            }
+
+            callback(error);
+        }, this));
     },
 
     /**
