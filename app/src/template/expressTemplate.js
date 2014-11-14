@@ -90,7 +90,7 @@ module.exports = Class.extend({
      *
      * @private
      * @method
-     * @name ExpressTemplate#_getTemplateWithLayout
+     * @name ExpressTemplate#_getLayout
      * @param {Object} params параметры переданные в шаблон
      * @param {Function} callback
      * @returns {undefined}
@@ -98,24 +98,19 @@ module.exports = Class.extend({
     _getLayout: function (params, callback) {
         var layoutPath = this._getLayoutPath(params.layout),
             layout = this._layouts[layoutPath];
-        console.log(1);
+
         if (!_.isUndefined(layout)) {
-            console.log(2);
             callback(null, layout);
             return;
         }
 
-        console.log(3);
         fs.readFile(layoutPath, 'utf8', _.bind(function (error, template) {
-            console.log(4);
             if (!error) {
-                console.log(5);
                 this._layouts[layoutPath] = template;
                 callback(null, template);
                 return;
             }
 
-            console.log(6);
             callback(error);
         }, this));
     },
@@ -132,24 +127,18 @@ module.exports = Class.extend({
      * @returns {undefined}
      */
     _getTemplateWithLayout: function (templatePath, params, callback) {
-        console.log(0);
         this._getLayout(params, _.bind(function (error, layout) {
             if (error) {
-                console.log(6);
                 callback(error);
                 return;
             }
 
-            console.log(7);
             this._getTemplate(templatePath, params, _.bind(function (error, template) {
-                console.log(15);
                 if (error) {
-                    console.log(16);
                     callback(error);
                     return;
                 }
 
-                console.log(17);
                 callback(null, layout.replace('{{{body}}}', template));
             }, this));
         }, this));
@@ -168,25 +157,20 @@ module.exports = Class.extend({
      */
     _getTemplate: function (templatePath, params, callback) {
         var template;
-        console.log(8);
+
         templatePath = path.resolve(templatePath);
         template = this._template.getTemplate(templatePath);
-        console.log(9);
         if (template) {
-            console.log(10);
             callback(null, template);
+            return;
         }
 
-        console.log(11);
         fs.readFile(templatePath, 'utf8', _.bind(function (error, template) {
-            console.log(12);
             if (error) {
-                console.log(13);
                 callback(error);
                 return;
             }
 
-            console.log(14);
             this._template.setTemplate(templatePath, template);
             callback(null, template);
         }, this));
