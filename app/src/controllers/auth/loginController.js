@@ -96,6 +96,7 @@ module.exports = Controller.extend({
      */
     authenticateHandler: function (error, user) {
         var request = this.request;
+
         if (typeof error === 'string') {
             return this.sendError(error, 500);
         }

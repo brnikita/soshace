@@ -189,7 +189,7 @@ define([
          * @returns {undefined}
          */
         showSaveMessage: function (message, isError) {
-            var $saveMessagesthis = this.elements.saveMessages,
+            var $saveMessages = this.elements.saveMessages,
                 template;
 
             if (isError) {
@@ -202,8 +202,8 @@ define([
                 });
             }
 
-            $saveMessagesthis.html(template).removeClass('hide');
-            Helpers.scrollToElementTop($saveMessagesthis);
+            $saveMessages.html(template).removeClass('hide');
+            Helpers.scrollToElementTop($saveMessages);
         },
 
         /**

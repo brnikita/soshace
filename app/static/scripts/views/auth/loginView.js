@@ -36,7 +36,8 @@ define([
          * @type {Object}
          */
         elements: {
-            validateFields: null
+            validateFields: null,
+            authMessages: null
         },
 
         /**
@@ -97,7 +98,7 @@ define([
             errors = this.model.validate();
 
             if (errors) {
-                this.showFieldsErrors(errors, true);
+                this.showFieldsErrors(errors);
                 return;
             }
 
@@ -114,18 +115,15 @@ define([
          * @method
          * @name LoginView#showFieldsErrors
          * @param {Object} errors список ошибок
-         * @param {Boolean} [translate] true - перевести ошибки
          * @returns {undefined}
          */
-        showFieldsErrors: function (errors, translate) {
+        showFieldsErrors: function (errors) {
             _.each(errors, _.bind(function (error, fieldName) {
                 var $field;
 
                 fieldName = Helpers.hyphen(fieldName);
                 $field = $('#' + fieldName);
-                if (translate) {
-                    error = Helpers.i18n(error);
-                }
+                error = Helpers.i18n(error);
                 $field.controlStatus('error', error);
             }, this));
         },
@@ -156,21 +154,41 @@ define([
          * Метод обработчик неуспешного логина пользователя
          *
          * @method
-         * @name RegistrationView#userLoginFail
+         * @name LoginView#userLoginFail
          * @param {Backbone.Model} model
          * @param {Object} response
          * @returns {undefined}
          */
         userLoginFail: function (model, response) {
-            var error = response.responseJSON && response.responseJSON.error;
+            var responseJson = JSON.parse(response.responseText),
+                error = responseJson && responseJson.error;
+
             if (typeof error === 'string') {
-                //TODO: добавить вывод системной ошибки
+                this.showAuthErrorMessage(error);
                 return;
             }
 
             if (typeof error === 'object') {
                 this.showFieldsErrors(error);
             }
+        },
+
+        /**
+         * Method shows error message
+         *
+         * @method
+         * @name LoginView#showAuthErrorMessage
+         * @param {string} error
+         * @returns {undefined}
+         */
+        showAuthErrorMessage: function (error) {
+            var $authMessages = this.elements.authMessages,
+                template = Soshace.hbs['messages/errorMessage']({
+                    message: error
+                });
+
+            $authMessages.html(template).removeClass('hide');
+            Helpers.scrollToElementTop($authMessages);
         },
 
         /**
@@ -215,6 +233,7 @@ define([
          */
         setElements: function () {
             this.elements.validateFields = this.$('.js-validate-input');
+            this.elements.authMessages = this.$('.js-auth-messages');
         },
 
         /**

@@ -17,7 +17,7 @@ define([
 
         /**
          * @field
-         * @name RegistrationView#collection
+         * @name SystemMessagesView#collection
          * @type {SystemMessagesCollection | null}
          */
         collection: null,
@@ -26,14 +26,14 @@ define([
          * Модель подходящего системного сообщения
          *
          * @field
-         * @name RegistrationView#model
+         * @name SystemMessagesView#model
          * @type {Backbone.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name RegistrationView#elements
+         * @name SystemMessagesView#elements
          * @type {Object}
          */
         elements: {
@@ -43,7 +43,7 @@ define([
          * Список обработчиков событий
          *
          * @field
-         * @name RegistrationView#events
+         * @name SystemMessagesView#events
          * @type {Object}
          */
         events: {
@@ -53,14 +53,14 @@ define([
          * Путь до шаблона
          *
          * @field
-         * @name RegistrationView#template
+         * @name SystemMessagesView#template
          * @type {string}
          */
-        template: Soshace.hbs['auth/authView'],
+        template: null,
 
         /**
          * @constructor
-         * @name RegistrationView#initialize
+         * @name SystemMessagesView#initialize
          * @param {Object} params
          * @returns {undefined}
          */
@@ -74,7 +74,7 @@ define([
          * Soshace.systemMessages
          *
          * @method
-         * @name RegistrationView#saveMessagesGlobal
+         * @name SystemMessagesView#saveMessagesGlobal
          * @returns {undefined}
          */
         saveMessagesGlobal: function () {
@@ -86,7 +86,7 @@ define([
          * сообщения для показа на данной странице
          *
          * @method
-         * @name RegistrationView#getFirsAvailableMessage
+         * @name SystemMessagesView#getFirsAvailableMessage
          * @param {String} pageAlias сокращенное название страницы
          * @returns {Backbone.Model}
          */
@@ -101,7 +101,7 @@ define([
          * showOnce - показ только один раз
          *
          * @method
-         * @name RegistrationView#checkShowOnceFlag
+         * @name SystemMessagesView#checkShowOnceFlag
          * @returns {undefined}
          */
         checkShowOnceFlag: function () {
@@ -114,7 +114,7 @@ define([
          * Метод обработчик смены страницы
          *
          * @method
-         * @name RegistrationView#changePage
+         * @name SystemMessagesView#changePage
          * @param {String} pageAlias сокращенное название страницы
          * @returns {undefined}
          */
@@ -134,7 +134,7 @@ define([
 
         /**
          * @method
-         * @name RegistrationView#afterRender
+         * @name SystemMessagesView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {

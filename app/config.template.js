@@ -188,22 +188,6 @@ global.Soshace = {
     },
 
     /**
-     * Список дефолтных доступных фонов
-     *
-     * @constant
-     * @name Soshace.BACKGROUNDS
-     * @type {Array}
-     */
-    BACKGROUNDS: [
-        'funny-dog.jpg',
-        'lion.jpg',
-        '5579-road-1920x1080-artistic-wallpaper.jpg',
-        'spring.jpg',
-        'sleeping-fox.jpg',
-        'new-york.jpg'
-    ],
-
-    /**
      * Метод возвращает директорию для медиа файлов
      *
      * @method

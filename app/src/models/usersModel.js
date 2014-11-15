@@ -268,12 +268,12 @@ UsersShema.methods.isProfileInfoEmpty = function () {
 UsersShema.methods.comparePassword = function (candidatePassword, callback) {
     Bcrypt.compare(candidatePassword, this.password, function (error, isMatch) {
         if (error) {
-            callback({error: 'Password is not correct', code: 400});
+            callback({error: {password: 'Password is not correct.'}, code: 400});
             return;
         }
 
         if (!isMatch) {
-            callback({error: 'Password is not correct', code: 400});
+            callback({error: {password: 'Password is not correct.'}, code: 400});
             return;
         }
 

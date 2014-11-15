@@ -57,7 +57,7 @@ var Strategies = {
             return;
         }
 
-        UsersModel.getUserByEmail(userEmail, _.bind(function(error, user){
+        UsersModel.getUserByEmail(userEmail, _.bind(function (error, user) {
             this.getUserByEmailHandler(error, user, userEmail, userPassword, done);
         }, this));
     },
@@ -83,20 +83,23 @@ var Strategies = {
         }
 
         if (!user) {
-            done({email: 'User with email {{' + userEmail + '}} is not registered yet.'});
+            done({
+                error: {email: 'User with email {{' + userEmail + '}} is not registered yet.'},
+                code: 400
+            });
             return;
         }
 
         passwordError = UsersModel.validatePassword(userPassword);
 
         if (passwordError) {
-            done({password: passwordError});
+            done({error: {password: passwordError}, code: 400});
             return;
         }
 
         user.comparePassword(userPassword, function (error) {
             if (error) {
-                return done({password: error});
+                return done(error);
             }
             return done(null, user);
         });

@@ -83,6 +83,7 @@
     "Confirmation email has been sent to your email": "Confirmation email has been sent to your email",
     "Complete registration": "Complete registration",
     "User with email ": "User with email ",
+    "User with email {{email}} is not registered yet.": "Пользователь с email {{email}} ещё не зарегистрирован.",
     " is already exists": " is already exists",
     " is not registered yet.": " is not registered yet.",
     "Server is too busy, try later": "Server is too busy, try later",
@@ -198,5 +199,8 @@
     "Author information": "Информация об авторе",
     "Author hasn't gave information about themselves yet.": "Автор пока не указал информацию о себе.",
     "Tell about yourself": "Расскажите о себе",
-    "<strong>Earn money</strong> for unique views, likes and reposts.":"<strong>Получай деньги</strong> за уникальные просмотры, лайки и репосты."
+    "<strong>Earn money</strong> for unique views, likes and reposts.": "<strong>Получай деньги</strong> за уникальные просмотры, лайки и репосты.",
+    "Bad request.": "Некорректный запрос.",
+    "Password can&#39;t be less than 6 characters.": "Пароль не может быть менее 6 символов.",
+    "Password is not correct.": "Неверный пароль."
 }

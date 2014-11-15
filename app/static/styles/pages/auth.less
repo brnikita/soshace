@@ -2,21 +2,21 @@
   @media (min-width: @screen-xs-max) {
     width: 650px;
     margin: 10px auto 0 auto;
-    .box-shadow(0 0 2px rgba(0, 0, 0, 0.2));
   }
   @media (max-width: @screen-xs-max) {
     border-bottom: 1px solid @border-color-grey;
   }
-  .nav-tabs {
-    &__login {
-      width: 30%;
-    }
-    &__registration {
-      width: 70%;
-    }
-  }
   &-form {
+    .box-shadow(0 0 2px rgba(0, 0, 0, 0.2));
     background-color: #fff;
+    .nav-tabs {
+      &__login {
+        width: 30%;
+      }
+      &__registration {
+        width: 70%;
+      }
+    }
     &__content {
       padding: 10px;
     }
@@ -35,6 +35,11 @@
       padding-top: 10px;
       text-align: center;
       font-size: 16px;
+    }
+  }
+  &__messages {
+    .alert {
+      margin-bottom: 10px;
     }
   }
 }
