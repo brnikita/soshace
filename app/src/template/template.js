@@ -23,7 +23,7 @@ module.exports = Class.extend({
         inlineStringExpression: '/\\{\\{\\#(\\w+)(?:\\s(.*?))?\\}\\}/',
         inlineHtmlExpression: '/\\{\\{\\{\\#(\\w+)(?:\\s(.*?))?\\}\\}\\}/',
         blockExpression: '\\{\\{\\#(\\w+)\\}\\}(.*?){{\\/\\w+\\}\\}',
-        partialExpression: '\\{\\{\\>(\\w+)\\}\\}',
+        partialExpression: '\\{\\{\\>\\s?(\\w+)\\}\\}',
         paramExpression: '\\{\\{(\\w+)\\}\\}',
         paramHtmlExpression: '\\{\\{\\{(\\w+)\\}\\}\\}'
     },
@@ -39,17 +39,7 @@ module.exports = Class.extend({
     _helpers: null,
 
     /**
-     * List of partials
-     *
-     * @private
-     * @field
-     * @name Template#_partials
-     * @type {Object | null}
-     */
-    _partials: null,
-
-    /**
-     * Список шаблонов
+     * List of templates
      *
      * @private
      * @field
@@ -73,36 +63,15 @@ module.exports = Class.extend({
     /**
      * Method returns partial by template path
      *
-     * Method can be overridden on server side
-     *
      * @public
      * @name Template#getPartial
      * @param {string} partialPath
-     * @param {Function} [callback]
      * @returns {string}
      */
-    getPartial: function (partialPath, callback) {
-        var partial = this._partials[partialPath];
+    getPartial: function (partialPath) {
+        var fullPartialPath = 'partials/' + partialPath;
 
-        if (_.isFunction(callback)) {
-            return  callback(null, partial);
-        }
-
-        return partial;
-    },
-
-    /**
-     * Method saves partial in cache
-     *
-     * @public
-     * @method
-     * @name Template#setPartial
-     * @param {string} partialPath
-     * @param {string} partial
-     * @returns {undefined}
-     */
-    setPartial: function (partialPath, partial) {
-        this._partials[partialPath] = partial;
+        return  this._templates[fullPartialPath];
     },
 
     /**
@@ -166,16 +135,10 @@ module.exports = Class.extend({
         var blockExpression = this._regExp.blockExpression,
             inlineHtmlExpression = this._regExp.inlineHtmlExpression,
             inlineStringExpression = this._regExp.inlineStringExpression,
-            partialExpression = this._regExp.partialExpression,
             paramExpression = this._regExp.paramExpression,
             paramHtmlExpression = this._regExp.paramHtmlExpression;
 
-        //Рендер партиалов
-        template = template.replace(new RegExp(partialExpression, 'g'), _.bind(function () {
-            var partialPath = arguments[0];
-
-            this._renderPartial(partialPath, context);
-        }, this));
+        this._setPartials(template);
 
         //Рендер блоковых выражений
         template = template.replace(new RegExp(blockExpression, 'g'), _.bind(function () {
@@ -261,17 +224,32 @@ module.exports = Class.extend({
     },
 
     /**
-     * Метод рендерит партиал
+     * Method sets partials in template
+     *
+     * Method return template with partials
      *
      * @private
      * @method
-     * @name Template#_renderPartial
+     * @name Template#_setPartials
      * @param {string} partialPath
      * @param {Object} [context]
-     * @returns {string} отрендеренный шаблон
+     * @returns {string}
      */
-    _renderPartial: function (partialPath, context) {
+    _setPartials: function (partialPath, context) {
+        var partialExpression = this._regExp.partialExpression;
 
+        template = template.replace(new RegExp(partialExpression, 'g'), _.bind(function () {
+            var partialPath = arguments[1];
+
+            this._renderPartial(partialPath, context);
+        }, this));
+
+        this.getPartial(partialPath, function (error, partial) {
+            if (error) {
+                console.log(error);
+            }
+            console.log(partial);
+        });
     },
 
     /**

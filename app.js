@@ -27,11 +27,20 @@ var _ = require('underscore'),
 
 var Blog = Class.extend({
     /**
+     * Field contains instance of Template class
+     *
+     * @field
+     * @name
+     * @type {Template | null}
+     */
+    template: null,
+
+    /**
      * Инициализируем приложение
      *
      * @private
      * @function
-     * @name Blog.initialize
+     * @name Blog#initialize
      * @return {undefined}
      */
     initialize: function () {
@@ -39,27 +48,29 @@ var Blog = Class.extend({
         Soshace.VERSION = packageJson.version;
         Soshace.SCRIPTS_LIST = clientScripts.scripts;
         Soshace.IS_PRODUCTION = App.get('env') === 'production';
-        this.configure();
-        //Подрубаемся к базе
-        DbConnection.databaseOpen(_.bind(function () {
-            Strategies.localStrategy();
-            new Router(App);
-            App.listen(Soshace.PORT, Soshace.HOST);
+        this.template = new Template({
+            defaultLayout: 'app/views/layouts/layout.hbs'
+        });
+        this.template.preLoadTemplates(_.bind(function () {
+            this.configure();
+            DbConnection.databaseOpen(_.bind(function () {
+                Strategies.localStrategy();
+                new Router(App);
+                App.listen(Soshace.PORT, Soshace.HOST);
+            }, this));
         }, this));
-
     },
 
     /**
      * Конфигурируем наше приложение
      *
      * @method
-     * @name Blog.configure
+     * @name Blog#configure
      * @return {undefined}
      */
     configure: function () {
-        var template = new Template({
-            defaultLayout: 'app/views/layouts/layout.hbs'
-        });
+        var template = this.template;
+
         App.use(bodyParser.json());
         App.use(cookieParser());
         App.use(methodOverride());

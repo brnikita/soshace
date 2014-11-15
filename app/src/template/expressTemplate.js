@@ -70,55 +70,73 @@ module.exports = Class.extend({
         options = options || {};
         this._defaultLayoutPath = options.defaultLayout;
         this._template = new Template();
-        this._template.getPartial = this.getPartial;
         this._layouts = {};
     },
 
     /**
-     * Method returns full partial path
+     * Method walks through directory recursively
      *
-     * @private
-     * @method
-     * @name ExpressTemplate#_getPartialPath
-     * @param {string} partialPath
-     * @returns {string}
-     */
-    _getPartialPath: function (partialPath) {
-        console.log(path.resolve(partialPath));
-        return path.resolve(partialPath);
-    },
-
-    /**
-     * Method returns partial
+     * Method passes to callback list of files
      *
-     * @public
      * @method
-     * @param {string} partialPath
+     * @name ExpressTemplate#walk
+     * @param {string} directoryPath
      * @param {Function} callback
-     * @name ExpressTemplate#_getLayoutPath
      * @returns {undefined}
      */
-    getPartial: function (partialPath, callback) {
-        var templateInstance = this._template,
-            partial;
+    walk: function (directoryPath, callback) {
+        var _this = this,
+            filesList = [];
 
-        partialPath = this._getPartialPath(partialPath);
-        partial = templateInstance._partials[partialPath];
+        fs.readdir(directoryPath, function (error, files) {
+            var pending = files.length;
 
-        if (_.isString(partial)) {
-            callback(null, partial);
-            return;
-        }
-
-        fs.readFile(partialPath, 'utf8', _.bind(function (error, template) {
-            if (!error) {
-                this._layouts[partialPath] = template;
-                callback(null, template);
+            if (error) {
+                callback(error);
                 return;
             }
 
-            callback(error);
-        }, this));
+            if (pending === 0) {
+                callback(null, filesList);
+                return;
+            }
+
+            files.forEach(function (file) {
+                file = directoryPath + '/' + file;
+                fs.stat(file, function (error, stat) {
+                    if (stat && stat.isDirectory()) {
+                        _this.walk(file, function (error, resuls) {
+                            filesList = filesList.concat(resuls);
+                            if (!--pending) {
+                                callback(null, filesList);
+                            }
+                        });
+                        return;
+                    }
+
+                    filesList.push(file);
+                    if (!--pending) {
+                        callback(null, filesList);
+                    }
+                });
+            });
+        });
+    },
+
+    /**
+     * Method preloads templates to cache
+     *
+     * @method
+     * @name ExpressTemplate#preLoadTemplates
+     * @param {Function} callback
+     * @returns {undefined}
+     */
+    preLoadTemplates: function (callback) {
+        var viewsPath = Soshace.DIR_NAME + '/app/views';
+
+        this.walk(viewsPath, function (error, files) {
+            console.log(files);
+        })
     },
 
     /**
@@ -204,16 +222,16 @@ module.exports = Class.extend({
      * @returns {undefined}
      */
     _getTemplate: function (templatePath, params, callback) {
-        var template;
+        var template,
+            fullTemplatePath = path.resolve(templatePath);
 
-        templatePath = path.resolve(templatePath);
         template = this._template.getTemplate(templatePath);
         if (template) {
             callback(null, template);
             return;
         }
 
-        fs.readFile(templatePath, 'utf8', _.bind(function (error, template) {
+        fs.readFile(fullTemplatePath, 'utf8', _.bind(function (error, template) {
             if (error) {
                 callback(error);
                 return;
