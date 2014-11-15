@@ -9,8 +9,7 @@ global.srcRequire = function (name) {
 
 var _ = require('underscore'),
     express = require('express'),
-    packageJson = require('./package'),
-    clientScripts = require('./clientScripts'),
+    Package = require('./package'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
@@ -19,64 +18,55 @@ var _ = require('underscore'),
     I18n = require('i18n-2'),
     Router = srcRequire('router'),
     Passport = require('passport'),
-    Template = srcRequire('template/expressTemplate'),
+    Handlebars = require('express3-handlebars'),
     Strategies = srcRequire('common/strategies'),
-    Class = srcRequire('common/class'),
+    Class = srcRequire('vendors/class'),
     methodOverride = require('method-override'),
+    SystemMessagesController = srcRequire('controllers/systemMessagesController'),
     MongoStore = require('connect-mongo')(session);
 
 var Blog = Class.extend({
-    /**
-     * Field contains instance of Template class
-     *
-     * @field
-     * @name
-     * @type {Template | null}
-     */
-    template: null,
-
     /**
      * Инициализируем приложение
      *
      * @private
      * @function
-     * @name Blog#initialize
+     * @name Blog.initialize
      * @return {undefined}
      */
     initialize: function () {
         Soshace.DIR_NAME = __dirname;
-        Soshace.VERSION = packageJson.version;
-        Soshace.SCRIPTS_LIST = clientScripts.scripts;
+        Soshace.VERSION = Package.version;
         Soshace.IS_PRODUCTION = App.get('env') === 'production';
-        this.template = new Template({
-            defaultLayout: 'app/views/layouts/layout.hbs'
-        });
-        this.template.preLoadTemplates(_.bind(function () {
-            this.configure();
-            DbConnection.databaseOpen(_.bind(function () {
-                Strategies.localStrategy();
-                new Router(App);
-                App.listen(Soshace.PORT, Soshace.HOST);
-            }, this));
+        this.configure();
+        //Подрубаемся к базе
+        DbConnection.databaseOpen(_.bind(function () {
+            Strategies.localStrategy();
+            new Router(App);
+            App.listen(Soshace.PORT, Soshace.HOST);
         }, this));
+
     },
 
     /**
      * Конфигурируем наше приложение
      *
      * @method
-     * @name Blog#configure
+     * @name Blog.configure
      * @return {undefined}
      */
     configure: function () {
-        var template = this.template;
-
         App.use(bodyParser.json());
         App.use(cookieParser());
         App.use(methodOverride());
         App.enable('view cache');
         App.set('views', 'app/views/');
-        App.engine('hbs', _.bind(template.engine, template));
+        App.engine('hbs', new Handlebars({
+            layoutsDir: 'app/views/layouts',
+            partialsDir: 'app/views/partials',
+            defaultLayout: 'layout',
+            extname: '.hbs'
+        }));
 
         App.set('view engine', 'hbs');
         I18n.expressBind(App, {

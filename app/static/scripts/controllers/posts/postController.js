@@ -1,80 +1,87 @@
 'use strict';
-(function (Soshace) {
-    /**
-     * Контроллер страницы просмотра статьи
-     *
-     * @class Soshace.controllers.PostController
-     */
-    Soshace.controllers.PostController = Soshace.core.Controller.extend({
-        /**
-         * Алиас страницы
-         *
-         * @field
-         * @name Soshace.controllers.PostController#pageAlias
-         * @type {string}
-         */
-        pageAlias: 'postDetail',
 
-        /**
-         * @field
-         * @name Soshace.controllers.PostController#model
-         * @type {Soshace.models.PostModel | null}
-         */
-        model: null,
+/**
+ * Контроллер страницы просмотра статьи
+ *
+ * @class PostController
+ */
+define([
+        'underscore',
+        'utils/controller',
+        'models/postModel',
+        'views/posts/postView'
+    ],
+    function (_, Controller, PostModel, PostView) {
+        return Controller.extend({
+            /**
+             * Алиас страницы
+             *
+             * @field
+             * @name PostController#pageAlias
+             * @type {String}
+             */
+            pageAlias: 'postDetail',
 
-        /**
-         * @field
-         * @name Soshace.controllers.PostController#view
-         * @type {Soshace.views.PostView | null}
-         */
-        view: null,
+            /**
+             * @field
+             * @name PostController#model
+             * @type {PostModel}
+             */
+            model: null,
 
-        /**
-         * @constructor
-         * @name
-         * @returns {undefined}
-         */
-        initialize: function () {
-            this.model = new Soshace.models.PostModel();
-            this.view = new Soshace.views.PostView({
-                model: this.model
-            });
-        },
+            /**
+             * @field
+             * @name PostController#view
+             * @type {PostView}
+             */
+            view: null,
 
-
-        /**
-         * Метод вызывает при рендере на сервере
-         *
-         * @method
-         * @name Soshace.controllers.PostController#firstLoad
-         * @returns {undefined}
-         */
-        firstLoad: function () {
-            var app = Soshace.app,
-                $el = app.elements.contentFirstLoad,
-                view = this.view;
-
-            app.setView('.js-content', view);
-            view.withoutRender($el);
-        },
-
-        /**
-         * Метод вызывает при рендере на клиенте
-         *
-         * @method
-         * @name Soshace.controllers.PostController#firstLoad
-         * @returns {undefined}
-         */
-        secondLoad: function () {
-            var params = this.routeParams,
-                postId = params[1],
-                view = this.view,
-                app = Soshace.app;
-
-            this.model.getPost(postId).
-                done(function () {
-                    app.setView('.js-content', view).render();
+            /**
+             * @constructor
+             * @name
+             * @returns {undefined}
+             */
+            initialize: function () {
+                this.model = new PostModel();
+                this.view = new PostView({
+                    model: this.model
                 });
-        }
+            },
+
+
+            /**
+             * Метод вызывает при рендере на сервере
+             *
+             * @method
+             * @name PostController#firstLoad
+             * @returns {undefined}
+             */
+            firstLoad: function () {
+                var app = Soshace.app,
+                    $el = app.elements.contentFirstLoad,
+                    view = this.view;
+
+                app.setView('.js-content', view);
+                view.withoutRender($el);
+            },
+
+            /**
+             * Метод вызывает при рендере на клиенте
+             *
+             * @method
+             * @name PostController#firstLoad
+             * @returns {undefined}
+             */
+            secondLoad: function () {
+                var params = this.routeParams,
+                    postId = params[1],
+                    view = this.view,
+                    app = Soshace.app;
+
+                this.model.getPost(postId).
+                    done(function(){
+                        app.setView('.js-content', view).render();
+                    });
+            }
+        });
     });
-})(window.Soshace);

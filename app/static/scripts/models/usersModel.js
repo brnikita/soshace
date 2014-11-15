@@ -1,25 +1,30 @@
 'use strict';
 
-(function (Soshace) {
-    var _ = Soshace._;
+/**
+ * Модель страницы пользователя
+ *
+ * @class UsersModel
+ */
 
-    /**
-     * Модель страницы пользователя
-     *
-     * @class Soshace.models.UsersModel
-     */
-    Soshace.models.UsersModel = Soshace.core.Model.extend({
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+    'utils/helpers',
+    'config'
+], function ($, _, Backbone, Helpers) {
+    return Backbone.Model.extend({
 
         /**
          * @field
-         * @name Soshace.models.UsersModel#idAttribute
-         * @type {string}
+         * @name UsersModel#idAttribute
+         * @type {String}
          */
         idAttribute: '_id',
 
         /**
          * @method
-         * @name Soshace.models.UsersModel#initialize
+         * @name UsersModel#initialize
          * @returns {string}
          */
         url: function () {
@@ -29,7 +34,7 @@
 
         /**
          * @property
-         * @name Soshace.models.UsersModel#defaults
+         * @name UsersModel#defaults
          * @type {Object}
          */
         defaults: {
@@ -50,7 +55,7 @@
          * По этим полям определятся заполненность профиля
          *
          * @field
-         * @name Soshace.models.UsersModel#profileInformationFields
+         * @name UsersModel#profileInformationFields
          * @type {Array}
          */
         profileInformationFields: [
@@ -66,7 +71,7 @@
          * Список полов
          *
          * @field
-         * @name Soshace.models.UsersModel#sexList
+         * @name UsersModel#sexList
          * @type {Array}
          */
         sexList: [
@@ -86,8 +91,8 @@
          * Метод возвращает true, если информация по прфилю пустая
          *
          * @method
-         * @name Soshace.models.UsersModel#isProfileInfoEmpty
-         * @returns {boolean}
+         * @name UsersModel#isProfileInfoEmpty
+         * @returns {Boolean}
          */
         isProfileInfoEmpty: function () {
             var profileInformationFields = this.profileInformationFields,
@@ -108,11 +113,11 @@
          * Метод загружает данные пользователя
          *
          * @method
-         * @name Soshace.models.UsersModel#getUser
+         * @name UsersModel#getUser
          * @returns {jQuery.Deferred}
          */
         getUser: function () {
-            var deferred = Soshace.core.deferred(),
+            var deferred = $.Deferred(),
                 userName = this.get('userName'),
                 profileUserName = '',
                 profile = Soshace.profile;
@@ -133,7 +138,7 @@
          * Метод возвращает список полов с выбранным в модели полом
          *
          * @method
-         * @name Soshace.models.UsersModel#getSexList
+         * @name UsersModel#getSexList
          * @returns {Array}
          */
         getSexList: function () {
@@ -153,12 +158,12 @@
 
         /**
          * @constructor
-         * @name Soshace.models.UsersModel#initialize
+         * @name UsersModel#initialize
          * @returns {undefined}
          */
         initialize: function () {
-            var locale = Soshace.helpers.getLocale();
+            var locale = Helpers.getLocale();
             this.set({locale: locale}, {silent: true});
         }
     });
-})(window.Soshace);
+});

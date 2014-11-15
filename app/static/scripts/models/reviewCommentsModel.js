@@ -1,23 +1,30 @@
 'use strict';
 
-(function (Soshace) {
-    /**
-     * Модель комментариев ревью статьи
-     *
-     * @class Soshace.models.ReviewCommentsModel
-     */
-    Soshace.models.ReviewCommentsModel = Soshace.core.Model.extend({
+/**
+ * Модель комментариев ревью статьи
+ *
+ * @class ReviewCommentsModel
+ */
+
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+    'utils/helpers',
+    'config'
+], function ($, _, Backbone, Helpers) {
+    return Backbone.Model.extend({
         /**
          * @field
-         * @name Soshace.models.ReviewCommentsModel#idAttribute
-         * @type {string}
+         * @name ReviewCommentsModel#idAttribute
+         * @type {String}
          */
         idAttribute: '_id',
 
         /**
          * @field
-         * @name Soshace.models.ReviewCommentsModel#default
-         * @type {string | null}
+         * @name ReviewCommentsModel#default
+         * @type {String | null}
          */
         default: {
             _id: null,
@@ -34,7 +41,7 @@
          * Список статусов статьи
          *
          * @field
-         * @name Soshace.models.ReviewCommentsModel#statuses
+         * @name ReviewCommentsModel#statuses
          * @type {Object}
          */
         statuses: {
@@ -66,7 +73,7 @@
 
         /**
          * @method
-         * @name Soshace.models.ReviewCommentsModel#url
+         * @name ReviewCommentsModel#url
          * @returns {string}
          */
         url: function () {
@@ -82,11 +89,11 @@
 
         /**
          * @constructor
-         * @name Soshace.models.ReviewCommentsModel#initialize
+         * @name ReviewCommentsModel#initialize
          * @returns {undefined}
          */
         initialize: function () {
-            this.set('locale', Soshace.helpers.getLocale(), {silent: true});
+            this.set('locale', Helpers.getLocale(), {silent: true});
         }
     });
-})(window.Soshace);
+});

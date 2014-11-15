@@ -1,19 +1,21 @@
 'use strict';
 
-(function (Soshace) {
-    var Handlebars = Soshace.Handlebars,
-        _ = Soshace._;
+/**
+ * Вспомогательные методы для шаблонизатора
+ * Handlebars
+ *
+ * @module HandlebarsHelpers
+ */
 
-    /**
-     * Вспомогательные методы для шаблонизатора
-     * Handlebars
-     *
-     * @module HandlebarsHelpers
-     */
+define([
+    'underscore',
+    'handlebars',
+    'utils/helpers'
+], function (_, Handlebars, Helpers) {
     /**
      * Метод перевода
      */
-    Handlebars.registerHelper('i18n', _.bind(Soshace.helpers.i18n, Soshace.helpers));
+    Handlebars.registerHelper('i18n', _.bind(Helpers.i18n, Helpers));
 
     /**
      * Метод отображает дату в формате 'mm.dd.yyyy'
@@ -24,9 +26,9 @@
             month = dateObject.getMonth() + 1,
             year = dateObject.getFullYear();
 
-        date = Soshace.helpers.zeroLeading(date);
-        month = Soshace.helpers.zeroLeading(month);
+        date = Helpers.zeroLeading(date);
+        month = Helpers.zeroLeading(month);
 
         return [date, month, year].join('.');
     });
-})(window.Soshace);
+});

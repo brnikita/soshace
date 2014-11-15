@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('underscore'),
-    Class = srcRequire('common/class');
+    Class = srcRequire('vendors/class');
 
 module.exports = Class.extend({
     /**
@@ -9,7 +9,7 @@ module.exports = Class.extend({
      *
      * @field
      * @name Router#controllersPrefix
-     * @type {string}
+     * @type {String}
      */
     controllersPrefix: './controllers/',
 
@@ -98,7 +98,7 @@ module.exports = Class.extend({
      *
      * @method
      * @name Router#getController
-     * @param {string} path путь до контроллера
+     * @param {String} path путь до контроллера
      * @returns {Object}
      */
     getController: function (path) {

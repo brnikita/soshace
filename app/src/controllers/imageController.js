@@ -20,7 +20,7 @@ module.exports = Controller.extend({
      *
      * @field
      * @name ImageController#outputFormat
-     * @type {string}
+     * @type {String}
      */
     outputFormat: 'jpg',
 
@@ -29,7 +29,7 @@ module.exports = Controller.extend({
      *
      * @field
      * @name ImageController#imageMaxWidth
-     * @type {string}
+     * @type {String}
      */
     imageMaxWidth: '1170',
 
@@ -38,7 +38,7 @@ module.exports = Controller.extend({
      *
      * @field
      * @name ImageController#imageMaxHeight
-     * @type {string}
+     * @type {String}
      */
     imageMaxHeight: '800',
 
@@ -115,7 +115,7 @@ module.exports = Controller.extend({
      * @name ImageController#saveImage
      * @param {Object} error Ошибка
      * @param {Object} imageData Содержимое изображения
-     * @param {string} imageName Название картинки
+     * @param {String} imageName Название картинки
      * @returns {undefined}
      */
     saveImage: function (error, imageData, imageName) {

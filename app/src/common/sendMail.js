@@ -23,7 +23,7 @@ var SendMail = {
      *
      * @method
      * @name SendMail.getConfirmationLink
-     * @param {string} locale
+     * @param {String} locale
      * @param {string} code код подтверждения email
      * @returns {string}
      */

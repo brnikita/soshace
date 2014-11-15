@@ -4,10 +4,10 @@
  * Плагин календарей (3 селекта: день, месяк, год)
  */
 define([
-    'core',
+    'zepto',
     'underscore',
     'utils/helpers'
-], function (Core, _, Helpers) {
+], function ($, _, Helpers) {
     var defaultOptions = {
             startYear: 1900
         },
@@ -228,7 +228,7 @@ define([
              * @public
              * @method
              * @name jQuery.fn.calendar#getSelectedYear
-             * @returns {number}
+             * @returns {Number}
              */
             getSelectedYear: function () {
                 var options = this.calendar('getOptions'),
@@ -268,7 +268,7 @@ define([
              * @public
              * @method
              * @name jQuery.fn.calendar#getSelectedMonth
-             * @returns {number}
+             * @returns {Number}
              */
             getSelectedMonth: function () {
                 var options = this.calendar('getOptions'),
@@ -327,7 +327,7 @@ define([
              * @public
              * @method
              * @name jQuery.fn.calendar#getSelectedDate
-             * @returns {number}
+             * @returns {Number}
              */
             getSelectedDate: function () {
                 var options = this.calendar('getOptions'),
@@ -344,7 +344,7 @@ define([
              * @public
              * @method
              * @name jQuery.fn.calendar#setDate
-             * @param {string} selectedDate timestamp текущей даты
+             * @param {String} selectedDate timestamp текущей даты
              * @returns {jQuery}
              */
             setDate: function (selectedDate) {
@@ -363,7 +363,7 @@ define([
              * @public
              * @method
              * @name jQuery.fn.calendar#getDate
-             * @returns {string}
+             * @returns {String}
              */
             getDate: function () {
                 var options = this.calendar('getOptions');
@@ -371,7 +371,7 @@ define([
             }
         };
 
-    Core.Dom.prototype.calendar = function (method) {
+    $.fn.calendar = function (method) {
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         }

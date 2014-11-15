@@ -1,25 +1,30 @@
 'use strict';
 
-(function (Soshace) {
-    var _ = Soshace._;
+/**
+ * Модель статьи
+ *
+ * @class PostModel
+ */
 
-    /**
-     * Модель статьи
-     *
-     * @class Soshace.models.PostModel
-     */
-    Soshace.models.PostModel = Soshace.core.Model.extend({
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+    'utils/helpers',
+    'config'
+], function ($, _, Backbone, Helpers) {
+    return Backbone.Model.extend({
         /**
          * @field
-         * @name Soshace.models.PostModel#idAttribute
-         * @type {string}
+         * @name PostModel#idAttribute
+         * @type {String}
          */
         idAttribute: '_id',
 
         /**
          * @field
-         * @name Soshace.models.PostModel#default
-         * @type {string | null}
+         * @name PostModel#default
+         * @type {String | null}
          */
         default: {
             _id: null,
@@ -38,7 +43,7 @@
          * Список статусов статьи
          *
          * @field
-         * @name Soshace.models.PostModel#statuses
+         * @name PostModel#statuses
          * @type {Object}
          */
         statuses: {
@@ -86,7 +91,7 @@
 
         /**
          * @method
-         * @name Soshace.models.PostModel#url
+         * @name PostModel#url
          * @returns {string}
          */
         url: function () {
@@ -102,11 +107,11 @@
 
         /**
          * @constructor
-         * @name Soshace.models.PostModel#initialize
+         * @name PostModel#initialize
          * @returns {undefined}
          */
         initialize: function () {
-            this.set('locale', Soshace.helpers.getLocale(), {silent: true});
+            this.set('locale', Helpers.getLocale(), {silent: true});
         },
 
         /**
@@ -115,7 +120,7 @@
          * Удаляет модель, если приходят пустые значения на запись
          *
          * @method
-         * @name Soshace.models.PostModel#patchModel
+         * @name PostModel#patchModel
          * @returns {undefined}
          */
         patchModel: function () {
@@ -140,7 +145,7 @@
          * Метод обработчик успешного сохранения модели в базе
          *
          * @method
-         * @name Soshace.models.PostModel#modelSaveSuccess
+         * @name PostModel#modelSaveSuccess
          * @param {Backbone.Model} model текущая модель
          * @param {Object} response ответ сервера
          * @returns {undefined}
@@ -157,7 +162,7 @@
                 postId = post._id;
                 this.set(post, {silent: true});
                 postUrl = '/' + locale + '/posts/' + postId + '/edit';
-                Soshace.app.history.navigate(postUrl);
+                Backbone.history.navigate(postUrl);
                 this.trigger('postCreated');
                 return;
             }
@@ -169,7 +174,7 @@
          * Метод неудачного сохранения модели в базе
          *
          * @method
-         * @name Soshace.models.PostModel#modelSaveFail
+         * @name PostModel#modelSaveFail
          * @returns {undefined}
          */
         modelSaveFail: function () {
@@ -180,21 +185,21 @@
          * Метод устанавливает значение в модели по умолчанию
          *
          * @method
-         * @name Soshace.models.PostModel#setToDefault
+         * @name PostModel#setToDefault
          * @returns {undefined}
          */
         setToDefault: function () {
             this.set(this.default, {silent: true});
-            this.set('locale', Soshace.helpers.getLocale(), {silent: true});
+            this.set('locale', Helpers.getLocale(), {silent: true});
         },
 
         /**
          * Метод получает статью
          *
          * @method
-         * @name Soshace.models.PostModel#initialize
-         * @param {string} [postId] id поста
-         * @returns {Soshace.core.Deferred}
+         * @name PostModel#initialize
+         * @param {String} [postId] id поста
+         * @returns {jQuery.Deferred}
          */
         getPost: function (postId) {
             if (typeof postId === 'string') {
@@ -203,7 +208,7 @@
             }
 
             this.setToDefault();
-            return Soshace.core.deferred().resolve();
+            return $.Deferred().resolve();
         }
     });
-})(window.Soshace);
+});

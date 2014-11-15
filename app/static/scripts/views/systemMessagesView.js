@@ -1,14 +1,19 @@
 'use strict';
 
-(function (Soshace) {
-    var _ = Soshace._;
+/**
+ * Вид блока системных уведомлений
+ *
+ * @class SystemMessagesView
+ */
 
-    /**
-     * Вид блока системных уведомлений
-     *
-     * @class SystemMessagesView
-     */
-    Soshace.views.SystemMessagesView = Soshace.core.View.extend({
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+    'backbone.layoutmanager',
+    'templates'
+], function ($, _, Backbone) {
+    return Backbone.Layout.extend({
 
         /**
          * @field
@@ -22,7 +27,7 @@
          *
          * @field
          * @name RegistrationView#model
-         * @type {Core.Model | null}
+         * @type {Backbone.Model | null}
          */
         model: null,
 
@@ -82,7 +87,7 @@
          *
          * @method
          * @name RegistrationView#getFirsAvailableMessage
-         * @param {string} pageAlias сокращенное название страницы
+         * @param {String} pageAlias сокращенное название страницы
          * @returns {Backbone.Model}
          */
         getFirsAvailableMessage: function (pageAlias) {
@@ -110,7 +115,7 @@
          *
          * @method
          * @name RegistrationView#changePage
-         * @param {string} pageAlias сокращенное название страницы
+         * @param {String} pageAlias сокращенное название страницы
          * @returns {undefined}
          */
         changePage: function (pageAlias) {
@@ -136,4 +141,4 @@
             this.checkShowOnceFlag();
         }
     });
-})(window.Soshace);
+});

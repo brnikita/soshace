@@ -28,8 +28,14 @@
     "maxdepth":3,
     "smarttabs": true,
     "globals": {
+        "angular": false,
         "Soshace": false,
-        "srcRequire": false,
-        "ga": false
+        "$": false,
+        "ga": false,
+        "define": false,
+        "prettyPrintOne": false,
+        "global": false,
+        "_dirname": false,
+        "srcRequire": false
     }
 }

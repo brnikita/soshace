@@ -1,15 +1,22 @@
 'use strict';
 
-(function (Soshace) {
-    /**
-     * Модель страницы логина
-     *
-     * @class Soshace.models.LoginModel
-     */
-    Soshace.models.LoginModel = Soshace.core.Model.extend({
+/**
+ * Модель страницы логина
+ *
+ * @module LoginModel
+ */
+
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+    'utils/helpers',
+    'config'
+], function ($, _, Backbone, Helpers) {
+    return Backbone.Model.extend({
         /**
          * @property
-         * @name Soshace.models.LoginModel#defaults
+         * @name LoginModel#defaults
          * @type {Object}
          */
         defaults: {
@@ -48,19 +55,19 @@
 
         /**
          * @field
-         * @name Soshace.models.LoginModel#url
-         * @type {string}
+         * @name LoginModel#url
+         * @type {String}
          */
         url: Soshace.urls.api.login,
 
         /**
          * @constructor
-         * @name Soshace.models.LoginModel#initialize
+         * @name LoginModel#initialize
          * @returns {undefined}
          */
         initialize: function () {
-            var locale = Soshace.helpers.getLocale();
+            var locale = Helpers.getLocale();
             this.set({locale: locale}, {silent: true});
         }
     });
-})(window.Soshace);
+});

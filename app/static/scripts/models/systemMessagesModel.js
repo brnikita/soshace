@@ -1,22 +1,29 @@
 'use strict';
 
-(function (Soshace) {
-    /**
-     * Модель системного сообщения
-     *
-     * @class Soshace.models.SystemMessagesModel
-     */
-    Soshace.models.SystemMessagesModel = Soshace.core.Model.extend({
+/**
+ * Модель системного сообщения
+ *
+ * @class SystemMessagesModel
+ */
+
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+    'config'
+], function ($, _, Backbone) {
+    return Backbone.Model.extend({
+
         /**
          * @field
-         * @name Soshace.models.SystemMessagesModel#idAttribute
-         * @type {string}
+         * @name SystemMessagesModel#idAttribute
+         * @type {String}
          */
         idAttribute: '_id',
 
         /**
          * @field
-         * @name Soshace.models.SystemMessagesModel#defaults
+         * @name SystemMessagesModel#defaults
          * @type {Object}
          */
         defaults: {
@@ -41,20 +48,20 @@
 
         /**
          * @method
-         * @name Soshace.models.SystemMessagesModel#url
+         * @name SystemMessagesModel#url
          * @returns {String}
          */
-        url: function () {
+        url: function(){
             var id = this.get('_id');
             return Soshace.urls.api.systemMessage.replace('0', id);
         },
 
         /**
          * @constructor
-         * @name Soshace.models.SystemMessagesModel#initialize
+         * @name SystemMessagesModel#initialize
          * @returns {undefined}
          */
         initialize: function () {
         }
     });
-})(window.Soshace);
+});

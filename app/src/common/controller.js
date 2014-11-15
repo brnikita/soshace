@@ -2,18 +2,18 @@
 
 var _ = require('underscore'),
     RequestParams = srcRequire('common/requestParams'),
-    Class = require('./class');
+    Class = srcRequire('vendors/class');
 
 /**
  * Родительский класс для контороллеров
  *
- * @class Controller
+ * @class ControllerInit
  */
 module.exports = Class.extend({
 
     /**
      * @field
-     * @name Controller#next
+     * @name ControllerInit#next
      * @type {Function | null}
      */
     next: null,
@@ -22,7 +22,7 @@ module.exports = Class.extend({
      * Объект ответа
      *
      * @field
-     * @name Controller#response
+     * @name ControllerInit#response
      * @type {Object | null}
      */
     response: null,
@@ -31,14 +31,14 @@ module.exports = Class.extend({
      * Объект запроса
      *
      * @field
-     * @name Controller#request
+     * @name ControllerInit#request
      * @type {Object | null}
      */
     request: null,
 
     /**
      * @constructor
-     * @name Controller#initialize
+     * @name ControllerInit#initialize
      * @param {Object} request объект запроса
      * @param {Object} response Объект ответа
      * @param {Function} next
@@ -56,9 +56,9 @@ module.exports = Class.extend({
      * Текст ошибки передается в параметре
      *
      * @method
-     * @name Controller#sendError
-     * @param {Object | string} error  Пример: {error: 'Ошибка', code: 400} или 'Ошибка'
-     * @param {string} [code] код ошибки, 404, 500 по-умолчанию 400
+     * @name ControllerInit#sendError
+     * @param {Object | String} error  Пример: {error: 'Ошибка', code: 400} или 'Ошибка'
+     * @param {String} [code] код ошибки, 404, 500 по-умолчанию 400
      * @returns {undefined}
      */
     sendError: function (error, code) {
@@ -81,9 +81,9 @@ module.exports = Class.extend({
 
     /**
      * @method
-     * @name Controller#renderError
-     * @param {Object | string} error  Пример: {error: 'Ошибка', code: 400} или 'Ошибка'
-     * @param {string} [code] код ошибки, 404, 500 по-умолчанию 400
+     * @name ControllerInit#renderError
+     * @param {Object | String} error  Пример: {error: 'Ошибка', code: 400} или 'Ошибка'
+     * @param {String} [code] код ошибки, 404, 500 по-умолчанию 400
      * @returns {undefined}
      */
     renderError: function (error, code) {
@@ -112,8 +112,8 @@ module.exports = Class.extend({
      * Текст сообщения передается в параметре
      *
      * @method
-     * @name Controller#sendSuccess
-     * @param {string} message
+     * @name ControllerInit#sendSuccess
+     * @param {String} message
      *                               сообщение
      * @returns {undefined}
      */

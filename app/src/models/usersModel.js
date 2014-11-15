@@ -182,7 +182,7 @@ UsersShema.virtual('fullName').get(function () {
  *
  * @method
  * @name checkFieldType
- * @param {string} field
+ * @param {String} field
  * @param {*} value
  * @returns {boolean} вовращает true, если поле соответствует типу в модели
  */
@@ -233,7 +233,7 @@ UsersShema.methods.getSexList = function () {
  *
  * @method
  * @name UsersModel#isProfileInfoEmpty
- * @returns {boolean}
+ * @returns {Boolean}
  */
 UsersShema.methods.isProfileInfoEmpty = function () {
     var isEmpty = true,
@@ -261,7 +261,7 @@ UsersShema.methods.isProfileInfoEmpty = function () {
  *
  * @method
  * @name UsersShema#comparePassword
- * @param {string} candidatePassword проверяемый пароль
+ * @param {String} candidatePassword проверяемый пароль
  * @param {Function} callback
  * @returns {undefined}
  */
@@ -364,7 +364,7 @@ UsersShema.pre('save', function (next) {
  * @method
  * @name UsersShema.isUpdateFieldsValid
  * @param {Object} update обновляемые данные
- * @returns {boolean} false - ошибка
+ * @returns {Boolean} false - ошибка
  */
 UsersShema.statics.isUpdateFieldsValid = function (update) {
     var isValid = true;
@@ -416,7 +416,7 @@ UsersShema.statics.clearUpdate = function (update) {
  *
  * @method
  * @name UsersShema.updatePersonalData
- * @param {string} userId id пользователя
+ * @param {String} userId id пользователя
  * @param {Object} update обновляемые поля
  * @param {Function} callback
  * @returns {undefined}
@@ -454,7 +454,7 @@ UsersShema.statics.updatePersonalData = function (userId, update, callback) {
  *
  * @method
  * @name UsersShema.getUserByUserName
- * @param {string} userName
+ * @param {String} userName
  * @param {Function} callback
  * @return {Cursor}
  */
@@ -480,7 +480,7 @@ UsersShema.statics.getUserByUserName = function (userName, callback) {
  *
  * @method
  * @name UsersShema.getUserByEmail
- * @param {string} email проверяемый email
+ * @param {String} email проверяемый email
  * @param {Function} callback
  * @return {Cursor}
  */
@@ -500,8 +500,8 @@ UsersShema.statics.getUserByEmail = function (email, callback) {
  *
  * @method
  * @name UsersShema.validateEmail
- * @param {string} email проверяемый email
- * @return {string | undefined} ошибка
+ * @param {String} email проверяемый email
+ * @return {String | undefined} ошибка
  */
 UsersShema.statics.validateEmail = function (email) {
     var emailNotEmpty = Validators.required(email);
@@ -521,8 +521,8 @@ UsersShema.statics.validateEmail = function (email) {
  *
  * @method
  * @name UsersShema.validatePassword
- * @param {string} password проверяемый пароль
- * @return {string | undefined} ошибка
+ * @param {String} password проверяемый пароль
+ * @return {String | undefined} ошибка
  */
 UsersShema.statics.validatePassword = function (password) {
     var passwordNotEmpty = Validators.required(password);
@@ -545,7 +545,7 @@ UsersShema.statics.validatePassword = function (password) {
  *
  * @method
  * @name UsersShema.confirmEmail
- * @param {string} code код подтверждения email
+ * @param {String} code код подтверждения email
  * @param {Function} callback
  * @return {undefined}
  */

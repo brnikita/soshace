@@ -1,17 +1,21 @@
 'use strict';
-(function(Soshace){
-    /**
-     * Класс Контроллра
-     *
-     * @class Soshace.core.Controller
-     */
-    Soshace.core.Controller = Soshace.core.Class.extend({
+
+/**
+ * Класс Контроллра
+ *
+ * @class Controller
+ */
+define([
+    'class',
+    'config'
+], function (Class) {
+    return Class.extend({
         /**
          * Алиас страницы
          *
          * @field
-         * @name Soshace.core.Controller#pageAlias
-         * @type {string}
+         * @name Controller#pageAlias
+         * @type {String}
          */
         pageAlias: Soshace.pageAlias,
 
@@ -19,7 +23,7 @@
          * Параметры запроса из роута
          *
          * @field
-         * @name Soshace.core.Controller#routeParams
+         * @name Controller#routeParams
          * @type {Array | null}
          */
         routeParams: null,
@@ -30,7 +34,7 @@
          * Метод должен быть переопрделен в унаследованном классе
          *
          * @method
-         * @name Soshace.core.Controller#firstLoad
+         * @name Controller#firstLoad
          * @returns {undefined}
          */
         firstLoad: function () {
@@ -43,7 +47,7 @@
          * Метод должен быть переопрделен в унаследованном классе
          *
          * @method
-         * @name Soshace.core.Controller#firstLoad
+         * @name Controller#firstLoad
          * @returns {undefined}
          */
         secondLoad: function () {
@@ -55,7 +59,7 @@
          * в него передаются параметры запроса
          *
          * @method
-         * @name Soshace.core.Controller#routeHandler
+         * @name Controller#routeHandler
          * @returns {undefined}
          */
         routeHandler: function () {
@@ -79,4 +83,4 @@
             this.secondLoad();
         }
     });
-})(window.Soshace);
+});

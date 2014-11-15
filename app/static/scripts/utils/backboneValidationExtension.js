@@ -5,18 +5,19 @@
  */
 
 define([
-    'core',
+    'zepto',
     'underscore',
     'backbone',
-    'global'
-], function (Core, _, Backbone, Soshace) {
+    'backbone.validation',
+    'config'
+], function ($, _, Backbone) {
     _.extend(Backbone.Validation.validators, {
         /**
          * Метод валидации userName
          *
          * @method
-         * @param {string} value
-         * @returns {string | undefined}
+         * @param {String} value
+         * @returns {String | undefined}
          */
         userName: function (value) {
             if (!Soshace.patterns.userName.test(value)) {

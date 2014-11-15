@@ -1,29 +1,29 @@
 'use strict';
 
 var _ = require('underscore'),
-    Helpers = srcRequire('common/helpers');
+    Helpers = require('./helpers');
 
 /**
- * Конструктор хелперов для шаблонизатора
+ * Конструктор хелперов для Handlebars
  *
  * @constructor
- * @name TemplateHelpers
+ * @name HandlebarsHelpers
  * @param {Object} request
  * @returns {Object}
  */
 module.exports = function (request) {
-    var TemplateHelpers = {
+    var HandlebarsHelpers = {
         /**
          * Метод возврвращает первод строки-параметра
          *
          * @method
-         * @name TemplateHelpers.i18n
-         * @return {string}
+         * @name HandlebarsHelpers.i18n
+         * @return {String}
          */
         i18n: function () {
             //В случае each передается контекст объекта в цикле,
-            //поэтому используется ссылка на TemplateHelpers
-            var _this = TemplateHelpers,
+            //поэтому используется ссылка на HandlebarsHelpers
+            var _this = HandlebarsHelpers,
                 i18n = request.i18n,
                 translate = i18n.__.apply(i18n, arguments);
 
@@ -37,10 +37,10 @@ module.exports = function (request) {
          *
          * @private
          * @method
-         * @name TemplateHelpers._i18nSetParams
-         * @param {string} value строка перевода
+         * @name HandlebarsHelpers._i18nSetParams
+         * @param {String} value строка перевода
          * @param {Array} optionsList список опций
-         * @returns {string}
+         * @returns {String}
          */
         _i18nSetParams: function (value, optionsList) {
             var stringParams = value.match(/\{\{(.+?)\}\}/g);
@@ -56,9 +56,9 @@ module.exports = function (request) {
          * Метод отображает дату в формате 'mm.dd.yyyy'
          *
          * @method
-         * @name TemplateHelpers.formatDate
-         * @param {string} notFormattedDate неотформатированная дата
-         * @return {string}
+         * @name HandlebarsHelpers.formatDate
+         * @param {String} notFormattedDate неотформатированная дата
+         * @return {String}
          */
         formatDate: function (notFormattedDate) {
             var dateObject = new Date(notFormattedDate),
@@ -73,5 +73,5 @@ module.exports = function (request) {
         }
     };
 
-    return TemplateHelpers;
+    return HandlebarsHelpers;
 };

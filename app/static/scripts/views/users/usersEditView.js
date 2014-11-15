@@ -1,19 +1,27 @@
 'use strict';
 
-(function(Soshace){
-    var _ = Soshace._;
+/**
+ * Вид страницы редактирования пользователя
+ *
+ * @class UsersEditView
+ */
 
-    /**
-     * Вид страницы редактирования пользователя
-     *
-     * @class Soshace.views.UsersEditView
-     */
-    Soshace.views.UsersEditView = Soshace.core.View.extend({
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+    'handlebars',
+    'utils/helpers',
+    'backbone.layoutmanager',
+    'templates',
+    'utils/plugins/jquery.calendar'
+], function ($, _, Backbone, Handlebars, Helpers) {
+    return Backbone.Layout.extend({
         /**
          * Модель деталей статьи
          *
          * @field
-         * @name Soshace.views.UsersEditView#model
+         * @name UsersEditView#model
          * @type {Backbone.Model | null}
          */
         model: null,
@@ -22,7 +30,7 @@
          * Ссылки на DOM элементы
          *
          * @field
-         * @name Soshace.views.UsersEditView#elements
+         * @name UsersEditView#elements
          * @type {Object}
          */
         elements: {
@@ -35,7 +43,7 @@
          * Список обработчиков событий
          *
          * @field
-         * @name Soshace.views.UsersEditView#events
+         * @name UsersEditView#events
          * @type {Object}
          */
         events: {
@@ -46,14 +54,14 @@
          * Путь до шаблона
          *
          * @field
-         * @name Soshace.views.UsersEditView#elements
+         * @name UsersEditView#elements
          * @type {string}
          */
         template: Soshace.hbs['users/usersEdit'],
 
         /**
          * @constructor
-         * @name Soshace.views.UsersEditView#initialize
+         * @name UsersEditView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -71,7 +79,7 @@
          * Метод блокирует форму
          *
          * @method
-         * @name Soshace.views.UsersEditView#formDisabled
+         * @name UsersEditView#formDisabled
          * @returns {undefined}
          */
         formDisabled: function () {
@@ -82,7 +90,7 @@
          * Метод разблокирует форму
          *
          * @method
-         * @name Soshace.views.UsersEditView#formEnabled
+         * @name UsersEditView#formEnabled
          * @returns {undefined}
          */
         formEnabled: function () {
@@ -93,7 +101,7 @@
          * Метод показывает лоадер на кнопке
          *
          * @method
-         * @name Soshace.views.UsersEditView#showButtonLoader
+         * @name UsersEditView#showButtonLoader
          * @returns {undefined}
          */
         showSubmitButtonLoader: function () {
@@ -104,7 +112,7 @@
          * Метод скрывает лоадер
          *
          * @method
-         * @name Soshace.views.UsersEditView#hideSubmitButtonLoader
+         * @name UsersEditView#hideSubmitButtonLoader
          * @returns {undefined}
          */
         hideSubmitButtonLoader: function () {
@@ -115,7 +123,7 @@
          * Метод устанавливает данные в модель взятые из шаблона
          *
          * @method
-         * @name Soshace.views.UsersEditView#setModelFromTemplate
+         * @name UsersEditView#setModelFromTemplate
          * @returns {undefined}
          */
         setModelFromTemplate: function () {
@@ -129,7 +137,7 @@
          * Метод возвращает сериализованную форму
          *
          * @method
-         * @name Soshace.views.UsersEditView#getFormData
+         * @name UsersEditView#getFormData
          * @returns {Object}
          */
         getFormData: function () {
@@ -145,7 +153,7 @@
          * Метод обработчик отправки формы
          *
          * @method
-         * @name Soshace.views.UsersEditView#submitHandler
+         * @name UsersEditView#submitHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
@@ -175,9 +183,9 @@
          * Метод показывает системное сообщение после отправки формы
          *
          * @method
-         * @name Soshace.views.UsersEditView#showSaveMessage
-         * @param {string} message
-         * @param {boolean} [isError] true, если нужно показать ошибку
+         * @name UsersEditView#showSaveMessage
+         * @param {String} message
+         * @param {Boolean} [isError] true, если нужно показать ошибку
          * @returns {undefined}
          */
         showSaveMessage: function (message, isError) {
@@ -195,14 +203,14 @@
             }
 
             $saveMessagesthis.html(template).removeClass('hide');
-            Soshace.helpers.scrollToElementTop($saveMessagesthis);
+            Helpers.scrollToElementTop($saveMessagesthis);
         },
 
         /**
          * Метод скрывает системное сообщение после отправки формы
          *
          * @method
-         * @name Soshace.views.UsersEditView#hideSaveMessage
+         * @name UsersEditView#hideSaveMessage
          * @returns {undefined}
          */
         hideSaveMessage: function () {
@@ -213,7 +221,7 @@
          * Метод обработчик успешного сохранения данных пользователя
          *
          * @method
-         * @name Soshace.views.UsersEditView#submitSuccessHandler
+         * @name UsersEditView#submitSuccessHandler
          * @returns {undefined}
          */
         submitSuccessHandler: function () {
@@ -226,7 +234,7 @@
          * Метод обработчик неудачного сохранения данных пользователя
          *
          * @method
-         * @name Soshace.views.UsersEditView#submitErrorHandler
+         * @name UsersEditView#submitErrorHandler
          * @param {UserModel} model модель пользователя
          * @param {Object} response ответ сервера
          * @returns {undefined}
@@ -245,7 +253,7 @@
          * Но надо навесить слушатели и выполнить afterRender и т.д.
          *
          * @method
-         * @name Soshace.views.UsersEditView#withoutRender
+         * @name UsersEditView#withoutRender
          * @param {jQuery} $el родительский элемент вида
          * @returns {undefined}
          */
@@ -264,8 +272,8 @@
          * см. Wiki
          *
          * @method
-         * @name Soshace.views.UsersEditView#isDisabled
-         * @returns {boolean}
+         * @name UsersEditView#isDisabled
+         * @returns {Boolean}
          */
         isDisabled: function () {
             var app = Soshace.app,
@@ -282,7 +290,7 @@
 
         /**
          * @method
-         * @name Soshace.views.UsersEditView#serialize
+         * @name UsersEditView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -296,7 +304,7 @@
             data.user = model;
             data.isOwner = isOwner;
             data.isUserEditTab = true;
-            data.locale = Soshace.helpers.getLocale();
+            data.locale = Helpers.getLocale();
             data.sexList = this.model.getSexList();
             data.isDisabled = this.isDisabled();
 
@@ -307,7 +315,7 @@
          * Метод сохраняет DOM элементы
          *
          * @method
-         * @name Soshace.views.UsersEditView#setElements
+         * @name UsersEditView#setElements
          * @returns {undefined}
          */
         setElements: function () {
@@ -320,7 +328,7 @@
          * Метод применяет плагин календаря к полям
          *
          * @method
-         * @name Soshace.views.UsersEditView#setDatesControls
+         * @name UsersEditView#setDatesControls
          * @returns {undefined}
          */
         setDatesControls: function () {
@@ -329,7 +337,7 @@
 
         /**
          * @method
-         * @name Soshace.views.UsersEditView#afterRender
+         * @name UsersEditView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
@@ -337,4 +345,4 @@
             this.setDatesControls();
         }
     });
-})(window.Soshace);
+});

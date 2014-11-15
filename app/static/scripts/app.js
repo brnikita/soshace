@@ -1,14 +1,26 @@
 'use strict';
 
-(function (Soshace) {
-    var _ = Soshace._;
-
-    Soshace.core.App = Soshace.core.View.extend({
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+    'router',
+    'utils/helpers',
+    'collections/systemMessagesCollection',
+    'views/headerView',
+    'views/systemMessagesView',
+    'jquery.cookie',
+    'backbone.layoutmanager',
+    'config',
+    'deferred',
+    'data'
+], function ($, _, Backbone, Router, Helpers, SystemMessagesCollection, HeaderView, SystemMessagesView) {
+    var App = Backbone.Layout.extend({
 
         /**
          * @field
-         * @name Soshace.core.App#router
-         * @type {Soshace.core.Router | null}
+         * @name App#router
+         * @type {Router | null}
          */
         router: null,
 
@@ -16,15 +28,15 @@
          * Коллекция системных сообщений
          *
          * @field
-         * @name Soshace.core.App#systemMessagesCollection
-         * @type {Soshace.collections.SystemMessagesCollection | null}
+         * @name App#systemMessagesCollection
+         * @type {SystemMessagesCollection | null}
          */
         systemMessagesCollection: null,
 
         /**
          * @field
-         * @name Soshace.core.App#el
-         * @type {string}
+         * @name App#el
+         * @type {String}
          */
         el: 'body',
 
@@ -32,7 +44,7 @@
          * Список ссылкок на элемнты DOM
          *
          * @field
-         * @name Soshace.core.App#elements
+         * @name App#elements
          * @type {Object}
          */
         elements: {
@@ -42,12 +54,25 @@
 
         /**
          * @constructor
-         * @name Soshace.core.App#initialize
+         * @name App#initialize
          * @returns {undefined}
          */
         initialize: function () {
-            this.systemMessagesCollection = new Soshace.collections.SystemMessagesCollection();
-            this.getCommonData().done(_.bind(this.initializeCompleted, this));
+            _.bindAll(this, 'routerLinkHandler', 'initializeCompleted');
+            this.systemMessagesCollection = new SystemMessagesCollection();
+            this.getCommonData().done(this.initializeCompleted);
+        },
+
+        /**
+         * Метод вовзращает true, если есть профиль
+         * аутентифицированного пользователя
+         *
+         * @method
+         * @name App#isAuthenticated
+         * @returns {Boolean}
+         */
+        isAuthenticated: function () {
+            return $.cookie('isAuthenticated') === '1';
         },
 
         /**
@@ -55,19 +80,19 @@
          * Когда загружается все необходимы польховательские данные
          *
          * @method
-         * @name Soshace.core.App#initializeCompleted
+         * @name App#initializeCompleted
          * @returns {undefined}
          */
         initializeCompleted: function () {
             var _this = this;
 
             this.setElements();
-            this.setView('.js-header', new Soshace.Views.HeaderView());
-            this.setView('.js-system-messages', new Soshace.views.SystemMessagesView({
+            this.setView('.js-header', new HeaderView());
+            this.setView('.js-system-messages', new SystemMessagesView({
                 collection: _this.systemMessagesCollection
             }));
-            this.$el.on('click', '.js-router-link', _.bind(this.routerLinkHandler, this));
-            this.router = new Soshace.core.Router();
+            this.$el.on('click', '.js-router-link', this.routerLinkHandler);
+            this.router = new Router();
         },
 
         /**
@@ -77,11 +102,11 @@
          * Такие как: локали, данные профиля пользователя
          *
          * @method
-         * @name Soshace.core.App#getCommonData
-         * @returns {Deferred}
+         * @name App#getCommonData
+         * @returns {jQuery.Deferred}
          */
         getCommonData: function () {
-            return Soshace.core.Deferred.when(
+            return $.when(
                 this.getCurrentLocale(),
                 this.getProfileData(),
                 this.getSystemMessages()
@@ -93,12 +118,12 @@
          * элементы DOM
          *
          * @method
-         * @name Soshace.core.App#setElements
+         * @name App#setElements
          * @returns {undefined}
          */
         setElements: function () {
-            this.elements.title = Soshace.core.$('title');
-            this.elements.contentFirstLoad = Soshace.core.$('.js-content-first-load');
+            this.elements.title = $('title');
+            this.elements.contentFirstLoad = $('.js-content-first-load');
         },
 
         /**
@@ -106,17 +131,17 @@
          * роутера
          *
          * @method
-         * @name Soshace.core.App#routerLinkHandler
+         * @name App#routerLinkHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
         routerLinkHandler: function (event) {
-            var $target = Soshace.core.$(event.target),
+            var $target = $(event.target),
                 link = $target.closest('.js-router-link').attr('href');
 
-            if (Soshace.Helpers.checkHistoryApiSupport()) {
+            if (Helpers.checkHistoryApiSupport()) {
                 event.preventDefault();
-                Soshace.core.app.history.navigate(link, {trigger: true});
+                Backbone.history.navigate(link, {trigger: true});
             }
         },
 
@@ -124,7 +149,7 @@
          * Метод получает системные сообщения
          *
          * @method
-         * @name Soshace.core.App#getSystemMessages
+         * @name App#getSystemMessages
          * @returns {undefined}
          */
         getSystemMessages: function () {
@@ -137,14 +162,14 @@
          * Возвращает деферред объект
          *
          * @method
-         * @name Soshace.core.App#getProfileData
-         * @returns {Deferred}
+         * @name App#getProfileData
+         * @returns {jQuery.Deferred}
          */
         getProfileData: function (profileUserName) {
             var profileUrl,
-                deferred = Soshace.core.deferred();
+                deferred = $.Deferred();
 
-            if (!Soshace.helpers.isAuthenticated()) {
+            if (!this.isAuthenticated()) {
                 return deferred.resolve(null);
             }
 
@@ -152,12 +177,12 @@
                 return deferred.resolve(Soshace.profile);
             }
 
-            profileUserName = Soshace.helpers.getCookie('profileUserName');
+            profileUserName = $.cookie('profileUserName');
             profileUrl = Soshace.urls.api.user.replace('0', profileUserName);
-            Soshace.core.get(profileUrl).done(function (data) {
+            $.get(profileUrl, function (data) {
                 Soshace.profile = data;
                 deferred.resolve(data);
-            });
+            }, 'json');
 
             return deferred;
         },
@@ -167,12 +192,12 @@
          * в глобальную переменную Soshace.
          *
          * @method
-         * @name Soshace.core.App#getCurrentLocale
-         * @returns {Deferred}
+         * @name App#getCurrentLocale
+         * @returns {deferred}
          */
         getCurrentLocale: function () {
-            var deferred = Soshace.core.deferred(),
-                locale = Soshace.helpers.getLocale(),
+            var deferred = $.Deferred(),
+                locale = Helpers.getLocale(),
                 locales = Soshace.locales,
                 localeUrl = Soshace.urls.locales + locale + '.json';
 
@@ -184,18 +209,17 @@
                 return deferred.resolve(locales[locale]);
             }
 
-            Soshace.core.get(localeUrl).done(function (data) {
+            $.get(localeUrl, function (data) {
                 locales[locale] = data;
                 deferred.resolve(data);
-            });
+            }, 'json');
 
             return deferred;
         }
     });
 
-    Soshace.app = new Soshace.core.App();
-
-})(window.Soshace);
+    Soshace.app = new App();
+});
 
 
 

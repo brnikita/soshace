@@ -1,14 +1,19 @@
 'use strict';
 
-(function(Soshace){
-    var $ = Soshace.core.$;
+define([
+    'zepto',
+    'underscore',
+    'views/admin/postReView',
+    'config'
+], function (
+    $,
+    _,
+    PostReview) {
 
     if($('.js-post-review').length){
-        new Soshace.views.PostReview();
+        new PostReview();
     }
-})(window.Soshace);
-
-
+});
 
 
 

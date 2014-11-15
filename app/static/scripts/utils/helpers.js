@@ -1,31 +1,62 @@
 'use strict';
 
-(function (Soshace) {
-    var _ = Soshace._;
+/**
+ * Модуль содержащий удобные методы для
+ * работы с DOM, стороками и числами
+ *
+ * @module Helpers
+ */
 
-    /**
-     * Модуль содержащий удобные методы для
-     * работы с DOM, стороками и числами
-     *
-     * @module Soshace.helpers
-     */
-    Soshace.helpers = {
+define([
+    'zepto',
+    'underscore',
+    'jquery.cookie',
+    'config'
+], function ($, _) {
+    return {
+        /**
+         * Метод приводит строки типа hyp-hen к виду camelCase
+         *
+         * @public
+         * @method
+         * @name Helpers.camelCase
+         * @param {String} value
+         * @returns {string}
+         */
+        camelCase: function (value) {
+            return $.camelCase(value);
+        },
+
+        /**
+         * Метод приводит строки типа camelCase к виду hyp-hen
+         *
+         * @public
+         * @method
+         * @name Helpers.camelCase
+         * @param {String} value
+         * @returns {string}
+         */
+        hyphen: function (value) {
+            return value.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+        },
+
         /**
          * Метод возвращает сериализованный инпут
          *
          * @public
          * @method
-         * @name Soshace.helpers.serializeField
+         * @name Helpers.serializeField
          * @param {jQuery} $input
          * @returns {Object}
          */
         serializeField: function ($input) {
             var value = $input.val(),
-                name = $input.attr('name');
+                name = $input.attr('name'),
+                _this = this;
 
             return {
-                name: _.camelCase(name),
-                value: _.trim(value)
+                name: _this.camelCase(name),
+                value: $.trim(value)
             };
         },
 
@@ -34,11 +65,11 @@
          *
          * @public
          * @method
-         * @name Soshace.helpers.getLocale
+         * @name Helpers.getLocale
          * @return {String}
          */
         getLocale: function () {
-            return this.getCookie('locale') || 'en';
+            return $.cookie('locale') || 'en';
         },
 
         /**
@@ -46,8 +77,8 @@
          *
          * @public
          * @method
-         * @name Soshace.helpers.i18n
-         * @returns {string}
+         * @name Helpers.i18n
+         * @returns {String}
          */
         i18n: function () {
             var value = arguments[0],
@@ -73,10 +104,10 @@
          *
          * @private
          * @method
-         * @name Soshace.helpers._i18nSetParams
-         * @param {string} value строка перевода
+         * @name Helpers._i18nSetParams
+         * @param {String} value строка перевода
          * @param {Array} optionsList список опций
-         * @returns {string}
+         * @returns {String}
          */
         _i18nSetParams: function (value, optionsList) {
             var stringParams = value.match(/\{\{(.+?)\}\}/g);
@@ -93,7 +124,7 @@
          *
          * @public
          * @method
-         * @name Soshace.helpers.checkHistoryApiSupport
+         * @name Helpers.checkHistoryApiSupport
          * @returns {boolean}
          */
         checkHistoryApiSupport: function () {
@@ -106,7 +137,7 @@
          *
          * @public
          * @method
-         * @name Soshace.helpers.scrollToElementTop
+         * @name Helpers.scrollToElementTop
          * @param {jQuery} $element
          * @returns {undefined}
          */
@@ -122,9 +153,9 @@
          *
          * @public
          * @method
-         * @name Soshace.helpers.zeroLeading
-         * @param {number | string} numberToFormat
-         * @returns {string}
+         * @name Helpers.zeroLeading
+         * @param {Number|String} numberToFormat
+         * @returns {String}
          */
         zeroLeading: function (numberToFormat) {
             numberToFormat = String(numberToFormat);
@@ -135,78 +166,6 @@
                 return numberToFormat;
             }
             return '00';
-        },
-
-        /**
-         * Метод возврвщает cookie
-         *
-         * @public
-         * @method
-         * @param {string} name
-         * @returns {string}
-         */
-        getCookie: function (name) {
-            var matches = document.cookie.match(new RegExp(
-                    '(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)'
-            ));
-            return matches ? decodeURIComponent(matches[1]) : undefined;
-        },
-
-        /**
-         * Метод устанавливает cookie
-         *
-         * @public
-         * @method
-         * @name Soshace.helpers.setCookie
-         * @param {string} name
-         * @param {string} value
-         * @param {Object} options
-         * @returns {undefined}
-         */
-        setCookie: function (name, value, options) {
-            var expires, today, propName, propValue, updatedCookie;
-
-            options = options || {};
-
-            expires = options.expires;
-
-            if (_.isNumber(expires) && expires) {
-                today = new Date();
-                today.setTime(today.getTime() + expires * 1000);
-                expires = options.expires = today;
-            }
-            if (expires && expires.toUTCString) {
-                options.expires = expires.toUTCString();
-            }
-
-            value = encodeURIComponent(value);
-
-            updatedCookie = name + '=' + value;
-
-            for (propName in options) {
-                if (options.hasOwnProperty(propName)) {
-                    updatedCookie += '; ' + propName;
-                    propValue = options[propName];
-                    if (propValue !== true) {
-                        updatedCookie += '=' + propValue;
-                    }
-                }
-
-            }
-
-            document.cookie = updatedCookie;
-        },
-
-        /**
-         * Метод вовзращает true, если есть профиль
-         * аутентифицированного пользователя
-         *
-         * @method
-         * @name Soshace.helpers.isAuthenticated
-         * @returns {boolean}
-         */
-        isAuthenticated: function () {
-            return this.getCookie('isAuthenticated') === '1';
         }
     };
-})(window.Soshace);
+});

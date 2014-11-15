@@ -1,40 +1,48 @@
 'use strict';
-(function (Soshace) {
-    /**
-     * Коллекция системных сообщений
-     *
-     * @class Soshace.collections.SystemMessagesCollection
-     */
-    Soshace.collections.SystemMessagesCollection = Soshace.core.Collection.extend({
+
+/**
+ * Коллекция системных сообщений
+ *
+ * @class SystemMessagesCollection
+ */
+
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+    'models/systemMessagesModel',
+    'config'
+], function ($, _, Backbone, SystemMessagesModel) {
+    return Backbone.Collection.extend({
         /**
          * @field
-         * @name Soshace.collections.SystemMessagesCollection#model
-         * @type {Function}
+         * @name SystemMessagesCollection#model
+         * @type {SystemMessagesModel}
          */
-        model: Soshace.models.SystemMessagesModel,
+        model: SystemMessagesModel,
 
         /**
          * @method
-         * @name Soshace.collections.SystemMessagesCollection#parse
+         * @name SystemMessagesCollection#parse
          * @returns {undefined}
          */
-        parse: function (response) {
+        parse: function(response){
             return response.results;
         },
 
         /**
          * @field
-         * @name Soshace.collections.SystemMessagesCollection#url
-         * @type {string}
+         * @name SystemMessagesCollection#url
+         * @type {String}
          */
         url: Soshace.urls.api.systemMessages,
 
         /**
          * @constructor
-         * @name Soshace.collections.SystemMessagesCollection#initialize
+         * @name SystemMessagesCollection#initialize
          * @returns {undefined}
          */
         initialize: function () {
         }
     });
-})(window.Soshace);
+});

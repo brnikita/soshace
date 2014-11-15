@@ -91,7 +91,7 @@ module.exports = Controller.extend({
      *
      * @method
      * @name UsersController#isDisabled
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     isDisabled: function () {
         var request = this.request,

@@ -6,9 +6,9 @@
 'use strict';
 
 define([
-    'core',
+    'zepto',
     'underscore'
-], function (Core, _) {
+], function ($, _) {
     var methods = {
         /**
          * @constructor
@@ -97,7 +97,7 @@ define([
          * @public
          * @method
          * @name jQuery.fn.controlStatus#error
-         * @param {string} error текст ошибки
+         * @param {String} error текст ошибки
          * @returns {jQuery}
          */
         error: function (error) {
@@ -195,7 +195,7 @@ define([
         }
     };
 
-    Core.Dom.prototype.controlStatus = function (method) {
+    $.fn.controlStatus = function (method) {
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         }

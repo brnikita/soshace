@@ -1,15 +1,24 @@
 'use strict';
 
-(function (Soshace) {
-    /**
-     * Модель страницы регистрации
-     *
-     * @class Soshace.models.RegistrationModel
-     */
-    Soshace.models.RegistrationModel = Soshace.core.Model.extend({
+/**
+ * Модель страницы регистрации
+ *
+ * @class RegistrationModel
+ */
+
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+    'utils/helpers',
+    'backbone.validation',
+    'utils/backboneValidationExtension',
+    'config'
+], function ($, _, Backbone, Helpers) {
+    return Backbone.Model.extend({
         /**
          * @field
-         * @name Soshace.models.RegistrationModel#defaults
+         * @name RegistrationModel#defaults
          * @type {Object}
          */
         defaults: {
@@ -21,7 +30,7 @@
 
         /**
          * @field
-         * @name Soshace.models.RegistrationModel#validation
+         * @name RegistrationModel#validation
          * @type {Object}
          */
         validation: {
@@ -60,7 +69,7 @@
          * Список подсказок к полям
          *
          * @field
-         * @name Soshace.models.RegistrationModel#helpers
+         * @name RegistrationModel#helpers
          * @type {Object}
          */
         helpers: {
@@ -73,7 +82,7 @@
          * Список подписей к успешным полям
          *
          * @field
-         * @name Soshace.models.RegistrationModel#successMessages
+         * @name RegistrationModel#successMessages
          * @type {Object}
          */
         successMessages: {
@@ -84,18 +93,18 @@
 
         /**
          * @field
-         * @name Soshace.models.RegistrationModel#url
+         * @name RegistrationModel#url
          * @type {string}
          */
         url: Soshace.urls.api.createUser,
 
         /**
          * @constructor
-         * @name Soshace.models.RegistrationModel#initialize
+         * @name RegistrationModel#initialize
          * @returns {undefined}
          */
         initialize: function () {
-            var locale = Soshace.helpers.getLocale();
+            var locale = Helpers.getLocale();
             this.set({locale: locale}, {silent: true});
         },
 
@@ -103,19 +112,18 @@
          * Метод делает запрос на валидацию поля на сервере
          *
          * @method
-         * @name Soshace.models.RegistrationModel#validation
+         * @name RegistrationModel#validation
          * @param {Object} serializedField
-         * @returns {Soshace.core.Ajax}
+         * @returns {jQuery.Deferred}
          */
         validateFieldByServer: function (serializedField) {
             var params = {},
                 name = serializedField.name,
-                value = serializedField.value,
-                request;
+                value = serializedField.value;
 
             params[name] = value;
-            request = Soshace.core.get(Soshace.urls.api.registration.validateField, params);
-            return request;
+            //TODO: переделать на POST
+            return $.get(Soshace.urls.api.registration.validateField, params);
         }
     });
-})(window.Soshace);
+});

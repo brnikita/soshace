@@ -1,20 +1,26 @@
 'use strict';
 
-(function (Soshace) {
-    /**
-     * Вид страницы 404
-     *
-     * @class Soshace.views.NotFoundView
-     */
+/**
+ * Вид страницы 404
+ *
+ * @class NotFoundView
+ */
 
-    Soshace.views.NotFoundView = Soshace.core.View.extend({
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+    'backbone.layoutmanager',
+    'templates'
+], function ($, _, Backbone) {
+    return Backbone.Layout.extend({
         /**
          * Путь до шаблона
          *
          * @field
-         * @name Soshace.views.NotFoundView#template
+         * @name NotFoundView#template
          * @type {string}
          */
         template: Soshace.hbs['404']
     });
-})(window.Soshace);
+});

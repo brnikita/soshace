@@ -1,27 +1,34 @@
 'use strict';
 
-(function(Soshace){
-    var _ = Soshace._;
+/**
+ * Вид страницы просмотра статьи
+ *
+ * @class PostView
+ */
 
-    /**
-     * Вид страницы просмотра статьи
-     *
-     * @class Soshace.views.PostView
-     */
-    Soshace.views.PostView = Soshace.core.View.extend({
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+    'handlebars',
+    'utils/helpers',
+    'backbone.layoutmanager',
+    'templates'
+], function ($, _, Backbone, Handlebars, Helpers) {
+    return Backbone.Layout.extend({
 
         /**
          * Модель деталей статьи
          *
          * @field
-         * @name Soshace.views.PostView#model
-         * @type {Core.Model | null}
+         * @name PostView#model
+         * @type {Backbone.Model | null}
          */
         model: null,
 
         /**
          * @field
-         * @name Soshace.views.PostView#elements
+         * @name PostView#elements
          * @type {Object}
          */
         elements: {
@@ -35,14 +42,14 @@
          * Путь до шаблона
          *
          * @field
-         * @name Soshace.views.PostView#elements
+         * @name PostView#elements
          * @type {string}
          */
         template: Soshace.hbs['posts/post'],
 
         /**
          * @constructor
-         * @name Soshace.views.PostView#initialize
+         * @name PostView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -54,7 +61,7 @@
 
         /**
          * @method
-         * @name Soshace.views.PostView#serialize
+         * @name PostView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -65,7 +72,7 @@
             data.isAuthenticated = app.isAuthenticated();
             data.post = model;
             data.paths = Soshace.urls;
-            data.locale = Soshace.helpers.getLocale();
+            data.locale = Helpers.getLocale();
             return data;
         },
 
@@ -95,8 +102,8 @@
          * Метод возвращает true, если текущий авторизованный пользователь является владельцем
          *
          * @method
-         * @name Soshace.views.PostView#addMetaData
-         * @returns {boolean}
+         * @name PostView#addMetaData
+         * @returns {Boolean}
          */
         isOwner: function () {
             var app = Soshace.app,
@@ -117,7 +124,7 @@
          * Метод добавляет ланные (статус, дату публикации и пр.) к превью статьи
          *
          * @method
-         * @name Soshace.views.PostView#addMetaData
+         * @name PostView#addMetaData
          * @returns {undefined}
          */
         addMetaData: function () {
@@ -129,7 +136,7 @@
          * Метод возвращает отрендеренную панель информации для превью статьи
          *
          * @method
-         * @name Soshace.views.PostView#getMetaData
+         * @name PostView#getMetaData
          * @returns {undefined}
          */
         getMetaData: function () {
@@ -153,7 +160,7 @@
          * Метод сохраняет ссылки на DOM элементы
          *
          * @method
-         * @name Soshace.views.PostView#setElements
+         * @name PostView#setElements
          * @returns {undefined}
          */
         setElements: function () {
@@ -167,7 +174,7 @@
          * Метод вызывается, когда шаблон рендерится на сервере
          *
          * @method
-         * @name Soshace.views.PostView#withoutRender
+         * @name PostView#withoutRender
          * @param {jQuery} $el
          * @returns {undefined}
          */
@@ -184,7 +191,7 @@
 
         /**
          * @method
-         * @name Soshace.views.PostView#afterRender
+         * @name PostView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
@@ -195,4 +202,4 @@
             app.elements.title.html(this.model.get('title'));
         }
     });
-})(window.Soshace);
+});

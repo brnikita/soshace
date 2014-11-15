@@ -8,8 +8,8 @@
 
 define([
     'underscore',
-    'core'
-], function (_, Core) {
+    'zepto'
+], function (_, $) {
     return {
         /**
          * TODO: переделать на плагин

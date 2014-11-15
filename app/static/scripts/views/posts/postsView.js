@@ -1,27 +1,34 @@
 'use strict';
 
-(function(Soshace){
-    var _ = Soshace._,
-        $ = Soshace.core.$;
+/**
+ * Вид страницы списка статей
+ *
+ * @class PostsView
+ */
 
-    /**
-     * Вид страницы списка статей
-     *
-     * @class Soshace.views.PostsView
-     */
-    Soshace.views.PostsView = Soshace.core.View.extend({
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+    'handlebars',
+    'utils/helpers',
+    './postPreviewView',
+    'backbone.layoutmanager',
+    'templates'
+], function ($, _, Backbone, Handlebars, Helpers, PostPreviewView) {
+    return Backbone.Layout.extend({
         /**
          * Список статей
          *
          * @field
-         * @name Soshace.views.PostsView#collection
-         * @type {Core.Collection | null}
+         * @name PostsView#collection
+         * @type {Backbone.Model | null}
          */
         collection: null,
 
         /**
          * @field
-         * @name Soshace.views.PostsView#elements
+         * @name PostsView#elements
          * @type {Object}
          */
         elements: {
@@ -32,14 +39,14 @@
          * Путь до шаблона
          *
          * @field
-         * @name Soshace.views.PostsView#elements
+         * @name PostsView#elements
          * @type {string}
          */
         template: Soshace.hbs['posts/posts'],
 
         /**
          * @constructor
-         * @name Soshace.views.PostsView#initialize
+         * @name PostsView#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -54,7 +61,7 @@
          * данные из шаблона
          *
          * @method
-         * @name Soshace.views.PostsView#setViewsFromTemplate
+         * @name PostsView#setViewsFromTemplate
          * @returns {undefined}
          */
         setViewsFromTemplate: function () {
@@ -94,12 +101,12 @@
          * Метод добавляет вид превью с списку статей
          *
          * @method
-         * @name Soshace.views.PostsView#addOneView
+         * @name PostsView#addOneView
          * @param {Backbone.Model} postModel модель статьи
          * @returns {undefined}
          */
         addOneView: function (postModel) {
-            var view = new Soshace.views.PostPreviewView({
+            var view = new PostPreviewView({
                 model: postModel
             });
 
@@ -110,7 +117,7 @@
          * Метод заполняет список статей
          *
          * @method
-         * @name Soshace.views.PostsView#fillPostsList
+         * @name PostsView#fillPostsList
          * @returns {undefined}
          */
         fillPostsList: function () {
@@ -119,7 +126,7 @@
 
         /**
          * @method
-         * @name Soshace.views.PostsView#serialize
+         * @name PostsView#serialize
          * @returns {Object}
          */
         serialize: function () {
@@ -128,7 +135,7 @@
 
             data.posts = this.collection.toJSON();
             data.paths = Soshace.urls;
-            data.locale = Soshace.helpers.getLocale();
+            data.locale = Helpers.getLocale();
             data.isAuthenticated = app.isAuthenticated();
 
             return data;
@@ -138,7 +145,7 @@
          * Метод вызывается, когда рендер происходит на сервере
          *
          * @method
-         * @name Soshace.views.PostsView#withoutRender
+         * @name PostsView#withoutRender
          * @param {jQuery} $el корневой элемент вида
          * @returns {undefined}
          */
@@ -151,7 +158,7 @@
 
         /**
          * @method
-         * @name Soshace.views.PostsView#beforeRender
+         * @name PostsView#beforeRender
          * @returns {undefined}
          */
         beforeRender: function () {
@@ -162,7 +169,7 @@
          * Метод сохраняет ссылки на DOM элементы
          *
          * @method
-         * @name Soshace.views.PostsView#setElements
+         * @name PostsView#setElements
          * @returns {undefined}
          */
         setElements: function () {
@@ -171,11 +178,11 @@
 
         /**
          * @method
-         * @name Soshace.views.PostsView#afterRender
+         * @name PostsView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
             this.setElements();
         }
     });
-})(window.Soshace);
+});

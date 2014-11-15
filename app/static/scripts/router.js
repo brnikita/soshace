@@ -1,18 +1,33 @@
+//TODO: сделать откат, если нет полной поддержки History API
+//TODO: в ie9 происходит зацикливание
 'use strict';
-(function(Soshace){
-    var _ = Soshace._;
 
-    /**
-     * Класс роутера
-     *
-     * @class Soshace.core.Router
-     */
-    Soshace.core.Router = Soshace.core.Class.extend({
+/**
+ * Модуль страницы просмотра поста
+ *
+ * @module Router
+ */
+define([
+    'zepto',
+    'underscore',
+    'backbone',
+    'utils/helpers',
+    //Необходимо при сборке
+    'controllers/posts/postsController',
+    'controllers/posts/postController',
+    'controllers/posts/postEditController',
+    'controllers/auth/loginController',
+    'controllers/auth/registrationController',
+    'controllers/users/usersController',
+    'controllers/users/usersEditController',
+    'controllers/users/usersSettingsController'
+], function ($, _, Backbone, Helpers) {
+    return Backbone.Router.extend({
         /**
          * Ссылка на текущий контроллер
          *
          * @field
-         * @name Soshace.core.Router#currentController
+         * @name Router#currentController
          * @type {Controller | null}
          */
         currentController: null,
@@ -22,7 +37,7 @@
          * у контроллера вызывается метод routeHandler
          *
          * @field
-         * @name Soshace.core.Router#controllersRoutes
+         * @name Router#controllersRoutes
          * @type {Object}
          */
         controllersRoutes: {
@@ -53,14 +68,14 @@
          * Поле содержит список экземпляров контроллеров
          *
          * @field
-         * @name Soshace.core.Router#controllers
+         * @name Router#controllers
          * @type {Object}
          */
         controllers: null,
 
         /**
          * @constructor
-         * @name Soshace.core.Router#initialize
+         * @name Router#initialize
          * @returns {undefined}
          */
         initialize: function () {
@@ -73,12 +88,12 @@
          * Метод запускает history API при её поддержке или принудительно стартует роут
          *
          * @method
-         * @name Soshace.core.Router#startRouter
+         * @name Router#startRouter
          * @returns {undefined}
          */
-        startRouter: function () {
-            if (Soshace.helpers.checkHistoryApiSupport()) {
-                Soshace.app.history.start({
+        startRouter: function(){
+            if (Helpers.checkHistoryApiSupport()) {
+                Backbone.history.start({
                     pushState: true
                 });
                 return;
@@ -93,11 +108,11 @@
          * controllersRoutes
          *
          * @method
-         * @name Soshace.core.Router#setRouter
+         * @name Router#setRouter
          * @returns {undefined}
          */
-        setRouter: function () {
-            _.each(this.controllersRoutes, _.bind(function (controllerPath, route) {
+        setRouter: function(){
+            _.each(this.controllersRoutes, _.bind(function(controllerPath, route){
                 this.route(route, controllerPath);
             }, this));
 
@@ -108,12 +123,12 @@
          * Метод возвращает экземпляр контроллера по пути
          *
          * @method
-         * @name Soshace.core.Router#getController
-         * @param {string} path путь до контроллера
+         * @name Router#getController
+         * @param {String} path путь до контроллера
          * @returns {jQuery.Deferred}
          */
         getController: function (path) {
-            var deferred = Soshace.core.deferred(),
+            var deferred = $.Deferred(),
                 controllers = this.controllers,
                 controller = controllers[path];
 
@@ -134,17 +149,17 @@
          * Метод передает параметры запроса роутеру
          *
          * @method
-         * @name Soshace.core.Router#handleRouteByController
-         * @param {string} controllerPath путь до контроллера
+         * @name Router#handleRouteByController
+         * @param {String} controllerPath путь до контроллера
          * @param {Array} routeParams параметры запроса
          * @returns {undefined}
          */
         handleRouteByController: function (controllerPath, routeParams) {
             this.getController(controllerPath).
-                done(_.bind(function (controller) {
+                done(_.bind(function(controller){
                     this.currentController = controller;
                     controller.routeHandler.apply(controller, routeParams);
                 }, this));
         }
     });
-})(window.Soshace);
+});

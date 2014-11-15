@@ -90,7 +90,7 @@ module.exports = Controller.extend({
      *
      * @method
      * @name PostsController#getUserPosts
-     * @param {string} userId id пользователя
+     * @param {String} userId id пользователя
      * @return {undefined}
      */
     getUserPosts: function (userId) {
