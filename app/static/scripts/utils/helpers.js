@@ -81,21 +81,28 @@ define([
          * @returns {String}
          */
         i18n: function () {
-            var value = arguments[0],
+            var params = arguments,
+                value = params[0],
                 locale = this.getLocale(),
                 translations = Soshace.locales[locale];
 
-            Array.prototype.shift.call(arguments);
+            //If value consists params for translation
+            if (value instanceof Array) {
+                params = value;
+                value = params[0];
+            }
+
+            Array.prototype.shift.call(params);
 
             if (typeof translations === 'undefined') {
-                return this._i18nSetParams(value, arguments);
+                return this._i18nSetParams(value, params);
             }
 
             if (typeof translations[value] === 'undefined') {
-                return this._i18nSetParams(value, arguments);
+                return this._i18nSetParams(value, params);
             }
 
-            return this._i18nSetParams(translations[value], arguments);
+            return this._i18nSetParams(translations[value], params);
         },
 
         /**

@@ -84,7 +84,9 @@ var Strategies = {
 
         if (!user) {
             done({
-                error: {email: 'User with email {{' + userEmail + '}} is not registered yet.'},
+                error: {
+                    email: ['User with email {{email}} is not registered yet.', userEmail]
+                },
                 code: 400
             });
             return;
