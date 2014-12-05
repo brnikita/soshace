@@ -122,7 +122,7 @@ define([
                 value = serializedField.value;
 
             params[name] = value;
-            //TODO: переделать на POST
+            //TODO: переделать на POST для защиты приватных данных!!!
             return $.get(Soshace.urls.api.registration.validateField, params);
         }
     });

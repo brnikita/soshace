@@ -34,8 +34,7 @@ define([
          * @name RegistrationView#elements
          * @type {Object}
          */
-        elements: {
-        },
+        elements: {},
 
         /**
          * Поле содержит обернутый в debounce
@@ -269,17 +268,25 @@ define([
             }
 
             model.validateFieldByServer(serializedField).done(function (response) {
+                //В случае, если поле пока шел ответ уже изменилось
                 if (fieldValue !== model.get(fieldName)) {
-                    return;
-                }
-                error = response.error;
-
-                if (error) {
-                    $field.controlStatus('error', error.message);
                     return;
                 }
 
                 $field.controlStatus('success');
+            }).fail(function (response) {
+                var errorMessage,
+                    responseJSON;
+
+                //В случае, если поле пока шел ответ уже изменилось
+                if (fieldValue !== model.get(fieldName)) {
+                    return;
+                }
+
+                responseJSON = JSON.parse(response.response);
+                error = responseJSON.error;
+                errorMessage = Helpers.i18n(error.message);
+                $field.controlStatus('error', errorMessage);
             });
         },
 

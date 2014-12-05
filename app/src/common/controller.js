@@ -66,7 +66,7 @@ module.exports = Class.extend({
             errorCode = 400,
             errorMessage = 'Bad request.';
 
-        if (typeof error === 'object') {
+        if (typeof error === 'object' && error !== null) {
             errorMessage = error.error || errorMessage;
             errorCode = error.code || errorCode;
         } else {

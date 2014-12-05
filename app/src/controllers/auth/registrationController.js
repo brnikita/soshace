@@ -222,14 +222,17 @@ module.exports = Controller.extend({
             user = new UsersModel(requestData);
 
         //TODO: добавить проверку на наличие поля в модели
-        user.validate(function (error) {
+        user.validate(_.bind(function (error) {
             var errors = error && error.errors,
-                message = errors && errors[fieldName] || null;
+                errorMessage = errors && errors[fieldName] || null;
 
-            response.send({
-                error: message
-            });
-        });
+            if (errorMessage) {
+                this.sendError({error: errorMessage});
+                return;
+            }
+
+            response.send({error: null});
+        }, this));
     },
 
     /**
