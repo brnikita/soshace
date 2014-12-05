@@ -56,6 +56,8 @@ define([
             ':locale/login/': 'controllers/auth/loginController',
             ':locale/registration': 'controllers/auth/registrationController',
             ':locale/registration/': 'controllers/auth/registrationController',
+            ':locale/remind_password': 'controllers/auth/remindPasswordController',
+            ':locale/remind_password/': 'controllers/auth/remindPasswordController',
             ':locale/users/:username': 'controllers/users/usersController',
             ':locale/users/:username/': 'controllers/users/usersController',
             ':locale/users/:username/edit': 'controllers/users/usersEditController',
