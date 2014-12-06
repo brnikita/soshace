@@ -30,13 +30,6 @@ define([
         model: null,
 
         /**
-         * @field
-         * @name RegistrationView#elements
-         * @type {Object}
-         */
-        elements: {},
-
-        /**
          * Поле содержит обернутый в debounce
          * метод setStatus, который устанавливает статусы у полей
          *

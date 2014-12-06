@@ -27,14 +27,14 @@ define([
             /**
              * @field
              * @name RemindPasswordController#model
-             * @type {RegistrationModel}
+             * @type {RemindPasswordModel | null}
              */
             model: null,
 
             /**
              * @field
              * @name RemindPasswordController#view
-             * @type {RegistrationView}
+             * @type {RemindPasswordView | null}
              */
             view: null,
 

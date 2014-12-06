@@ -202,5 +202,7 @@
     "<strong>Earn money</strong> for unique views, likes and reposts.": "<strong>Получай деньги</strong> за уникальные просмотры, лайки и репосты.",
     "Bad request.": "Некорректный запрос.",
     "Password can&#39;t be less than 6 characters.": "Пароль не может быть менее 6 символов.",
-    "Password is not correct.": "Неверный пароль."
+    "Password is not correct.": "Неверный пароль.",
+    "Please enter the email that you used to log on to the site.": "Пожалуйста, укажите email, который вы используете для авторизации.",
+    "Password repair": "Восстановить пароль"
 }

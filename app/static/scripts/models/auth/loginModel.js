@@ -27,7 +27,7 @@ define([
 
         /**
          * @field
-         * @name RegistrationModel#validation
+         * @name LoginModel#validation
          * @type {Object}
          */
         validation: {

@@ -33,7 +33,6 @@ module.exports = Controller.extend({
         }
 
         response.render('auth/remindPassword', _.extend(requestParams, {
-            isAuthTab: true,
             title: 'Remind password page'
         }));
     }

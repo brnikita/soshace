@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Модель страницы логина
+ * Модель страницы восстановления пароля
  *
- * @module LoginModel
+ * @module RemindPasswordModel
  */
 
 define([
@@ -15,8 +15,8 @@ define([
 ], function ($, _, Backbone, Helpers) {
     return Backbone.Model.extend({
         /**
-         * @property
-         * @name LoginModel#defaults
+         * @field
+         * @name RemindPasswordModel#defaults
          * @type {Object}
          */
         defaults: {
@@ -27,7 +27,7 @@ define([
 
         /**
          * @field
-         * @name RegistrationModel#validation
+         * @name RemindPasswordModel#validation
          * @type {Object}
          */
         validation: {
@@ -40,29 +40,19 @@ define([
                     pattern: Soshace.patterns.email,
                     msg: 'Email is invalid.'
                 }
-            ],
-            password: [
-                {
-                    required: true,
-                    msg: 'Password can&#39;t be blank.'
-                },
-                {
-                    minLength: 6,
-                    msg: 'Password length should&#39;t be less than 6 characters.'
-                }
             ]
         },
 
         /**
          * @field
-         * @name LoginModel#url
+         * @name RemindPasswordModel#url
          * @type {String}
          */
         url: Soshace.urls.api.login,
 
         /**
          * @constructor
-         * @name LoginModel#initialize
+         * @name RemindPasswordModel#initialize
          * @returns {undefined}
          */
         initialize: function () {
