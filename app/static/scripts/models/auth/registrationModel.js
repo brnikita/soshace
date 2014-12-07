@@ -118,12 +118,11 @@ define([
          */
         validateFieldByServer: function (serializedField) {
             var params = {},
-                name = serializedField.name,
-                value = serializedField.value;
+                name = serializedField.name;
 
-            params[name] = value;
-            //TODO: переделать на POST для защиты приватных данных!!!
-            return $.get(Soshace.urls.api.registration.validateField, params);
+            params[name] = serializedField.value;
+            //Используется post запрос для защиты пользовательских данных
+            return $.post(Soshace.urls.api.registration.validateField, params);
         }
     });
 });

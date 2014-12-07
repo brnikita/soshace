@@ -217,7 +217,7 @@ module.exports = Controller.extend({
     validateField: function () {
         var request = this.request,
             response = this.response,
-            requestData = request.query,
+            requestData = request.body,
             fieldName = _.keys(requestData)[0],
             user = new UsersModel(requestData);
 

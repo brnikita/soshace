@@ -1,6 +1,8 @@
 'use strict';
 var Controller = srcRequire('common/controller');
 
+//TODO: отдавать ошибки в json, если запрос в json
+
 /**
  * Контроллер страниц ошибок
  *

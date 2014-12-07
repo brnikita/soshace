@@ -21,8 +21,29 @@ define([
          */
         defaults: {
             locale: null,
-            email: null,
-            password: null
+            email: null
+        },
+
+        /**
+         * Список подписей к успешным полям
+         *
+         * @field
+         * @name RemindPasswordModel#successMessages
+         * @type {Object}
+         */
+        successMessages: {
+            email: 'Great email!'
+        },
+
+        /**
+         * Список подсказок к полям
+         *
+         * @field
+         * @name RemindPasswordModel#helpers
+         * @type {Object}
+         */
+        helpers: {
+            email: 'Please enter your e-mail address.'
         },
 
         /**
@@ -48,7 +69,7 @@ define([
          * @name RemindPasswordModel#url
          * @type {String}
          */
-        url: Soshace.urls.api.login,
+        url: Soshace.urls.api.remindPassword.send,
 
         /**
          * @constructor
@@ -58,6 +79,22 @@ define([
         initialize: function () {
             var locale = Helpers.getLocale();
             this.set({locale: locale}, {silent: true});
+        },
+
+        /**
+         * Метод делает запрос на валидацию поля на сервере
+         *
+         * @method
+         * @name RegistrationModel#validation
+         * @param {Object} serializedField
+         * @returns {jQuery.Deferred}
+         */
+        validateFieldByServer: function (serializedField) {
+            var params = {},
+                name = serializedField.name;
+
+            params[name] = serializedField.value;
+            return $.post(Soshace.urls.api.remindPassword.validate, params);
         }
     });
 });

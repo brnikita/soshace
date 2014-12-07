@@ -68,7 +68,6 @@ define([
          */
         initialize: function () {
             _.bindAll(this,
-                'render',
                 'userLoginSuccess',
                 'userLoginFail'
             );
@@ -216,10 +215,9 @@ define([
          * @returns {Object}
          */
         serialize: function () {
-            var app = Soshace.app,
-                data = this.model.toJSON();
+            var data = this.model.toJSON();
+
             data.isLoginTab = true;
-            data.isAuthenticated = app.isAuthenticated();
             data.paths = Soshace.urls;
             return data;
         },

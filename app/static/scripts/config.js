@@ -140,8 +140,12 @@ define(function () {
                 systemMessage: '/api/system_messages/0',
                 systemMessages: '/api/system_messages',
                 reviewComments: '',
+                remindPassword: {
+                    send: '/api/remind_password',
+                    validate: '/api/remind_password/validate'
+                },
                 registration: {
-                    validateField: '/api/registration/validate_field'
+                    validateField: '/api/registration/validate'
                 }
             }
         },

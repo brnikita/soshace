@@ -11,13 +11,12 @@ define([
     'underscore',
     'backbone',
     'utils/helpers',
-    'handlebars',
     'backbone.validation',
     'utils/backboneValidationExtension',
     'utils/plugins/jquery.controlStatus',
     'backbone.layoutmanager',
     'templates'
-], function ($, _, Backbone, Helpers, Handlebars) {
+], function ($, _, Backbone, Helpers) {
     return Backbone.Layout.extend({
 
         /**
@@ -31,13 +30,13 @@ define([
 
         /**
          * Поле содержит обернутый в debounce
-         * метод setStatus, который устанавливает статусы у полей
+         * метод setStatus, который устанавливает статус у поля email
          *
          * @field
-         * @name RemindPasswordView#setStatusDebounce
+         * @name RemindPasswordView#setStatusEmailDebounce
          * @type {Function | null}
          */
-        setStatusDebounce: null,
+        setStatusEmailDebounce: null,
 
         /**
          * Список обработчиков событий
@@ -47,8 +46,8 @@ define([
          * @type {Object}
          */
         events: {
-            'keyup .js-model-field': 'changeFormFieldHandler',
-            'blur .js-model-field': 'blurFormFieldHandler',
+            'keyup .js-email-field': 'changeEmailFieldHandler',
+            'blur .js-email-field': 'changeEmailFieldHandler',
             'submit': 'submitHandler'
         },
 
@@ -67,24 +66,12 @@ define([
          * @returns {undefined}
          */
         initialize: function () {
-            _.bindAll(this,
-                'render',
-                'userRegistrationSuccess',
-                'userRegistrationFail'
-            );
-
-            Handlebars.registerPartial(
-                'auth/registration',
-                Soshace.hbs['partials/auth/registration']
-            );
             Backbone.Validation.bind(this);
-
-            //TODO: у каждого поля должен быть свой debouce метод, чтобы ошибки показывались при быстрой смене фокуса
-            this.setStatusDebounce = _.debounce(_.bind(this.setStatus, this), 500);
+            this.setStatusEmailDebounce = _.debounce(_.bind(this.setEmailStatus, this), 500);
         },
 
         /**
-         * Метод обработчик клика на кнопке 'Зарегистрироваться'
+         * Метод обработчик клика на кнопке 'Восстановить пароль'
          *
          * @method
          * @name RemindPasswordView#submitHandler
@@ -152,42 +139,14 @@ define([
         },
 
         /**
-         * Метод обработчик получения фокуса полем
+         * Метод обработчик события изменения поля email
          *
          * @method
-         * @name RemindPasswordView#blurFormFieldHandler
+         * @name RemindPasswordView#changeEmailFieldHandler
          * @param {jQuery.Event} event
          * @returns {undefined}
          */
-        blurFormFieldHandler: function (event) {
-            var $target = $(event.target),
-                serializedField = Helpers.serializeField($target),
-                fieldName = serializedField.name,
-                fieldValue,
-                error;
-
-            //В противном случае у поля уже есть ошибка
-            //Используется такой определения ошибки, т.к. у поля ошибки появляются с задержкой
-            if (this.model.get(fieldName) !== null) {
-                return;
-            }
-
-            serializedField = Helpers.serializeField($target);
-            fieldValue = serializedField.value;
-            error = this.model.preValidate(fieldName, fieldValue);
-            error = Helpers.i18n(error);
-            $target.controlStatus('error', error);
-        },
-
-        /**
-         * Метод обработчик события изменения поля формы
-         *
-         * @method
-         * @name RemindPasswordView#changeFormFieldHandler
-         * @param {jQuery.Event} event
-         * @returns {undefined}
-         */
-        changeFormFieldHandler: function (event) {
+        changeEmailFieldHandler: function (event) {
             var $target = $(event.target),
                 model = this.model,
                 serializedField = Helpers.serializeField($target),
@@ -198,26 +157,21 @@ define([
                 return;
             }
 
-            //Если в поле попали первый раз
-            if (model.get(fieldName) === null && fieldValue === '') {
-                return;
-            }
-
             model.set(fieldName, fieldValue);
             $target.controlStatus('helper');
-            this.setStatusDebounce($target, serializedField);
+            this.setStatusEmailDebounce($target, serializedField);
         },
 
         /**
-         * Метод устанавливает статусы для полей success или error
+         * Метод устанавливает статус для поля email success или error
          *
          * @method
-         * @name RemindPasswordView#setStatus
+         * @name RemindPasswordView#setEmailStatus
          * @param {jQuery} $field ссылка на поле
          * @param serializedField сериализованное поле {name: '', value: ''}
          * @returns {undefined}
          */
-        setStatus: function ($field, serializedField) {
+        setEmailStatus: function ($field, serializedField) {
             var model = this.model,
                 fieldValue = serializedField.value,
                 fieldName = serializedField.name,
@@ -246,7 +200,7 @@ define([
                 var errorMessage,
                     responseJSON;
 
-                //В случае, если поле пока шел ответ уже изменилось
+                //В случае, если поле уже изменилось пока шел ответ
                 if (fieldValue !== model.get(fieldName)) {
                     return;
                 }
@@ -256,20 +210,6 @@ define([
                 errorMessage = Helpers.i18n(error.message);
                 $field.controlStatus('error', errorMessage);
             });
-        },
-
-        /**
-         * @method
-         * @name RemindPasswordView#serialize
-         * @returns {Object}
-         */
-        serialize: function () {
-            var app = Soshace.app,
-                data = this.model.toJSON();
-
-            data.isAuthenticated = app.isAuthenticated();
-            data.isRegistrationTab = true;
-            return data;
         },
 
         /**
@@ -299,22 +239,19 @@ define([
          * Метод устанавливает всплывающие подсказоки у полей
          *
          * @method
-         * @name RemindPasswordView#setFieldsHelpers
-         * @param {Object} helpers список подсказок
+         * @name RegistrationView#setFieldControlStatus
          * @returns {undefined}
          */
-        setFieldsHelpers: function (helpers) {
-            _.each(helpers, _.bind(function (helper, fieldName) {
-                var $field,
-                    successTitle = this.model.successMessages[fieldName];
+        setFieldControlStatus: function () {
+            var $email,
+                helper = this.model.helpers.email,
+                successTitle = this.model.successMessages['email'];
 
-                fieldName = Helpers.hyphen(fieldName);
-                $field = $('#' + fieldName);
-                $field.controlStatus({
-                    helperTitle: Helpers.i18n(helper),
-                    successTitle: Helpers.i18n(successTitle)
-                });
-            }, this));
+            $email = $('#email');
+            $email.controlStatus({
+                helperTitle: Helpers.i18n(helper),
+                successTitle: Helpers.i18n(successTitle)
+            });
         },
 
         /**
@@ -323,7 +260,8 @@ define([
          * @returns {undefined}
          */
         afterRender: function () {
-            this.setFieldsHelpers(this.model.helpers);
+            this.setFieldControlStatus();
+
             //Используется асинхронный вызов, чтобы навесились обработчики событий
             setTimeout(function () {
                 $('#email').focus();

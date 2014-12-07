@@ -30,14 +30,17 @@ define([
         model: null,
 
         /**
-         * Поле содержит обернутый в debounce
-         * метод setStatus, который устанавливает статусы у полей
+         * Поле содержит обернутые в debounce
+         * методы setStatus отдельно для каждого поля
+         *
+         * У каждого поля должен быть свой debouce метод,
+         * чтобы ошибки показывались при быстрой смене фокуса
          *
          * @field
-         * @name RegistrationView#setStatusDebounce
-         * @type {Function | null}
+         * @name RegistrationView#statusDebounceHandlers
+         * @type {Object | null}
          */
-        setStatusDebounce: null,
+        statusDebounceHandlers: null,
 
         /**
          * Список обработчиков событий
@@ -49,7 +52,7 @@ define([
         events: {
             'keyup .js-model-field': 'changeFormFieldHandler',
             'focus .js-model-field': 'focusFormFieldHandler',
-            'blur .js-model-field': 'blurFormFieldHandler',
+            'blur .js-model-field': 'changeFormFieldHandler',
             'submit': 'userRegistrationHandler'
         },
 
@@ -69,7 +72,6 @@ define([
          */
         initialize: function () {
             _.bindAll(this,
-                'render',
                 'userRegistrationSuccess',
                 'userRegistrationFail'
             );
@@ -80,8 +82,23 @@ define([
             );
             Backbone.Validation.bind(this);
 
-            //TODO: у каждого поля должен быть свой debouce метод, чтобы ошибки показывались при быстрой смене фокуса
-            this.setStatusDebounce = _.debounce(_.bind(this.setStatus, this), 500);
+            this.statusDebounceHandlers = {};
+            this.setStatusHandlers();
+        },
+
+        /**
+         * Метод уставливает оберные для в debounce метод setStatus для каждого поля модели
+         *
+         * @method
+         * @name RegistrationView#setStatusHandlers
+         * @returns {undefined}
+         */
+        setStatusHandlers: function () {
+            var model = this.model.toJSON();
+
+            _.each(model, _.bind(function (fieldValue, fieldName) {
+                this.statusDebounceHandlers[fieldName] = _.debounce(_.bind(this.setStatus, this), 500);
+            }, this));
         },
 
         /**
@@ -142,6 +159,7 @@ define([
          */
         userRegistrationFail: function (model, response) {
             var error = response.responseJSON && response.responseJSON.error;
+
             if (typeof error === 'string') {
                 //TODO: добавить вывод системной ошибки
                 return;
@@ -177,34 +195,6 @@ define([
         },
 
         /**
-         * Метод обработчик получения фокуса полем
-         *
-         * @method
-         * @name RegistrationView#blurFormFieldHandler
-         * @param {jQuery.Event} event
-         * @returns {undefined}
-         */
-        blurFormFieldHandler: function (event) {
-            var $target = $(event.target),
-                serializedField = Helpers.serializeField($target),
-                fieldName = serializedField.name,
-                fieldValue,
-                error;
-
-            //В противном случае у поля уже есть ошибка
-            //Используется такой определения ошибки, т.к. у поля ошибки появляются с задержкой
-            if (this.model.get(fieldName) !== null) {
-                return;
-            }
-
-            serializedField = Helpers.serializeField($target);
-            fieldValue = serializedField.value;
-            error = this.model.preValidate(fieldName, fieldValue);
-            error = Helpers.i18n(error);
-            $target.controlStatus('error', error);
-        },
-
-        /**
          * Метод обработчик события изменения поля формы
          *
          * @method
@@ -217,20 +207,20 @@ define([
                 model = this.model,
                 serializedField = Helpers.serializeField($target),
                 fieldName = serializedField.name,
-                fieldValue = serializedField.value;
+                fieldValue = serializedField.value,
+                setStatusHandler;
 
             if (model.get(fieldName) === fieldValue) {
                 return;
             }
 
-            //Если в поле попали первый раз
-            if (model.get(fieldName) === null && fieldValue === '') {
-                return;
-            }
-
+            //TODO: вынести в отдельный метод с сохранением позиции курсора
+            //fieldValue = fieldValue.toLowerCase();
+            //$target.val(fieldValue);
             model.set(fieldName, fieldValue);
             $target.controlStatus('helper');
-            this.setStatusDebounce($target, serializedField);
+            setStatusHandler = this.statusDebounceHandlers[fieldName];
+            setStatusHandler($target, serializedField);
         },
 
         /**
@@ -289,10 +279,8 @@ define([
          * @returns {Object}
          */
         serialize: function () {
-            var app = Soshace.app,
-                data = this.model.toJSON();
+            var data = this.model.toJSON();
 
-            data.isAuthenticated = app.isAuthenticated();
             data.isRegistrationTab = true;
             return data;
         },
