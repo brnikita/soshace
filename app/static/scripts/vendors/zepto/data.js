@@ -48,7 +48,7 @@ define(['zepto'], function($){
                 // get value from first element
                 (0 in this ? getData(this[0], name) : undefined) :
             // set value on all elements
-            this.each(function(){ setData(this, name, value) })
+            this.each(function(){setData(this, name, value) })
     };
 
     $.fn.removeData = function(names) {

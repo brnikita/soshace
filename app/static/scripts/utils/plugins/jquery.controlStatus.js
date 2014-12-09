@@ -22,10 +22,10 @@ define([
         initialize: function (options) {
             return this.each(function () {
                 var $this = $(this),
-                    $formGroup = $this.parent();
+                    $formGroup = $this.parent(),
+                    controlOptions = options || {};
 
-                options = options || {};
-                $this.data('controlStatus', options);
+                $this.data('controlStatus', controlOptions);
                 $formGroup.addClass('has-feedback');
                 $formGroup.append($('<span>', {
                     'class': 'form-control-feedback'
