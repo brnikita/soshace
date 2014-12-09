@@ -30,6 +30,15 @@ define([
         model: null,
 
         /**
+         * @field
+         * @name RegistrationView#elements
+         * @type {Object}
+         */
+        elements: {
+            registrationForm: null
+        },
+
+        /**
          * Поле содержит обернутые в debounce
          * методы setStatus отдельно для каждого поля
          *
@@ -114,7 +123,7 @@ define([
                 _this = this;
 
             event.preventDefault();
-
+            this.model.set(Helpers.serializeForm(this.elements.registrationForm));
             errors = this.model.validate();
 
             if (errors) {
@@ -250,7 +259,7 @@ define([
                 return;
             }
 
-            model.validateFieldByServer(serializedField).done(function (response) {
+            model.validateFieldByServer(serializedField).done(function () {
                 //В случае, если поле пока шел ответ уже изменилось
                 if (fieldValue !== model.get(fieldName)) {
                     return;
@@ -331,11 +340,23 @@ define([
         },
 
         /**
+         * Метод сохраняет ссылки на элементы DOM
+         *
+         * @method
+         * @name RegistrationView#setElements
+         * @returns {undefined}
+         */
+        setElements: function () {
+            this.elements.registrationForm = this.$('.js-registration-form');
+        },
+
+        /**
          * @method
          * @name RegistrationView#afterRender
          * @returns {undefined}
          */
         afterRender: function () {
+            this.setElements();
             this.setFieldsHelpers(this.model.helpers);
             //Используется асинхронный вызов, чтобы навесились обработчики событий
             setTimeout(function () {
