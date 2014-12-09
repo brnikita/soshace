@@ -37,7 +37,8 @@ define([
          */
         elements: {
             validateFields: null,
-            authMessages: null
+            authMessages: null,
+            loginForm: null
         },
 
         /**
@@ -46,8 +47,6 @@ define([
          * @type {Object}
          */
         events: {
-            'keyup .js-model-field': 'changeFormFieldHandler',
-            'blur .js-model-field': 'changeFormFieldHandler',
             'focus .js-validate-input': 'validateFieldFocusHandler',
             'submit .js-login-form': 'userLoginHandler'
         },
@@ -93,7 +92,7 @@ define([
                 _this = this;
 
             event.preventDefault();
-
+            this.model.set(Helpers.serializeForm(this.elements.loginForm));
             errors = this.model.validate();
 
             if (errors) {
@@ -191,25 +190,6 @@ define([
         },
 
         /**
-         * Метод обработчик события изменения поля формы
-         *
-         * @method
-         * @name LoginView#changeFormFieldHandler
-         * @param {jQuery.Event} event
-         * @returns {undefined}
-         */
-        changeFormFieldHandler: function (event) {
-            var $target = $(event.target),
-                serializedField = Helpers.serializeField($target),
-                fieldName = serializedField.name,
-                fieldValue = serializedField.value,
-                params = {};
-
-            params[fieldName] = fieldValue;
-            this.model.set(params);
-        },
-
-        /**
          * @method
          * @name LoginView#serialize
          * @returns {Object}
@@ -232,6 +212,7 @@ define([
         setElements: function () {
             this.elements.validateFields = this.$('.js-validate-input');
             this.elements.authMessages = this.$('.js-auth-messages');
+            this.elements.loginForm = this.$('.js-login-form');
         },
 
         /**

@@ -41,6 +41,27 @@ define([
         },
 
         /**
+         * Метод возвращает сериализованную фому в виде объекта
+         * {name1: value1, name2: value2}
+         *
+         * @public
+         * @method
+         * @name Helpers.serializeForm
+         * @param {jQuery} $form
+         * @returns {Object}
+         */
+        serializeForm: function ($form) {
+            var formArray = $form.serializeArray(),
+                serializedForm = {};
+
+            _.each(formArray, function (field) {
+                serializedForm[field.name] = field.value;
+            });
+
+            return serializedForm;
+        },
+
+        /**
          * Метод возвращает сериализованный инпут
          *
          * @public
