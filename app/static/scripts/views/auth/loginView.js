@@ -31,6 +31,8 @@ define([
         model: null,
 
         /**
+         * Ссылки на DOM элементы вида
+         *
          * @field
          * @name LoginView#elements
          * @type {Object}

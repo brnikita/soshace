@@ -30,6 +30,8 @@ define([
         model: null,
 
         /**
+         * Ссылки на DOM элементы вида
+         *
          * @field
          * @name RegistrationView#elements
          * @type {Object}

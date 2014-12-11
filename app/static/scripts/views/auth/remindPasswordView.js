@@ -29,14 +29,15 @@ define([
         model: null,
 
         /**
-         * Поле содержит обернутый в debounce
-         * метод setStatus, который устанавливает статус у поля email
+         * Ссылки на DOM элементы вида
          *
          * @field
-         * @name RemindPasswordView#setStatusEmailDebounce
-         * @type {Function | null}
+         * @name RemindPasswordView#elements
+         * @returns {undefined}
          */
-        setStatusEmailDebounce: null,
+        elements: {
+            emailField: null
+        },
 
         /**
          * Список обработчиков событий
@@ -46,8 +47,6 @@ define([
          * @type {Object}
          */
         events: {
-            'keyup .js-email-field': 'changeEmailFieldHandler',
-            'blur .js-email-field': 'changeEmailFieldHandler',
             'submit': 'submitHandler'
         },
 
@@ -67,7 +66,6 @@ define([
          */
         initialize: function () {
             Backbone.Validation.bind(this);
-            this.setStatusEmailDebounce = _.debounce(_.bind(this.setEmailStatus, this), 500);
         },
 
         /**
@@ -92,21 +90,21 @@ define([
             }
 
             this.model.save(null, {
-                success: _this.userRegistrationSuccess,
-                error: _this.userRegistrationFail
+                success: _this.submitSuccessHandler,
+                error: _this.submitFailHandler
             });
         },
 
         /**
-         * Метод обработчик успешной регистрации пользователя
+         * Метод обработчик успешной отправки интсрукции на почтовый ящик
          *
          * @method
-         * @name RemindPasswordView#userRegistrationSuccess
+         * @name RemindPasswordView#submitSuccessHandler
          * @param {Backbone.Model} model
          * @param {Object} response
          * @returns {undefined}
          */
-        userRegistrationSuccess: function (model, response) {
+        submitSuccessHandler: function (model, response) {
             var app = Soshace.app,
                 redirectUrl = response.redirect;
 
@@ -118,15 +116,15 @@ define([
         },
 
         /**
-         * Метод обработчик неуспешной регистрации пользователя
+         * Метод обработчик неуспешной отправки интрукции на почтовый ящик
          *
          * @method
-         * @name RemindPasswordView#userRegistrationFail
+         * @name RemindPasswordView#submitFailHandler
          * @param {Backbone.Model} model
          * @param {Object} response
          * @returns {undefined}
          */
-        userRegistrationFail: function (model, response) {
+        submitFailHandler: function (model, response) {
             var error = response.responseJSON && response.responseJSON.error;
             if (typeof error === 'string') {
                 //TODO: добавить вывод системной ошибки
@@ -136,80 +134,6 @@ define([
             if (typeof error === 'object') {
                 this.showFieldsErrors(error);
             }
-        },
-
-        /**
-         * Метод обработчик события изменения поля email
-         *
-         * @method
-         * @name RemindPasswordView#changeEmailFieldHandler
-         * @param {jQuery.Event} event
-         * @returns {undefined}
-         */
-        changeEmailFieldHandler: function (event) {
-            var $target = $(event.target),
-                model = this.model,
-                serializedField = Helpers.serializeField($target),
-                fieldName = serializedField.name,
-                fieldValue = serializedField.value;
-
-            if (model.get(fieldName) === fieldValue) {
-                return;
-            }
-
-            model.set(fieldName, fieldValue);
-            $target.controlStatus('helper');
-            this.setStatusEmailDebounce($target, serializedField);
-        },
-
-        /**
-         * Метод устанавливает статус для поля email success или error
-         *
-         * @method
-         * @name RemindPasswordView#setEmailStatus
-         * @param {jQuery} $field ссылка на поле
-         * @param serializedField сериализованное поле {name: '', value: ''}
-         * @returns {undefined}
-         */
-        setEmailStatus: function ($field, serializedField) {
-            var model = this.model,
-                fieldValue = serializedField.value,
-                fieldName = serializedField.name,
-                error;
-
-            if (fieldValue !== model.get(fieldName)) {
-                return;
-            }
-
-            error = model.preValidate(fieldName, fieldValue);
-
-            if (error) {
-                error = Helpers.i18n(error);
-                $field.controlStatus('error', error);
-                return;
-            }
-
-            model.validateFieldByServer(serializedField).done(function (response) {
-                //В случае, если поле пока шел ответ уже изменилось
-                if (fieldValue !== model.get(fieldName)) {
-                    return;
-                }
-
-                $field.controlStatus('success');
-            }).fail(function (response) {
-                var errorMessage,
-                    responseJSON;
-
-                //В случае, если поле уже изменилось пока шел ответ
-                if (fieldValue !== model.get(fieldName)) {
-                    return;
-                }
-
-                responseJSON = JSON.parse(response.response);
-                error = responseJSON.error;
-                errorMessage = Helpers.i18n(error.message);
-                $field.controlStatus('error', errorMessage);
-            });
         },
 
         /**
@@ -236,22 +160,12 @@ define([
         },
 
         /**
-         * Метод устанавливает всплывающие подсказоки у полей
-         *
          * @method
-         * @name RegistrationView#setFieldControlStatus
+         * @name RemindPasswordView#setElements
          * @returns {undefined}
          */
-        setFieldControlStatus: function () {
-            var $email,
-                helper = this.model.helpers.email,
-                successTitle = this.model.successMessages['email'];
-
-            $email = $('#email');
-            $email.controlStatus({
-                helperTitle: Helpers.i18n(helper),
-                successTitle: Helpers.i18n(successTitle)
-            });
+        setElements: function () {
+            this.elements.emailField = $('#email');
         },
 
         /**
@@ -260,11 +174,14 @@ define([
          * @returns {undefined}
          */
         afterRender: function () {
-            this.setFieldControlStatus();
+            var $email;
+
+            this.setElements();
+            $email = this.elements.emailField;
 
             //Используется асинхронный вызов, чтобы навесились обработчики событий
             setTimeout(function () {
-                $('#email').focus();
+                $email.focus();
             }, 0);
         }
     });
