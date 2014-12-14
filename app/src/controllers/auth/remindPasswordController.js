@@ -16,7 +16,7 @@ module.exports = Controller.extend({
      *
      * @public
      * @function
-     * @name RegistrationController#renderRemindPasswordPage
+     * @name RemindPasswordController#renderRemindPasswordPage
      * @return {undefined}
      */
     renderRemindPasswordPage: function () {
@@ -39,30 +39,47 @@ module.exports = Controller.extend({
     },
 
     /**
-     * Метод валидирует поля регистрации
+     * Method validates email field
      *
      * @method
-     * @name RegistrationController#validateField
+     * @name RemindPasswordController#validateField
+     * @param {string} fieldValue
+     * @param {Function} callback
      * @returns {undefined}
      */
-    validateField: function () {
-        var request = this.request,
-            response = this.response,
-            requestData = request.body,
-            fieldName = _.keys(requestData)[0],
-            user = new UsersModel(requestData);
+    validateField: function (fieldValue, callback) {
+        var user = new UsersModel({
+            email: fieldValue
+        });
 
-        //TODO: добавить проверку на наличие поля в модели
         user.validate(_.bind(function (error) {
             var errors = error && error.errors,
-                errorMessage = errors && errors[fieldName] || null;
+                errorMessage = errors && errors['email'] || null;
 
             if (errorMessage) {
-                this.sendError({error: errorMessage});
+                callback(errorMessage);
                 return;
             }
 
-            response.send({error: null});
+            callback(null);
         }, this));
+    },
+
+    /**
+     * Method handles request with email for password repairing
+     *
+     * @public
+     * @method
+     * @name RemindPasswordController#remindPasswordHandler
+     * @returns {undefined}
+     */
+    remindPasswordHandler: function () {
+        var request = this.request,
+            requestBody = request.body,
+            emailValue = requestBody.email;
+
+        this.validateField(emailValue, function(error){
+            console.log(error);
+        });
     }
 });

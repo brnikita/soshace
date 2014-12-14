@@ -47,6 +47,7 @@ define([
          * @type {Object}
          */
         events: {
+            'focus .js-email-field': 'emailFieldFocusHandler',
             'submit': 'submitHandler'
         },
 
@@ -78,10 +79,14 @@ define([
          */
         submitHandler: function (event) {
             var errors,
+                $email = this.elements.emailField,
+                emailValue = $.trim($email.val()),
                 _this = this;
 
             event.preventDefault();
 
+            emailValue = emailValue.toLowerCase();
+            this.model.set('email', emailValue);
             errors = this.model.validate();
 
             if (errors) {
@@ -126,6 +131,7 @@ define([
          */
         submitFailHandler: function (model, response) {
             var error = response.responseJSON && response.responseJSON.error;
+
             if (typeof error === 'string') {
                 //TODO: добавить вывод системной ошибки
                 return;
@@ -160,6 +166,20 @@ define([
         },
 
         /**
+         * Метод обработчик получения фокуса полем email
+         *
+         * @method
+         * @name RemindPasswordView#emailFieldFocusHandler
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        emailFieldFocusHandler: function (event) {
+            var $target = $(event.target);
+
+            $target.controlStatus('base');
+        },
+
+        /**
          * @method
          * @name RemindPasswordView#setElements
          * @returns {undefined}
@@ -179,6 +199,7 @@ define([
             this.setElements();
             $email = this.elements.emailField;
 
+            $email.controlStatus();
             //Используется асинхронный вызов, чтобы навесились обработчики событий
             setTimeout(function () {
                 $email.focus();

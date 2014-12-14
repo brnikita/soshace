@@ -26,6 +26,24 @@ define([
 
         /**
          * @field
+         * @name RemindPasswordModel#validation
+         * @type {Object}
+         */
+        validation: {
+            email: [
+                {
+                    required: true,
+                    msg: 'Email can&#39;t be blank.'
+                },
+                {
+                    pattern: Soshace.patterns.email,
+                    msg: 'Email is invalid.'
+                }
+            ]
+        },
+
+        /**
+         * @field
          * @name RemindPasswordModel#url
          * @type {String}
          */
