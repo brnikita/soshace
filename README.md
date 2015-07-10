@@ -46,3 +46,5 @@ Soshace.com
     </li>
 
 </ul>
+
+After vagrant up go to http://10.0.33.34:8080

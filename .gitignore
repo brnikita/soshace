@@ -1,6 +1,7 @@
-/node_modules
-/dist
-/media
+/soshace/node_modules
+/soshace/dist
+/soshace/media
 .idea
-npm-debug.log
-/app/config.js
+/soshace/.idea
+/soshace/npm-debug.log
+/soshace/app/config.js

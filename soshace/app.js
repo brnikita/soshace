@@ -86,6 +86,7 @@ var Blog = Class.extend({
         }));
         App.use(Passport.initialize());
         App.use(Passport.session());
+		App.use("/static", express.static(process.cwd() + '/dist'));
     }
 });
 

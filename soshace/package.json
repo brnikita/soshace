@@ -32,7 +32,8 @@
         "express-session": "~1.6.5",
         "method-override": "~2.1.1",
         "formidable": "~1.0.15",
-        "connect-mongo": "~0.4.1"
+        "connect-mongo": "~0.4.1",
+		"less": "~2.5.1"
     },
     "devDependencies": {
         "grunt": "~0.4.2",
