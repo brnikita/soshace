@@ -58,7 +58,7 @@ module.exports = Class.extend({
         'delete /api/users/:username': 'usersController removeProfile',
         'post /api/login': 'auth/loginController loginHandler',
         'get /api/logout': 'auth/loginController logoutHandler',
-        'post /api/registration/validate': 'auth/remindPasswordController validateField',
+        'post /api/registration/validate': 'auth/registrationController validateField',
         'post /api/remind_password': 'auth/remindPasswordController remindPasswordHandler',
         'get /api/system_messages': 'systemMessagesController getMessages',
         'delete /api/system_messages/:_id': 'systemMessagesController removeMessage',
