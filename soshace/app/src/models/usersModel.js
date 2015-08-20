@@ -206,6 +206,18 @@ function checkFieldType(field, value) {
 }
 
 /**
+ * The method checks whether an email exists
+ *
+ * @method
+ * @name UsersShema.validateEmail
+ * @param {String} email проверяемый email
+ * @return {String | undefined} ошибка
+ */
+UsersShema.methods.emailExists = function (email) {
+    console.log(email === this.email);
+};
+
+/**
  * Метод возвращает список полов с выбранным в модели полом
  *
  * @method
@@ -323,6 +335,7 @@ UsersShema.methods.getPublicFields = function () {
  * Шифруем пароль перед сохранением
  */
 UsersShema.pre('save', function (next) {
+    console.log('user pre save');
     var user = this;
 
     if (!user.isModified('password')) {
@@ -555,6 +568,36 @@ UsersShema.statics.confirmEmail = function (code, callback) {
             emailConfirmed: true
         }
     }, {new: true}, callback);
+};
+
+/**
+ * Updates password
+ *
+ * @method
+ * @name UsersShema.updatePassword
+ * @param {String} userId
+ * @param {Function} password
+ * @return {undefined}
+ */
+
+UsersShema.statics.findOneAndUpdatePassword = function (userId, password) {
+    var self = this;
+
+    Bcrypt.genSalt(SALT_WORK_FACTOR, function (error, salt) {
+        if (error) {
+            console.log(error);
+            return;
+        }
+
+        Bcrypt.hash(password, salt, function (error, hash) {
+            if (error) {
+                console.log(error);
+                return;
+            }
+            self.update({_id: userId}, {password: hash}, function (error, user) {});
+        });
+    });
+
 };
 
 module.exports = Mongoose.model('users', UsersShema);

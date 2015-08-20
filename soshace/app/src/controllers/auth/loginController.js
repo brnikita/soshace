@@ -67,6 +67,7 @@ module.exports = Controller.extend({
             response = this.response,
             next = this.next;
 
+        console.log(request);
         Passport.authenticate('local', this.authenticateHandler)(request, response, next);
     },
 

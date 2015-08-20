@@ -141,14 +141,14 @@ global.Soshace = {
      * @name Soshace.MAIL_USER
      * @type {String}
      */
-    MAIL_NO_REPLY: 'noreply@soshace.com',
+    MAIL_NO_REPLY: 'pavlov_va@soshace.com',
 
     /**
      * @constant
      * @name Soshace.MAIL_PASSWORD
      * @type {String}
      */
-    MAIL_NO_REPLY_PASSWORD: '',
+    MAIL_NO_REPLY_PASSWORD: 'jQyu&v!590',
 
     /**
      * Ключ сессии

@@ -33,6 +33,20 @@ var SendMail = {
     },
 
     /**
+     * Returns the link for password resetting
+     *
+     * @method
+     * @name SendMail.getPasswordResetLink
+     * @param {String} locale
+     * @param {string} code for email confirmation
+     * @returns {string}
+     */
+    getPasswordResetLink: function (locale, code) {
+        var host = Soshace.LOCAL_MACHINE ? Soshace.LOCAL_HOST : Soshace.PRODUCTION_HOST;
+        return 'http://' + host + '/' + locale + '/reset-password?code=' + code;
+    },
+
+    /**
      * Отправляем письмо подтверждения аккаунта
      *
      * @function
@@ -59,8 +73,37 @@ var SendMail = {
                 html: template
             });
         });
+    },
+
+    /**
+     * Отправляем письмо подтверждения аккаунта
+     *
+     * @function
+     * @name SendMail.sendPasswordResetMail
+     * @param {Object} request
+     * @param {Object} user модель пользователя
+     * @return {undefined}
+     */
+    sendPasswordResetMail: function (request, user, code) {
+        var requestParams = new RequestParams(request),
+            locale = request.i18n.getLocale(),
+            mailTemplatePath = Soshace.DIR_NAME + '/app/views/mails/resetPasswordMail.hbs',
+            passwordResetLink = this.getPasswordResetLink(locale, code),
+            mailSubject = request.i18n.__('Password resetting message from Soshace blog');
+
+        Handlebars.render(mailTemplatePath, _.extend(requestParams, {
+            userName: user.userName,
+            passwordResetLink: passwordResetLink
+        }), function (error, template) {
+            transport.sendMail({
+                from: Soshace.MAIL_NO_REPLY,
+                to: user.email,
+                subject: mailSubject,
+                html: template
+            });
+        });
     }
 };
 
-_.bindAll(SendMail, 'sendConfirmMail');
+_.bindAll(SendMail, 'sendConfirmMail', 'sendPasswordResetMail');
 module.exports = SendMail;

@@ -18,6 +18,7 @@ define([
     'controllers/posts/postEditController',
     'controllers/auth/loginController',
     'controllers/auth/registrationController',
+    'controllers/auth/remindPasswordSuccessController',
     'controllers/users/usersController',
     'controllers/users/usersEditController',
     'controllers/users/usersSettingsController'
@@ -58,6 +59,8 @@ define([
             ':locale/registration/': 'controllers/auth/registrationController',
             ':locale/remind_password': 'controllers/auth/remindPasswordController',
             ':locale/remind_password/': 'controllers/auth/remindPasswordController',
+            ':locale/reset-password':  'controllers/auth/remindPasswordSuccessController',
+            ':locale/reset-password/': 'controllers/auth/remindPasswordSuccessController',
             ':locale/users/:username': 'controllers/users/usersController',
             ':locale/users/:username/': 'controllers/users/usersController',
             ':locale/users/:username/edit': 'controllers/users/usersEditController',
