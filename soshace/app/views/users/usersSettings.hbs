@@ -2,7 +2,21 @@
     <div class="user">
         {{> usersTabs}}
         <div class="user__profile">
-
+            <form role="form" class="js-form" novalidate="novalidate">
+                <div class="form-group">
+                    <label for="password">{{i18n 'New Password'}}</label>
+                    <input type="password" class="form-control js-validate-input js-model-field"
+                           name="password"
+                           id="password"/>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">{{i18n 'Confirm password'}}</label>
+                    <input type="password" class="form-control js-validate-input js-model-field"
+                           name="confirmPassword"
+                           id="confirmPassword"/>
+                </div>
+                <button type="submit" class="reset-password-form__submit-btn btn btn-primary">{{i18n 'Change'}}</button>
+            </form>
         </div>
     </div>
 </div>

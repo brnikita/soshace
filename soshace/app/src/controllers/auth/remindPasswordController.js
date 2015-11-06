@@ -139,6 +139,46 @@ module.exports = Controller.extend({
     },
 
     /**
+     * Updates a password
+     *
+     * @public
+     * @function
+     * @name RemindPasswordController#changePassword
+     * @return {undefined}
+     */
+
+    updatePassword: function () {
+        var request = this.request,
+            response = this.response,
+            body = request.body,
+            params = new RequestParams(request),
+            userId = params.profile.id,
+            password = body.password
+            ;
+
+        //this.model.set(Helpers.serializeForm(this.elements.registrationForm));
+        //errors = this.model.validate();
+
+        if (this.validatePassword(password)) {
+            UsersModel.findOneAndUpdatePassword(userId, password, _.bind(this.onUpdatePasswordSuccess, this));
+        } else {
+            this.renderError('Page not found', 404);
+        }
+
+    },
+
+    onUpdatePasswordSuccess: function (error, user) {
+        if (error) {
+            this.renderError('Page not found', 404);
+        }
+        this.response.send({success: true});
+    },
+
+    validatePassword: function (password) {
+        return true;
+    },
+
+    /**
      * Method validates email field
      *
      * @method
@@ -170,7 +210,7 @@ module.exports = Controller.extend({
     },
 
     /**
-     * Method handles request with email for password repairing
+     * Method replaces old password with a new one
      *
      * @public
      * @method
@@ -181,7 +221,7 @@ module.exports = Controller.extend({
         var request = this.request,
             requestBody = request.body,
             emailValue = requestBody.email;
-        console.log('remindPasswordhandler')
+
         this.validateField(emailValue, function (error) {
             console.log(error);
         });

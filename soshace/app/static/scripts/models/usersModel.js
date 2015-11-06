@@ -157,6 +157,32 @@ define([
         },
 
         /**
+         * Updating password
+         *
+         * @method
+         * @name UsersModel#updatePassword
+         */
+        updatePassword: function (password) {
+            $.ajax({
+                type: "POST",
+                url: Soshace.urls.api.updatePassword,
+                dataType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify({
+                    password: password
+                }),
+                success: function () {
+                    //debugger;
+                },
+                error: function () {
+                    //debugger;
+                }
+            });
+        },
+
+        /**
          * @constructor
          * @name UsersModel#initialize
          * @returns {undefined}

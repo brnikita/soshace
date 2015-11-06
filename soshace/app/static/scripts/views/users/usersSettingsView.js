@@ -13,6 +13,7 @@ define([
     'handlebars',
     'utils/helpers',
     'backbone.layoutmanager',
+    'backbone.validation',
     'templates'
 ], function ($, _, Backbone, Handlebars, Helpers) {
     return Backbone.Layout.extend({
@@ -45,6 +46,17 @@ define([
         template: Soshace.hbs['users/usersSettings'],
 
         /**
+         * Список обработчиков событий
+         *
+         * @field
+         * @name UsersEditView#events
+         * @type {Object}
+         */
+        events: {
+            'submit': 'submitHandler'
+        },
+
+        /**
          * @constructor
          * @name UsersSettingsView#initialize
          * @returns {undefined}
@@ -54,6 +66,7 @@ define([
                 'usersTabs',
                 Soshace.hbs['partials/usersTabs']
             );
+            Backbone.Validation.bind(this);
         },
 
         /**
@@ -112,6 +125,38 @@ define([
         },
 
         /**
+         * Метод возвращает сериализованную форму
+         *
+         * @method
+         * @name UsersEditView#getFormData
+         * @returns {Object}
+         */
+        //ToDo: move to utils
+        getFormData: function () {
+            var $form = this.elements.form,
+                serializedForm = $form.serializeArray();
+
+            return _.object(_.map(serializedForm, function (field) {
+                return [field.name, field.value];
+            }));
+        },
+
+        /**
+         * Метод обработчик отправки формы
+         *
+         * @method
+         * @name UsersEditView#submitHandler
+         * @param {jQuery.Event} event
+         * @returns {undefined}
+         */
+        submitHandler: function (event) {
+            var formData = this.getFormData()
+                ;
+            event.preventDefault();
+            this.model.updatePassword(formData.password);
+        },
+
+        /**
          * Метод используется в тех случаях, когда шаблон уже отрендерен
          * Но надо навесить слушатели и выполнить afterRender и т.д.
          *
@@ -132,6 +177,7 @@ define([
          * @returns {undefined}
          */
         setElements: function () {
+            this.elements.form = this.$('.js-form');
         },
 
         /**

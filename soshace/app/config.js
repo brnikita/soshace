@@ -67,7 +67,7 @@ global.Soshace = {
      * @name Soshace.DB_HOST
      * @type {string}
      */
-    DB_HOST: 'mongodb://localhost/soshace',
+    DB_HOST: 'mongodb://localhost/soshace_db',
 
     /**
      * Порт который слушает наш node.js сервер
@@ -76,7 +76,7 @@ global.Soshace = {
      * @name Soshace.PORT
      * @type {string}
      */
-    PORT: '8080',
+    PORT: '7000',
 
     /**
      * Хост который слушает наш node.js сервер
@@ -85,7 +85,7 @@ global.Soshace = {
      * @name Soshace.HOST
      * @type {string}
      */
-    HOST: '10.0.33.34',
+    HOST: '0.0.0.0',
 
     /**
      * Локаль по дефолту
@@ -141,14 +141,14 @@ global.Soshace = {
      * @name Soshace.MAIL_USER
      * @type {String}
      */
-    MAIL_NO_REPLY: 'pavlov_va@soshace.com',
+    MAIL_NO_REPLY: 'testov.testin@yandex.ru',
 
     /**
      * @constant
      * @name Soshace.MAIL_PASSWORD
      * @type {String}
      */
-    MAIL_NO_REPLY_PASSWORD: 'jQyu&v!590',
+    MAIL_NO_REPLY_PASSWORD: '123123123123',
 
     /**
      * Ключ сессии

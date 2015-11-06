@@ -580,7 +580,7 @@ UsersShema.statics.confirmEmail = function (code, callback) {
  * @return {undefined}
  */
 
-UsersShema.statics.findOneAndUpdatePassword = function (userId, password) {
+UsersShema.statics.findOneAndUpdatePassword = function (userId, password, callback) {
     var self = this;
 
     Bcrypt.genSalt(SALT_WORK_FACTOR, function (error, salt) {
@@ -594,7 +594,9 @@ UsersShema.statics.findOneAndUpdatePassword = function (userId, password) {
                 console.log(error);
                 return;
             }
-            self.update({_id: userId}, {password: hash}, function (error, user) {});
+            self.update({_id: userId}, {password: hash}, function (error, user) {
+                callback && callback(error, user);
+            });
         });
     });
 
