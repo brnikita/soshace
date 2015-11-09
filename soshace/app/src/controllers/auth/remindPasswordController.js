@@ -156,9 +156,6 @@ module.exports = Controller.extend({
             password = body.password
             ;
 
-        //this.model.set(Helpers.serializeForm(this.elements.registrationForm));
-        //errors = this.model.validate();
-
         if (this.validatePassword(password)) {
             UsersModel.findOneAndUpdatePassword(userId, password, _.bind(this.onUpdatePasswordSuccess, this));
         } else {
@@ -167,6 +164,16 @@ module.exports = Controller.extend({
 
     },
 
+
+    /**
+     * onUpdatePasswordSuccess event
+     *
+     * @public
+     * @function
+     * @name RemindPasswordController#onUpdatePasswordSuccess
+     * @return {undefined}
+     */
+
     onUpdatePasswordSuccess: function (error, user) {
         if (error) {
             this.renderError('Page not found', 404);
@@ -174,9 +181,6 @@ module.exports = Controller.extend({
         this.response.send({success: true});
     },
 
-    validatePassword: function (password) {
-        return true;
-    },
 
     /**
      * Method validates email field

@@ -1,3 +1,5 @@
+//TODO: use User.Model for this
+
 'use strict';
 
 /**
