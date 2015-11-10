@@ -196,7 +196,9 @@ module.exports = Controller.extend({
     userSaveHandler: function (error, user) {
         if (error) {
             if (error.errors) {
-                this.sendError(error.errors);
+                this.sendError({
+                    error: __formatErrorsFromDB(error.errors)
+                });
                 return;
             }
 
@@ -205,6 +207,14 @@ module.exports = Controller.extend({
         }
 
         this.userAddSuccess(user);
+
+        function __formatErrorsFromDB(errors) {
+            if (!errors) errors = {};
+            return _.reduce(errors, function(formattedErrors, error, fieldName) {
+                formattedErrors[fieldName] = error && error.message;
+                return formattedErrors;
+            }, {});
+        }
     },
 
     /**
