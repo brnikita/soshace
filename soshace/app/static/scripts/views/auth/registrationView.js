@@ -169,7 +169,7 @@ define([
          * @returns {undefined}
          */
         userRegistrationFail: function (model, response) {
-            var error = response.responseJSON && response.responseJSON.error;
+            var error = __parseResponseError(response);
 
             if (typeof error === 'string') {
                 //TODO: добавить вывод системной ошибки
@@ -178,6 +178,22 @@ define([
 
             if (typeof error === 'object') {
                 this.showFieldsErrors(error);
+            }
+
+            function __parseResponseError(response) {
+                if (!response) return '';
+
+                if (response.responseJSON && response.responseJSON.error) return response.responseJSON.error;
+
+                var error;
+                try {
+                    error = JSON.parse(response.responseText);
+                    if (error.error) error = error.error;
+                }  catch(e) {
+                    error = '';
+                }
+
+                return error;
             }
         },
 
