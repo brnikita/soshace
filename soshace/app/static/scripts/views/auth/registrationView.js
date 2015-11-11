@@ -30,6 +30,15 @@ define([
         model: null,
 
         /**
+         * Кеш ответов сервера на валидацию полей
+         *
+         * @field
+         * @name RegistrationView#cacheServerResponse
+         * @type {Object | null}
+         */
+        cacheServerResponse: null,
+
+        /**
          * Ссылки на DOM элементы вида
          *
          * @field
@@ -93,8 +102,42 @@ define([
             );
             Backbone.Validation.bind(this);
 
+            this.cacheServerResponse = {};
+
             this.statusDebounceHandlers = {};
             this.setStatusHandlers();
+        },
+
+        /**
+         * Кеширует ответы сервера для полей формы
+         *
+         * @param fieldName
+         * @param fieldValue
+         * @param status
+         * @param message
+         */
+        setResponseToCache: function(fieldName, fieldValue, status, message) {
+            this.cacheServerResponse[fieldName] = {};
+            this.cacheServerResponse[fieldName][fieldValue] = {
+                status: status,
+                message: message || null
+            };
+        },
+
+        /**
+         * Выбирает из кеша ответ сервера по названию поля и введенному значению
+         *
+         * @param fieldName
+         * @param fieldValue
+         * @returns {*}
+         */
+        getResponseFromCache: function(fieldName, fieldValue) {
+            var fieldCache = this.cacheServerResponse[fieldName];
+            if (!fieldCache) {
+                return false;
+            }
+
+            return fieldCache[fieldValue] || false
         },
 
         /**
@@ -250,9 +293,12 @@ define([
                 serializedField = Helpers.serializeField($target),
                 fieldName = serializedField.name,
                 fieldValue = serializedField.value,
-                setStatusHandler;
+                setStatusHandler,
+                needServerValidation = event.type === 'blur',
+                fieldValueNotChanged;
 
-            if (model.get(fieldName) === fieldValue) {
+            fieldValueNotChanged = model.get(fieldName) === fieldValue;
+            if (fieldValueNotChanged && !needServerValidation) {
                 return;
             }
 
@@ -262,25 +308,31 @@ define([
             model.set(fieldName, fieldValue);
             $target.controlStatus('helper');
             setStatusHandler = this.statusDebounceHandlers[fieldName];
-            setStatusHandler($target, serializedField);
+            setStatusHandler($target, serializedField, needServerValidation);
         },
 
         /**
          * Метод устанавливает статусы для полей success или error
          *
-         * @method
-         * @name RegistrationView#setStatus
-         * @param {jQuery} $field ссылка на поле
-         * @param serializedField сериализованное поле {name: '', value: ''}
-         * @returns {undefined}
+         * @param $field
+         * @param serializedField
+         * @param needServerValidation
          */
-        setStatus: function ($field, serializedField) {
+        setStatus: function ($field, serializedField, needServerValidation) {
             var model = this.model,
                 fieldValue = serializedField.value,
                 fieldName = serializedField.name,
-                error;
+                error,
+                cachedValidationResult,
+                self;
 
             if (fieldValue !== model.get(fieldName)) {
+                return;
+            }
+
+            cachedValidationResult = this.getResponseFromCache(fieldName, fieldValue);
+            if (cachedValidationResult) {
+                $field.controlStatus(cachedValidationResult.status, cachedValidationResult.message);
                 return;
             }
 
@@ -292,11 +344,20 @@ define([
                 return;
             }
 
+            if (!needServerValidation) {
+                $field.controlStatus('success');
+                return;
+            }
+
+            self = this;
+
             model.validateFieldByServer(serializedField).done(function () {
                 //В случае, если поле пока шел ответ уже изменилось
                 if (fieldValue !== model.get(fieldName)) {
                     return;
                 }
+
+                self.setResponseToCache(fieldName, fieldValue, 'success');
 
                 $field.controlStatus('success');
             }).fail(function (response) {
@@ -311,6 +372,9 @@ define([
                 responseJSON = JSON.parse(response.response);
                 error = responseJSON.error;
                 errorMessage = Helpers.i18n(error.message);
+
+                self.setResponseToCache(fieldName, fieldValue, 'error', errorMessage);
+
                 $field.controlStatus('error', errorMessage);
             });
         },
