@@ -109,12 +109,15 @@ define([
         },
 
         /**
-         * Кеширует ответы сервера для полей формы
+         * Cache server response by field name and value
          *
+         * @method
+         * @name RegistrationView#setResponseToCache
          * @param fieldName
          * @param fieldValue
          * @param status
          * @param message
+         * @returns {undefined}
          */
         setResponseToCache: function(fieldName, fieldValue, status, message) {
             this.cacheServerResponse[fieldName] = {};
@@ -125,11 +128,12 @@ define([
         },
 
         /**
-         * Выбирает из кеша ответ сервера по названию поля и введенному значению
+         * Get server response from cache by field name and field value
          *
+         * @method
          * @param fieldName
          * @param fieldValue
-         * @returns {*}
+         * @returns {Object | boolean}
          */
         getResponseFromCache: function(fieldName, fieldValue) {
             var fieldCache = this.cacheServerResponse[fieldName];
@@ -203,10 +207,12 @@ define([
         },
 
         /**
-         * Получает ошибку из ответа сервера
+         * Method parses error from server response
          *
-         * @param response
-         * @returns {*}
+         * @method
+         * @name RegistrationView#parseResponseError
+         * @param {Object} response
+         * @returns {Object | string}
          */
         parseResponseError: function (response) {
             var error,

@@ -185,10 +185,12 @@ module.exports = Controller.extend({
     },
 
     /**
-     * Форматирует ошибку от БД при неудачном сохранении пользователя
-     * для передачи клиенту
+     * Method formats error from db for client if saving fails
      *
+     * @method
+     * @name RegistrationController#formatErrorsFromDB
      * @param errors
+     * @returns {Object}
      */
     formatErrorsFromDB: function(errors) {
         if (!errors) errors = {};
