@@ -160,6 +160,37 @@ define([
         },
 
         /**
+         * Получает ошибку из ответа сервера
+         *
+         * @param response
+         * @returns {*}
+         */
+        parseResponseError: function (response) {
+            var error,
+                responseJSONError;
+
+            if (!response) {
+                return '';
+            }
+
+            responseJSONError = response.responseJSON && response.responseJSON.error;
+            if (responseJSONError) {
+                return responseJSONError;
+            }
+
+            try {
+                error = JSON.parse(response.responseText);
+                if (error.error) {
+                    error = error.error;
+                }
+            }  catch(e) {
+                error = '';
+            }
+
+            return error;
+        },
+
+        /**
          * Метод обработчик неуспешной регистрации пользователя
          *
          * @method
@@ -169,7 +200,7 @@ define([
          * @returns {undefined}
          */
         userRegistrationFail: function (model, response) {
-            var error = __parseResponseError(response);
+            var error = this.parseResponseError(response);
 
             if (typeof error === 'string') {
                 //TODO: добавить вывод системной ошибки
@@ -178,22 +209,6 @@ define([
 
             if (typeof error === 'object') {
                 this.showFieldsErrors(error);
-            }
-
-            function __parseResponseError(response) {
-                if (!response) return '';
-
-                if (response.responseJSON && response.responseJSON.error) return response.responseJSON.error;
-
-                var error;
-                try {
-                    error = JSON.parse(response.responseText);
-                    if (error.error) error = error.error;
-                }  catch(e) {
-                    error = '';
-                }
-
-                return error;
             }
         },
 
