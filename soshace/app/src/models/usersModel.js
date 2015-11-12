@@ -581,21 +581,28 @@ UsersShema.statics.confirmEmail = function (code, callback) {
  */
 
 UsersShema.statics.findOneAndUpdatePassword = function (userId, password, callback) {
-    var self = this;
+    var self = this,
+        serverIsBusyError = {
+            error: 'Server is too busy, try later',
+            code: 503
+        },
+        useCallback = typeof callback === 'function';
 
     Bcrypt.genSalt(SALT_WORK_FACTOR, function (error, salt) {
         if (error) {
-            console.log(error);
+            console.error(error);
+            useCallback && callback(serverIsBusyError);
             return;
         }
 
         Bcrypt.hash(password, salt, function (error, hash) {
             if (error) {
-                console.log(error);
+                console.error(error);
+                useCallback && callback(serverIsBusyError);
                 return;
             }
             self.update({_id: userId}, {password: hash}, function (error, user) {
-                callback && callback(error, user);
+                useCallback && callback(serverIsBusyError, user);
             });
         });
     });
