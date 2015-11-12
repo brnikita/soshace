@@ -139,6 +139,18 @@ module.exports = Controller.extend({
     },
 
     /**
+     * Dummy method to prevent server crash on update password
+     *
+     * @method
+     * @param password
+     * @returns {boolean}
+     */
+    validatePassword: function(password) {
+        // TODO: implement
+        return false;
+    },
+
+    /**
      * Updates a password
      *
      * @public
