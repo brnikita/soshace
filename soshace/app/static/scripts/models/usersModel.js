@@ -170,12 +170,15 @@ define([
         },
 
         /**
-         * Updating password
+         * Makes request to server to update password and passes response to callback
          *
          * @method
-         * @name UsersModel#updatePassword
+         * @param {String} oldPassword
+         * @param {String} password
+         * @param {Function} callback
+         * @returns {undefined}
          */
-        updatePassword: function (password) {
+        updatePassword: function (oldPassword, password, callback) {
             $.ajax({
                 type: "POST",
                 url: Soshace.urls.api.updatePassword,
@@ -184,13 +187,15 @@ define([
                     'Content-Type': 'application/json'
                 },
                 data: JSON.stringify({
-                    password: password
+                    password: password,
+                    oldPassword: oldPassword
                 }),
                 success: function () {
-                    //debugger;
+                    callback();
                 },
-                error: function () {
-                    //debugger;
+                error: function (response) {
+                    // TODO: handle response error
+                    callback(JSON.parse(response.responseText));
                 }
             });
         },

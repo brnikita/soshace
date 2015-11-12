@@ -130,7 +130,7 @@ define([
          * Метод возвращает сериализованную форму
          *
          * @method
-         * @name UsersEditView#getFormData
+         * @name UsersSettingsView#getFormData
          * @returns {Object}
          */
         //ToDo: move to utils
@@ -146,26 +146,30 @@ define([
         /**
          * Method checks if input is valid
          *
-         * It uses model prevalidation for password and then
-         * checks if confirm password equals to password
-         * because user model don't have property "confirmPassword" and can't validate
+         * It uses model prevalidation for new password and then
+         * checks if confirm password equals to new password
          * this field
          *
          * @method
+         * @name UsersSettingsView#getFormError
          * @param formData
          * @returns {*}
          */
         getFormError: function(formData) {
+            var error,
+                passwordsMatch
+                ;
+
             if (!formData) formData = {};
 
-            var error = this.model.preValidate('password', formData.password);
+            error = this.model.preValidate('password', formData.newPassword);
             if (error) {
                 return {
-                    password: error
+                    newPassword: error
                 };
             }
 
-            var passwordsMatch = formData.password === formData.confirmPassword;
+            passwordsMatch = formData.newPassword === formData.confirmPassword;
             if (!passwordsMatch) {
                 return {
                     confirmPassword: 'Passwords don&#39;t match'
@@ -179,13 +183,14 @@ define([
          * Method handler on form submit
          *
          * @method
-         * @name UsersEditView#submitHandler
+         * @name UsersSettingsView#submitHandler
          * @param {jQuery.Event} event
          * @returns {*}
          */
         submitHandler: function (event) {
             var formData = this.getFormData(),
-                errors = this.getFormError(formData);
+                errors = this.getFormError(formData),
+                self;
 
             event.preventDefault();
 
@@ -196,7 +201,16 @@ define([
                 return;
             }
 
-            this.model.updatePassword(formData.password);
+            self = this;
+            this.model.updatePassword(formData.password, formData.newPassword, function(err) {
+                if (err) {
+                    self.showFieldsErrors(err.error);
+                    return;
+                }
+
+                // TODO: show error message
+                alert('password changed!');
+            });
         },
 
         /**
@@ -207,13 +221,15 @@ define([
          * @param {Object} errors list of errors
          * @returns {undefined}
          */
-        showFieldsErrors: function (errors) {
+        showFieldsErrors: function (errors, translate) {
             _.each(errors, _.bind(function (error, fieldName) {
                 var $field;
 
                 fieldName = Helpers.hyphen(fieldName);
                 $field = $('#' + fieldName);
-                error = Helpers.i18n(error);
+                if (translate) {
+                    error = Helpers.i18n(error);
+                }
                 $field.controlStatus('error', error);
             }, this));
         },
