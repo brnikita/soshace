@@ -34,6 +34,8 @@ define([
          * @type {Object}
          */
         elements: {
+            form: null,
+            validateFields: null
         },
 
         /**
@@ -142,18 +144,78 @@ define([
         },
 
         /**
-         * Метод обработчик отправки формы
+         * Method checks if input is valid
+         *
+         * It uses model prevalidation for password and then
+         * checks if confirm password equals to password
+         * because user model don't have property "confirmPassword" and can't validate
+         * this field
+         *
+         * @method
+         * @param formData
+         * @returns {*}
+         */
+        getFormError: function(formData) {
+            if (!formData) formData = {};
+
+            var error = this.model.preValidate('password', formData.password);
+            if (error) {
+                return {
+                    password: error
+                };
+            }
+
+            var passwordsMatch = formData.password === formData.confirmPassword;
+            if (!passwordsMatch) {
+                return {
+                    confirmPassword: 'Passwords don&#39;t match'
+                };
+            }
+
+            return false;
+        },
+
+        /**
+         * Method handler on form submit
          *
          * @method
          * @name UsersEditView#submitHandler
          * @param {jQuery.Event} event
-         * @returns {undefined}
+         * @returns {*}
          */
         submitHandler: function (event) {
-            var formData = this.getFormData()
-                ;
+            var formData = this.getFormData(),
+                errors = this.getFormError(formData);
+
             event.preventDefault();
+
+            this.elements.validateFields.controlStatus('base');
+
+            if (errors) {
+                this.showFieldsErrors(errors);
+                return;
+            }
+
             this.model.updatePassword(formData.password);
+        },
+
+        /**
+         * Method shows errors list in specified fields
+         *
+         * @method
+         * @name UsersSettingsView#showFieldsErrors
+         * @param {Object} errors list of errors
+         * @returns {undefined}
+         */
+        showFieldsErrors: function (errors) {
+            _.each(errors, _.bind(function (error, fieldName) {
+                var $field;
+
+                fieldName = Helpers.hyphen(fieldName);
+                $field = $('#' + fieldName);
+                error = Helpers.i18n(error);
+                $field.controlStatus('error', error);
+            }, this));
         },
 
         /**
@@ -170,13 +232,14 @@ define([
         },
 
         /**
-         * Метод сохраняет DOM элементы
+         * Method caches DOM elements in view
          *
          * @method
          * @name UsersSettingsView#setElements
          * @returns {undefined}
          */
         setElements: function () {
+            this.elements.validateFields = this.$('.js-validate-input');
             this.elements.form = this.$('.js-form');
         },
 
@@ -187,6 +250,7 @@ define([
          */
         afterRender: function () {
             this.setElements();
+            this.elements.validateFields.controlStatus();
         }
     });
 });
