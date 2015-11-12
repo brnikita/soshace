@@ -1,6 +1,8 @@
 'use strict';
 
 var _ = require('underscore'),
+    Mongoose = require('mongoose'),
+    ObjectId = Mongoose.Types.ObjectId,
     Controller = srcRequire('common/controller'),
     UsersModel = srcRequire('models/usersModel'),
     PasswordResetModel = srcRequire('models/resetPasswordModel'),
@@ -139,18 +141,6 @@ module.exports = Controller.extend({
     },
 
     /**
-     * Dummy method to prevent server crash on update password
-     *
-     * @method
-     * @param password
-     * @returns {boolean}
-     */
-    validatePassword: function(password) {
-        // TODO: implement
-        return false;
-    },
-
-    /**
      * Updates a password
      *
      * @public
@@ -165,14 +155,47 @@ module.exports = Controller.extend({
             body = request.body,
             params = new RequestParams(request),
             userId = params.profile.id,
-            password = body.password
+            password = body.password,
+            oldPassword = body.oldPassword,
+            self = this,
+            newPasswordValidationError
             ;
 
-        if (this.validatePassword(password)) {
-            UsersModel.findOneAndUpdatePassword(userId, password, _.bind(this.onUpdatePasswordSuccess, this));
-        } else {
-            this.renderError('Page not found', 404);
+        if (!oldPassword) {
+            this.sendError('Bad request', 400);
+            return;
         }
+
+        newPasswordValidationError = UsersModel.validatePassword(password);
+        if (newPasswordValidationError) {
+            this.sendError(newPasswordValidationError, 400);
+            return;
+        }
+
+        UsersModel.findOne({_id: new ObjectId(userId)}, function (error, user) {
+
+            if (error) {
+                self.sendError('Server is too busy, try later', 503);
+                return;
+            }
+
+            if (!user) {
+                self.renderError('User not found', 404);
+                return;
+            }
+
+            user.comparePassword(body.oldPassword, function(err) {
+                if (err) {
+                    self.sendError(err);
+                    return;
+                }
+
+                UsersModel.findOneAndUpdatePassword(userId, password, function() {
+                    response.end();
+                });
+
+            });
+        });
 
     },
 
