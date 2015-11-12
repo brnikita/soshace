@@ -87,6 +87,19 @@ define([
             }
         ],
 
+        validation: {
+            password: [
+                {
+                    required: true,
+                    msg: 'Password can&#39;t be blank.'
+                },
+                {
+                    minLength: 6,
+                    msg: 'Password length should&#39;t be less than 6 characters.'
+                }
+            ]
+        },
+
         /**
          * Метод возвращает true, если информация по прфилю пустая
          *
